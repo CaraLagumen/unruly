@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-// @ts-nocheck
+//@ts-nocheck
 const appError_1 = require("./../utils/appError");
 const handleCastErrorDB = (err) => {
     const message = `Invalid ${err.path}: ${err.value}.`;

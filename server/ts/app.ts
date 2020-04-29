@@ -1,12 +1,12 @@
-// @ts-nocheck
+//@ts-nocheck
 const path = require(`path`);
 const dotenv = require(`dotenv`);
 const express = require(`express`);
-const morgan = require(`morgan`);
-const rateLimit = require(`express-rate-limit`);
-const helmet = require(`helmet`);
 const cors = require(`cors`);
+const helmet = require(`helmet`);
+const morgan = require(`morgan`);
 const cookieParser = require(`cookie-parser`);
+const rateLimit = require(`express-rate-limit`);
 const mongoSanitize = require(`express-mongo-sanitize`);
 const xss = require(`xss-clean`);
 const compression = require(`compression`);

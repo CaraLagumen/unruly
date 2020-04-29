@@ -1,4 +1,4 @@
-// @ts-nocheck
+//@ts-nocheck
 import { AppError } from "./../utils/appError";
 
 const handleCastErrorDB = (err) => {
