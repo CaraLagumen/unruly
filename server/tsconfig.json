@@ -1,16 +1,17 @@
 {
   "compilerOptions": {
     "target": "es2015",
+    "lib": [
+      "es2018",
+      "dom"
+    ],
     "module": "commonjs",
     "outDir": "./js",
     "rootDir": "./ts",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
-    "lib": [
-      "es2018",
-      "dom"
-    ],
-    "skipLibCheck": true
-  }
+    "skipLibCheck": true,
+  },
+  "exclude": ["types/*"]
 }

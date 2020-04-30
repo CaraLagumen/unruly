@@ -7,17 +7,17 @@ const scheduledSchema = new mongoose.Schema(
     shift: {
       type: mongoose.Schema.ObjectId,
       ref: `Shift`,
-      required: [true, `Scheduled shift required.`],
+      required: [true, `Scheduled shift must be a valid shift.`],
     },
     employee: {
       type: mongoose.Schema.ObjectId,
       ref: `Employee`,
-      required: [true, `Scheduled shift employee required.`],
+      required: [true, `Scheduled shift must belong to an employee.`],
     },
     scheduler: {
       type: mongoose.Schema.ObjectId,
       ref: `Scheduler`,
-      required: [true, `Scheduled shift scheduler required.`],
+      required: [true, `Scheduled shift must have a scheduler.`],
     },
     date: {
       type: Date,
@@ -47,5 +47,4 @@ scheduledSchema.pre(/^find/, (next) => {
   next();
 });
 
-const Scheduled = mongoose.model(`Scheduled`, scheduledSchema);
-export default Scheduled;
+export const Scheduled = mongoose.model(`Scheduled`, scheduledSchema);

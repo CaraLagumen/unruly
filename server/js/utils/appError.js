@@ -9,4 +9,4 @@ class AppError extends Error {
         Error.captureStackTrace(this, this.constructor);
     }
 }
-exports.AppError = AppError;
+exports.default = AppError;

@@ -14,6 +14,8 @@ const compression = require(`compression`);
 const globalErrorHandler = require(`./controllers/errorController`);
 const AppError = require(`./utils/appError`);
 
+const shiftRouter = require(`./routes/shift/shiftRoutes`);
+
 dotenv.config({ path: path.join(__dirname, `../../config.env`) });
 const app = express();
 
@@ -31,7 +33,7 @@ app.options("*", cors());
 app.use(helmet());
 
 //DEV LOGS
-console.log(process.env.NODE_ENV);
+console.log(`Server on ${process.env.NODE_ENV} mode.`);
 if (process.env.NODE_ENV === `development`) {
   app.use(morgan(`dev`));
 }
@@ -62,6 +64,8 @@ app.use(compression());
 app.use(globalErrorHandler);
 
 //MOUNT ROUTERS
+app.use(`/api/v1/shifts`, shiftRouter);
+
 app.all("*", (req, res, next) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server.`, 404));
 });

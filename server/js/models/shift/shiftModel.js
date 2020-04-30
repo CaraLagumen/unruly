@@ -1,28 +1,24 @@
 "use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose = __importStar(require("mongoose"));
+const mongoose_1 = __importDefault(require("mongoose"));
 //SERVES ONLY AS A TEMPLATE
 //DATA WILL BE COMPRISE MOSTLY OF SCHEDULED SHIFTS
-const shiftSchema = new mongoose.Schema({
+const shiftSchema = new mongoose_1.default.Schema({
     position: {
         type: String,
-        required: [true, `Position required.`],
+        required: [true, `Shift position required.`],
     },
     slot: {
         type: String,
-        required: [true, `Time slot required.`],
+        required: [true, `Shift time slot required.`],
         enum: [`morning`, `day`, `swing`, `graveyard`],
     },
     location: {
         type: String,
-        required: [true, `Location required.`],
+        required: [true, `Shift location required.`],
         enum: [
             `rotunda`,
             `food court`,
@@ -32,21 +28,17 @@ const shiftSchema = new mongoose.Schema({
         ],
     },
     day: {
-        type: String,
-        required: [true, `Day required.`],
-        enum: [
-            `monday`,
-            `tuesday`,
-            `wednesday`,
-            `thursday`,
-            `friday`,
-            `saturday`,
-            `sunday`,
-        ],
-    },
-    time: {
         type: Number,
-        required: [true, `Time required.`],
+        required: [true, `Shift day required.`],
+        min: 0,
+        max: 6,
+    },
+    hours: {
+        type: [
+            { type: Number, min: 0, max: 23 },
+            { type: Number, min: 0, max: 23 },
+        ],
+        required: [true, `Shift hours required.`],
     },
 }, {
     toJSON: { virtuals: true },
@@ -65,5 +57,4 @@ shiftSchema.virtual(`scheduled`, {
     foreignField: `shift`,
     localField: `_id`,
 });
-const Shift = mongoose.model(`Shift`, shiftSchema);
-exports.default = Shift;
+exports.Shift = mongoose_1.default.model(`Shift`, shiftSchema);

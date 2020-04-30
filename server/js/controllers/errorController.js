@@ -1,23 +1,26 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 //@ts-nocheck
-const appError_1 = require("./../utils/appError");
+const appError_1 = __importDefault(require("../utils/appError"));
 const handleCastErrorDB = (err) => {
     const message = `Invalid ${err.path}: ${err.value}.`;
-    return new appError_1.AppError(message, 400);
+    return new appError_1.default(message, 400);
 };
 const handleDuplicateFieldsDB = (err) => {
     const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
     const message = `Duplicate field value: ${value}. Please use another value.`;
-    return new appError_1.AppError(message, 400);
+    return new appError_1.default(message, 400);
 };
 const handleValidationErrorDB = (err) => {
     const errors = Object.values(err.errors).map((el) => el.message);
     const message = `Invalid input data. ${errors.join(`. `)}`;
-    return new appError_1.AppError(message, 400);
+    return new appError_1.default(message, 400);
 };
-const handleJWTError = () => new appError_1.AppError(`Invalid token. Please log in again.`, 401);
-const handleJWTExpiredError = () => new appError_1.AppError(`Your token has expired. Please log in again.`, 401);
+const handleJWTError = () => new appError_1.default(`Invalid token. Please log in again.`, 401);
+const handleJWTExpiredError = () => new appError_1.default(`Your token has expired. Please log in again.`, 401);
 const sendErrorDev = (err, req, res) => {
     //1. API
     if (req.originalUrl.startsWith(`/api`)) {

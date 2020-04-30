@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { AppError } from "./../utils/appError";
+import AppError from "../utils/appError";
 
 const handleCastErrorDB = (err) => {
   const message = `Invalid ${err.path}: ${err.value}.`;

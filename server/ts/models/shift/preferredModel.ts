@@ -7,12 +7,12 @@ const preferredSchema = new mongoose.Schema(
     shift: {
       type: mongoose.Schema.ObjectId,
       ref: `Shift`,
-      required: [true, `Preferred shift required.`],
+      required: [true, `Preferred shift must have a valid shift.`],
     },
     employee: {
       type: mongoose.Schema.ObjectId,
       ref: `Employee`,
-      required: [true, `Preferred shift employee required.`],
+      required: [true, `Preferred shift must belong to an employee.`],
     },
     createdAt: {
       type: Date,
@@ -40,5 +40,4 @@ preferredSchema.pre(/^find/, (next) => {
   next();
 });
 
-const Preferred = mongoose.model(`Preferred`, preferredSchema);
-export default Preferred;
+export const Preferred = mongoose.model(`Preferred`, preferredSchema);
