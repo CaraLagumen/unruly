@@ -8,20 +8,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-//@ts-nocheck
-const mongoose = __importStar(require("mongoose"));
-const crypto = __importStar(require("crypto"));
-const bcrypt = __importStar(require("bcryptjs"));
-const validator = __importStar(require("validator"));
-const employeeSchema = new mongoose.Schema({
+const mongoose_1 = __importDefault(require("mongoose"));
+const crypto_1 = __importDefault(require("crypto"));
+const bcryptjs_1 = __importDefault(require("bcryptjs"));
+const validator_1 = __importDefault(require("validator"));
+const customValidate = {
+    max3Items: function (arr) {
+        return arr.length <= 3;
+    },
+};
+const employeeSchema = new mongoose_1.default.Schema({
     firstName: {
         type: String,
         required: [true, `First name required.`],
@@ -35,7 +35,7 @@ const employeeSchema = new mongoose.Schema({
         required: [true, `Email required.`],
         unique: true,
         lowercase: true,
-        validate: [validator.isEmail, `Email invalid.`],
+        validate: [validator_1.default.isEmail, `Email invalid.`],
     },
     password: {
         type: String,
@@ -86,7 +86,7 @@ const employeeSchema = new mongoose.Schema({
             },
         ],
         validate: [
-            validatePreferredShiftSlots,
+            customValidate.max3Items,
             `Preferred shift slots must be less than 3 and unique.`,
         ],
     },
@@ -94,9 +94,6 @@ const employeeSchema = new mongoose.Schema({
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
 });
-const validatePreferredShiftSlots = (arr) => {
-    return arr.length <= 3;
-};
 //VIRTUAL POPULATE----------------------------------------------------------
 //PREFERRED
 employeeSchema.virtual(`preferred`, {
@@ -112,49 +109,55 @@ employeeSchema.virtual(`scheduled`, {
 });
 //MIDDLEWARES----------------------------------------------------------
 //ENCRYPT PASSWORD
-employeeSchema.pre(`save`, (next) => __awaiter(void 0, void 0, void 0, function* () {
-    //IF PASSWORD NOT BEING MODIFIED, DO NOT ENCRYPT
-    if (!this.isModified(`password`))
-        return next();
-    this.password = yield bcrypt.hash(this.password, 16);
-    this.passwordConfirm = undefined; //RESET FOR SECURITY
-    next();
-}));
+employeeSchema.pre(`save`, function (next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        //IF PASSWORD NOT BEING MODIFIED, DO NOT ENCRYPT
+        if (!this.isModified(`password`))
+            return next();
+        this.password = yield bcryptjs_1.default.hash(this.password, 16);
+        this.passwordConfirm = undefined; //RESET FOR SECURITY
+        next();
+    });
+});
 //RESET PASSWORD DATE
-employeeSchema.pre(`save`, (next) => __awaiter(void 0, void 0, void 0, function* () {
-    //IF PASSWORD NOT BEING MODIFIED OR USER IS NEW, DO NOT RESET
-    if (!this.isModified(`password`) || this.isNew)
-        return next();
-    this.passwordChangedAt = Date.now(); //FOR COMPARISON TO JWT TIMESTAMP
-    next();
-}));
+employeeSchema.pre(`save`, function (next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        //IF PASSWORD NOT BEING MODIFIED OR USER IS NEW, DO NOT RESET
+        if (!this.isModified(`password`) || this.isNew)
+            return next();
+        this.passwordChangedAt = Date.now(); //FOR COMPARISON TO JWT TIMESTAMP
+        next();
+    });
+});
 //HIDE USER IN FIND WHEN SET TO INACTIVE ("DELETED")
-employeeSchema.pre(/^find/, (next) => {
-    this.BiquadFilterNode({ active: { $ne: false } });
+employeeSchema.pre(/^find/, function (next) {
+    this.find({ active: { $ne: false } });
     next();
 });
 //METHODS----------------------------------------------------------
 //CONTROLLER LOGIN - COMPARE PASSWORD TO STORED PASSWORD
-employeeSchema.methods.correctPassword = (enteredPassword, userPassword) => __awaiter(void 0, void 0, void 0, function* () {
-    return yield bcrypt.compare(enteredPassword, userPassword);
-});
+employeeSchema.methods.correctPassword = function (enteredPassword, userPassword) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield bcryptjs_1.default.compare(enteredPassword, userPassword);
+    });
+};
 //CONTROLLER PROTECT - CHECK IF PASSWORD WAS CHANGED
-employeeSchema.methods.changedPasswordAfter = (JWTTimestamp) => {
+employeeSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
     if (this.passwordChangedAt) {
-        const changedTimeStamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
+        const changedTimeStamp = this.passwordChangedAt.getTime() / 1000;
         return JWTTimestamp < changedTimeStamp;
     }
     return false;
 };
 //CONTROLLER FORGOT PASSWORD - RESET TOKEN AND ITS EXPIRATION DATE
-employeeSchema.methods.createPasswordResetToken = () => {
-    const resetToken = crypto.randomBytes(32).toString(`hex`);
-    this.passwordResetToken = crypto
+employeeSchema.methods.createPasswordResetToken = function () {
+    const resetToken = crypto_1.default.randomBytes(32).toString(`hex`);
+    this.passwordResetToken = crypto_1.default
         .createHash(`sha256`)
         .update(resetToken)
         .digest(`hex`);
     this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
     return resetToken;
 };
-const Employee = mongoose.model(`Employee`, employeeSchema);
+const Employee = mongoose_1.default.model(`Employee`, employeeSchema);
 exports.default = Employee;

@@ -1,10 +1,17 @@
-//@ts-nocheck
-import * as mongoose from "mongoose";
-import * as crypto from "crypto";
-import * as bcrypt from "bcryptjs";
-import * as validator from "validator";
+import mongoose, { Schema, Model } from "mongoose";
+import crypto from "crypto";
+import bcrypt from "bcryptjs";
+import validator from "validator";
 
-const employeeSchema = new mongoose.Schema(
+import IEmployee from "../../types/users/employeeInterface";
+
+const customValidate = {
+  max3Items: function (arr: []) {
+    return arr.length <= 3;
+  },
+};
+
+const employeeSchema: Schema = new mongoose.Schema(
   {
     firstName: {
       type: String,
@@ -29,7 +36,7 @@ const employeeSchema = new mongoose.Schema(
       type: String,
       required: [true, `Confirm your password.`],
       validate: {
-        validator: function (el: string) {
+        validator: function (this: IEmployee, el: string) {
           return el === this.password;
         },
         message: `Passwords not the same.`,
@@ -70,7 +77,7 @@ const employeeSchema = new mongoose.Schema(
         },
       ],
       validate: [
-        validatePreferredShiftSlots,
+        customValidate.max3Items,
         `Preferred shift slots must be less than 3 and unique.`,
       ],
     },
@@ -80,10 +87,6 @@ const employeeSchema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
-
-const validatePreferredShiftSlots = (arr) => {
-  return arr.length <= 3;
-};
 
 //VIRTUAL POPULATE----------------------------------------------------------
 
@@ -104,7 +107,7 @@ employeeSchema.virtual(`scheduled`, {
 //MIDDLEWARES----------------------------------------------------------
 
 //ENCRYPT PASSWORD
-employeeSchema.pre(`save`, async (next) => {
+employeeSchema.pre(`save`, async function (this: IEmployee, next) {
   //IF PASSWORD NOT BEING MODIFIED, DO NOT ENCRYPT
   if (!this.isModified(`password`)) return next();
 
@@ -115,7 +118,7 @@ employeeSchema.pre(`save`, async (next) => {
 });
 
 //RESET PASSWORD DATE
-employeeSchema.pre(`save`, async (next) => {
+employeeSchema.pre(`save`, async function (this: IEmployee, next) {
   //IF PASSWORD NOT BEING MODIFIED OR USER IS NEW, DO NOT RESET
   if (!this.isModified(`password`) || this.isNew) return next();
 
@@ -125,8 +128,8 @@ employeeSchema.pre(`save`, async (next) => {
 });
 
 //HIDE USER IN FIND WHEN SET TO INACTIVE ("DELETED")
-employeeSchema.pre(/^find/, (next) => {
-  this.BiquadFilterNode({ active: { $ne: false } });
+employeeSchema.pre(/^find/, function (this: Model<IEmployee>, next) {
+  this.find({ active: { $ne: false } });
 
   next();
 });
@@ -134,20 +137,20 @@ employeeSchema.pre(/^find/, (next) => {
 //METHODS----------------------------------------------------------
 
 //CONTROLLER LOGIN - COMPARE PASSWORD TO STORED PASSWORD
-employeeSchema.methods.correctPassword = async (
-  enteredPassword,
-  userPassword
-) => {
+employeeSchema.methods.correctPassword = async function (
+  enteredPassword: string,
+  userPassword: string
+) {
   return await bcrypt.compare(enteredPassword, userPassword);
 };
 
 //CONTROLLER PROTECT - CHECK IF PASSWORD WAS CHANGED
-employeeSchema.methods.changedPasswordAfter = (JWTTimestamp) => {
+employeeSchema.methods.changedPasswordAfter = function (
+  this: IEmployee,
+  JWTTimestamp: number
+) {
   if (this.passwordChangedAt) {
-    const changedTimeStamp = parseInt(
-      this.passwordChangedAt.getTime() / 1000,
-      10
-    );
+    const changedTimeStamp = this.passwordChangedAt.getTime() / 1000;
 
     return JWTTimestamp < changedTimeStamp;
   }
@@ -156,7 +159,7 @@ employeeSchema.methods.changedPasswordAfter = (JWTTimestamp) => {
 };
 
 //CONTROLLER FORGOT PASSWORD - RESET TOKEN AND ITS EXPIRATION DATE
-employeeSchema.methods.createPasswordResetToken = () => {
+employeeSchema.methods.createPasswordResetToken = function (this: IEmployee) {
   const resetToken = crypto.randomBytes(32).toString(`hex`);
 
   this.passwordResetToken = crypto
@@ -169,5 +172,5 @@ employeeSchema.methods.createPasswordResetToken = () => {
   return resetToken;
 };
 
-const Employee = mongoose.model(`Employee`, employeeSchema);
+const Employee = mongoose.model<IEmployee>(`Employee`, employeeSchema);
 export default Employee;

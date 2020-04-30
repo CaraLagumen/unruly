@@ -1,23 +1,23 @@
-//@ts-nocheck
-const path = require(`path`);
-const dotenv = require(`dotenv`);
-const express = require(`express`);
-const cors = require(`cors`);
-const helmet = require(`helmet`);
-const morgan = require(`morgan`);
-const cookieParser = require(`cookie-parser`);
-const rateLimit = require(`express-rate-limit`);
-const mongoSanitize = require(`express-mongo-sanitize`);
-const xss = require(`xss-clean`);
-const compression = require(`compression`);
+import path from "path";
+import dotenv from "dotenv";
+import express, { Application, Request, Response, NextFunction } from "express";
+import cors from "cors";
+import helmet from "helmet";
+import morgan from "morgan";
+import cookieParser from "cookie-parser";
+import rateLimit from "express-rate-limit";
+import mongoSanitize from "express-mongo-sanitize";
+//@ts-ignore
+import xss from "xss-clean";
+import compression from "compression";
 
-const globalErrorHandler = require(`./controllers/errorController`);
-const AppError = require(`./utils/appError`);
+import globalErrorHandler from "./controllers/errorController";
+import AppError from "./utils/appError";
 
 const shiftRouter = require(`./routes/shift/shiftRoutes`);
 
 dotenv.config({ path: path.join(__dirname, `../../config.env`) });
-const app = express();
+const app: Application = express();
 
 //TRUST HEROKU
 app.enable(`trust proxy`);
@@ -66,12 +66,12 @@ app.use(globalErrorHandler);
 //MOUNT ROUTERS
 app.use(`/api/v1/shifts`, shiftRouter);
 
-app.all("*", (req, res, next) => {
+app.all("*", (req: Request, res: Response, next: NextFunction) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server.`, 404));
 });
 
 //SETUP BUILD PATH
-app.use((req, res, next) => {
+app.use((req: Request, res: Response, next: NextFunction) => {
   res.sendFile(path.join(__dirname, "../../dist/unruly/index.html"));
 });
 

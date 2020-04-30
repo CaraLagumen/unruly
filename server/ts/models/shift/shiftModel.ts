@@ -1,5 +1,7 @@
 import mongoose, { Schema } from "mongoose";
 
+import IShift from "../../types/shift/shiftInterface";
+
 //SERVES ONLY AS A TEMPLATE
 //DATA WILL BE COMPRISE MOSTLY OF SCHEDULED SHIFTS
 const shiftSchema: Schema = new mongoose.Schema(
@@ -60,4 +62,4 @@ shiftSchema.virtual(`scheduled`, {
   localField: `_id`,
 });
 
-export const Shift = mongoose.model(`Shift`, shiftSchema);
+export const Shift = mongoose.model<IShift>(`Shift`, shiftSchema);

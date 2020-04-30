@@ -1,35 +1,30 @@
 "use strict";
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-    result["default"] = mod;
-    return result;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-//@ts-nocheck
-const mongoose = __importStar(require("mongoose"));
+const mongoose_1 = __importDefault(require("mongoose"));
 //LIMITED 3 PER DAY OF THE WEEK FOR EACH EMPLOYEE
-const preferredSchema = new mongoose.Schema({
+const preferredSchema = new mongoose_1.default.Schema({
     shift: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose_1.default.Schema.Types.ObjectId,
         ref: `Shift`,
         required: [true, `Preferred shift must have a valid shift.`],
     },
     employee: {
-        type: mongoose.Schema.ObjectId,
+        type: mongoose_1.default.Schema.Types.ObjectId,
         ref: `Employee`,
         required: [true, `Preferred shift must belong to an employee.`],
-    },
-    createdAt: {
-        type: Date,
-        default: Date.now(),
-        select: false,
     },
     rank: {
         type: Number,
         required: [true, `Preferred shift rank required.`],
         enum: [1, 2, 3],
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now(),
+        select: false,
     },
 }, {
     toJSON: { virtuals: true },
@@ -38,8 +33,8 @@ const preferredSchema = new mongoose.Schema({
 //COMPOUND INDEX TO FIND IF PREFERRED SHIFT AND EMPLOYEE IS UNIQUE
 preferredSchema.index({ shift: 1, employee: 1 }, { unique: true });
 //SHOW IN FIND SHIFT & FIND EMPLOYEE
-preferredSchema.pre(/^find/, (next) => {
+preferredSchema.pre(/^find/, function (next) {
     this.populate(`shift`).populate(`employee`);
     next();
 });
-exports.Preferred = mongoose.model(`Preferred`, preferredSchema);
+exports.Preferred = mongoose_1.default.model(`Preferred`, preferredSchema);

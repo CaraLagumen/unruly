@@ -1,21 +1,22 @@
-//@ts-nocheck
-import * as mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
+
+import IScheduled from "../../types/shift/scheduledInterface";
 
 //MOST CREATED DATA
-const scheduledSchema = new mongoose.Schema(
+const scheduledSchema: Schema = new mongoose.Schema(
   {
     shift: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: `Shift`,
       required: [true, `Scheduled shift must be a valid shift.`],
     },
     employee: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: `Employee`,
       required: [true, `Scheduled shift must belong to an employee.`],
     },
     scheduler: {
-      type: mongoose.Schema.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: `Scheduler`,
       required: [true, `Scheduled shift must have a scheduler.`],
     },
@@ -42,9 +43,12 @@ scheduledSchema.index(
 );
 
 //SHOW IN FIND EMPLOYEE & FIND SCHEDULER
-scheduledSchema.pre(/^find/, (next) => {
+scheduledSchema.pre(/^find/, function (this: any, next) {
   this.populate(`employee`).populate(`scheduler`);
   next();
 });
 
-export const Scheduled = mongoose.model(`Scheduled`, scheduledSchema);
+export const Scheduled = mongoose.model<IScheduled>(
+  `Scheduled`,
+  scheduledSchema
+);

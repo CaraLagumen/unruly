@@ -6,12 +6,12 @@
       "dom"
     ],
     "module": "commonjs",
+    "baseUrl": "./",
     "outDir": "./js",
     "rootDir": "./ts",
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
-  },
-  "exclude": ["types/*"]
+  }
 }

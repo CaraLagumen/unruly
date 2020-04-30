@@ -3,25 +3,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-//@ts-nocheck
 const appError_1 = __importDefault(require("../utils/appError"));
-const handleCastErrorDB = (err) => {
+const handleCastErrorDB = (err, req, res, next) => {
     const message = `Invalid ${err.path}: ${err.value}.`;
     return new appError_1.default(message, 400);
 };
-const handleDuplicateFieldsDB = (err) => {
+const handleDuplicateFieldsDB = (err, req, res, next) => {
     const value = err.errmsg.match(/(["'])(\\?.)*?\1/)[0];
     const message = `Duplicate field value: ${value}. Please use another value.`;
     return new appError_1.default(message, 400);
 };
-const handleValidationErrorDB = (err) => {
+const handleValidationErrorDB = (err, req, res, next) => {
     const errors = Object.values(err.errors).map((el) => el.message);
     const message = `Invalid input data. ${errors.join(`. `)}`;
     return new appError_1.default(message, 400);
 };
 const handleJWTError = () => new appError_1.default(`Invalid token. Please log in again.`, 401);
 const handleJWTExpiredError = () => new appError_1.default(`Your token has expired. Please log in again.`, 401);
-const sendErrorDev = (err, req, res) => {
+const sendErrorDev = (err, req, res, next) => {
     //1. API
     if (req.originalUrl.startsWith(`/api`)) {
         return res.status(err.statusCode).json({
@@ -38,7 +37,7 @@ const sendErrorDev = (err, req, res) => {
         message: err.message,
     });
 };
-const sendErrorProd = (err, req, res) => {
+const sendErrorProd = (err, req, res, next) => {
     //1. API
     if (req.originalUrl.startsWith(`/api`)) {
         //1.A OPERATIONAL (TRUSTED ERROR) - SEND TO CLIENT
@@ -70,25 +69,26 @@ const sendErrorProd = (err, req, res) => {
         msg: `Please try again later.`,
     });
 };
-module.exports = (err, req, res, next) => {
+const globalErrorHandler = (err, req, res, next) => {
     err.statusCode = err.statusCode || 500;
     err.status = err.status || `error`;
     if (process.env.NODE_ENV === `development`) {
-        sendErrorDev(err, req, res);
+        sendErrorDev(err, req, res, next);
     }
     else if (process.env.NODE_ENV === `production`) {
         let error = Object.assign({}, err);
         error.message = err.message;
         if (error.name === `CastError`)
-            error = handleCastErrorDB(error);
+            error = handleCastErrorDB(error, req, res, next);
         if (error.code === 11000)
-            error = handleDuplicateFieldsDB(error);
+            error = handleDuplicateFieldsDB(error, req, res, next);
         if (error.name === `ValidationError`)
-            error = handleValidationErrorDB(error);
+            error = handleValidationErrorDB(error, req, res, next);
         if (error.name === `JsonWebTokenError`)
             error = handleJWTError();
         if (error.name === `TokenExpiredError`)
             error = handleJWTExpiredError();
-        sendErrorProd(error, req, res);
+        sendErrorProd(error, req, res, next);
     }
 };
+exports.default = globalErrorHandler;
