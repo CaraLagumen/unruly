@@ -10,18 +10,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 const express_1 = __importDefault(require("express"));
-const shiftController = __importStar(require("../../controllers/shift/shiftController"));
+const scheduledController = __importStar(require("../../controllers/shift/scheduledController"));
 const router = express_1.default.Router();
-//ROOT - /shifts
-//GET ALL AND CREATE ONE
-router
-    .route(`/`)
-    .get(shiftController.getAllShifts)
-    .post(shiftController.createShift);
-//GET ONE, UPDATE ONE, AND DELETE ONE
+//ROOT - /scheduled
+//GET ALL
+router.route(`/`).get(scheduledController.getAllScheduled);
+//GET ONE AND DELETE ONE
 router
     .route(`/:id`)
-    .get(shiftController.getShift)
-    .patch(shiftController.updateShift)
-    .delete(shiftController.deleteShift);
+    .get(scheduledController.getScheduled)
+    .delete(scheduledController.deleteScheduled);
 module.exports = router;

@@ -67,7 +67,7 @@ schedulerSchema.pre(`save`, async function (this: IScheduler, next) {
   //IF PASSWORD NOT BEING MODIFIED, DO NOT ENCRYPT
   if (!this.isModified(`password`)) return next();
 
-  this.password = await bcrypt.hash(this.password, 16);
+  this.password = await bcrypt.hash(<string>this.password, 16);
   this.passwordConfirm = undefined; //RESET FOR SECURITY
 
   next();

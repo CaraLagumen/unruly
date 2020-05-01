@@ -14,7 +14,10 @@ import compression from "compression";
 import globalErrorHandler from "./controllers/errorController";
 import AppError from "./utils/appError";
 
-const shiftRouter = require(`./routes/shift/shiftRoutes`);
+import preferredRouter from "./routes/shift/preferredRoutes";
+import scheduledRouter from "./routes/shift/scheduledRoutes";
+import shiftRouter from "./routes/shift/shiftRoutes";
+import employeeRouter from "./routes/users/employeeRoutes";
 
 dotenv.config({ path: path.join(__dirname, `../../config.env`) });
 const app: Application = express();
@@ -64,7 +67,10 @@ app.use(compression());
 app.use(globalErrorHandler);
 
 //MOUNT ROUTERS
+app.use(`/api/v1/preferred`, preferredRouter);
+app.use(`/api/v1/scheduled`, scheduledRouter);
 app.use(`/api/v1/shifts`, shiftRouter);
+app.use(`/api/v1/employee`, employeeRouter);
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server.`, 404));

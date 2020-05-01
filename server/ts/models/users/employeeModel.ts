@@ -18,7 +18,7 @@ const employeeSchema: Schema = new mongoose.Schema(
       required: [true, `First name required.`],
     },
     lastName: {
-      typpe: String,
+      type: String,
       required: [true, `Last name required.`],
     },
     email: {
@@ -111,7 +111,7 @@ employeeSchema.pre(`save`, async function (this: IEmployee, next) {
   //IF PASSWORD NOT BEING MODIFIED, DO NOT ENCRYPT
   if (!this.isModified(`password`)) return next();
 
-  this.password = await bcrypt.hash(this.password, 16);
+  this.password = await bcrypt.hash(<string>this.password, 16);
   this.passwordConfirm = undefined; //RESET FOR SECURITY
 
   next();
@@ -119,7 +119,7 @@ employeeSchema.pre(`save`, async function (this: IEmployee, next) {
 
 //RESET PASSWORD DATE
 employeeSchema.pre(`save`, async function (this: IEmployee, next) {
-  //IF PASSWORD NOT BEING MODIFIED OR USER IS NEW, DO NOT RESET
+  //IF PASSWORD NOT BEING MODIFIED OR EMPLOYEE IS NEW, DO NOT RESET
   if (!this.isModified(`password`) || this.isNew) return next();
 
   this.passwordChangedAt = Date.now(); //FOR COMPARISON TO JWT TIMESTAMP
@@ -127,7 +127,7 @@ employeeSchema.pre(`save`, async function (this: IEmployee, next) {
   next();
 });
 
-//HIDE USER IN FIND WHEN SET TO INACTIVE ("DELETED")
+//HIDE EMPLOYEE IN FIND WHEN SET TO INACTIVE ("DELETED")
 employeeSchema.pre(/^find/, function (this: Model<IEmployee>, next) {
   this.find({ active: { $ne: false } });
 
@@ -139,9 +139,9 @@ employeeSchema.pre(/^find/, function (this: Model<IEmployee>, next) {
 //CONTROLLER LOGIN - COMPARE PASSWORD TO STORED PASSWORD
 employeeSchema.methods.correctPassword = async function (
   enteredPassword: string,
-  userPassword: string
+  employeePassword: string
 ) {
-  return await bcrypt.compare(enteredPassword, userPassword);
+  return await bcrypt.compare(enteredPassword, employeePassword);
 };
 
 //CONTROLLER PROTECT - CHECK IF PASSWORD WAS CHANGED

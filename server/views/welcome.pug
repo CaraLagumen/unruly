@@ -1,0 +1,18 @@
+extends baseEmail
+
+block content
+
+    p Hi #{firstName},
+        p Welcome to Unruly. Thanks for registering!
+        p Please go ahead and check your profile again for accuracy.
+        table.btn.btn-primary(role='presentation', border='0', cellpadding='0', cellspacing='0')
+            tbody
+                tr
+                    td(align='left')
+                        table(role='presentation', border='0', cellpadding='0', cellspacing='0')
+                            tbody
+                                tr
+                                    td
+                                        a(href=`${url}`, target='_blank') Check profile
+        p I hope your schedule suits you and your position. Please let your scheduler/s know if there are any problems.
+        p - Cara Lagumen, Unruly Developer

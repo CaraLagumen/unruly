@@ -4,7 +4,7 @@ import * as shiftController from "../../controllers/shift/shiftController";
 
 const router = express.Router();
 
-//ROOT ROUTE - /shifts
+//ROOT - /shifts
 
 //GET ALL AND CREATE ONE
 router

@@ -27,7 +27,7 @@ const employeeSchema = new mongoose_1.default.Schema({
         required: [true, `First name required.`],
     },
     lastName: {
-        typpe: String,
+        type: String,
         required: [true, `Last name required.`],
     },
     email: {
@@ -122,23 +122,23 @@ employeeSchema.pre(`save`, function (next) {
 //RESET PASSWORD DATE
 employeeSchema.pre(`save`, function (next) {
     return __awaiter(this, void 0, void 0, function* () {
-        //IF PASSWORD NOT BEING MODIFIED OR USER IS NEW, DO NOT RESET
+        //IF PASSWORD NOT BEING MODIFIED OR EMPLOYEE IS NEW, DO NOT RESET
         if (!this.isModified(`password`) || this.isNew)
             return next();
         this.passwordChangedAt = Date.now(); //FOR COMPARISON TO JWT TIMESTAMP
         next();
     });
 });
-//HIDE USER IN FIND WHEN SET TO INACTIVE ("DELETED")
+//HIDE EMPLOYEE IN FIND WHEN SET TO INACTIVE ("DELETED")
 employeeSchema.pre(/^find/, function (next) {
     this.find({ active: { $ne: false } });
     next();
 });
 //METHODS----------------------------------------------------------
 //CONTROLLER LOGIN - COMPARE PASSWORD TO STORED PASSWORD
-employeeSchema.methods.correctPassword = function (enteredPassword, userPassword) {
+employeeSchema.methods.correctPassword = function (enteredPassword, employeePassword) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield bcryptjs_1.default.compare(enteredPassword, userPassword);
+        return yield bcryptjs_1.default.compare(enteredPassword, employeePassword);
     });
 };
 //CONTROLLER PROTECT - CHECK IF PASSWORD WAS CHANGED

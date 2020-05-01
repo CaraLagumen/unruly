@@ -4,7 +4,7 @@ interface IScheduler extends Document {
   firstName: string;
   lastName: string;
   email: string;
-  password: string;
+  password: string | undefined;
   passwordConfirm?: string | undefined;
   passwordChangedAt?: any;
   passwordResetToken?: any;
