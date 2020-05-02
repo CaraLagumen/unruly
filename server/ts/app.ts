@@ -18,6 +18,7 @@ import preferredRouter from "./routes/shift/preferredRoutes";
 import scheduledRouter from "./routes/shift/scheduledRoutes";
 import shiftRouter from "./routes/shift/shiftRoutes";
 import employeeRouter from "./routes/users/employeeRoutes";
+import schedulerRouter from "./routes/users/schedulerRoutes";
 
 dotenv.config({ path: path.join(__dirname, `../../config.env`) });
 const app: Application = express();
@@ -71,6 +72,7 @@ app.use(`/api/v1/preferred`, preferredRouter);
 app.use(`/api/v1/scheduled`, scheduledRouter);
 app.use(`/api/v1/shifts`, shiftRouter);
 app.use(`/api/v1/employee`, employeeRouter);
+app.use(`/api/v1/scheduler`, schedulerRouter);
 
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   next(new AppError(`Can't find ${req.originalUrl} on this server.`, 404));

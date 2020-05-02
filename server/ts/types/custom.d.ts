@@ -1,6 +1,7 @@
 declare namespace Express {
   export interface Request {
     employee?: any;
+    scheduler?: any;
   }
 }
 

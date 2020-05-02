@@ -37,4 +37,5 @@ preferredSchema.pre(/^find/, function (next) {
     this.populate(`shift`).populate(`employee`);
     next();
 });
-exports.Preferred = mongoose_1.default.model(`Preferred`, preferredSchema);
+const Preferred = mongoose_1.default.model(`Preferred`, preferredSchema);
+exports.default = Preferred;

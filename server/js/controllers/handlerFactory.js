@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const apiFeatures_1 = __importDefault(require("../utils/apiFeatures"));
 const appError_1 = __importDefault(require("../utils/appError"));
+//HANDLES PARAM ID ONLY
 exports.getAll = (Model) => catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     //1. ADD SEARCH FUNCTIONALITY
     const features = new apiFeatures_1.default(Model.find(), req.query)

@@ -154,7 +154,7 @@ export const protect = catchAsync(async (req, res, next) => {
 
   if (!currentEmployee) {
     return next(
-      new AppError(`The employee with this token no longer exists.`, 401)
+      new AppError(`This token is invalid.`, 401)
     );
   }
 
@@ -348,7 +348,7 @@ export const displayEmployee = async (
 
     if (!currentEmployee) {
       return next(
-        new AppError(`The employee with this token no longer exists.`, 401)
+        new AppError(`This token is invalid.`, 401)
       );
     }
 

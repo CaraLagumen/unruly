@@ -41,4 +41,5 @@ scheduledSchema.pre(/^find/, function (next) {
     this.populate(`employee`).populate(`scheduler`);
     next();
 });
-exports.Scheduled = mongoose_1.default.model(`Scheduled`, scheduledSchema);
+const Scheduled = mongoose_1.default.model(`Scheduled`, scheduledSchema);
+exports.default = Scheduled;

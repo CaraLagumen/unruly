@@ -48,7 +48,5 @@ scheduledSchema.pre(/^find/, function (this: any, next) {
   next();
 });
 
-export const Scheduled = mongoose.model<IScheduled>(
-  `Scheduled`,
-  scheduledSchema
-);
+const Scheduled = mongoose.model<IScheduled>(`Scheduled`, scheduledSchema);
+export default Scheduled;

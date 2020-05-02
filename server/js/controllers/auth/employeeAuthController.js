@@ -126,7 +126,7 @@ exports.protect = catchAsync_1.default((req, res, next) => __awaiter(void 0, voi
     //3. CHECK IF EMPLOYEE EXISTS
     const currentEmployee = yield employeeModel_1.default.findById(decoded.id);
     if (!currentEmployee) {
-        return next(new appError_1.default(`The employee with this token no longer exists.`, 401));
+        return next(new appError_1.default(`This token is invalid.`, 401));
     }
     //4. CHECK IF EMPLOYEE CHANGED PASSWORD AFTER JWT ISSUED
     if (currentEmployee.changedPasswordAfter(decoded.iat)) {
@@ -253,7 +253,7 @@ exports.displayEmployee = (req, res, next) => __awaiter(void 0, void 0, void 0, 
         //3. CHECK IF EMPLOYEE EXISTS
         const currentEmployee = yield employeeModel_1.default.findById(decoded.id);
         if (!currentEmployee) {
-            return next(new appError_1.default(`The employee with this token no longer exists.`, 401));
+            return next(new appError_1.default(`This token is invalid.`, 401));
         }
         //4. CHECK IF EMPLOYEE CHANGED PASSWORD AFTER JWT ISSUED
         if (currentEmployee.changedPasswordAfter(decoded.iat)) {

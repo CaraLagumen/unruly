@@ -10,6 +10,10 @@ interface IScheduler extends Document {
   passwordResetToken?: any;
   passwordResetExpires?: any;
   active: boolean;
+  
+  correctPassword(password: string, passwordConfirm: string): Promise<boolean>;
+  changedPasswordAfter(JWTTimestamp: number): Promise<boolean>;
+  createPasswordResetToken(): string;
 }
 
 export default IScheduler;

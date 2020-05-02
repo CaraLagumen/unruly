@@ -22,7 +22,7 @@ const schedulerSchema = new mongoose_1.default.Schema({
         required: [true, `First name required.`],
     },
     lastName: {
-        typpe: String,
+        type: String,
         required: [true, `Last name required.`],
     },
     email: {

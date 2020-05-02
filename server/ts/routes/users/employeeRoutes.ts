@@ -7,6 +7,8 @@ const router = express.Router();
 
 //ROOT - /employee
 
+//PUBLIC----------------------------------------------------------
+
 //AUTH IN AND OUT
 router.post(`/register`, employeeAuthController.register);
 router.post(`/login`, employeeAuthController.login);
@@ -16,7 +18,9 @@ router.get(`/logout`, employeeAuthController.logout);
 router.post(`/forgotPassword`, employeeAuthController.forgotPassword);
 router.patch(`/resetPassword/:token`, employeeAuthController.resetPassword);
 
-//PROTECT ALL ROUTES FROM HERE
+//PROTECTED----------------------------------------------------------
+//PROTECT ALL ROUTES FOR EMPLOYEE FROM HERE
+
 router.use(employeeAuthController.protect);
 
 router.get(`/me`, employeeController.getMe, employeeController.getEmployee);

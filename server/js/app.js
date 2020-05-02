@@ -21,6 +21,7 @@ const preferredRoutes_1 = __importDefault(require("./routes/shift/preferredRoute
 const scheduledRoutes_1 = __importDefault(require("./routes/shift/scheduledRoutes"));
 const shiftRoutes_1 = __importDefault(require("./routes/shift/shiftRoutes"));
 const employeeRoutes_1 = __importDefault(require("./routes/users/employeeRoutes"));
+const schedulerRoutes_1 = __importDefault(require("./routes/users/schedulerRoutes"));
 dotenv_1.default.config({ path: path_1.default.join(__dirname, `../../config.env`) });
 const app = express_1.default();
 //TRUST HEROKU
@@ -62,6 +63,7 @@ app.use(`/api/v1/preferred`, preferredRoutes_1.default);
 app.use(`/api/v1/scheduled`, scheduledRoutes_1.default);
 app.use(`/api/v1/shifts`, shiftRoutes_1.default);
 app.use(`/api/v1/employee`, employeeRoutes_1.default);
+app.use(`/api/v1/scheduler`, schedulerRoutes_1.default);
 app.all("*", (req, res, next) => {
     next(new appError_1.default(`Can't find ${req.originalUrl} on this server.`, 404));
 });

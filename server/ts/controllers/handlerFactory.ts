@@ -4,6 +4,8 @@ import catchAsync from "../utils/catchAsync";
 import APIFeatures from "../utils/apiFeatures";
 import AppError from "../utils/appError";
 
+//HANDLES PARAM ID ONLY
+
 export const getAll = (Model: Model<any>) =>
   catchAsync(async (req, res, next) => {
     //1. ADD SEARCH FUNCTIONALITY

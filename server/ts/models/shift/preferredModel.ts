@@ -41,7 +41,5 @@ preferredSchema.pre(/^find/, function (this: any, next) {
   next();
 });
 
-export const Preferred = mongoose.model<IPreferred>(
-  `Preferred`,
-  preferredSchema
-);
+const Preferred = mongoose.model<IPreferred>(`Preferred`, preferredSchema);
+export default Preferred;
