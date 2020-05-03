@@ -8,7 +8,7 @@ import AppError from "../../utils/appError";
 
 //MAIN----------------------------------------------------------
 
-//SAVE PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID
+//SAVE PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (PARAM)
 export const saveMyPreferred = catchAsync(async (req, res, next) => {
   const shift = req.params.id;
   const employee = req.employee.id;
@@ -22,12 +22,12 @@ export const saveMyPreferred = catchAsync(async (req, res, next) => {
   });
 });
 
-//DELETE MY PREFERRED SHIFT OF LOGGED IN EMPLOYEE
+//DELETE MY PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
 export const deleteMyPreferred = catchAsync(async (req, res, next) => {
-  const preferred = req.params.id;
+  const shift = req.body.shiftId;
   const employee = req.employee.id;
 
-  const doc = await Preferred.deleteOne({ preferred, employee });
+  const doc = await Preferred.deleteOne({ shift, employee });
 
   if (!doc) {
     return next(new AppError(`No document found with that ID.`, 404));

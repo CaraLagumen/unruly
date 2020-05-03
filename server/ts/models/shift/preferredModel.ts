@@ -23,7 +23,7 @@ const preferredSchema: Schema = new mongoose.Schema(
     createdAt: {
       type: Date,
       default: Date.now(),
-      select: false, //HIDDEN
+      // select: false, //HIDDEN
     },
   },
   {
@@ -37,7 +37,7 @@ preferredSchema.index({ shift: 1, employee: 1 }, { unique: true });
 
 //SHOW IN FIND SHIFT & FIND EMPLOYEE
 preferredSchema.pre(/^find/, function (this: any, next) {
-  this.populate(`shift`).populate(`employee`);
+  this.populate(`employee`).populate(`shift`);
   next();
 });
 

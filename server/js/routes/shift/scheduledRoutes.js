@@ -17,16 +17,16 @@ const router = express_1.default.Router();
 //PROTECTED----------------------------------------------------------
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 router.use(schedulerAuthController.protect);
-//GET ALL
-router.route(`/`).get(scheduledController.getAllScheduled);
-//GET EMPLOYEE SCHEDULE
+//GET ALL AND CREATE ONE
 router
-    .route(`/employeeSchedule/:id`)
-    .get(scheduledController.getEmployeeSchedule);
+    .route(`/`)
+    .get(scheduledController.getAllScheduled)
+    .post(scheduledController.createScheduled);
+//GET EMPLOYEE SCHEDULE
+router.route(`/employee`).get(scheduledController.getEmployeeSchedule);
 //GET ONE AND DELETE ONE
 router
     .route(`/:id`)
     .get(scheduledController.getScheduled)
-    .post(scheduledController.createScheduled)
     .delete(scheduledController.deleteScheduled);
 module.exports = router;

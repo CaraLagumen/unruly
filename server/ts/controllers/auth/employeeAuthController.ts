@@ -153,9 +153,7 @@ export const protect = catchAsync(async (req, res, next) => {
   const currentEmployee = await Employee.findById(decoded.id);
 
   if (!currentEmployee) {
-    return next(
-      new AppError(`This token is invalid.`, 401)
-    );
+    return next(new AppError(`This token is invalid.`, 401));
   }
 
   //4. CHECK IF EMPLOYEE CHANGED PASSWORD AFTER JWT ISSUED
@@ -347,9 +345,7 @@ export const displayEmployee = async (
     const currentEmployee = await Employee.findById(decoded.id);
 
     if (!currentEmployee) {
-      return next(
-        new AppError(`This token is invalid.`, 401)
-      );
+      return next(new AppError(`This token is invalid.`, 401));
     }
 
     //4. CHECK IF EMPLOYEE CHANGED PASSWORD AFTER JWT ISSUED

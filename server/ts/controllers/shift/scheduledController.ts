@@ -7,9 +7,9 @@ import APIFeatures from "../../utils/apiFeatures";
 
 //MAIN----------------------------------------------------------
 
-//CREATE SCHEDULED SHIFT WITH EMPLOYEE FROM SHIFT ID (PARAM)
+//CREATE SCHEDULED SHIFT WITH EMPLOYEE FROM SHIFT ID AND EMPLOYEE ID (ENTERED)
 export const createScheduled = catchAsync(async (req, res, next) => {
-  const shift = req.params.id;
+  const shift = req.body.shiftId;
   const employee = req.body.employeeId;
   const scheduler = req.scheduler.id;
   const date = req.body.date;

@@ -24,7 +24,6 @@ const preferredSchema = new mongoose_1.default.Schema({
     createdAt: {
         type: Date,
         default: Date.now(),
-        select: false,
     },
 }, {
     toJSON: { virtuals: true },
@@ -34,7 +33,7 @@ const preferredSchema = new mongoose_1.default.Schema({
 preferredSchema.index({ shift: 1, employee: 1 }, { unique: true });
 //SHOW IN FIND SHIFT & FIND EMPLOYEE
 preferredSchema.pre(/^find/, function (next) {
-    this.populate(`shift`).populate(`employee`);
+    this.populate(`employee`).populate(`shift`);
     next();
 });
 const Preferred = mongoose_1.default.model(`Preferred`, preferredSchema);

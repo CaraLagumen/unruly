@@ -20,11 +20,15 @@ router.use(employeeAuthController.protect);
 //GET ALL
 router.route(`/`).get(preferredController.getAllPreferred);
 //GET ALL OF LOGGED IN EMPLOYEE
-router.route(`/me`).get(preferredController.getAllMyPreferred);
-//GET ONE, SAVE ONE, AND DELETE ONE
+router
+    .route(`/me`)
+    .get(preferredController.getAllMyPreferred)
+    .delete(preferredController.deleteMyPreferred);
+//SAVE ONE AND DELETE ONE OF LOGGED IN EMPLOYEE
+router.route(`/me/:id`).post(preferredController.saveMyPreferred);
+//GET ONE AND DELETE ONE
 router
     .route(`/:id`)
     .get(preferredController.getPreferred)
-    .post(preferredController.saveMyPreferred)
     .delete(preferredController.deletePreferred);
 module.exports = router;

@@ -1,10 +1,15 @@
 import express from "express";
 
 import * as shiftController from "../../controllers/shift/shiftController";
+import * as schedulerAuthController from "../../controllers/auth/schedulerAuthController";
 
 const router = express.Router();
 
 //ROOT - /shifts
+//PROTECTED----------------------------------------------------------
+//PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
+
+router.use(schedulerAuthController.protect);
 
 //GET ALL AND CREATE ONE
 router

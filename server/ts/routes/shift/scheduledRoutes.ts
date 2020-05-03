@@ -12,19 +12,19 @@ const router = express.Router();
 
 router.use(schedulerAuthController.protect);
 
-//GET ALL
-router.route(`/`).get(scheduledController.getAllScheduled);
+//GET ALL AND CREATE ONE
+router
+  .route(`/`)
+  .get(scheduledController.getAllScheduled)
+  .post(scheduledController.createScheduled);
 
 //GET EMPLOYEE SCHEDULE
-router
-  .route(`/employeeSchedule/:id`)
-  .get(scheduledController.getEmployeeSchedule);
+router.route(`/employee`).get(scheduledController.getEmployeeSchedule);
 
 //GET ONE AND DELETE ONE
 router
   .route(`/:id`)
   .get(scheduledController.getScheduled)
-  .post(scheduledController.createScheduled)
   .delete(scheduledController.deleteScheduled);
 
 export = router;

@@ -26,7 +26,7 @@ const apiFeatures_1 = __importDefault(require("../../utils/apiFeatures"));
 const appError_1 = __importDefault(require("../../utils/appError"));
 //----------------------FOR EMPLOYEE USE
 //MAIN----------------------------------------------------------
-//SAVE PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID
+//SAVE PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (PARAM)
 exports.saveMyPreferred = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const shift = req.params.id;
     const employee = req.employee.id;
@@ -37,11 +37,11 @@ exports.saveMyPreferred = catchAsync_1.default((req, res, next) => __awaiter(voi
         doc,
     });
 }));
-//DELETE MY PREFERRED SHIFT OF LOGGED IN EMPLOYEE
+//DELETE MY PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
 exports.deleteMyPreferred = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const preferred = req.params.id;
+    const shift = req.body.shiftId;
     const employee = req.employee.id;
-    const doc = yield preferredModel_1.default.deleteOne({ preferred, employee });
+    const doc = yield preferredModel_1.default.deleteOne({ shift, employee });
     if (!doc) {
         return next(new appError_1.default(`No document found with that ID.`, 404));
     }

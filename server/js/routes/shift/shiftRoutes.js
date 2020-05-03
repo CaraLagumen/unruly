@@ -11,8 +11,12 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 const express_1 = __importDefault(require("express"));
 const shiftController = __importStar(require("../../controllers/shift/shiftController"));
+const schedulerAuthController = __importStar(require("../../controllers/auth/schedulerAuthController"));
 const router = express_1.default.Router();
 //ROOT - /shifts
+//PROTECTED----------------------------------------------------------
+//PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
+router.use(schedulerAuthController.protect);
 //GET ALL AND CREATE ONE
 router
     .route(`/`)

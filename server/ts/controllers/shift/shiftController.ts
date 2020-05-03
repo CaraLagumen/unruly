@@ -1,4 +1,4 @@
-import { Shift } from "../../models/shift/shiftModel";
+import Shift from "../../models/shift/shiftModel";
 import * as factory from "../handlerFactory";
 
 export const getAllShifts = factory.getAll(Shift);

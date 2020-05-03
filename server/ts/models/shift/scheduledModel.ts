@@ -27,7 +27,7 @@ const scheduledSchema: Schema = new mongoose.Schema(
     createdAt: {
       type: Date,
       default: Date.now(),
-      select: false, //HIDDEN
+      // select: false, //HIDDEN
     },
   },
   {
@@ -44,7 +44,7 @@ scheduledSchema.index(
 
 //SHOW IN FIND EMPLOYEE & FIND SCHEDULER
 scheduledSchema.pre(/^find/, function (this: any, next) {
-  this.populate(`employee`).populate(`scheduler`);
+  this.populate(`employee`);
   next();
 });
 

@@ -25,9 +25,9 @@ const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const apiFeatures_1 = __importDefault(require("../../utils/apiFeatures"));
 //----------------------FOR SCHEDULER USE
 //MAIN----------------------------------------------------------
-//CREATE SCHEDULED SHIFT WITH EMPLOYEE FROM SHIFT ID (PARAM)
+//CREATE SCHEDULED SHIFT WITH EMPLOYEE FROM SHIFT ID AND EMPLOYEE ID (ENTERED)
 exports.createScheduled = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const shift = req.params.id;
+    const shift = req.body.shiftId;
     const employee = req.body.employeeId;
     const scheduler = req.scheduler.id;
     const date = req.body.date;

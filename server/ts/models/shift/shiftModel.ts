@@ -32,12 +32,19 @@ const shiftSchema: Schema = new mongoose.Schema(
       min: 0, //SUNDAY
       max: 6, //SATURDAY
     },
-    hours: {
+    shiftStart: {
       type: [
-        { type: Number, min: 0, max: 23 }, //SHIFT START
-        { type: Number, min: 0, max: 23 }, //SHIFT END
+        { type: Number, min: 0, max: 23 }, //HOUR
+        { type: Number, min: 0, max: 59 }, //MINUTE
       ],
-      required: [true, `Shift hours required.`],
+      required: [true, `Shift start required.`],
+    },
+    shiftEnd: {
+      type: [
+        { type: Number, min: 0, max: 23 }, //HOUR
+        { type: Number, min: 0, max: 59 }, //MINUTE
+      ],
+      required: [true, `Shift start required.`],
     },
   },
   {
@@ -62,4 +69,5 @@ shiftSchema.virtual(`scheduled`, {
   localField: `_id`,
 });
 
-export const Shift = mongoose.model<IShift>(`Shift`, shiftSchema);
+const Shift = mongoose.model<IShift>(`Shift`, shiftSchema);
+export default Shift;
