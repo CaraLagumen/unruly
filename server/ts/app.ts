@@ -17,6 +17,8 @@ import AppError from "./utils/appError";
 import preferredRouter from "./routes/shift/preferredRoutes";
 import scheduledRouter from "./routes/shift/scheduledRoutes";
 import shiftRouter from "./routes/shift/shiftRoutes";
+import weeklyScheduledRouter from "./routes/shift/weeklyScheduledRoutes";
+import weeklyShiftRouter from "./routes/shift/weeklyShiftRoutes";
 import employeeRouter from "./routes/users/employeeRoutes";
 import schedulerRouter from "./routes/users/schedulerRoutes";
 
@@ -71,6 +73,8 @@ app.use(globalErrorHandler);
 app.use(`/api/v1/preferred`, preferredRouter);
 app.use(`/api/v1/scheduled`, scheduledRouter);
 app.use(`/api/v1/shifts`, shiftRouter);
+app.use(`/api/v1/weeklyScheduled`, weeklyScheduledRouter);
+app.use(`/api/v1/weeklyShifts`, weeklyShiftRouter);
 app.use(`/api/v1/employee`, employeeRouter);
 app.use(`/api/v1/scheduler`, schedulerRouter);
 

@@ -42,9 +42,9 @@ scheduledSchema.index(
   { unique: true }
 );
 
-//SHOW IN FIND EMPLOYEE & FIND SCHEDULER
+//SHOW IN FIND: SHIFT, EMPLOYEE, AND SCHEDULER
 scheduledSchema.pre(/^find/, function (this: any, next) {
-  this.populate(`employee`);
+  this.populate(`shift`).populate(`employee`).populate(`scheduler`);
   next();
 });
 

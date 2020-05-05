@@ -35,9 +35,9 @@ const scheduledSchema = new mongoose_1.default.Schema({
 });
 //COMPOUND INDEX TO FIND IF SCHEDULED SHIFT AND EMPLOYEE IS UNIQUE
 scheduledSchema.index({ shift: 1, employee: 1, scheduler: 1 }, { unique: true });
-//SHOW IN FIND EMPLOYEE & FIND SCHEDULER
+//SHOW IN FIND: SHIFT, EMPLOYEE, AND SCHEDULER
 scheduledSchema.pre(/^find/, function (next) {
-    this.populate(`employee`);
+    this.populate(`shift`).populate(`employee`).populate(`scheduler`);
     next();
 });
 const Scheduled = mongoose_1.default.model(`Scheduled`, scheduledSchema);

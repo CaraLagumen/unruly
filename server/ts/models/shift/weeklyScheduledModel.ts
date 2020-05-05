@@ -15,9 +15,9 @@ const weeklyScheduledSchema: Schema = new mongoose.Schema(
       ref: `Scheduler`,
       required: [true, `Weekly scheduled shifts must have a scheduler.`],
     },
-    weeklyShifts: {
+    weeklyShift: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: `WeeklyShifts`,
+      ref: `WeeklyShift`,
       required: [true, `Weekly scheduled shifts must have valid shifts.`],
     },
     startDate: {
@@ -31,15 +31,15 @@ const weeklyScheduledSchema: Schema = new mongoose.Schema(
   }
 );
 
-//COMPOUND INDEX TO FIND IF SCHEDULED SHIFT AND EMPLOYEE IS UNIQUE
+//COMPOUND INDEX TO FIND IF WEEKLY SCHEDULED EMPLOYEE, SCHEDULER, AND WEEKLY SHIFT IS UNIQUE
 weeklyScheduledSchema.index(
-  { employee: 1, scheduler: 1, weeklyShifts: 1 },
+  { employee: 1, scheduler: 1, weeklyShift: 1 },
   { unique: true }
 );
 
 //SHOW IN FIND EMPLOYEE
 weeklyScheduledSchema.pre(/^find/, function (this: any, next) {
-  this.populate(`employee`).populate(`weeklyShifts`);
+  this.populate(`employee`);
   next();
 });
 

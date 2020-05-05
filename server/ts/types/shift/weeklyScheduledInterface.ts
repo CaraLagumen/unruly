@@ -3,7 +3,7 @@ import { Document } from "mongoose";
 interface IWeeklyScheduled extends Document {
   employee: string;
   scheduler: string;
-  weeklyShifts: [string];
+  weeklyShift: string;
   startDate: Date;
 }
 

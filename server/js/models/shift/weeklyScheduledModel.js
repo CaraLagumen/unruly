@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-//FOR FULL-TIMERS
+//FOR FULL-TIMERS - MUST CREATE INDIVIDUAL SCHEDULED SHIFTS FROM THIS MODEL
 const weeklyScheduledSchema = new mongoose_1.default.Schema({
     employee: {
         type: mongoose_1.default.Schema.Types.ObjectId,
@@ -16,9 +16,9 @@ const weeklyScheduledSchema = new mongoose_1.default.Schema({
         ref: `Scheduler`,
         required: [true, `Weekly scheduled shifts must have a scheduler.`],
     },
-    weeklyShifts: {
+    weeklyShift: {
         type: mongoose_1.default.Schema.Types.ObjectId,
-        ref: `WeeklyShifts`,
+        ref: `WeeklyShift`,
         required: [true, `Weekly scheduled shifts must have valid shifts.`],
     },
     startDate: {
@@ -29,11 +29,11 @@ const weeklyScheduledSchema = new mongoose_1.default.Schema({
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
 });
-//COMPOUND INDEX TO FIND IF SCHEDULED SHIFT AND EMPLOYEE IS UNIQUE
-weeklyScheduledSchema.index({ employee: 1, scheduler: 1, weeklyShifts: 1 }, { unique: true });
+//COMPOUND INDEX TO FIND IF WEEKLY SCHEDULED EMPLOYEE, SCHEDULER, AND WEEKLY SHIFT IS UNIQUE
+weeklyScheduledSchema.index({ employee: 1, scheduler: 1, weeklyShift: 1 }, { unique: true });
 //SHOW IN FIND EMPLOYEE
 weeklyScheduledSchema.pre(/^find/, function (next) {
-    this.populate(`employee`).populate(`weeklyShifts`);
+    this.populate(`employee`);
     next();
 });
 const WeeklyScheduled = mongoose_1.default.model(`WeeklyScheduled`, weeklyScheduledSchema);

@@ -31,9 +31,9 @@ const preferredSchema = new mongoose_1.default.Schema({
 });
 //COMPOUND INDEX TO FIND IF PREFERRED SHIFT AND EMPLOYEE IS UNIQUE
 preferredSchema.index({ shift: 1, employee: 1 }, { unique: true });
-//SHOW IN FIND SHIFT & FIND EMPLOYEE
+//SHOW IN FIND: SHIFT AND EMPLOYEE
 preferredSchema.pre(/^find/, function (next) {
-    this.populate(`employee`).populate(`shift`);
+    this.populate(`shift`).populate(`employee`);
     next();
 });
 const Preferred = mongoose_1.default.model(`Preferred`, preferredSchema);

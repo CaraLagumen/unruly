@@ -6,7 +6,7 @@ import validator from "validator";
 import IEmployee from "../../types/users/employeeInterface";
 
 const customValidate = {
-  max3Items: function (arr: []) {
+  max3Items: function (arr: string[]) {
     return arr.length <= 3;
   },
 };

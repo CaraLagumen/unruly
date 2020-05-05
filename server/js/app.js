@@ -20,6 +20,8 @@ const appError_1 = __importDefault(require("./utils/appError"));
 const preferredRoutes_1 = __importDefault(require("./routes/shift/preferredRoutes"));
 const scheduledRoutes_1 = __importDefault(require("./routes/shift/scheduledRoutes"));
 const shiftRoutes_1 = __importDefault(require("./routes/shift/shiftRoutes"));
+const weeklyScheduledRoutes_1 = __importDefault(require("./routes/shift/weeklyScheduledRoutes"));
+const weeklyShiftRoutes_1 = __importDefault(require("./routes/shift/weeklyShiftRoutes"));
 const employeeRoutes_1 = __importDefault(require("./routes/users/employeeRoutes"));
 const schedulerRoutes_1 = __importDefault(require("./routes/users/schedulerRoutes"));
 dotenv_1.default.config({ path: path_1.default.join(__dirname, `../../config.env`) });
@@ -62,6 +64,8 @@ app.use(errorController_1.default);
 app.use(`/api/v1/preferred`, preferredRoutes_1.default);
 app.use(`/api/v1/scheduled`, scheduledRoutes_1.default);
 app.use(`/api/v1/shifts`, shiftRoutes_1.default);
+app.use(`/api/v1/weeklyScheduled`, weeklyScheduledRoutes_1.default);
+app.use(`/api/v1/weeklyShifts`, weeklyShiftRoutes_1.default);
 app.use(`/api/v1/employee`, employeeRoutes_1.default);
 app.use(`/api/v1/scheduler`, schedulerRoutes_1.default);
 app.all("*", (req, res, next) => {

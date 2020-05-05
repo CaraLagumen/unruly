@@ -10,6 +10,7 @@ const shiftSchema = new mongoose_1.default.Schema({
     position: {
         type: String,
         required: [true, `Shift position required.`],
+        enum: [`general manager`, `assistant manager`, `lead`, `barista`],
     },
     slot: {
         type: String,
@@ -62,6 +63,32 @@ shiftSchema.virtual(`preferred`, {
 shiftSchema.virtual(`scheduled`, {
     ref: `Scheduled`,
     foreignField: `shift`,
+    localField: `_id`,
+});
+//WEEKLY SHIFT
+shiftSchema.virtual(`weeklyShift`, {
+    ref: `WeeklyShift`,
+    foreignField: `shiftDay1`,
+    localField: `_id`,
+});
+shiftSchema.virtual(`weeklyShift`, {
+    ref: `WeeklyShift`,
+    foreignField: `shiftDay2`,
+    localField: `_id`,
+});
+shiftSchema.virtual(`weeklyShift`, {
+    ref: `WeeklyShift`,
+    foreignField: `shiftDay3`,
+    localField: `_id`,
+});
+shiftSchema.virtual(`weeklyShift`, {
+    ref: `WeeklyShift`,
+    foreignField: `shiftDay4`,
+    localField: `_id`,
+});
+shiftSchema.virtual(`weeklyShift`, {
+    ref: `WeeklyShift`,
+    foreignField: `shiftDay5`,
     localField: `_id`,
 });
 const Shift = mongoose_1.default.model(`Shift`, shiftSchema);

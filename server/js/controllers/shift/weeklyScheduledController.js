@@ -10,11 +10,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const shiftModel_1 = __importDefault(require("../../models/shift/shiftModel"));
+const weeklyScheduledModel_1 = __importDefault(require("../../models/shift/weeklyScheduledModel"));
 const factory = __importStar(require("../handlerFactory"));
 //----------------------FOR SCHEDULER USE
-exports.getAllShifts = factory.getAll(shiftModel_1.default);
-exports.getShift = factory.getOne(shiftModel_1.default);
-exports.createShift = factory.createOne(shiftModel_1.default);
-exports.updateShift = factory.updateOne(shiftModel_1.default);
-exports.deleteShift = factory.deleteOne(shiftModel_1.default);
+exports.getAllWeeklyScheduleds = factory.getAll(weeklyScheduledModel_1.default);
+exports.getWeeklyScheduled = factory.getOne(weeklyScheduledModel_1.default);
+exports.createWeeklyScheduled = factory.createOne(weeklyScheduledModel_1.default);
+exports.updateWeeklyScheduled = factory.updateOne(weeklyScheduledModel_1.default);
+exports.deleteWeeklyScheduled = factory.deleteOne(weeklyScheduledModel_1.default);

@@ -1,11 +1,11 @@
 import express from "express";
 
-import * as shiftController from "../../controllers/shift/shiftController";
+import * as weeklyShiftController from "../../controllers/shift/weeklyShiftController";
 import * as schedulerAuthController from "../../controllers/auth/schedulerAuthController";
 
 const router = express.Router();
 
-//ROOT - /shifts
+//ROOT - /weeklyShifts
 
 //PROTECTED----------------------------------------------------------
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
@@ -15,14 +15,14 @@ router.use(schedulerAuthController.protect);
 //GET ALL AND CREATE ONE
 router
   .route(`/`)
-  .get(shiftController.getAllShifts)
-  .post(shiftController.createShift);
+  .get(weeklyShiftController.getAllWeeklyShifts)
+  .post(weeklyShiftController.createWeeklyShift);
 
 //GET ONE, UPDATE ONE, AND DELETE ONE
 router
   .route(`/:id`)
-  .get(shiftController.getShift)
-  .patch(shiftController.updateShift)
-  .delete(shiftController.deleteShift);
+  .get(weeklyShiftController.getWeeklyShift)
+  .patch(weeklyShiftController.updateWeeklyShift)
+  .delete(weeklyShiftController.deleteWeeklyShift);
 
 export = router;
