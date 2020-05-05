@@ -16,13 +16,20 @@ router.use(schedulerAuthController.protect);
 router
   .route(`/`)
   .get(weeklyShiftController.getAllWeeklyShifts)
-  .post(weeklyShiftController.createWeeklyShift);
+  .post(
+    weeklyShiftController.validateWeeklyShiftDays,
+    weeklyShiftController.createWeeklyShift
+  );
 
 //GET ONE, UPDATE ONE, AND DELETE ONE
 router
   .route(`/:id`)
   .get(weeklyShiftController.getWeeklyShift)
-  .patch(weeklyShiftController.updateWeeklyShift)
+  .patch(
+    weeklyShiftController.insertUpdatedWeeklyShift,
+    weeklyShiftController.validateWeeklyShiftDays,
+    weeklyShiftController.updateWeeklyShift
+  )
   .delete(weeklyShiftController.deleteWeeklyShift);
 
 export = router;

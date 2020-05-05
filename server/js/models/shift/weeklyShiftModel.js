@@ -10,6 +10,7 @@ const weeklyShiftSchema = new mongoose_1.default.Schema({
     name: {
         type: String,
         required: [true, `Weekly shift name required.`],
+        unique: true
     },
     position: {
         type: String,
@@ -61,15 +62,6 @@ const weeklyShiftSchema = new mongoose_1.default.Schema({
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
 });
-//COMPOUND INDEX TO FIND IF WEEKLY SHIFT NAME AND SHIFT DAYS ARE UNIQUE
-weeklyShiftSchema.index({
-    name: 1,
-    shiftDay1: 1,
-    shiftDay2: 1,
-    shiftDay3: 1,
-    shiftDay4: 1,
-    shiftDay5: 1,
-}, { unique: true });
 //SHOW IN FIND: SHIFT
 weeklyShiftSchema.pre(/^find/, function (next) {
     this.populate(`shiftDay1`)
@@ -86,5 +78,5 @@ weeklyShiftSchema.virtual(`weeklyScheduled`, {
     foreignField: `weeklyShift`,
     localField: `_id`,
 });
-const weeklyShift = mongoose_1.default.model(`weeklyShift`, weeklyShiftSchema);
-exports.default = weeklyShift;
+const WeeklyShift = mongoose_1.default.model(`weeklyShift`, weeklyShiftSchema);
+exports.default = WeeklyShift;

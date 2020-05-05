@@ -1,9 +1,13 @@
 import { Document } from "mongoose";
 
+import IShift from "./shiftInterface";
+import IEmployee from "../users/employeeInterface";
+import IScheduler from "../users/schedulerInterface";
+
 interface IScheduled extends Document {
-  shift: string;
-  employee: string;
-  scheduler: string;
+  shift: IShift;
+  employee: IEmployee;
+  scheduler: IScheduler;
   date: Date;
   createdAt: Date;
 }

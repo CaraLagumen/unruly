@@ -27,7 +27,7 @@ export const getMe: RequestHandler = (req, res, next) => {
 };
 
 //UPDATE LOGGED IN EMPLOYEE
-export const updateMe: RequestHandler = catchAsync(async (req, res, next) => {
+export const updateMe = catchAsync(async (req, res, next) => {
   //1. CREATE ERROR IF EMPLOYEE POSTS PASSWORD DATA
   if (req.body.password || req.body.passwordConfirm) {
     return next(
