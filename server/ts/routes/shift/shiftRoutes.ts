@@ -7,6 +7,10 @@ const router = express.Router();
 
 //ROOT - /shifts
 
+//PUBLIC GETTERS
+router.route(`/`).get(shiftController.getAllShifts);
+router.route(`/:id`).get(shiftController.getShift);
+
 //ACCESS BY /search?shiftStart=${input} OR /search?shiftEnd=${input}
 router.route(`/search`).get(shiftController.getShiftsByHour);
 
@@ -15,16 +19,12 @@ router.route(`/search`).get(shiftController.getShiftsByHour);
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 router.use(schedulerAuthController.protect);
 
-//GET ALL AND CREATE ONE
-router
-  .route(`/`)
-  .get(shiftController.getAllShifts)
-  .post(shiftController.createShift);
+//CREATE ONE
+router.route(`/`).post(shiftController.createShift);
 
-//GET ONE, UPDATE ONE, AND DELETE ONE
+//UPDATE ONE AND DELETE ONE
 router
   .route(`/:id`)
-  .get(shiftController.getShift)
   .patch(shiftController.updateShift)
   .delete(shiftController.deleteShift);
 

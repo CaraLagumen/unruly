@@ -14,20 +14,19 @@ const shiftController = __importStar(require("../../controllers/shift/shiftContr
 const schedulerAuthController = __importStar(require("../../controllers/auth/schedulerAuthController"));
 const router = express_1.default.Router();
 //ROOT - /shifts
+//PUBLIC GETTERS
+router.route(`/`).get(shiftController.getAllShifts);
+router.route(`/:id`).get(shiftController.getShift);
 //ACCESS BY /search?shiftStart=${input} OR /search?shiftEnd=${input}
 router.route(`/search`).get(shiftController.getShiftsByHour);
 //PROTECTED----------------------------------------------------------
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 router.use(schedulerAuthController.protect);
-//GET ALL AND CREATE ONE
-router
-    .route(`/`)
-    .get(shiftController.getAllShifts)
-    .post(shiftController.createShift);
-//GET ONE, UPDATE ONE, AND DELETE ONE
+//CREATE ONE
+router.route(`/`).post(shiftController.createShift);
+//UPDATE ONE AND DELETE ONE
 router
     .route(`/:id`)
-    .get(shiftController.getShift)
     .patch(shiftController.updateShift)
     .delete(shiftController.deleteShift);
 module.exports = router;

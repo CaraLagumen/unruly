@@ -1,9 +1,37 @@
 import Scheduled from "../../models/shift/scheduledModel";
+import Shift from "../../models/shift/shiftModel";
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import APIFeatures from "../../utils/apiFeatures";
+import AppError from "../../utils/appError";
 
 //----------------------FOR SCHEDULER USE
+
+//TOOLS----------------------------------------------------------
+
+//ENSURE SHIFT DAY AND SCHEDULED DATE DAY MATCHES
+export const validateScheduled = catchAsync(async (req, res, next) => {
+  //1. GRAB RAW SHIFT FROM ENTERED SHIFT ID
+  const shift = await Shift.findById(req.body.shiftId);
+
+  //2. SETUP VARS FOR DAYS COMPARISON
+  const day = shift!.day;
+  const date = new Date(req.body.date);
+  const dateDay = date.getDay();
+
+  //3. THROW ERROR IF DAYS DON'T MATCH
+  if (day !== dateDay) {
+    return next(
+      new AppError(
+        `Shift day and scheduled date day do not match. Please enter a date that matches the shift day.`,
+        400
+      )
+    );
+  }
+
+  //4. ALLOW IF MATCH
+  next();
+});
 
 //MAIN----------------------------------------------------------
 

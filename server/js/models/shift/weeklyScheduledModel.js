@@ -19,7 +19,7 @@ const weeklyScheduledSchema = new mongoose_1.default.Schema({
     weeklyShift: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: `WeeklyShift`,
-        required: [true, `Weekly scheduled shifts must have valid shifts.`],
+        required: [true, `Weekly scheduled shifts must have valid weekly shift.`],
     },
     startDate: {
         type: Date,

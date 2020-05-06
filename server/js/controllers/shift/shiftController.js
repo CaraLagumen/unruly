@@ -24,7 +24,7 @@ const factory = __importStar(require("../handlerFactory"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 //----------------------FOR SCHEDULER USE
 exports.getShiftsByHour = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    //FIND HOURS INCLUDING PARTIAL MATCHES
+    //FIND BY HOURS
     const doc = yield shiftModel_1.default.find({
         $or: [
             { shiftStart: req.query.shiftStart },

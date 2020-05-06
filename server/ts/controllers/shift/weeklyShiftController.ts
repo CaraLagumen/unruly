@@ -37,8 +37,8 @@ export const validateWeeklyShift = catchAsync(async (req, res, next) => {
   }
 
   //----B. ENSURE ALL SHIFTS HAVE AT LEAST 8 HOURS APART
-  
-  //TO DO: VALIDATE THAT IF shiftDay5 IS SATURDAY AND shiftDay1 IS SUNDAY,
+
+  //TO-DO: VALIDATE THAT IF shiftDay5 IS SATURDAY AND shiftDay1 IS SUNDAY,
   //       THEY ARE ALSO 8 HOURS IN BETWEEN
 
   //1. CREATE ARRS WITH HOURS TO COMPARE (ARR: [[4, 0], [4, 0], ETC...])
@@ -87,7 +87,7 @@ export const validateWeeklyShift = catchAsync(async (req, res, next) => {
     }
   }
 
-  //C. ALLOW NEXT IF NO DUPLICATES
+  //----C. ALLOW NEXT WHEN EVERYTHING PASSED
   next();
 });
 

@@ -14,19 +14,18 @@ const scheduledController = __importStar(require("../../controllers/shift/schedu
 const schedulerAuthController = __importStar(require("../../controllers/auth/schedulerAuthController"));
 const router = express_1.default.Router();
 //ROOT - /scheduled
+//PUBLIC GETTERS
+router.route(`/`).get(scheduledController.getAllScheduled);
+router.route(`/:id`).get(scheduledController.getScheduled);
 //PROTECTED----------------------------------------------------------
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 router.use(schedulerAuthController.protect);
-//GET ALL AND CREATE ONE
+//CREATE ONE
 router
     .route(`/`)
-    .get(scheduledController.getAllScheduled)
-    .post(scheduledController.createScheduled);
+    .post(scheduledController.validateScheduled, scheduledController.createScheduled);
 //GET EMPLOYEE SCHEDULE
 router.route(`/employee`).get(scheduledController.getEmployeeSchedule);
-//GET ONE AND DELETE ONE
-router
-    .route(`/:id`)
-    .get(scheduledController.getScheduled)
-    .delete(scheduledController.deleteScheduled);
+//DELETE ONE
+router.route(`/:id`).delete(scheduledController.deleteScheduled);
 module.exports = router;

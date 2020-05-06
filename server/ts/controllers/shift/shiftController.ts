@@ -5,7 +5,7 @@ import catchAsync from "../../utils/catchAsync";
 //----------------------FOR SCHEDULER USE
 
 export const getShiftsByHour = catchAsync(async (req, res, next) => {
-  //FIND HOURS INCLUDING PARTIAL MATCHES
+  //FIND BY HOURS
   const doc = await Shift.find({
     $or: [
       { shiftStart: req.query.shiftStart },

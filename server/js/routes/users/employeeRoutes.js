@@ -24,7 +24,7 @@ router.post(`/forgotPassword`, employeeAuthController.forgotPassword);
 router.patch(`/resetPassword/:token`, employeeAuthController.resetPassword);
 //PROTECTED----------------------------------------------------------
 //PROTECT ALL ROUTES FOR EMPLOYEE FROM HERE
-router.use(employeeAuthController.protect);
+// router.use(employeeAuthController.protect);
 router.get(`/me`, employeeController.getMe, employeeController.getEmployee);
 router.patch(`/updateMe`, employeeController.updateMe);
 router.patch(`/updateMyPassword`, employeeAuthController.updatePassword);

@@ -14,18 +14,19 @@ const weeklyShiftController = __importStar(require("../../controllers/shift/week
 const schedulerAuthController = __importStar(require("../../controllers/auth/schedulerAuthController"));
 const router = express_1.default.Router();
 //ROOT - /weeklyShifts
+//PUBLIC GETTERS
+router.route(`/`).get(weeklyShiftController.getAllWeeklyShifts);
+router.route(`/:id`).get(weeklyShiftController.getWeeklyShift);
 //PROTECTED----------------------------------------------------------
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 router.use(schedulerAuthController.protect);
-//GET ALL AND CREATE ONE
+//CREATE ONE
 router
     .route(`/`)
-    .get(weeklyShiftController.getAllWeeklyShifts)
     .post(weeklyShiftController.validateWeeklyShift, weeklyShiftController.createWeeklyShift);
-//GET ONE, UPDATE ONE, AND DELETE ONE
+//UPDATE ONE AND DELETE ONE
 router
     .route(`/:id`)
-    .get(weeklyShiftController.getWeeklyShift)
     .patch(weeklyShiftController.setupUpdatedWeeklyShift, weeklyShiftController.validateWeeklyShift, weeklyShiftController.updateWeeklyShift)
     .delete(weeklyShiftController.deleteWeeklyShift);
 module.exports = router;

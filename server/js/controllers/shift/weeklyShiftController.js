@@ -46,7 +46,7 @@ exports.validateWeeklyShift = catchAsync_1.default((req, res, next) => __awaiter
         return next(new appError_1.default(`Duplicate shift days found. Please enter unique shift days.`, 400));
     }
     //----B. ENSURE ALL SHIFTS HAVE AT LEAST 8 HOURS APART
-    //TO DO: VALIDATE THAT IF shiftDay5 IS SATURDAY AND shiftDay1 IS SUNDAY,
+    //TO-DO: VALIDATE THAT IF shiftDay5 IS SATURDAY AND shiftDay1 IS SUNDAY,
     //       THEY ARE ALSO 8 HOURS IN BETWEEN
     //1. CREATE ARRS WITH HOURS TO COMPARE (ARR: [[4, 0], [4, 0], ETC...])
     const startHours = shifts.map((el) => el.shiftStart);
@@ -84,7 +84,7 @@ exports.validateWeeklyShift = catchAsync_1.default((req, res, next) => __awaiter
             return next(new appError_1.default(`Overtime found. Please enter shifts with no overtime.`, 400));
         }
     }
-    //C. ALLOW NEXT IF NO DUPLICATES
+    //----C. ALLOW NEXT WHEN EVERYTHING PASSED
     next();
 }));
 //FOR UPDATES AND USING validateWeeklyShiftDays

@@ -7,21 +7,24 @@ const router = express.Router();
 
 //ROOT - /weeklyScheduled
 
+//PUBLIC GETTERS
+router.route(`/`).get(weeklyScheduledController.getAllWeeklyScheduled);
+router.route(`/:id`).get(weeklyScheduledController.getWeeklyScheduled);
+
 //PROTECTED----------------------------------------------------------
 
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 router.use(schedulerAuthController.protect);
 
-//GET ALL AND CREATE ONE
-router
-  .route(`/`)
-  .get(weeklyScheduledController.getAllWeeklyScheduleds)
-  .post(weeklyScheduledController.createWeeklyScheduled);
+//CREATE ONE
+router.route(`/`).post(weeklyScheduledController.createWeeklyScheduled);
 
-//GET ONE, UPDATE ONE, AND DELETE ONE
+//POPULATE TO SCHEDULED
+router.route(`/populate/:id`).post(weeklyScheduledController.populateToScheduled);
+
+//UPDATE ONE AND DELETE ONE
 router
   .route(`/:id`)
-  .get(weeklyScheduledController.getWeeklyScheduled)
   .patch(weeklyScheduledController.updateWeeklyScheduled)
   .delete(weeklyScheduledController.deleteWeeklyScheduled);
 
