@@ -19,8 +19,8 @@ router.post(`/forgotPassword`, schedulerAuthController.forgotPassword);
 router.patch(`/resetPassword/:token`, schedulerAuthController.resetPassword);
 
 //PROTECTED----------------------------------------------------------
-//PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 
+//PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 router.use(schedulerAuthController.protect);
 
 router.get(`/me`, schedulerController.getMe, schedulerController.getScheduler);

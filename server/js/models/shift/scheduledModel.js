@@ -33,7 +33,7 @@ const scheduledSchema = new mongoose_1.default.Schema({
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
 });
-//COMPOUND INDEX TO FIND IF SCHEDULED SHIFT AND EMPLOYEE IS UNIQUE
+//COMPOUND INDEX TO FIND IF SCHEDULED SHIFT, EMPLOYEE, AND SCHEDULER IS UNIQUE
 scheduledSchema.index({ shift: 1, employee: 1, scheduler: 1 }, { unique: true });
 //SHOW IN FIND: SHIFT, EMPLOYEE, AND SCHEDULER
 scheduledSchema.pre(/^find/, function (next) {

@@ -8,8 +8,8 @@ const router = express.Router();
 //ROOT - /preferred
 
 //PROTECTED----------------------------------------------------------
-//PROTECT ALL ROUTES FOR EMPLOYEE FROM HERE
 
+//PROTECT ALL ROUTES FOR EMPLOYEE FROM HERE
 router.use(employeeAuthController.protect);
 
 //GET ALL

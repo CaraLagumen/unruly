@@ -8,8 +8,8 @@ const router = express.Router();
 //ROOT - /weeklyShifts
 
 //PROTECTED----------------------------------------------------------
-//PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 
+//PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 router.use(schedulerAuthController.protect);
 
 //GET ALL AND CREATE ONE
@@ -17,7 +17,7 @@ router
   .route(`/`)
   .get(weeklyShiftController.getAllWeeklyShifts)
   .post(
-    weeklyShiftController.validateWeeklyShiftDays,
+    weeklyShiftController.validateWeeklyShift,
     weeklyShiftController.createWeeklyShift
   );
 
@@ -26,8 +26,8 @@ router
   .route(`/:id`)
   .get(weeklyShiftController.getWeeklyShift)
   .patch(
-    weeklyShiftController.insertUpdatedWeeklyShift,
-    weeklyShiftController.validateWeeklyShiftDays,
+    weeklyShiftController.setupUpdatedWeeklyShift,
+    weeklyShiftController.validateWeeklyShift,
     weeklyShiftController.updateWeeklyShift
   )
   .delete(weeklyShiftController.deleteWeeklyShift);

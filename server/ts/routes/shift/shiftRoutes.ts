@@ -7,9 +7,12 @@ const router = express.Router();
 
 //ROOT - /shifts
 
-//PROTECTED----------------------------------------------------------
-//PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
+//ACCESS BY /search?shiftStart=${input} OR /search?shiftEnd=${input}
+router.route(`/search`).get(shiftController.getShiftsByHour);
 
+//PROTECTED----------------------------------------------------------
+
+//PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 router.use(schedulerAuthController.protect);
 
 //GET ALL AND CREATE ONE

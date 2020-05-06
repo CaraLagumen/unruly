@@ -8,8 +8,8 @@ const router = express.Router();
 //ROOT - /weeklyScheduled
 
 //PROTECTED----------------------------------------------------------
-//PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 
+//PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 router.use(schedulerAuthController.protect);
 
 //GET ALL AND CREATE ONE

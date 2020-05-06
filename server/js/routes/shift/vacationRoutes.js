@@ -10,22 +10,29 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 const express_1 = __importDefault(require("express"));
-const weeklyShiftController = __importStar(require("../../controllers/shift/weeklyShiftController"));
+const vacationController = __importStar(require("../../controllers/shift/vacationController"));
+const employeeAuthController = __importStar(require("../../controllers/auth/employeeAuthController"));
 const schedulerAuthController = __importStar(require("../../controllers/auth/schedulerAuthController"));
 const router = express_1.default.Router();
-//ROOT - /weeklyShifts
+//ROOT - /vacations
 //PROTECTED----------------------------------------------------------
+//ALLOW EMPLOYEE TO GET, CREATE WITH VALIDATION, AND DELETE WITH VALIDATION
+router
+    .route(`/me`)
+    .get(employeeAuthController.protect, vacationController.getAllVacations)
+    .post(employeeAuthController.protect, vacationController.createVacation)
+    .delete(employeeAuthController.protect, vacationController.deleteVacation);
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 router.use(schedulerAuthController.protect);
 //GET ALL AND CREATE ONE
 router
     .route(`/`)
-    .get(weeklyShiftController.getAllWeeklyShifts)
-    .post(weeklyShiftController.validateWeeklyShift, weeklyShiftController.createWeeklyShift);
+    .get(vacationController.getAllVacations)
+    .post(vacationController.createVacation);
 //GET ONE, UPDATE ONE, AND DELETE ONE
 router
     .route(`/:id`)
-    .get(weeklyShiftController.getWeeklyShift)
-    .patch(weeklyShiftController.setupUpdatedWeeklyShift, weeklyShiftController.validateWeeklyShift, weeklyShiftController.updateWeeklyShift)
-    .delete(weeklyShiftController.deleteWeeklyShift);
+    .get(vacationController.getVacation)
+    .patch(vacationController.updateVacation)
+    .delete(vacationController.deleteVacation);
 module.exports = router;

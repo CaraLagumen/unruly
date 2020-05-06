@@ -14,6 +14,8 @@ const shiftController = __importStar(require("../../controllers/shift/shiftContr
 const schedulerAuthController = __importStar(require("../../controllers/auth/schedulerAuthController"));
 const router = express_1.default.Router();
 //ROOT - /shifts
+//ACCESS BY /search?shiftStart=${input} OR /search?shiftEnd=${input}
+router.route(`/search`).get(shiftController.getShiftsByHour);
 //PROTECTED----------------------------------------------------------
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 router.use(schedulerAuthController.protect);

@@ -17,6 +17,9 @@ const crypto_1 = __importDefault(require("crypto"));
 const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const validator_1 = __importDefault(require("validator"));
 const customValidate = {
+    equal2Items: function (arr) {
+        return arr.length === 2;
+    },
     max3Items: function (arr) {
         return arr.length <= 3;
     },
@@ -88,6 +91,13 @@ const employeeSchema = new mongoose_1.default.Schema({
         validate: [
             customValidate.max3Items,
             `Preferred shift slots must be less than 3 and unique.`,
+        ],
+    },
+    preferredDaysOff: {
+        type: [{ type: Number, min: 0, max: 6, unique: true }],
+        validate: [
+            customValidate.equal2Items,
+            `Preferred days off must be 2 and unique.`,
         ],
     },
 }, {

@@ -6,6 +6,10 @@ import validator from "validator";
 import IEmployee from "../../types/users/employeeInterface";
 
 const customValidate = {
+  equal2Items: function (arr: string[]) {
+    return arr.length === 2;
+  },
+
   max3Items: function (arr: string[]) {
     return arr.length <= 3;
   },
@@ -79,6 +83,13 @@ const employeeSchema: Schema = new mongoose.Schema(
       validate: [
         customValidate.max3Items,
         `Preferred shift slots must be less than 3 and unique.`,
+      ],
+    },
+    preferredDaysOff: {
+      type: [{ type: Number, min: 0, max: 6, unique: true }],
+      validate: [
+        customValidate.equal2Items,
+        `Preferred days off must be 2 and unique.`,
       ],
     },
   },
