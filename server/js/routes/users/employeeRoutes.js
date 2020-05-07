@@ -12,6 +12,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 const express_1 = __importDefault(require("express"));
 const employeeController = __importStar(require("../../controllers/users/employeeController"));
 const employeeAuthController = __importStar(require("../../controllers/auth/employeeAuthController"));
+const schedulerAuthController = __importStar(require("../../controllers/auth/employeeAuthController"));
 const router = express_1.default.Router();
 //ROOT - /employee
 //PUBLIC----------------------------------------------------------
@@ -24,10 +25,11 @@ router.post(`/forgotPassword`, employeeAuthController.forgotPassword);
 router.patch(`/resetPassword/:token`, employeeAuthController.resetPassword);
 //PROTECTED----------------------------------------------------------
 //PROTECT ALL ROUTES FOR EMPLOYEE FROM HERE
-// router.use(employeeAuthController.protect);
-router.get(`/me`, employeeController.getMe, employeeController.getEmployee);
-router.patch(`/updateMe`, employeeController.updateMe);
-router.patch(`/updateMyPassword`, employeeAuthController.updatePassword);
+router.get(`/me`, employeeAuthController.protect, employeeController.getMe, employeeController.getEmployee);
+router.patch(`/updateMe`, employeeAuthController.protect, employeeController.updateMe);
+router.patch(`/updateMyPassword`, employeeAuthController.protect, employeeAuthController.updatePassword);
+//PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
+router.use(schedulerAuthController.protect);
 //GET ALL AND CREATE ONE
 router
     .route(`/`)

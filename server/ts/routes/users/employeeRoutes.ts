@@ -2,6 +2,7 @@ import express from "express";
 
 import * as employeeController from "../../controllers/users/employeeController";
 import * as employeeAuthController from "../../controllers/auth/employeeAuthController";
+import * as schedulerAuthController from "../../controllers/auth/employeeAuthController";
 
 const router = express.Router();
 
@@ -21,11 +22,25 @@ router.patch(`/resetPassword/:token`, employeeAuthController.resetPassword);
 //PROTECTED----------------------------------------------------------
 
 //PROTECT ALL ROUTES FOR EMPLOYEE FROM HERE
-// router.use(employeeAuthController.protect);
+router.get(
+  `/me`,
+  employeeAuthController.protect,
+  employeeController.getMe,
+  employeeController.getEmployee
+);
+router.patch(
+  `/updateMe`,
+  employeeAuthController.protect,
+  employeeController.updateMe
+);
+router.patch(
+  `/updateMyPassword`,
+  employeeAuthController.protect,
+  employeeAuthController.updatePassword
+);
 
-router.get(`/me`, employeeController.getMe, employeeController.getEmployee);
-router.patch(`/updateMe`, employeeController.updateMe);
-router.patch(`/updateMyPassword`, employeeAuthController.updatePassword);
+//PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
+router.use(schedulerAuthController.protect);
 
 //GET ALL AND CREATE ONE
 router

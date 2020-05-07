@@ -31,11 +31,8 @@ const weeklyScheduledSchema: Schema = new mongoose.Schema(
   }
 );
 
-//COMPOUND INDEX TO FIND IF WEEKLY SCHEDULED EMPLOYEE, SCHEDULER, AND WEEKLY SHIFT IS UNIQUE
-weeklyScheduledSchema.index(
-  { employee: 1, scheduler: 1, weeklyShift: 1 },
-  { unique: true }
-);
+//COMPOUND INDEX TO FIND IF WEEKLY SCHEDULED EMPLOYEE IS UNIQUE (ONLY ONE WEEKLY SCHEDULED PER EMPLOYEE)
+weeklyScheduledSchema.index({ employee: 1 }, { unique: true });
 
 //SHOW IN FIND: EMPLOYEE AND SCHEDULER
 weeklyScheduledSchema.pre(/^find/, function (this: any, next) {
