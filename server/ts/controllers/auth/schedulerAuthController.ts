@@ -20,13 +20,13 @@ const sessionToken = (id: string) => {
 
 //CREATE COOKIE AND ATTACK SESSION TOKEN
 const createSendToken = (
-  scheduler: IScheduler,
+  user: IScheduler,
   statusCode: number,
   req: Request,
   res: Response
 ) => {
   //1. SETUP COOKIE PARAMS
-  const token = sessionToken(scheduler._id);
+  const token = sessionToken(user._id);
   const expireTime = process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000;
   const cookieOptions = {
     expires: new Date(Date.now() + expireTime),
@@ -38,13 +38,14 @@ const createSendToken = (
   res.cookie(`jwt`, token, cookieOptions);
 
   //3. REMOVE PASSWORD FROM OUTPUT FOR PRIVACY
-  scheduler.password = undefined;
+  user.password = undefined;
 
   //4. SEND SCHEDULER WITH COOKIE AND SESSION TOKEN
   res.status(statusCode).json({
     status: `success`,
     token,
-    scheduler,
+    user,
+    userType: `scheduler`, //DISPLAY FOR ANGULAR
     expiresIn: 1209600, //DISPLAY FOR ANGULAR
   });
 };

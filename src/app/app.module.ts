@@ -5,11 +5,13 @@ import { FormsModule } from "@angular/forms";
 import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 
 import { AppRoutingModule } from "./app-routing.module";
-import { AppComponent } from "./app.component";import { HeaderComponent } from "./components/header/header.component";
+import { CalendarModule } from "./calendar/calendar.module";
+import { AuthModule } from "./auth/auth.module";
+import { AuthInterceptor } from "./auth/auth-interceptor";
+import { AppComponent } from "./app.component";
+import { HeaderComponent } from "./components/header/header.component";
 import { FooterComponent } from "./components/footer/footer.component";
 import { AlertComponent } from "./components/alert/alert.component";
-import { CalendarModule } from "./calendar/calendar.module";
-import { AuthInterceptor } from './auth/auth-interceptor';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,7 @@ import { AuthInterceptor } from './auth/auth-interceptor';
     HttpClientModule,
     FormsModule,
     CalendarModule,
+    AuthModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

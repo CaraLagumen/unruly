@@ -11,9 +11,10 @@ import { SchedulerRegisterComponent } from "./scheduler/scheduler-register/sched
 import { SchedulerForgotComponent } from "./scheduler/scheduler-forgot/scheduler-forgot.component";
 import { SchedulerResetComponent } from "./scheduler/scheduler-reset/scheduler-reset.component";
 
+//ROOT - /auth
+
 const routes: Routes = [
   {
-    // path: "login/:state",
     path: "employee/login",
     component: EmployeeLoginComponent,
   },
@@ -22,7 +23,6 @@ const routes: Routes = [
     component: EmployeeRegisterComponent,
   },
   {
-    // path: "forgot/:state",
     path: "employee/forgot",
     component: EmployeeForgotComponent,
   },
@@ -31,7 +31,6 @@ const routes: Routes = [
     component: EmployeeResetComponent,
   },
   {
-    // path: "login/:state",
     path: "scheduler/login",
     component: SchedulerLoginComponent,
   },
@@ -40,7 +39,6 @@ const routes: Routes = [
     component: SchedulerRegisterComponent,
   },
   {
-    // path: "forgot/:state",
     path: "scheduler/forgot",
     component: SchedulerForgotComponent,
   },

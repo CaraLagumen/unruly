@@ -7,6 +7,10 @@ const routes: Routes = [
     path: "calendar",
     loadChildren: "./calendar/calendar.module#CalendarModule",
   },
+  {
+    path: "auth",
+    loadChildren: "./auth/auth.module#AuthModule",
+  },
 ];
 
 @NgModule({

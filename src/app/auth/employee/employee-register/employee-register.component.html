@@ -1,1 +1,50 @@
-<p>employee-register works!</p>
+<h1>Employee</h1>
+
+<form
+  (submit)="onRegister(registerForm)"
+  #registerForm="ngForm"
+  *ngIf="!isLoading"
+>
+
+  <span>Name</span>
+  <input
+    required
+    ngModel
+    name="name"
+    #nameInput="ngModel"
+  >
+
+  <span>Email</span>
+  <input
+    type="email"
+    required
+    ngModel
+    name="email"
+    #emailInput="ngModel"
+  >
+
+  <span>Password</span>
+  <input
+    type="password"
+    required
+    minlength="8"
+    ngModel
+    name="password"
+    #passwordInput="ngModel"
+  >
+
+  <span>Password confirm</span>
+  <input
+    type="password"
+    required
+    minlength="8"
+    ngModel
+    name="passwordConfirm"
+    #passwordConfirmInput="ngModel"
+  >
+
+  <button [disabled]="!registerForm.valid">Register</button>
+
+</form>
+
+<span *ngIf="isLoading">Loading...</span>

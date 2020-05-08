@@ -1,1 +1,34 @@
-<p>scheduler-login works!</p>
+<h1>Scheduler</h1>
+
+<form
+  (submit)="onLogin(loginForm)"
+  #loginForm="ngForm"
+  *ngIf="!isLoading"
+>
+
+  <span>Email</span>
+  <input
+    type="email"
+    required
+    ngModel
+    name="email"
+    #emailInput="ngModel"
+  >
+
+  <span>Password</span>
+  <input
+    type="password"
+    required
+    minlength="8"
+    ngModel
+    name="password"
+    #passwordInput="ngModel"
+  >
+
+  <a routerLink="/auth/scheduler/forgot">Forgot password</a>
+
+  <button [disabled]="!loginForm.valid">Login</button>
+
+</form>
+
+<span *ngIf="isLoading">Loading...</span>

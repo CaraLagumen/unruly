@@ -27,9 +27,9 @@ const sessionToken = (id) => {
     });
 };
 //CREATE COOKIE AND ATTACK SESSION TOKEN
-const createSendToken = (scheduler, statusCode, req, res) => {
+const createSendToken = (user, statusCode, req, res) => {
     //1. SETUP COOKIE PARAMS
-    const token = sessionToken(scheduler._id);
+    const token = sessionToken(user._id);
     const expireTime = process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000;
     const cookieOptions = {
         expires: new Date(Date.now() + expireTime),
@@ -39,12 +39,13 @@ const createSendToken = (scheduler, statusCode, req, res) => {
     //2. SEND COOKIE
     res.cookie(`jwt`, token, cookieOptions);
     //3. REMOVE PASSWORD FROM OUTPUT FOR PRIVACY
-    scheduler.password = undefined;
+    user.password = undefined;
     //4. SEND SCHEDULER WITH COOKIE AND SESSION TOKEN
     res.status(statusCode).json({
         status: `success`,
         token,
-        scheduler,
+        user,
+        userType: `scheduler`,
         expiresIn: 1209600,
     });
 };

@@ -27,9 +27,9 @@ const sessionToken = (id) => {
     });
 };
 //CREATE COOKIE AND ATTACK SESSION TOKEN
-const createSendToken = (employee, statusCode, req, res) => {
+const createSendToken = (user, statusCode, req, res) => {
     //1. SETUP COOKIE PARAMS
-    const token = sessionToken(employee._id);
+    const token = sessionToken(user._id);
     const expireTime = process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000;
     const cookieOptions = {
         expires: new Date(Date.now() + expireTime),
@@ -39,12 +39,13 @@ const createSendToken = (employee, statusCode, req, res) => {
     //2. SEND COOKIE
     res.cookie(`jwt`, token, cookieOptions);
     //3. REMOVE PASSWORD FROM OUTPUT FOR PRIVACY
-    employee.password = undefined;
+    user.password = undefined;
     //4. SEND EMPLOYEE WITH COOKIE AND SESSION TOKEN
     res.status(statusCode).json({
         status: `success`,
         token,
-        employee,
+        user,
+        userType: `employee`,
         expiresIn: 1209600,
     });
 };
@@ -63,6 +64,7 @@ exports.register = catchAsync_1.default((req, res, next) => __awaiter(void 0, vo
         seniority: req.body.seniority,
         hireDate: req.body.hireDate,
         preferredShiftSlots: req.body.preferredShiftSlots,
+        preferredDaysOff: req.body.preferredDaysOff,
     });
     //2. PREPARE URL FOR EMAIL THEN SEND EMAIL
     const url = `${req.protocol}://${req.get(`host`)}/`;

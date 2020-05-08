@@ -20,13 +20,13 @@ const sessionToken = (id: string) => {
 
 //CREATE COOKIE AND ATTACK SESSION TOKEN
 const createSendToken = (
-  employee: IEmployee,
+  user: IEmployee,
   statusCode: number,
   req: Request,
   res: Response
 ) => {
   //1. SETUP COOKIE PARAMS
-  const token = sessionToken(employee._id);
+  const token = sessionToken(user._id);
   const expireTime = process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000;
   const cookieOptions = {
     expires: new Date(Date.now() + expireTime),
@@ -38,13 +38,14 @@ const createSendToken = (
   res.cookie(`jwt`, token, cookieOptions);
 
   //3. REMOVE PASSWORD FROM OUTPUT FOR PRIVACY
-  employee.password = undefined;
+  user.password = undefined;
 
   //4. SEND EMPLOYEE WITH COOKIE AND SESSION TOKEN
   res.status(statusCode).json({
     status: `success`,
     token,
-    employee,
+    user,
+    userType: `employee`, //DISPLAY FOR ANGULAR
     expiresIn: 1209600, //DISPLAY FOR ANGULAR
   });
 };
@@ -65,6 +66,7 @@ export const register = catchAsync(async (req, res, next) => {
     seniority: req.body.seniority,
     hireDate: req.body.hireDate,
     preferredShiftSlots: req.body.preferredShiftSlots,
+    preferredDaysOff: req.body.preferredDaysOff,
   });
 
   //2. PREPARE URL FOR EMAIL THEN SEND EMAIL

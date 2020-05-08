@@ -1,17 +1,24 @@
 <h1>Unruly</h1> by Cara Lagumen
 
-<div class="employee">
+<div *ngIf="!employeeIsAuth && !schedulerIsAuth">
+  <div class="employee">
 
-  <h2>Employee</h2>
-  <button>Login</button>
-  <button>Register</button>
+    <h2>Employee</h2>
+    <button routerLink="/auth/employee/login">Login</button>
+    <button routerLink="/auth/employee/register">Register</button>
 
+  </div>
+
+  <div class="scheduler">
+
+    <h2>Scheduler</h2>
+    <button routerLink="/auth/scheduler/login">Login</button>
+    <button routerLink="/auth/scheduler/register">Register</button>
+
+  </div>
 </div>
 
-<div class="scheduler">
-
-  <h2>Scheduler</h2>
-  <button>Login</button>
-  <button>Register</button>
-
-</div>
+<button
+  *ngIf="employeeIsAuth || schedulerIsAuth"
+  (click)="onLogout()"
+>Logout</button>

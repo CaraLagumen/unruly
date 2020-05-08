@@ -3,21 +3,25 @@ import { Subject } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 
-import { environment } from "src/environments/environment";
+import { environment } from "../../environments/environment";
 import { AuthData, AuthUpdateData, AuthResetData } from "./auth.model";
 // import { AlertService } from "../components/alert/alert.service";
 
-const ROOT_URL = `${environment.apiUrl}/users`;
+const ROOT_URL = `${environment.apiUrl}`;
 
 @Injectable({
   providedIn: "root",
 })
 export class AuthService {
-  private userId: string;
   private token: string;
-  private authStatusListener = new Subject<boolean>();
-  private isAuth = false;
+  private userId: string;
+  private userType: string;
   private tokenTimer: ReturnType<typeof setTimeout>;
+
+  private employeeIsAuth = false;
+  private employeeAuthStatusListener = new Subject<boolean>();
+  private schedulerIsAuth = false;
+  private schedulerAuthStatusListener = new Subject<boolean>();
 
   constructor(
     private http: HttpClient,
@@ -32,267 +36,17 @@ export class AuthService {
   getUserId() {
     return this.userId;
   }
-  getAuthStatusListener() {
-    return this.authStatusListener.asObservable();
+  getEmployeeIsAuth() {
+    return this.employeeIsAuth;
   }
-  getIsAuth() {
-    return this.isAuth;
+  getEmployeeAuthStatusListener() {
+    return this.employeeAuthStatusListener.asObservable();
   }
-
-  //MAIN----------------------------------------------------------
-
-  register(
-    name: string,
-    email: string,
-    password: string,
-    passwordConfirm: string
-  ) {
-    const authData: AuthData = { name, email, password, passwordConfirm };
-
-    this.http.post(`${ROOT_URL}/signup`, authData).subscribe(
-      () => {
-        // this.alertService.success("Welcome, you registered successfully.", {
-        //   autoClose: true,
-        //   keepAfterRouteChange: true,
-        // });
-        this.login(email, password);
-      },
-      (err) => {
-        // this.alertService.error("Unable to sign you up, please try again.", {
-        //   autoClose: true,
-        //   keepAfterRouteChange: true,
-        // });
-        this.authStatusListener.next(false);
-      }
-    );
+  getSchedulerIsAuth() {
+    return this.schedulerIsAuth;
   }
-
-  autoLogin() {
-    //STOP IF NO AUTH DATA
-    const authData = this.getAuthData();
-    if (!authData) {
-      return;
-    }
-
-    const now = new Date();
-    const expiresIn = authData.expirationDate.getTime() - now.getTime();
-
-    //VERIFY NOT EXPIRED & LOGIN
-    if (expiresIn > 0) {
-      this.token = authData.token;
-      this.userId = authData.userId;
-      this.isAuth = true;
-      this.setAuthTimer(expiresIn / 1000);
-      // this.alertService.info("You've been logged in automatically.", {
-      //   autoClose: true,
-      //   keepAfterRouteChange: true,
-      // });
-      this.authStatusListener.next(true);
-    }
-  }
-
-  login(email: string, password: string) {
-    const authData: AuthData = { email, password };
-
-    this.http
-      .post<{ token: string; user: any; expiresIn: number }>(
-        `${ROOT_URL}/login`,
-        authData
-      )
-      .subscribe(
-        (res) => {
-          //FETCH TOKEN FROM RESPONSE & SET
-          const token = res.token;
-          this.token = token;
-
-          //RELATE TOKEN EXPIRATION FROM BACKEND TO UI
-          if (token) {
-            const expiresInDuration = res.expiresIn;
-            const now = new Date();
-            const expirationDate = new Date(
-              now.getTime() + expiresInDuration * 1000
-            );
-
-            //START TIMER & SAVE AUTH
-            this.setAuthTimer(expiresInDuration);
-            this.userId = res.user._id;
-            this.saveAuthData(token, this.userId, expirationDate);
-
-            //EXPOSE USER IS LOGGED
-            this.isAuth = true;
-            // this.alertService.success("You logged in successfully.", {
-            //   autoClose: true,
-            //   keepAfterRouteChange: true,
-            // });
-            //DISPLAY IN UI USER IS LOGGED
-            this.authStatusListener.next(true);
-
-            this.router.navigate(["/"]);
-          }
-        },
-
-        (err) => {
-          this.authStatusListener.next(false);
-          // this.alertService.error(
-          //   "Your email or password is incorrect, please try again.",
-          //   {
-          //     autoClose: true,
-          //     keepAfterRouteChange: true,
-          //   }
-          // );
-        }
-      );
-  }
-
-  logout() {
-    //RESET ALL
-    this.token = null;
-    this.userId = null;
-    this.isAuth = false;
-    // this.alertService.warn("You logged out successfully.", {
-    //   autoClose: true,
-    //   keepAfterRouteChange: true,
-    // });
-    this.authStatusListener.next(false);
-    clearTimeout(this.tokenTimer);
-    this.clearAuthData();
-
-    this.router.navigate(["/"]);
-  }
-
-  changePassword(
-    passwordCurrent: string,
-    password: string,
-    passwordConfirm: string
-  ) {
-    const authUpdateData: AuthUpdateData = {
-      passwordCurrent,
-      password,
-      passwordConfirm,
-    };
-
-    this.http
-      .patch<{ token: string; user: any; expiresIn: number }>(
-        `${ROOT_URL}/updateMyPassword`,
-        authUpdateData
-      )
-      .subscribe(
-        (res) => {
-          //FETCH TOKEN FROM RESPONSE & SET
-          const token = res.token;
-          this.token = token;
-
-          //RELATE TOKEN EXPIRATION FROM BACKEND TO UI
-          if (token) {
-            const expiresInDuration = res.expiresIn;
-            const now = new Date();
-            const expirationDate = new Date(
-              now.getTime() + expiresInDuration * 1000
-            );
-
-            //START TIMER & SAVE AUTH
-            this.setAuthTimer(expiresInDuration);
-            this.userId = res.user._id;
-            this.saveAuthData(token, this.userId, expirationDate);
-
-            //EXPOSE USER IS LOGGED
-            this.isAuth = true;
-            // this.alertService.success(
-            //   "You successfully changed your password. Your page will reload in 8 seconds.",
-            //   {
-            //     autoClose: true,
-            //     keepAfterRouteChange: true,
-            //   }
-            // );
-            //DISPLAY IN UI USER IS LOGGED
-            this.authStatusListener.next(true);
-
-            //DELAY RELOAD FOR ALERT
-            setTimeout(() => {
-              location.reload();
-            }, 8000);
-          }
-        },
-
-        (err) => {
-          // this.alertService.error("Your passwords don't match.", {
-          //   autoClose: true,
-          //   keepAfterRouteChange: true,
-          // });
-          this.authStatusListener.next(false);
-        }
-      );
-  }
-
-  forgotPassword(email: string) {
-    this.http.post(`${ROOT_URL}/forgotPassword`, { email }).subscribe(
-      () => {
-        // this.alertService.success("Your email has been sent.", {
-        //   autoClose: true,
-        //   keepAfterRouteChange: true,
-        // });
-        this.router.navigate(["/auth/forgot/sent"]);
-      },
-      (err) => {
-        // this.alertService.error("That email does not exist in our server.", {
-        //   autoClose: true,
-        //   keepAfterRouteChange: true,
-        // });
-        this.authStatusListener.next(false);
-      }
-    );
-  }
-
-  resetPassword(token: string, password: string, passwordConfirm: string) {
-    const authResetData: AuthResetData = {
-      password,
-      passwordConfirm,
-    };
-
-    this.http
-      .patch<{ token: string; user: any; expiresIn: number }>(
-        `${ROOT_URL}/resetPassword/${token}`,
-        authResetData
-      )
-      .subscribe(
-        (res) => {
-          //FETCH TOKEN FROM RESPONSE & SET
-          const token = res.token;
-          this.token = token;
-
-          //RELATE TOKEN EXPIRATION FROM BACKEND TO UI
-          if (token) {
-            const expiresInDuration = res.expiresIn;
-            const now = new Date();
-            const expirationDate = new Date(
-              now.getTime() + expiresInDuration * 1000
-            );
-
-            //START TIMER & SAVE AUTH
-            this.setAuthTimer(expiresInDuration);
-            this.userId = res.user._id;
-            this.saveAuthData(token, this.userId, expirationDate);
-
-            //EXPOSE USER IS LOGGED
-            this.isAuth = true;
-            // this.alertService.success("You successfully reset your password.", {
-            //   autoClose: true,
-            //   keepAfterRouteChange: true,
-            // });
-            //DISPLAY IN UI USER IS LOGGED
-            this.authStatusListener.next(true);
-
-            this.router.navigate(["/"]);
-          }
-        },
-        (err) => {
-          // this.alertService.error("Your passwords don't match.", {
-          //   autoClose: true,
-          //   keepAfterRouteChange: true,
-          // });
-          this.authStatusListener.next(false);
-        }
-      );
+  getSchedulerAuthStatusListener() {
+    return this.schedulerAuthStatusListener.asObservable();
   }
 
   //TOOLS----------------------------------------------------------
@@ -306,28 +60,401 @@ export class AuthService {
   private getAuthData() {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
+    const userType = localStorage.getItem("userType");
     const expirationDate = localStorage.getItem("expiration");
 
-    if (!token || !expirationDate || !userId) {
+    if (!token || !userId || !userType || !expirationDate) {
       return;
     }
 
     return {
       token,
       userId,
+      userType,
       expirationDate: new Date(expirationDate),
     };
   }
 
-  private saveAuthData(token: string, userId: string, expirationDate: Date) {
+  private saveAuthData(
+    token: string,
+    userId: string,
+    userType: `employee` | `scheduler`,
+    expirationDate: Date
+  ) {
     localStorage.setItem("token", token);
     localStorage.setItem("userId", userId);
+    localStorage.setItem("userType", userType);
     localStorage.setItem("expiration", expirationDate.toISOString());
   }
 
   private clearAuthData() {
     localStorage.removeItem("token");
     localStorage.removeItem("userId");
+    localStorage.removeItem("userType");
     localStorage.removeItem("expiration");
+  }
+
+  //MAIN----------------------------------------------------------
+
+  register(
+    userType: `employee` | `scheduler`,
+    name: string,
+    email: string,
+    password: string,
+    passwordConfirm: string
+  ) {
+    //1. GRAB DATA INPUT
+    const authData: AuthData = { name, email, password, passwordConfirm };
+
+    //2. POST TO API
+    this.http.post(`${ROOT_URL}/${userType}/register`, authData).subscribe(
+      () => {
+        //3. ALERT AND LOGIN AUTOMATICALLY IF SUCCESSFUL
+        // this.alertService.success("Welcome, you registered successfully.", {
+        //   autoClose: true,
+        //   keepAfterRouteChange: true,
+        // });
+        console.log(`${userType} registered`);
+
+        this.login(userType, email, password);
+      },
+      (err) => {
+        //4. ALERT AND ENSURE LISTENERS OFF IF ERR
+        // this.alertService.error("Unable to sign you up, please try again.", {
+        //   autoClose: true,
+        //   keepAfterRouteChange: true,
+        // });
+
+        if (userType === `employee`) {
+          this.employeeAuthStatusListener.next(false);
+        } else if (userType === `scheduler`) {
+          this.schedulerAuthStatusListener.next(false);
+        }
+      }
+    );
+  }
+
+  autoLogin() {
+    //1. STOP IF NO AUTH DATA
+    const authData = this.getAuthData();
+    if (!authData) {
+      return;
+    }
+
+    //2. SETUP DATE VARS FOR COMPARISON
+    const now = new Date();
+    const expiresIn = authData.expirationDate.getTime() - now.getTime();
+
+    //3. VERIFY AUTH DATA NOT EXPIRED THEN ALERT AND LOGIN
+    if (expiresIn > 0) {
+      // this.alertService.info("You've been logged in automatically.", {
+      //   autoClose: true,
+      //   keepAfterRouteChange: true,
+      // });
+
+      this.token = authData.token;
+      this.userId = authData.userId;
+      this.userType = authData.userType;
+      this.setAuthTimer(expiresIn / 1000);
+
+      //4. ENSURE USER LOGINS ARE SEPARATED
+      if (this.userType === `employee`) {
+        this.employeeIsAuth = true;
+        this.employeeAuthStatusListener.next(true);
+        this.schedulerIsAuth = false;
+        this.schedulerAuthStatusListener.next(false);
+      } else if (this.userType === `scheduler`) {
+        this.schedulerIsAuth = true;
+        this.schedulerAuthStatusListener.next(true);
+        this.employeeIsAuth = false;
+        this.employeeAuthStatusListener.next(false);
+      }
+    }
+  }
+
+  login(userType: `employee` | `scheduler`, email: string, password: string) {
+    //1. GRAB INPUT DATA
+    const authData: AuthData = { email, password };
+
+    //2. POST TO API
+    this.http
+      .post<{
+        token: string;
+        user: any;
+        expiresIn: number;
+      }>(`${ROOT_URL}/${userType}/login`, authData)
+      .subscribe(
+        (res) => {
+          //3. GRAB TOKEN FROM RESPONSE AND SET
+          const token = res.token;
+          this.token = token;
+
+          //4. RELATE TOKEN EXPIRATION FROM BACKEND TO UI
+          if (token) {
+            const expiresInDuration = res.expiresIn;
+            const now = new Date();
+            const expirationDate = new Date(
+              now.getTime() + expiresInDuration * 1000
+            );
+
+            //5. START TIMER, SAVE AUTH DATA, AND ALERT
+            this.userId = res.user._id;
+            this.userType = res.user.userType;
+            this.setAuthTimer(expiresInDuration);
+            this.saveAuthData(token, this.userId, userType, expirationDate);
+
+            // this.alertService.success("You logged in successfully.", {
+            //   autoClose: true,
+            //   keepAfterRouteChange: true,
+            // });
+            console.log(`${userType} logged in`);
+
+            //5. DISPLAY IN UI USER IS LOGGED
+            if (userType === `employee`) {
+              this.employeeIsAuth = true;
+              this.employeeAuthStatusListener.next(true);
+              this.schedulerIsAuth = false;
+              this.schedulerAuthStatusListener.next(false);
+            } else if (userType === `scheduler`) {
+              this.schedulerIsAuth = true;
+              this.schedulerAuthStatusListener.next(true);
+              this.employeeIsAuth = false;
+              this.employeeAuthStatusListener.next(false);
+            }
+
+            //6. REROUTE
+            this.router.navigate(["/"]);
+          }
+        },
+
+        (err) => {
+          //7. ALERT AND ENSURE LISTENERS OFF IF ERR
+          // this.alertService.error(
+          //   "Your email or password is incorrect, please try again.",
+          //   {
+          //     autoClose: true,
+          //     keepAfterRouteChange: true,
+          //   }
+          // );
+
+          if (userType === `employee`) {
+            this.employeeAuthStatusListener.next(false);
+          } else if (userType === `scheduler`) {
+            this.schedulerAuthStatusListener.next(false);
+          }
+        }
+      );
+  }
+
+  logout() {
+    //1. ALERT
+    // this.alertService.warn("You logged out successfully.", {
+    //   autoClose: true,
+    //   keepAfterRouteChange: true,
+    // });
+
+    //2. RESET ALL
+    this.token = null;
+    this.userId = null;
+    this.employeeIsAuth = false;
+    this.schedulerIsAuth = false;
+    this.employeeAuthStatusListener.next(false);
+    this.schedulerAuthStatusListener.next(false);
+    this.clearAuthData();
+    clearTimeout(this.tokenTimer);
+
+    //3. REROUTE
+    this.router.navigate(["/"]);
+  }
+
+  changePassword(
+    userType: `employee` | `scheduler`,
+    passwordCurrent: string,
+    password: string,
+    passwordConfirm: string
+  ) {
+    //1. GRAB INPUT DATA
+    const authUpdateData: AuthUpdateData = {
+      passwordCurrent,
+      password,
+      passwordConfirm,
+    };
+
+    //2. POST TO API
+    this.http
+      .patch<{ token: string; user: any; expiresIn: number }>(
+        `${ROOT_URL}/${userType}/updateMyPassword`,
+        authUpdateData
+      )
+      .subscribe(
+        (res) => {
+          //3. GRAB TOKEN FROM RESPONSE AND SET
+          const token = res.token;
+          this.token = token;
+
+          //4. RELATE TOKEN EXPIRATION FROM BACKEND TO UI
+          if (token) {
+            const expiresInDuration = res.expiresIn;
+            const now = new Date();
+            const expirationDate = new Date(
+              now.getTime() + expiresInDuration * 1000
+            );
+
+            //5. START TIMER, SAVE AUTH DATA, AND ALERT
+            this.userId = res.user._id;
+            this.userType = res.user.userType;
+            this.setAuthTimer(expiresInDuration);
+            this.saveAuthData(token, this.userId, userType, expirationDate);
+
+            // this.alertService.success(
+            //   "You successfully changed your password. Your page will reload in 8 seconds.",
+            //   {
+            //     autoClose: true,
+            //     keepAfterRouteChange: true,
+            //   }
+            // );
+            console.log(`${userType} changed password`);
+
+            //6. DISPLAY IN UI USER IS LOGGED
+            if (userType === `employee`) {
+              this.employeeIsAuth = true;
+              this.employeeAuthStatusListener.next(true);
+              this.schedulerIsAuth = false;
+              this.schedulerAuthStatusListener.next(false);
+            } else if (userType === `scheduler`) {
+              this.schedulerIsAuth = true;
+              this.schedulerAuthStatusListener.next(true);
+              this.employeeIsAuth = false;
+              this.employeeAuthStatusListener.next(false);
+            }
+
+            //7. DELAY RELOAD FOR ALERT CLARITY
+            setTimeout(() => {
+              location.reload();
+            }, 8000);
+          }
+        },
+
+        (err) => {
+          // 7. ALERT AND ENSURE LISTENERS OFF IF ERR
+          // this.alertService.error("Your passwords don't match.", {
+          //   autoClose: true,
+          //   keepAfterRouteChange: true,
+          // });
+
+          if (userType === `employee`) {
+            this.employeeAuthStatusListener.next(false);
+          } else if (userType === `scheduler`) {
+            this.schedulerAuthStatusListener.next(false);
+          }
+        }
+      );
+  }
+
+  forgotPassword(userType: `employee` | `scheduler`, email: string) {
+    //1. POST TO API
+    this.http
+      .post(`${ROOT_URL}/${userType}/forgotPassword`, { email })
+      .subscribe(
+        () => {
+          //2. ALERT EMAIL SUCCESS
+          // this.alertService.success("Your email has been sent.", {
+          //   autoClose: true,
+          //   keepAfterRouteChange: true,
+          // });
+
+          console.log(`${userType} email sent`);
+        },
+        (err) => {
+          //3. ALERT AND ENSURE LISTENERS OFF IF ERR
+          // this.alertService.error("That email does not exist in our server.", {
+          //   autoClose: true,
+          //   keepAfterRouteChange: true,
+          // });
+
+          if (userType === `employee`) {
+            this.employeeAuthStatusListener.next(false);
+          } else if (userType === `scheduler`) {
+            this.schedulerAuthStatusListener.next(false);
+          }
+        }
+      );
+  }
+
+  resetPassword(
+    userType: `employee` | `scheduler`,
+    token: string,
+    password: string,
+    passwordConfirm: string
+  ) {
+    //1. GRAB INPUT DATA
+    const authResetData: AuthResetData = {
+      password,
+      passwordConfirm,
+    };
+
+    //2. POST TO API
+    this.http
+      .patch<{ token: string; user: any; expiresIn: number }>(
+        `${ROOT_URL}/${userType}/resetPassword/${token}`,
+        authResetData
+      )
+      .subscribe(
+        (res) => {
+          //3. FETCH TOKEN FROM RESPONSE AND SET
+          const token = res.token;
+          this.token = token;
+
+          //4. RELATE TOKEN EXPIRATION FROM BACKEND TO UI
+          if (token) {
+            const expiresInDuration = res.expiresIn;
+            const now = new Date();
+            const expirationDate = new Date(
+              now.getTime() + expiresInDuration * 1000
+            );
+
+            //5. START TIMER, SAVE AUTH DATA, AND ALERT
+            this.userId = res.user._id;
+            this.userType = res.user.userType;
+            this.setAuthTimer(expiresInDuration);
+            this.saveAuthData(token, this.userId, userType, expirationDate);
+
+            // this.alertService.success("You successfully reset your password.", {
+            //   autoClose: true,
+            //   keepAfterRouteChange: true,
+            // });
+            console.log(`${userType} successful password reset`);
+
+            //6. DISPLAY IN UI USER IS LOGGED
+            if (userType === `employee`) {
+              this.employeeIsAuth = true;
+              this.employeeAuthStatusListener.next(true);
+              this.schedulerIsAuth = false;
+              this.schedulerAuthStatusListener.next(false);
+            } else if (userType === `scheduler`) {
+              this.schedulerIsAuth = true;
+              this.schedulerAuthStatusListener.next(true);
+              this.employeeIsAuth = false;
+              this.employeeAuthStatusListener.next(false);
+            }
+
+            //7. REROUTE
+            this.router.navigate(["/"]);
+          }
+        },
+        (err) => {
+          // 8. ALERT AND ENSURE LISTENERS OFF IF ERR
+          // this.alertService.error("Your passwords don't match.", {
+          //   autoClose: true,
+          //   keepAfterRouteChange: true,
+          // });
+
+          if (userType === `employee`) {
+            this.employeeAuthStatusListener.next(false);
+          } else if (userType === `scheduler`) {
+            this.schedulerAuthStatusListener.next(false);
+          }
+        }
+      );
   }
 }
