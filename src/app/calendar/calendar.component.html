@@ -1,0 +1,43 @@
+<div class="calendar">
+
+  <div class="calendar__nav">
+
+    <button
+      (click)="previousMonth()"
+      class="calendar__nav--btn"
+    >◄</button>
+
+    <h3 class="calendar__nav--month">
+      {{ date.format('MMMM') }} {{ date.format('YYYY') }}
+    </h3>
+
+    <button
+      (click)="nextMonth()"
+      class="calendar__nav--btn"
+    >►</button>
+
+  </div>
+
+  <div class="calendar__heading">
+
+    <div class="calendar__heading--days">SUN</div>
+    <div class="calendar__heading--days">MON</div>
+    <div class="calendar__heading--days">TUE</div>
+    <div class="calendar__heading--days">WED</div>
+    <div class="calendar__heading--days">THU</div>
+    <div class="calendar__heading--days">FRI</div>
+    <div class="calendar__heading--days">SAT</div>
+
+  </div>
+
+  <div class="calendar__main">
+
+    <div
+      *ngFor="let day of daysArr"
+      [ngClass]="{ 'inactive': !day, 'today': checkToday(day) }"
+      class="calendar__main--days"
+    >{{ day?.date() }}</div>
+
+  </div>
+
+</div>

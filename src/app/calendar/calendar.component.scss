@@ -1,0 +1,57 @@
+.calendar {
+  &__nav {
+    display: flex;
+    gap: 3rem;
+
+    &--month {
+      width: 10rem;
+
+      text-align: center;
+    }
+  }
+
+  &__heading {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.5rem;
+
+    padding-bottom: 0.5rem;
+
+    background-color: darkgray;
+
+    &--days {
+      grid-row: 1 / 2;
+
+      width: 100%;
+
+      background-color: gray;
+
+      color: white;
+      text-align: center;
+    }
+  }
+
+  &__main {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(auto, 1fr);
+    gap: 0.5rem;
+
+    background-color: darkgray;
+
+    &--days {
+      height: 8rem;
+      width: 100%;
+
+      background-color: lightgray;
+    }
+
+    .today {
+      background-color: white;
+    }
+
+    .inactive {
+      background-color: darkgray;
+    }
+  }
+}
