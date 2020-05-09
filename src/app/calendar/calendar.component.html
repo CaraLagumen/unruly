@@ -34,10 +34,27 @@
 
     <div
       *ngFor="let day of daysArr"
-      [ngClass]="{ 'inactive': !day, 'today': checkToday(day) }"
+      [ngClass]="{ 'inactive': checkNotThisMonth(day), 'today': checkToday(day) }"
       class="calendar__main--days"
-    >{{ day?.date() }}</div>
+    >
+
+      <h4>{{ day?.date() }}</h4>
+
+      <app-calendar-item
+        *ngIf="isLoaded"
+        [allScheduled]="allScheduled"
+        [day]="day"
+      ></app-calendar-item>
+
+    </div>
 
   </div>
 
 </div>
+<!-- 
+<div *ngFor="let scheduled of (allScheduled | async)">
+  {{ scheduled?.date }}
+  {{ scheduled?.shift.day }}
+  {{ scheduled?.shift.shiftStart[0] }}
+  {{ scheduled?.shift.shiftEnd[0] }}
+</div> -->

@@ -58,7 +58,7 @@ exports.createScheduled = catchAsync_1.default((req, res, next) => __awaiter(voi
 //GET ALL SCHEDULED SHIFTS OF EMPLOYEE FROM EMPLOYEE ID (ENTERED)
 exports.getEmployeeSchedule = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     //1. ADD SEARCH FUNCTIONALITY
-    const features = new apiFeatures_1.default(scheduledModel_1.default.find({ employee: req.body.employeeId }), req.query)
+    const features = new apiFeatures_1.default(scheduledModel_1.default.find({ employee: req.params.id }), req.query)
         .filter()
         .sort()
         .limitFields()

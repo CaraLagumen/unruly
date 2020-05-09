@@ -35,26 +35,12 @@ export const validateScheduled = catchAsync(async (req, res, next) => {
 
 //MAIN----------------------------------------------------------
 
-//CREATE SCHEDULED SHIFT WITH EMPLOYEE FROM SHIFT ID AND EMPLOYEE ID (ENTERED)
-export const createScheduled = catchAsync(async (req, res, next) => {
-  const shift = req.body.shiftId;
-  const employee = req.body.employeeId;
-  const scheduler = req.scheduler.id;
-  const date = req.body.date;
-
-  const doc = await Scheduled.create({ shift, employee, scheduler, date });
-
-  res.status(201).json({
-    status: `success`,
-    doc,
-  });
-});
-
 //GET ALL SCHEDULED SHIFTS OF EMPLOYEE FROM EMPLOYEE ID (ENTERED)
 export const getEmployeeSchedule = catchAsync(async (req, res, next) => {
   //1. ADD SEARCH FUNCTIONALITY
   const features = new APIFeatures(
-    Scheduled.find({ employee: req.body.employeeId }),
+    //@ts-ignore
+    Scheduled.find({ employee: req.params.id }),
     req.query
   )
     .filter()
@@ -69,6 +55,21 @@ export const getEmployeeSchedule = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: `success`,
     results: doc.length,
+    doc,
+  });
+});
+
+//CREATE SCHEDULED SHIFT WITH EMPLOYEE FROM SHIFT ID AND EMPLOYEE ID (ENTERED)
+export const createScheduled = catchAsync(async (req, res, next) => {
+  const shift = req.body.shiftId;
+  const employee = req.body.employeeId;
+  const scheduler = req.scheduler.id;
+  const date = req.body.date;
+
+  const doc = await Scheduled.create({ shift, employee, scheduler, date });
+
+  res.status(201).json({
+    status: `success`,
     doc,
   });
 });

@@ -10,6 +10,8 @@ const router = express.Router();
 //PUBLIC GETTERS
 router.route(`/`).get(scheduledController.getAllScheduled);
 router.route(`/:id`).get(scheduledController.getScheduled);
+//GET EMPLOYEE SCHEDULE
+router.route(`/employee/:id`).get(scheduledController.getEmployeeSchedule);
 
 //PROTECTED----------------------------------------------------------
 
@@ -23,10 +25,7 @@ router
     scheduledController.validateScheduled,
     scheduledController.createScheduled
   );
-
-//GET EMPLOYEE SCHEDULE
-router.route(`/employee`).get(scheduledController.getEmployeeSchedule);
-
+  
 //DELETE ONE
 router.route(`/:id`).delete(scheduledController.deleteScheduled);
 

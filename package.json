@@ -12,7 +12,7 @@
     "postinstall": "ng build --output-path dist",
     "dev": "ng serve",
     "dev:server": "nodemon server.js",
-    "start:dev": "npm-run-all dev dev:server",
+    "start:dev": "npm-run-all --parallel dev dev:server",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

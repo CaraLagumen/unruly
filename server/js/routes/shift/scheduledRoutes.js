@@ -25,7 +25,7 @@ router
     .route(`/`)
     .post(scheduledController.validateScheduled, scheduledController.createScheduled);
 //GET EMPLOYEE SCHEDULE
-router.route(`/employee`).get(scheduledController.getEmployeeSchedule);
+router.route(`/employee/:id`).get(scheduledController.getEmployeeSchedule);
 //DELETE ONE
 router.route(`/:id`).delete(scheduledController.deleteScheduled);
 module.exports = router;
