@@ -7,6 +7,7 @@ import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 import { AppRoutingModule } from "./app-routing.module";
 import { CalendarModule } from "./calendar/calendar.module";
 import { AuthModule } from "./auth/auth.module";
+import { UsersModule } from "./users/users.module";
 import { AuthInterceptor } from "./auth/auth-interceptor";
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./components/header/header.component";
@@ -29,6 +30,7 @@ import { AlertComponent } from "./components/alert/alert.component";
     FormsModule,
     CalendarModule,
     AuthModule,
+    UsersModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

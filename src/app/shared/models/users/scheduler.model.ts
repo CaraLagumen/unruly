@@ -1,3 +1,4 @@
+//READ ONLY - ALTERABLE DATA IN USERS FOLDER
 export interface Scheduler {
   firstName: string;
   lastName: string;

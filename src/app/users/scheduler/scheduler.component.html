@@ -1,0 +1,58 @@
+<h3>Profile</h3>
+
+<form
+  (submit)="onUpdateScheduler()"
+  [formGroup]="updateSchedulerForm"
+>
+
+  <span>Email</span>
+  <input
+    type="email"
+    formControlName="email"
+    placeholder="{{ scheduler?.email }}"
+  >
+
+  <button
+    [disabled]="!updateSchedulerForm.valid"
+    type="submit"
+  >Update</button>
+</form>
+
+<form
+  (submit)="onChangePassword(changePasswordForm)"
+  #changePasswordForm="ngForm"
+>
+
+  <span>Current password</span>
+  <input
+    type="password"
+    required
+    minlength="8"
+    ngModel
+    name="passwordCurrent"
+    #passwordCurrentInput="ngModel"
+  >
+
+  <span>New password</span>
+  <input
+    type="password"
+    required
+    minlength="8"
+    ngModel
+    name="password"
+    #passwordInput="ngModel"
+  >
+
+  <span>New password confirm</span>
+  <input
+    type="password"
+    required
+    minlength="8"
+    ngModel
+    name="passwordConfirm"
+    #passwordConfirmInput="ngModel"
+  >
+
+  <button [disabled]="!changePasswordForm.valid">Update Password</button>
+
+</form>

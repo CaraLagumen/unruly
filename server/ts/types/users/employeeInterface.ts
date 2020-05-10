@@ -15,6 +15,7 @@ interface IEmployee extends Document {
   seniority: number;
   hireDate: Date;
   preferredShiftSlots: string[];
+  preferredDaysOff: number[];
 
   correctPassword(password: string, passwordConfirm: string): Promise<boolean>;
   changedPasswordAfter(JWTTimestamp: number): Promise<boolean>;

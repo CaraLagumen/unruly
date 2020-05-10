@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 
 import { environment } from "../../environments/environment";
 import { AuthData, AuthUpdateData, AuthResetData } from "./auth.model";
+import { UserType } from "../shared/models/custom-types";
 // import { AlertService } from "../components/alert/alert.service";
 
 const ROOT_URL = `${environment.apiUrl}`;
@@ -78,7 +79,7 @@ export class AuthService {
   private saveAuthData(
     token: string,
     userId: string,
-    userType: `employee` | `scheduler`,
+    userType: UserType,
     expirationDate: Date
   ) {
     localStorage.setItem("token", token);
@@ -97,7 +98,7 @@ export class AuthService {
   //MAIN----------------------------------------------------------
 
   register(
-    userType: `employee` | `scheduler`,
+    userType: UserType,
     name: string,
     email: string,
     password: string,
@@ -172,7 +173,7 @@ export class AuthService {
     }
   }
 
-  login(userType: `employee` | `scheduler`, email: string, password: string) {
+  login(userType: UserType, email: string, password: string) {
     //1. GRAB INPUT DATA
     const authData: AuthData = { email, password };
 
@@ -268,7 +269,7 @@ export class AuthService {
   }
 
   changePassword(
-    userType: `employee` | `scheduler`,
+    userType: UserType,
     passwordCurrent: string,
     password: string,
     passwordConfirm: string
@@ -330,7 +331,7 @@ export class AuthService {
 
             //7. DELAY RELOAD FOR ALERT CLARITY
             setTimeout(() => {
-              location.reload();
+              this.logout();
             }, 8000);
           }
         },
@@ -351,7 +352,7 @@ export class AuthService {
       );
   }
 
-  forgotPassword(userType: `employee` | `scheduler`, email: string) {
+  forgotPassword(userType: UserType, email: string) {
     //1. POST TO API
     this.http
       .post(`${ROOT_URL}/${userType}/forgotPassword`, { email })
@@ -382,7 +383,7 @@ export class AuthService {
   }
 
   resetPassword(
-    userType: `employee` | `scheduler`,
+    userType: UserType,
     token: string,
     password: string,
     passwordConfirm: string

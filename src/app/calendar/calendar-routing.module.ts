@@ -4,7 +4,6 @@ import { Routes, RouterModule } from "@angular/router";
 
 import { CalendarComponent } from "./calendar.component";
 import { DayComponent } from "./day/day.component";
-import { MonthComponent } from "./month/month.component";
 import { WeekComponent } from "./week/week.component";
 
 const routes: Routes = [
@@ -12,8 +11,7 @@ const routes: Routes = [
     path: "",
     component: CalendarComponent,
   },
-  { path: "day/:id", component: DayComponent },
-  { path: "month", component: MonthComponent },
+  { path: "day/:date", component: DayComponent },
   { path: "week", component: WeekComponent },
 ];
 

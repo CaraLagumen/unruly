@@ -1,3 +1,4 @@
+//READ ONLY - ALTERABLE DATA IN USERS FOLDER
 export interface Employee {
   firstName: string;
   lastName: string;
@@ -13,4 +14,5 @@ export interface Employee {
   seniority: number;
   hireDate: Date;
   preferredShiftSlots: string[];
+  preferredDaysOff: number[];
 }

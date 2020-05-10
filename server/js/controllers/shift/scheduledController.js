@@ -43,22 +43,12 @@ exports.validateScheduled = catchAsync_1.default((req, res, next) => __awaiter(v
     next();
 }));
 //MAIN----------------------------------------------------------
-//CREATE SCHEDULED SHIFT WITH EMPLOYEE FROM SHIFT ID AND EMPLOYEE ID (ENTERED)
-exports.createScheduled = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const shift = req.body.shiftId;
-    const employee = req.body.employeeId;
-    const scheduler = req.scheduler.id;
-    const date = req.body.date;
-    const doc = yield scheduledModel_1.default.create({ shift, employee, scheduler, date });
-    res.status(201).json({
-        status: `success`,
-        doc,
-    });
-}));
 //GET ALL SCHEDULED SHIFTS OF EMPLOYEE FROM EMPLOYEE ID (ENTERED)
 exports.getEmployeeSchedule = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     //1. ADD SEARCH FUNCTIONALITY
-    const features = new apiFeatures_1.default(scheduledModel_1.default.find({ employee: req.params.id }), req.query)
+    const features = new apiFeatures_1.default(
+    //@ts-ignore
+    scheduledModel_1.default.find({ employee: req.params.id }), req.query)
         .filter()
         .sort()
         .limitFields()
@@ -69,6 +59,18 @@ exports.getEmployeeSchedule = catchAsync_1.default((req, res, next) => __awaiter
     res.status(200).json({
         status: `success`,
         results: doc.length,
+        doc,
+    });
+}));
+//CREATE SCHEDULED SHIFT WITH EMPLOYEE FROM SHIFT ID AND EMPLOYEE ID (ENTERED)
+exports.createScheduled = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const shift = req.body.shiftId;
+    const employee = req.body.employeeId;
+    const scheduler = req.scheduler.id;
+    const date = req.body.date;
+    const doc = yield scheduledModel_1.default.create({ shift, employee, scheduler, date });
+    res.status(201).json({
+        status: `success`,
         doc,
     });
 }));

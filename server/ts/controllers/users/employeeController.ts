@@ -39,7 +39,12 @@ export const updateMe = catchAsync(async (req, res, next) => {
   }
 
   //2. FILTER FIELD NAMES THAT ARE ALLOWED TO BE UPDATED
-  const filteredBody = filterObj(req.body, `email`, `preferredShiftSlots`);
+  const filteredBody = filterObj(
+    req.body,
+    `email`,
+    `preferredShiftSlots`,
+    `preferredDaysOff`
+  );
 
   //3. UPDATE EMPLOYEE DOC
   const updatedEmployee = await Employee.findByIdAndUpdate(

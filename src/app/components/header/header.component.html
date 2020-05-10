@@ -1,4 +1,4 @@
-<h1>Unruly</h1> by Cara Lagumen
+<h1 routerLink="/">Unruly</h1> by Cara Lagumen
 
 <div *ngIf="!employeeIsAuth && !schedulerIsAuth">
   <div class="employee">
@@ -18,7 +18,12 @@
   </div>
 </div>
 
-<button
-  *ngIf="employeeIsAuth || schedulerIsAuth"
-  (click)="onLogout()"
->Logout</button>
+<div *ngIf="employeeIsAuth">
+  <button routerLink="/employee/profile">Profile</button>
+  <button (click)="onLogout()">Logout</button>
+</div>
+
+<div *ngIf="schedulerIsAuth">
+  <button routerLink="/scheduler/profile">Profile</button>
+  <button (click)="onLogout()">Logout</button>
+</div>

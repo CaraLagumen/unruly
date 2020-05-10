@@ -46,7 +46,7 @@ exports.updateMe = catchAsync_1.default((req, res, next) => __awaiter(void 0, vo
         return next(new appError_1.default(`This route is not for password updates. Use /updateMyPassword.`, 400));
     }
     //2. FILTER FIELD NAMES THAT ARE ALLOWED TO BE UPDATED
-    const filteredBody = filterObj(req.body, `email`, `preferredShiftSlots`);
+    const filteredBody = filterObj(req.body, `email`, `preferredShiftSlots`, `preferredDaysOff`);
     //3. UPDATE EMPLOYEE DOC
     const updatedEmployee = yield employeeModel_1.default.findByIdAndUpdate(req.employee.id, filteredBody, {
         new: true,

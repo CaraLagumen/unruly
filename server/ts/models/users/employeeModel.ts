@@ -13,6 +13,11 @@ const customValidate = {
   max3Items: function (arr: string[]) {
     return arr.length <= 3;
   },
+
+  uniqueArr: function (arr: string[]) {
+    const duplicates = arr.filter((el, i, arrRef) => arrRef.indexOf(el) !== i);
+    return duplicates.length === 0;
+  },
 };
 
 const employeeSchema: Schema = new mongoose.Schema(
@@ -81,15 +86,27 @@ const employeeSchema: Schema = new mongoose.Schema(
         },
       ],
       validate: [
-        customValidate.max3Items,
-        `Preferred shift slots must be less than 3 and unique.`,
+        {
+          validator: customValidate.max3Items,
+          msg: `Preferred shift slots must have less than or equal to 3 options.`,
+        },
+        {
+          validator: customValidate.uniqueArr,
+          msg: `Preferred shift slots must be unique.`,
+        },
       ],
     },
     preferredDaysOff: {
       type: [{ type: Number, min: 0, max: 6, unique: true }],
       validate: [
-        customValidate.equal2Items,
-        `Preferred days off must be 2 and unique.`,
+        {
+          validator: customValidate.equal2Items,
+          msg: `Preferred days off must have less than or equal to 2 options.`,
+        },
+        {
+          validator: customValidate.uniqueArr,
+          msg: `Preferred days off must be unique.`,
+        },
       ],
     },
   },

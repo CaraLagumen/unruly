@@ -6,7 +6,6 @@ import { CalendarComponent } from "./calendar.component";
 import { CalendarRoutingModule } from "./calendar-routing.module";
 import { CalendarItemComponent } from "./calendar-item/calendar-item.component";
 import { DayComponent } from "./day/day.component";
-import { MonthComponent } from "./month/month.component";
 import { WeekComponent } from "./week/week.component";
 
 @NgModule({
@@ -14,7 +13,6 @@ import { WeekComponent } from "./week/week.component";
     CalendarComponent,
     CalendarItemComponent,
     DayComponent,
-    MonthComponent,
     WeekComponent,
   ],
   imports: [CalendarRoutingModule, RouterModule, CommonModule],
