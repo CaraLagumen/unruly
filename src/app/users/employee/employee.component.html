@@ -1,5 +1,8 @@
 <h3>Profile</h3>
 
+{{ employee?.firstName }}
+{{ employee?.lastName }}
+
 <form
   (submit)="onUpdateEmployee()"
   [formGroup]="updateEmployeeForm"
@@ -11,6 +14,11 @@
     formControlName="email"
     placeholder="{{ employee?.email }}"
   >
+
+  {{ employee?.position }}
+  {{ employee?.status }}
+  {{ employee?.seniority }}
+  {{ employee?.hireDate }}
 
   <span>Preferred Shift Slots</span>
   <select formControlName="preferredShiftSlots1">

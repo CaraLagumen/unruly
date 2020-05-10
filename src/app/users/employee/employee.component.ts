@@ -53,7 +53,6 @@ export class EmployeeComponent implements OnInit, OnDestroy {
       .getUser(`employee`)
       .subscribe((employeeData: Employee) => {
         this.employee = employeeData;
-        console.log(this.employee);
 
         //CONVERT NUMBER TO STRING FOR DAYS OFF
         const dayOff1 = employeeData.preferredDaysOff[0];

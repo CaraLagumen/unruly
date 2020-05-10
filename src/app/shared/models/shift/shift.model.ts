@@ -3,6 +3,6 @@ export interface Shift {
   slot: string;
   location: string;
   day: number;
-  shiftStart: any;
-  shiftEnd: any;
+  shiftStart: [number, number];
+  shiftEnd: [number, number];
 }

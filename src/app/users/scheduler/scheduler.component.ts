@@ -37,7 +37,6 @@ export class SchedulerComponent implements OnInit, OnDestroy {
       .getUser(`scheduler`)
       .subscribe((schedulerData: Scheduler) => {
         this.scheduler = schedulerData;
-        console.log(this.scheduler);
 
         this.updateSchedulerForm.controls["email"].setValue(
           schedulerData.email

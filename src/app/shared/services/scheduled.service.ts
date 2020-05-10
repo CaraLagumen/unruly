@@ -31,14 +31,7 @@ export class ScheduledService {
   //PROTECTED----------------------------------------------------------
 
   //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
-  createScheduled(
-    shiftId: string,
-    employeeId: string,
-    schedulerId: string,
-    date: Date
-  ): Observable<Scheduled> {
-    const scheduledData = { shiftId, employeeId, schedulerId, date };
-
+  createScheduled(scheduledData: Scheduled): Observable<Scheduled> {
     return this.http.post<Scheduled>(`${ROOT_URL}`, scheduledData);
   }
 

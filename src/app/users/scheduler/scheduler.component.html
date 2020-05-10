@@ -1,5 +1,8 @@
 <h3>Profile</h3>
 
+{{ scheduler?.firstName }}
+{{ scheduler?.lastName }}
+
 <form
   (submit)="onUpdateScheduler()"
   [formGroup]="updateSchedulerForm"
