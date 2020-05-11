@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
 import { environment } from "../../../../environments/environment";
-import { Employee } from '../../models/users/employee.model';
+import { Employee } from "../../models/users/employee.model";
 
 const ROOT_URL = `${environment.apiUrl}/employee`;
 
@@ -16,7 +16,7 @@ export class EmployeeService {
 
   getAllEmployee(): Observable<Employee[]> {
     return this.http
-      .get<Employee[]>(`${ROOT_URL}`)
+      .get<Employee[]>(`${ROOT_URL}?sort=lastName`)
       .pipe(map((employee: any) => employee.doc));
   }
 

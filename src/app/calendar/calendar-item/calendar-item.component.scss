@@ -1,5 +1,5 @@
 .container {
-  overflow-y: scroll;
+  overflow-y: auto;
 
   height: 80%;
 }
@@ -10,6 +10,7 @@
   margin: 0.1rem;
 
   background-color: white;
+  border: solid darkgray 0.1rem;
 
   font-size: 0.8rem;
 }

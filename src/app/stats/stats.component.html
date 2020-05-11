@@ -1,16 +1,19 @@
 <h1>Statistics</h1>
 
-<h3>Roster</h3>
+<h2>Roster</h2>
+
+<h3>Employee</h3>
 <div *ngFor="let employee of (employees$ | async)">
-  {{ employee?.firstName }} {{ employee?.lastName }}
+  {{ employee?.lastName }}, {{ employee?.firstName }}
 </div>
 
+<h3>Scheduler</h3>
 <div *ngFor="let scheduler of (schedulers$ | async)">
-  {{ scheduler?.firstName }} {{ scheduler?.lastName }}
+  {{ scheduler?.lastName }}, {{ scheduler?.firstName }}
 </div>
 
 <h3>Shifts</h3>
 
 <div *ngFor="let shift of (shifts$ | async)">
-  {{ shift?.shiftStart }} {{ shift?.shiftEnd }}
+  {{ shift?.slot }} {{ shift?.day }} {{ shift?.shiftStart[0] }} {{ shift?.shiftEnd[0] }}
 </div>

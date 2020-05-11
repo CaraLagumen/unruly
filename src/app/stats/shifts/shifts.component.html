@@ -1,0 +1,24 @@
+<h1>Shift statistics</h1>
+
+<h3>Shifts</h3>
+<div *ngFor="let shift of (shifts$ | async)">
+  {{ shift?.position}}
+  {{ shift?.slot }}
+  {{ shift?.location }}
+  {{ shift?.day }}
+  {{ shift?.shiftStart[0] }}
+  {{ shift?.shiftEnd[0] }}
+</div>
+
+<h3>Weekly shifts</h3>
+<div *ngFor="let weeklyShift of (weeklyShifts$ | async)">
+  {{ weeklyShift?.name }}
+  {{ weeklyShift?.position}}
+  {{ weeklyShift?.slot }}
+  {{ weeklyShift?.location }}
+  {{ weeklyShift?.shiftDay1.shiftStart[0] }}
+  {{ weeklyShift?.shiftDay2.shiftStart[0] }}
+  {{ weeklyShift?.shiftDay3.shiftStart[0] }}
+  {{ weeklyShift?.shiftDay4.shiftStart[0] }}
+  {{ weeklyShift?.shiftDay5.shiftStart[0] }}
+</div>

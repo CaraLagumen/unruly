@@ -21,7 +21,7 @@ export class ShiftsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.shifts$ = this.shiftService.getAllShifts();
+    this.shifts$ = this.shiftService.getRawAllShifts();
     this.weeklyShifts$ = this.weeklyShiftService.getAllWeeklyShifts();
   }
 }

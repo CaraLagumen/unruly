@@ -16,7 +16,7 @@ export class WeeklyShiftService {
 
   getAllWeeklyShifts(): Observable<WeeklyShift[]> {
     return this.http
-      .get<WeeklyShift[]>(`${ROOT_URL}`)
+      .get<WeeklyShift[]>(`${ROOT_URL}?sort=name`)
       .pipe(map((weeklyShift: any) => weeklyShift.doc));
   }
 

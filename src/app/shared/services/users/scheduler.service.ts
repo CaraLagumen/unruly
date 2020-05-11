@@ -16,7 +16,7 @@ export class SchedulerService {
 
   getAllScheduler(): Observable<Scheduler[]> {
     return this.http
-      .get<Scheduler[]>(`${ROOT_URL}`)
+      .get<Scheduler[]>(`${ROOT_URL}?sort=lastName`)
       .pipe(map((scheduler: any) => scheduler.doc));
   }
 
