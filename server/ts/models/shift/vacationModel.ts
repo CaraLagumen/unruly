@@ -34,8 +34,8 @@ const vacationSchema: Schema = new mongoose.Schema(
   }
 );
 
-//COMPOUND INDEX TO FIND IF VACATION EMPLOYEE, SCHEDULER, AND DATE IS UNIQUE
-vacationSchema.index({ employee: 1, scheduler: 1, date: 1 }, { unique: true });
+//COMPOUND INDEX TO FIND IF VACATION EMPLOYEE AND DATE IS UNIQUE
+vacationSchema.index({ employee: 1, date: 1 }, { unique: true });
 
 //SHOW IN FIND: EMPLOYEE
 vacationSchema.pre(/^find/, function (this: any, next) {

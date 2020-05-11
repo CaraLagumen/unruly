@@ -13,10 +13,10 @@ const router = express.Router();
 router.use(employeeAuthController.protect);
 
 //GET ALL
-router.route(`/`).get(preferredController.getAllPreferred);
+router.get(`/`, preferredController.getAllPreferred);
 
 //GET ALL OF LOGGED IN EMPLOYEE
-router.route(`/me`).get(preferredController.getAllMyPreferred);
+router.get(`/me`, preferredController.getAllMyPreferred);
 
 //SAVE ONE AND DELETE ONE OF LOGGED IN EMPLOYEE
 router

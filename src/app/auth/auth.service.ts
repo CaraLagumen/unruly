@@ -99,13 +99,20 @@ export class AuthService {
 
   register(
     userType: UserType,
-    name: string,
+    firstName: string,
+    lastName: string,
     email: string,
     password: string,
     passwordConfirm: string
   ) {
     //1. GRAB DATA INPUT
-    const authData: AuthData = { name, email, password, passwordConfirm };
+    const authData: AuthData = {
+      firstName,
+      lastName,
+      email,
+      password,
+      passwordConfirm,
+    };
 
     //2. POST TO API
     this.http.post(`${ROOT_URL}/${userType}/register`, authData).subscribe(

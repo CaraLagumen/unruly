@@ -58,6 +58,8 @@ const schedulerSchema = new mongoose_1.default.Schema({
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
 });
+//COMPOUND INDEX TO FIND IF FIRST AND LAST NAME IS UNIQUE
+schedulerSchema.index({ firstName: 1, lastName: 1 }, { unique: true });
 //VIRTUAL POPULATE----------------------------------------------------------
 //SCHEDULED
 schedulerSchema.virtual(`scheduled`, {

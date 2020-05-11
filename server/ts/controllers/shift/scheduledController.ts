@@ -76,6 +76,7 @@ export const createScheduled = catchAsync(async (req, res, next) => {
 
 //STANDARD----------------------------------------------------------
 
+export const getRawAllScheduled = factory.getRawAll(Scheduled);
 export const getAllScheduled = factory.getAll(Scheduled);
 export const getScheduled = factory.getOne(Scheduled);
 export const deleteScheduled = factory.deleteOne(Scheduled);

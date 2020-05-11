@@ -51,6 +51,9 @@ const schedulerSchema: Schema = new mongoose.Schema(
   }
 );
 
+//COMPOUND INDEX TO FIND IF FIRST AND LAST NAME IS UNIQUE
+schedulerSchema.index({ firstName: 1, lastName: 1 }, { unique: true });
+
 //VIRTUAL POPULATE----------------------------------------------------------
 
 //SCHEDULED

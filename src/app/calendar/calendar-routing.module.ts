@@ -7,10 +7,7 @@ import { DayComponent } from "./day/day.component";
 import { WeekComponent } from "./week/week.component";
 
 const routes: Routes = [
-  {
-    path: "",
-    component: CalendarComponent,
-  },
+  { path: "", component: CalendarComponent },
   { path: "day/:date", component: DayComponent },
   { path: "week", component: WeekComponent },
 ];

@@ -3,8 +3,8 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
-import { environment } from "../../../environments/environment";
-import { Scheduled } from "../models/shift/scheduled.model";
+import { environment } from "../../../../environments/environment";
+import { Scheduled } from "../../models/shift/scheduled.model";
 
 const ROOT_URL = `${environment.apiUrl}/scheduled`;
 
@@ -13,6 +13,13 @@ const ROOT_URL = `${environment.apiUrl}/scheduled`;
 })
 export class ScheduledService {
   constructor(private http: HttpClient) {}
+
+  //RAW SCHEDULED (NO LIMIT)
+  getRawAllScheduled(): Observable<Scheduled[]> {
+    return this.http
+      .get<Scheduled[]>(`${ROOT_URL}/raw`)
+      .pipe(map((shift: any) => shift.doc));
+  }
 
   getAllScheduled(): Observable<Scheduled[]> {
     return this.http

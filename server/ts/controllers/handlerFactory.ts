@@ -6,9 +6,21 @@ import AppError from "../utils/appError";
 
 //HANDLES PARAM ID ONLY
 
+export const getRawAll = (Model: Model<any>) =>
+  catchAsync(async (req, res, next) => {
+    //ALLOWS FOR SEARCH OF ALL DOC (NOT LIMITED TO 100)
+    const doc = await Model.find();
+
+    res.status(200).json({
+      status: `success`,
+      results: doc.length,
+      doc,
+    });
+  });
+
 export const getAll = (Model: Model<any>) =>
   catchAsync(async (req, res, next) => {
-    //1. ADD SEARCH FUNCTIONALITY
+    //1. ADD SEARCH FUNCTIONALITY (LIMITED TO 100)
     const features = new APIFeatures(Model.find(), req.query)
       .filter()
       .sort()

@@ -13,6 +13,7 @@ import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { FooterComponent } from "./components/footer/footer.component";
 import { AlertComponent } from "./components/alert/alert.component";
+import { StatsModule } from "./stats/stats.module";
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { AlertComponent } from "./components/alert/alert.component";
     CalendarModule,
     AuthModule,
     UsersModule,
+    StatsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },

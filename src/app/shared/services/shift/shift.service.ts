@@ -3,9 +3,9 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
-import { environment } from "../../../environments/environment";
-import { Shift } from "../models/shift/shift.model";
-import { ShiftEvent } from "../models/custom-types";
+import { environment } from "../../../../environments/environment";
+import { Shift } from "../../models/shift/shift.model";
+import { ShiftEvent } from "../../models/custom-types";
 
 const ROOT_URL = `${environment.apiUrl}/shifts`;
 
@@ -15,7 +15,14 @@ const ROOT_URL = `${environment.apiUrl}/shifts`;
 export class ShiftService {
   constructor(private http: HttpClient) {}
 
-  getAllShift(): Observable<Shift[]> {
+  //RAW SHIFTS (NO LIMIT)
+  getRawAllShifts(): Observable<Shift[]> {
+    return this.http
+      .get<Shift[]>(`${ROOT_URL}/raw`)
+      .pipe(map((shift: any) => shift.doc));
+  }
+
+  getAllShifts(): Observable<Shift[]> {
     return this.http
       .get<Shift[]>(`${ROOT_URL}`)
       .pipe(map((shift: any) => shift.doc));

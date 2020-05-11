@@ -10,6 +10,7 @@ const weeklyScheduledSchema = new mongoose_1.default.Schema({
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: `Employee`,
         required: [true, `Weekly scheduled shifts must belong to an employee.`],
+        unique: true,
     },
     scheduler: {
         type: mongoose_1.default.Schema.Types.ObjectId,
@@ -29,8 +30,6 @@ const weeklyScheduledSchema = new mongoose_1.default.Schema({
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
 });
-//COMPOUND INDEX TO FIND IF WEEKLY SCHEDULED EMPLOYEE IS UNIQUE (ONLY ONE WEEKLY SCHEDULED PER EMPLOYEE)
-weeklyScheduledSchema.index({ employee: 1 }, { unique: true });
 //SHOW IN FIND: EMPLOYEE AND SCHEDULER
 weeklyScheduledSchema.pre(/^find/, function (next) {
     this.populate(`employee`).populate(`scheduler`);

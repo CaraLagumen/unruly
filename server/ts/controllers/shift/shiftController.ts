@@ -19,6 +19,7 @@ export const getShiftsByHour = catchAsync(async (req, res, next) => {
   });
 });
 
+export const getRawAllShifts = factory.getRawAll(Shift);
 export const getAllShifts = factory.getAll(Shift);
 export const getShift = factory.getOne(Shift);
 export const createShift = factory.createOne(Shift);

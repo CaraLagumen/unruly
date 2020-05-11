@@ -31,7 +31,8 @@ export class EmployeeRegisterComponent implements OnInit, OnDestroy {
 
     this.authService.register(
       `employee`,
-      form.value.name,
+      form.value.firstName,
+      form.value.lastName,
       form.value.email,
       form.value.password,
       form.value.passwordConfirm

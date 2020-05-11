@@ -2,7 +2,9 @@ import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
 import * as moment from "moment";
 
-import { ScheduledService } from "../shared/services/scheduled.service";
+import { Shift } from "../shared/models/shift/shift.model";
+import { ShiftService } from "../shared/services/shift/shift.service";
+import { ScheduledService } from "../shared/services/shift/scheduled.service";
 import { Scheduled } from "../shared/models/shift/scheduled.model";
 
 @Component({
@@ -11,26 +13,40 @@ import { Scheduled } from "../shared/models/shift/scheduled.model";
   styleUrls: ["./calendar.component.scss"],
 })
 export class CalendarComponent implements OnInit, OnDestroy {
+  private shiftSub: Subscription;
   private scheduledSub: Subscription;
 
   daysArr: moment.Moment[];
   day: moment.Moment;
+  allShifts: Shift[];
   allScheduled: Scheduled[];
-  isLoaded: Promise<boolean>;
 
   date = moment();
+  allShiftsLoaded = false;
+  allScheduledLoaded = false;
 
-  constructor(private scheduledService: ScheduledService) {}
+  constructor(
+    private shiftService: ShiftService,
+    private scheduledService: ScheduledService
+  ) {}
 
   ngOnInit() {
     //1. INTIALIZE CALENDAR
     this.daysArr = this.createCalendar(this.date);
 
+    //2. GRAB DATA
+    this.shiftSub = this.shiftService
+      .getRawAllShifts()
+      .subscribe((shift: any) => {
+        this.allShifts = shift;
+        this.allShiftsLoaded = true;
+      });
+
     this.scheduledSub = this.scheduledService
-      .getAllScheduled()
+      .getRawAllScheduled()
       .subscribe((scheduled: any) => {
         this.allScheduled = scheduled;
-        this.isLoaded = Promise.resolve(true);
+        this.allScheduledLoaded = true;
       });
   }
 
@@ -105,6 +121,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.shiftSub.unsubscribe();
     this.scheduledSub.unsubscribe();
   }
 }

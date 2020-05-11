@@ -31,8 +31,8 @@ const vacationSchema = new mongoose_1.default.Schema({
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
 });
-//COMPOUND INDEX TO FIND IF VACATION EMPLOYEE, SCHEDULER, AND DATE IS UNIQUE
-vacationSchema.index({ employee: 1, scheduler: 1, date: 1 }, { unique: true });
+//COMPOUND INDEX TO FIND IF VACATION EMPLOYEE AND DATE IS UNIQUE
+vacationSchema.index({ employee: 1, date: 1 }, { unique: true });
 //SHOW IN FIND: EMPLOYEE
 vacationSchema.pre(/^find/, function (next) {
     this.populate(`employee`).populate(`scheduler`);

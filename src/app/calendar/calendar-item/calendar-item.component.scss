@@ -1,3 +1,19 @@
-div {
-    background-color: white;
+.container {
+  overflow-y: scroll;
+
+  height: 80%;
+}
+
+.shift-block {
+  display: inline-block;
+  width: 2rem;
+  margin: 0.1rem;
+
+  background-color: white;
+
+  font-size: 0.8rem;
+}
+
+.scheduled {
+  background-color: royalblue;
 }

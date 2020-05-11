@@ -31,7 +31,8 @@ export class SchedulerRegisterComponent implements OnInit, OnDestroy {
 
     this.authService.register(
       `scheduler`,
-      form.value.name,
+      form.value.firstName,
+      form.value.lastName,
       form.value.email,
       form.value.password,
       form.value.passwordConfirm

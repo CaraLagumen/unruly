@@ -3,8 +3,8 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
-import { environment } from "../../../environments/environment";
-import { WeeklyShift } from "../models/shift/weekly-shift.model";
+import { environment } from "../../../../environments/environment";
+import { WeeklyShift } from "../../models/shift/weekly-shift.model";
 
 const ROOT_URL = `${environment.apiUrl}/weeklyShifts`;
 
@@ -14,7 +14,7 @@ const ROOT_URL = `${environment.apiUrl}/weeklyShifts`;
 export class WeeklyShiftService {
   constructor(private http: HttpClient) {}
 
-  getAllWeeklyShift(): Observable<WeeklyShift[]> {
+  getAllWeeklyShifts(): Observable<WeeklyShift[]> {
     return this.http
       .get<WeeklyShift[]>(`${ROOT_URL}`)
       .pipe(map((weeklyShift: any) => weeklyShift.doc));

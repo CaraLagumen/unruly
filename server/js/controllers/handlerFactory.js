@@ -16,8 +16,17 @@ const catchAsync_1 = __importDefault(require("../utils/catchAsync"));
 const apiFeatures_1 = __importDefault(require("../utils/apiFeatures"));
 const appError_1 = __importDefault(require("../utils/appError"));
 //HANDLES PARAM ID ONLY
+exports.getRawAll = (Model) => catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    //ALLOWS FOR SEARCH OF ALL DOC (NOT LIMITED TO 100)
+    const doc = yield Model.find();
+    res.status(200).json({
+        status: `success`,
+        results: doc.length,
+        doc,
+    });
+}));
 exports.getAll = (Model) => catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    //1. ADD SEARCH FUNCTIONALITY
+    //1. ADD SEARCH FUNCTIONALITY (LIMITED TO 100)
     const features = new apiFeatures_1.default(Model.find(), req.query)
         .filter()
         .sort()

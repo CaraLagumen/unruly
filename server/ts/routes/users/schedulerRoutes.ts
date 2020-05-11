@@ -7,7 +7,44 @@ const router = express.Router();
 
 //ROOT - /scheduler
 
+//PROTECTED----------------------------------------------------------
+
+//PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
+router.get(
+  `/me`,
+  schedulerAuthController.protect,
+  schedulerController.getMe,
+  schedulerController.getScheduler
+);
+router.patch(
+  `/updateMe`,
+  schedulerAuthController.protect,
+  schedulerController.updateMe
+);
+router.patch(
+  `/updateMyPassword`,
+  schedulerAuthController.protect,
+  schedulerAuthController.updatePassword
+);
+
+//CREATE ONE
+router.post(
+  `/`,
+  schedulerAuthController.protect,
+  schedulerController.createScheduler
+);
+
+//UPDATE ONE AND DELETE ONE
+router
+  .route(`/:id`)
+  .patch(schedulerAuthController.protect, schedulerController.updateScheduler)
+  .delete(schedulerAuthController.protect, schedulerController.deleteScheduler);
+
 //PUBLIC----------------------------------------------------------
+
+//GETTERS
+router.get(`/`, schedulerController.getAllSchedulers);
+router.get(`/:id`, schedulerController.getScheduler);
 
 //AUTH IN AND OUT
 router.post(`/register`, schedulerAuthController.register);
@@ -17,27 +54,5 @@ router.get(`/logout`, schedulerAuthController.logout);
 //PASSWORD FORGOT AND RESET
 router.post(`/forgotPassword`, schedulerAuthController.forgotPassword);
 router.patch(`/resetPassword/:token`, schedulerAuthController.resetPassword);
-
-//PROTECTED----------------------------------------------------------
-
-//PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
-router.use(schedulerAuthController.protect);
-
-router.get(`/me`, schedulerController.getMe, schedulerController.getScheduler);
-router.patch(`/updateMe`, schedulerController.updateMe);
-router.patch(`/updateMyPassword`, schedulerAuthController.updatePassword);
-
-//GET ALL AND CREATE ONE
-router
-  .route(`/`)
-  .get(schedulerController.getAllSchedulers)
-  .post(schedulerController.createScheduler);
-
-//GET ONE, UPDATE ONE, AND DELETE ONE
-router
-  .route(`/:id`)
-  .get(schedulerController.getScheduler)
-  .patch(schedulerController.updateScheduler)
-  .delete(schedulerController.deleteScheduler);
 
 export = router;

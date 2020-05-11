@@ -75,6 +75,7 @@ exports.createScheduled = catchAsync_1.default((req, res, next) => __awaiter(voi
     });
 }));
 //STANDARD----------------------------------------------------------
+exports.getRawAllScheduled = factory.getRawAll(scheduledModel_1.default);
 exports.getAllScheduled = factory.getAll(scheduledModel_1.default);
 exports.getScheduled = factory.getOne(scheduledModel_1.default);
 exports.deleteScheduled = factory.deleteOne(scheduledModel_1.default);

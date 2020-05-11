@@ -7,26 +7,30 @@ const router = express.Router();
 
 //ROOT - /scheduled
 
-//PUBLIC GETTERS
-router.route(`/`).get(scheduledController.getAllScheduled);
-router.route(`/:id`).get(scheduledController.getScheduled);
-//GET EMPLOYEE SCHEDULE
-router.route(`/employee/:id`).get(scheduledController.getEmployeeSchedule);
-
 //PROTECTED----------------------------------------------------------
 
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
-router.use(schedulerAuthController.protect);
-
 //CREATE ONE
-router
-  .route(`/`)
-  .post(
-    scheduledController.validateScheduled,
-    scheduledController.createScheduled
-  );
-  
+router.post(
+  `/`,
+  schedulerAuthController.protect,
+  scheduledController.validateScheduled,
+  scheduledController.createScheduled
+);
+
 //DELETE ONE
-router.route(`/:id`).delete(scheduledController.deleteScheduled);
+router.delete(
+  `/:id`,
+  schedulerAuthController.protect,
+  scheduledController.deleteScheduled
+);
+
+//PUBLIC----------------------------------------------------------
+
+//GETTERS
+router.get(`/raw`, scheduledController.getRawAllScheduled);
+router.get(`/`, scheduledController.getAllScheduled);
+router.get(`/:id`, scheduledController.getScheduled);
+router.get(`/employee/:id`, scheduledController.getEmployeeSchedule);
 
 export = router;

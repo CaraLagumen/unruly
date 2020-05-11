@@ -1,0 +1,16 @@
+<h1>Statistics</h1>
+
+<h3>Roster</h3>
+<div *ngFor="let employee of (employees$ | async)">
+  {{ employee?.firstName }} {{ employee?.lastName }}
+</div>
+
+<div *ngFor="let scheduler of (schedulers$ | async)">
+  {{ scheduler?.firstName }} {{ scheduler?.lastName }}
+</div>
+
+<h3>Shifts</h3>
+
+<div *ngFor="let shift of (shifts$ | async)">
+  {{ shift?.shiftStart }} {{ shift?.shiftEnd }}
+</div>

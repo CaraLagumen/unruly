@@ -6,11 +6,19 @@
   *ngIf="!isLoading"
 >
 
-  <span>Name</span>
+  <span>First name</span>
   <input
     required
     ngModel
-    name="name"
+    name="firstName"
+    #nameInput="ngModel"
+  >
+
+  <span>Last name</span>
+  <input
+    required
+    ngModel
+    name="lastName"
     #nameInput="ngModel"
   >
 

@@ -72,6 +72,7 @@ const employeeSchema: Schema = new mongoose.Schema(
     seniority: {
       type: Number,
       required: [true, `Seniority required.`],
+      unique: true,
     },
     hireDate: {
       type: Date,
@@ -97,7 +98,7 @@ const employeeSchema: Schema = new mongoose.Schema(
       ],
     },
     preferredDaysOff: {
-      type: [{ type: Number, min: 0, max: 6, unique: true }],
+      type: [{ type: Number, min: 0, max: 6 }],
       validate: [
         {
           validator: customValidate.equal2Items,
@@ -115,6 +116,9 @@ const employeeSchema: Schema = new mongoose.Schema(
     toObject: { virtuals: true },
   }
 );
+
+//COMPOUND INDEX TO FIND IF FIRST AND LAST NAME IS UNIQUE
+employeeSchema.index({ firstName: 1, lastName: 1 }, { unique: true });
 
 //VIRTUAL POPULATE----------------------------------------------------------
 

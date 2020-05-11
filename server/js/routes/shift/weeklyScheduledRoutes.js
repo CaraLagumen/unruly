@@ -14,19 +14,19 @@ const weeklyScheduledController = __importStar(require("../../controllers/shift/
 const schedulerAuthController = __importStar(require("../../controllers/auth/schedulerAuthController"));
 const router = express_1.default.Router();
 //ROOT - /weeklyScheduled
-//PUBLIC GETTERS
-router.route(`/`).get(weeklyScheduledController.getAllWeeklyScheduled);
-router.route(`/:id`).get(weeklyScheduledController.getWeeklyScheduled);
 //PROTECTED----------------------------------------------------------
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
-router.use(schedulerAuthController.protect);
 //CREATE ONE
-router.route(`/`).post(weeklyScheduledController.createWeeklyScheduled);
+router.post(`/`, schedulerAuthController.protect, weeklyScheduledController.createWeeklyScheduled);
 //POPULATE TO SCHEDULED
-router.route(`/populate/:id`).post(weeklyScheduledController.populateToScheduled);
+router.post(`/populate/:id`, schedulerAuthController.protect, weeklyScheduledController.populateToScheduled);
 //UPDATE ONE AND DELETE ONE
 router
     .route(`/:id`)
-    .patch(weeklyScheduledController.updateWeeklyScheduled)
-    .delete(weeklyScheduledController.deleteWeeklyScheduled);
+    .patch(schedulerAuthController.protect, weeklyScheduledController.updateWeeklyScheduled)
+    .delete(schedulerAuthController.protect, weeklyScheduledController.deleteWeeklyScheduled);
+//PUBLIC----------------------------------------------------------
+//GETTERS
+router.get(`/`, weeklyScheduledController.getAllWeeklyScheduled);
+router.get(`/:id`, weeklyScheduledController.getWeeklyScheduled);
 module.exports = router;

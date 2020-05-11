@@ -3,8 +3,8 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
-import { environment } from "../../../environments/environment";
-import { WeeklyScheduled } from "../models/shift/weekly-scheduled.model";
+import { environment } from "../../../../environments/environment";
+import { WeeklyScheduled } from "../../models/shift/weekly-scheduled.model";
 
 const ROOT_URL = `${environment.apiUrl}/weeklyScheduled`;
 

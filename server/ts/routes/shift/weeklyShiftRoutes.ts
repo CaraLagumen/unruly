@@ -7,31 +7,35 @@ const router = express.Router();
 
 //ROOT - /weeklyShifts
 
-//PUBLIC GETTERS
-router.route(`/`).get(weeklyShiftController.getAllWeeklyShifts);
-router.route(`/:id`).get(weeklyShiftController.getWeeklyShift);
-
 //PROTECTED----------------------------------------------------------
 
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
-router.use(schedulerAuthController.protect);
-
 //CREATE ONE
-router
-  .route(`/`)
-  .post(
-    weeklyShiftController.validateWeeklyShift,
-    weeklyShiftController.createWeeklyShift
-  );
+router.post(
+  `/`,
+  schedulerAuthController.protect,
+  weeklyShiftController.validateWeeklyShift,
+  weeklyShiftController.createWeeklyShift
+);
 
 //UPDATE ONE AND DELETE ONE
 router
   .route(`/:id`)
   .patch(
+    schedulerAuthController.protect,
     weeklyShiftController.setupUpdatedWeeklyShift,
     weeklyShiftController.validateWeeklyShift,
     weeklyShiftController.updateWeeklyShift
   )
-  .delete(weeklyShiftController.deleteWeeklyShift);
+  .delete(
+    schedulerAuthController.protect,
+    weeklyShiftController.deleteWeeklyShift
+  );
+
+//PUBLIC----------------------------------------------------------
+
+//GETTERS
+router.get(`/`, weeklyShiftController.getAllWeeklyShifts);
+router.get(`/:id`, weeklyShiftController.getWeeklyShift);
 
 export = router;
