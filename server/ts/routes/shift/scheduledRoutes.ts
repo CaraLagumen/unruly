@@ -25,6 +25,13 @@ router.delete(
   scheduledController.deleteScheduled
 );
 
+//DELETE LAST SCHEDULED (CAN DELETE IN BULK)
+router.delete(
+  `/`,
+  schedulerAuthController.protect,
+  scheduledController.deleteLastScheduled
+);
+
 //PUBLIC----------------------------------------------------------
 
 //GETTERS

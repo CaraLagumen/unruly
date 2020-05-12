@@ -19,6 +19,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const moment_1 = __importDefault(require("moment"));
 const scheduledModel_1 = __importDefault(require("../../models/shift/scheduledModel"));
 const shiftModel_1 = __importDefault(require("../../models/shift/shiftModel"));
 const factory = __importStar(require("../handlerFactory"));
@@ -72,6 +73,23 @@ exports.createScheduled = catchAsync_1.default((req, res, next) => __awaiter(voi
     res.status(201).json({
         status: `success`,
         doc,
+    });
+}));
+//DELETE LAST SCHEDULED BY FINDING CREATED BY (CAN DELETE IN BULK)
+exports.deleteLastScheduled = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const scheduledDates = yield scheduledModel_1.default.find();
+    const lastScheduledDates = scheduledDates.map((scheduled) => moment_1.default(scheduled.createdAt));
+    const latestScheduledDate = moment_1.default.max(lastScheduledDates);
+    console.log(latestScheduledDate);
+    const docs = yield scheduledModel_1.default.deleteMany({
+        createdAt: latestScheduledDate.toDate(),
+    });
+    if (!docs) {
+        return next(new appError_1.default(`No documents found.`, 404));
+    }
+    res.status(204).json({
+        status: `success`,
+        docs: null,
     });
 }));
 //STANDARD----------------------------------------------------------

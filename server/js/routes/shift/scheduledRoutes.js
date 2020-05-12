@@ -20,6 +20,8 @@ const router = express_1.default.Router();
 router.post(`/`, schedulerAuthController.protect, scheduledController.validateScheduled, scheduledController.createScheduled);
 //DELETE ONE
 router.delete(`/:id`, schedulerAuthController.protect, scheduledController.deleteScheduled);
+//DELETE LAST SCHEDULED (CAN DELETE IN BULK)
+router.delete(`/`, schedulerAuthController.protect, scheduledController.deleteLastScheduled);
 //PUBLIC----------------------------------------------------------
 //GETTERS
 router.get(`/raw`, scheduledController.getRawAllScheduled);

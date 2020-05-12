@@ -42,6 +42,10 @@ export class ScheduledService {
     return this.http.post<Scheduled>(`${ROOT_URL}`, scheduledData);
   }
 
+  deleteLastScheduled() {
+    return this.http.delete(`${ROOT_URL}`);
+  }
+
   deleteScheduled(scheduledId: string): Observable<Scheduled> {
     return this.http.delete<Scheduled>(`${ROOT_URL}/${scheduledId}`);
   }

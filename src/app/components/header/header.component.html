@@ -29,11 +29,13 @@
   </div>
 
   <div *ngIf="employeeIsAuth">
+    <h2>Employee</h2>
     <button routerLink="/employee/profile">Profile</button>
     <button (click)="onLogout()">Logout</button>
   </div>
 
   <div *ngIf="schedulerIsAuth">
+    <h2>Scheduler</h2>
     <button routerLink="/scheduler/profile">Profile</button>
     <button (click)="onLogout()">Logout</button>
   </div>

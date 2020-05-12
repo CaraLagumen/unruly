@@ -1,9 +1,12 @@
+import moment from "moment";
+
 import Scheduled from "../../models/shift/scheduledModel";
 import Shift from "../../models/shift/shiftModel";
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import APIFeatures from "../../utils/apiFeatures";
 import AppError from "../../utils/appError";
+import IScheduled from "ts/types/shift/scheduledInterface";
 
 //----------------------FOR SCHEDULER USE
 
@@ -71,6 +74,28 @@ export const createScheduled = catchAsync(async (req, res, next) => {
   res.status(201).json({
     status: `success`,
     doc,
+  });
+});
+
+//DELETE LAST SCHEDULED BY FINDING CREATED BY (CAN DELETE IN BULK)
+export const deleteLastScheduled = catchAsync(async (req, res, next) => {
+  const scheduledDates = await Scheduled.find();
+  const lastScheduledDates = scheduledDates.map((scheduled: IScheduled) =>
+    moment(scheduled.createdAt)
+  );
+  const latestScheduledDate = moment.max(lastScheduledDates);
+
+  const docs = await Scheduled.deleteMany({
+    createdAt: latestScheduledDate.toDate(),
+  });
+
+  if (!docs) {
+    return next(new AppError(`No documents found.`, 404));
+  }
+
+  res.status(204).json({
+    status: `success`,
+    docs: null,
   });
 });
 

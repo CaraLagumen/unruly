@@ -27,10 +27,8 @@ export class WeeklyScheduledService {
   //PROTECTED----------------------------------------------------------
 
   //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
-  createWeeklyScheduled(
-    weeklyScheduledData: WeeklyScheduled
-  ): Observable<WeeklyScheduled> {
-    return this.http.post<WeeklyScheduled>(`${ROOT_URL}`, weeklyScheduledData);
+  populateAllToScheduled() {
+    return this.http.post(`${ROOT_URL}/populate`, null);
   }
 
   populateToScheduled(
@@ -38,9 +36,15 @@ export class WeeklyScheduledService {
     weeklyScheduledData: WeeklyScheduled
   ): Observable<WeeklyScheduled> {
     return this.http.post<WeeklyScheduled>(
-      `${ROOT_URL}/${weeklyScheduledId}`,
+      `${ROOT_URL}/populate/${weeklyScheduledId}`,
       weeklyScheduledData
     );
+  }
+
+  createWeeklyScheduled(
+    weeklyScheduledData: WeeklyScheduled
+  ): Observable<WeeklyScheduled> {
+    return this.http.post<WeeklyScheduled>(`${ROOT_URL}`, weeklyScheduledData);
   }
 
   updateWeeklyScheduled(
@@ -53,7 +57,9 @@ export class WeeklyScheduledService {
     );
   }
 
-  deleteWeeklyScheduled(weeklyScheduledId: string): Observable<WeeklyScheduled> {
+  deleteWeeklyScheduled(
+    weeklyScheduledId: string
+  ): Observable<WeeklyScheduled> {
     return this.http.delete<WeeklyScheduled>(
       `${ROOT_URL}/${weeklyScheduledId}`
     );

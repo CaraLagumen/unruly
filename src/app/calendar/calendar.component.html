@@ -1,4 +1,8 @@
-<app-dashboard></app-dashboard>
+<app-dashboard
+  [employeeIsAuth]="employeeIsAuth"
+  [schedulerIsAuth]="schedulerIsAuth"
+  (schedulerEmitter)="schedulerControl($event)"
+></app-dashboard>
 
 <div class="calendar">
 
