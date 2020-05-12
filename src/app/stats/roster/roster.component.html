@@ -3,12 +3,13 @@
 <h3>Employee</h3>
 <div *ngFor="let employee of (employees$ | async)">
   {{ employee?.lastName }}, {{ employee?.firstName }}
-  {{ employee?.position }}
+  {{ employee?.id }}
+  <!-- {{ employee?.position }}
   {{ employee?.status }}
   {{ employee?.seniority }}
   {{ employee?.hireDate | date: 'MMM d y' }}
   {{ employee?.preferredShiftSlots }}
-  {{ employee?.preferredDaysOff }}
+  {{ employee?.preferredDaysOff }} -->
 </div>
 
 <h3>Scheduler</h3>

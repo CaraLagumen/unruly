@@ -22,7 +22,7 @@ export class ShiftService {
         shift.doc
           //SORT BY SHIFT START AND DAY
           .sort((x: Shift, y: Shift) => x.shiftStart[0] - y.shiftStart[0])
-          .sort((x: Shift, y: Shift) => x.day - y.day)
+          // .sort((x: Shift, y: Shift) => x.day - y.day)
       )
     );
   }

@@ -5,6 +5,7 @@ import { RouterModule } from "@angular/router";
 import { CalendarRoutingModule } from "./calendar-routing.module";
 import { CalendarComponent } from "./calendar.component";
 import { CalendarItemComponent } from "./calendar-item/calendar-item.component";
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { DayComponent } from "./day/day.component";
 import { WeekComponent } from "./week/week.component";
 
@@ -12,6 +13,7 @@ import { WeekComponent } from "./week/week.component";
   declarations: [
     CalendarComponent,
     CalendarItemComponent,
+    DashboardComponent,
     DayComponent,
     WeekComponent,
   ],

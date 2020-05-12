@@ -15,6 +15,16 @@ export class ShiftsComponent implements OnInit {
   shifts$: Observable<Shift[]>;
   weeklyShifts$: Observable<WeeklyShift[]>;
 
+  days = [
+    `sunday`,
+    `monday`,
+    `tuesday`,
+    `wednesday`,
+    `thursday`,
+    `friday`,
+    `saturday`,
+  ];
+
   constructor(
     private shiftService: ShiftService,
     private weeklyShiftService: WeeklyShiftService

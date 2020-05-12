@@ -1,6 +1,10 @@
+<app-dashboard></app-dashboard>
+
 <div class="calendar">
 
   <div class="calendar__nav">
+
+    <button (click)="currentMonth()">Current month</button>
 
     <button
       (click)="previousMonth()"
@@ -34,14 +38,14 @@
 
     <div
       *ngFor="let day of daysArr"
-      [ngClass]="{ 'inactive': checkNotThisMonth(day), 'today': checkToday(day) }"
+      [ngClass]="{ 'inactive': isNotThisMonth(day), 'today': isToday(day) }"
       class="calendar__main--days"
     >
 
       <h4>{{ day?.date() }}</h4>
 
       <app-calendar-item
-        *ngIf="allScheduledLoaded && allShiftsLoaded"
+        *ngIf="isLoaded[0] && isLoaded[1]"
         [allShifts]="allShifts"
         [allScheduled]="allScheduled"
         [day]="day"

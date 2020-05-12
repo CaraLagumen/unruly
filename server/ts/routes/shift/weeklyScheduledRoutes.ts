@@ -10,11 +10,11 @@ const router = express.Router();
 //PROTECTED----------------------------------------------------------
 
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
-//CREATE ONE
+//POPULATE ALL TO SCHEDULED
 router.post(
-  `/`,
+  `/populate`,
   schedulerAuthController.protect,
-  weeklyScheduledController.createWeeklyScheduled
+  weeklyScheduledController.populateAllToScheduled
 );
 
 //POPULATE TO SCHEDULED
@@ -22,6 +22,13 @@ router.post(
   `/populate/:id`,
   schedulerAuthController.protect,
   weeklyScheduledController.populateToScheduled
+);
+
+//CREATE ONE
+router.post(
+  `/`,
+  schedulerAuthController.protect,
+  weeklyScheduledController.createWeeklyScheduled
 );
 
 //UPDATE ONE AND DELETE ONE

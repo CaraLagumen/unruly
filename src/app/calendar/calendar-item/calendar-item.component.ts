@@ -15,7 +15,8 @@ export class CalendarItemComponent implements OnInit {
   @Input() day: moment.Moment;
 
   shiftsOfTheDay: Shift[];
-  scheduledHour: number;
+
+  scheduledHours: number[] = [];
 
   constructor() {}
 
@@ -45,14 +46,14 @@ export class CalendarItemComponent implements OnInit {
       const comparableSchedule = moment(el.date).format("LL");
 
       if (comparableDay === comparableSchedule) {
-        this.scheduledHour = el.shift.shiftStart[0];
+        this.scheduledHours.push(el.shift.shiftStart[0]);
       }
     });
   }
 
   isScheduledHour(shiftHour) {
     //COMPARE HOURS
-    if (this.scheduledHour === shiftHour) {
+    if (this.scheduledHours.indexOf(shiftHour) > -1) {
       return true;
     } else {
       return false;

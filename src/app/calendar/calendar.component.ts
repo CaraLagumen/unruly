@@ -22,8 +22,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   allScheduled: Scheduled[];
 
   date = moment();
-  allShiftsLoaded = false;
-  allScheduledLoaded = false;
+  isLoaded = [false, false];
 
   constructor(
     private shiftService: ShiftService,
@@ -39,18 +38,23 @@ export class CalendarComponent implements OnInit, OnDestroy {
       .getRawAllShifts()
       .subscribe((shift: any) => {
         this.allShifts = shift;
-        this.allShiftsLoaded = true;
+        this.isLoaded[0] = true;
       });
 
     this.scheduledSub = this.scheduledService
       .getRawAllScheduled()
       .subscribe((scheduled: any) => {
         this.allScheduled = scheduled;
-        this.allScheduledLoaded = true;
+        this.isLoaded[1] = true;
       });
   }
 
   //TOOLS----------------------------------------------------------
+
+  currentMonth() {
+    this.date = moment();
+    this.daysArr = this.createCalendar(this.date);
+  }
 
   previousMonth() {
     this.date.subtract(1, "M");
@@ -62,7 +66,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.daysArr = this.createCalendar(this.date);
   }
 
-  checkToday(day) {
+  isToday(day) {
     if (!day) {
       return false;
     }
@@ -70,7 +74,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     return moment().format("L") === day.format("L");
   }
 
-  checkNotThisMonth(day) {
+  isNotThisMonth(day) {
     let firstDay = moment(this.date).startOf("M");
     const lastDay = moment(this.date).endOf("M");
 

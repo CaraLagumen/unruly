@@ -1,33 +1,41 @@
-<h1 routerLink="/">Unruly</h1> by Cara Lagumen
+<div class="container">
 
-<div *ngIf="!employeeIsAuth && !schedulerIsAuth">
-  <div class="employee">
-
-    <h2>Employee</h2>
-    <button routerLink="/auth/employee/login">Login</button>
-    <button routerLink="/auth/employee/register">Register</button>
-
+  <div>
+    <h1 routerLink="/">Unruly</h1> by Cara Lagumen
   </div>
 
-  <div class="scheduler">
-
-    <h2>Scheduler</h2>
-    <button routerLink="/auth/scheduler/login">Login</button>
-    <button routerLink="/auth/scheduler/register">Register</button>
-
+  <div>
+    <h2 routerLink="/stats">Statistics</h2>
+    <button routerLink="/stats/roster">Roster</button>
+    <button routerLink="/stats/shifts">Shifts</button>
   </div>
-</div>
 
-<div *ngIf="employeeIsAuth">
-  <button routerLink="/employee/profile">Profile</button>
-  <button (click)="onLogout()">Logout</button>
-</div>
+  <div *ngIf="!employeeIsAuth && !schedulerIsAuth">
+    <div class="employee">
 
-<div *ngIf="schedulerIsAuth">
-  <button routerLink="/scheduler/profile">Profile</button>
-  <button (click)="onLogout()">Logout</button>
-</div>
+      <h2>Employee</h2>
+      <button routerLink="/auth/employee/login">Login</button>
+      <button routerLink="/auth/employee/register">Register</button>
 
-<h2 routerLink="/stats">Statistics</h2>
-<button routerLink="/stats/roster">Roster</button>
-<button routerLink="/stats/shifts">Shifts</button>
+    </div>
+
+    <div class="scheduler">
+
+      <h2>Scheduler</h2>
+      <button routerLink="/auth/scheduler/login">Login</button>
+      <button routerLink="/auth/scheduler/register">Register</button>
+
+    </div>
+  </div>
+
+  <div *ngIf="employeeIsAuth">
+    <button routerLink="/employee/profile">Profile</button>
+    <button (click)="onLogout()">Logout</button>
+  </div>
+
+  <div *ngIf="schedulerIsAuth">
+    <button routerLink="/scheduler/profile">Profile</button>
+    <button (click)="onLogout()">Logout</button>
+  </div>
+
+</div>
