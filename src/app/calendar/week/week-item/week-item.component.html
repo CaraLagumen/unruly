@@ -1,0 +1,17 @@
+<div class="container">
+
+  <div
+    *ngFor="let shift of shiftsOfTheDay;"
+    [ngClass]="{ 'scheduled': isScheduledHour(shift?.shiftStart[0]) }"
+    class="shift-block"
+  >
+    {{ shift?.shiftStart[0] }} {{ shift?.shiftEnd[0] }}
+    {{ shift?.location }}
+
+    <div *ngIf="isScheduledHour(shift?.shiftStart[0])">
+      {{ getScheduled(shift?.shiftStart[0]).employee.firstName }}
+      {{ getScheduled(shift?.shiftStart[0]).employee.lastName }}
+    </div>
+  </div>
+
+</div>

@@ -1,1 +1,62 @@
-<p>week works!</p>
+<app-dashboard
+  [employeeIsAuth]="employeeIsAuth"
+  [schedulerIsAuth]="schedulerIsAuth"
+  (schedulerEmitter)="schedulerControl($event)"
+></app-dashboard>
+
+<div class="calendar">
+
+  <div class="calendar__nav">
+
+    <button (click)="currentWeek()">Current week</button>
+
+    <button
+      (click)="previousWeek()"
+      class="calendar__nav--btn"
+    >◄</button>
+
+    <h3 class="calendar__nav--week">
+      {{ date.format('MMMM') }} {{ date.format('YYYY') }}
+    </h3>
+
+    <button
+      (click)="nextWeek()"
+      class="calendar__nav--btn"
+    >►</button>
+
+    <button routerLink="/day/:id">Current day</button>
+
+  </div>
+
+  <div class="calendar__main">
+
+    <div
+      *ngFor="let day of daysArr"
+      [ngClass]="{ 'today': isToday(day) }"
+      class="calendar__main--days"
+    >
+
+      <h4 class="calendar__main--days-heading">{{ day?.format('ddd').toUpperCase() }}</h4>
+
+      <div
+        *ngIf="isLoaded[0] && isLoaded[1]"
+        class="calendar__main--days-info"
+      >
+
+        <h4>{{ day?.date() }}</h4>
+
+        <app-week-item
+          *ngIf="isLoaded[0] && isLoaded[1]"
+          [allShifts]="allShifts"
+          [allScheduled]="allScheduled"
+          [day]="day"
+        ></app-week-item>
+
+      </div>
+
+
+    </div>
+
+  </div>
+
+</div>

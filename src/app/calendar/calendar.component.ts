@@ -109,9 +109,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
     //2. CREATE ARR OF DAYS
     let days = Array.apply(null, { length: month.daysInMonth() })
-      //MAP INTO NUMBERS
+      //COUNT UP NUMBERS
       .map(Number.call, Number)
-      //MAP DAYS FROM MONTH'S FIRST DAY
+      //START FROM MONTH'S FIRST DAY
       .map((el) => moment(firstDay).add(el, "d"));
 
     //3. LOOP THROUGH DAYS BEFORE FIRST DAY'S DAY
@@ -168,7 +168,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
         this.weeklyScheduledService.populateAllToScheduled().subscribe(() => {
           reloadCalendar();
         });
-        
+
       case `deleteLastScheduled`:
         this.scheduledService.deleteLastScheduled().subscribe(() => {
           reloadCalendar();

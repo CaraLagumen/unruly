@@ -1,20 +1,23 @@
 import { Component, OnInit, Input } from "@angular/core";
 import * as moment from "moment";
 
-import { Scheduled } from "../../shared/models/shift/scheduled.model";
-import { Shift } from "../../shared/models/shift/shift.model";
+import { Shift } from "../../../shared/models/shift/shift.model";
+import { Scheduled } from "../../../shared/models/shift/scheduled.model";
 
 @Component({
-  selector: "app-calendar-item",
-  templateUrl: "./calendar-item.component.html",
-  styleUrls: ["./calendar-item.component.scss"],
+  selector: "app-week-item",
+  templateUrl: "./week-item.component.html",
+  styleUrls: ["./week-item.component.scss"],
 })
-export class CalendarItemComponent implements OnInit {
+export class WeekItemComponent implements OnInit {
   @Input() allShifts: Shift[];
   @Input() allScheduled: Scheduled[];
   @Input() day: moment.Moment;
 
+  scheduled: Scheduled;
+
   shiftsOfTheDay: Shift[] = [];
+  scheduledOfTheDay: Scheduled[] = [];
   scheduledHours: number[] = [];
 
   constructor() {}
@@ -46,6 +49,7 @@ export class CalendarItemComponent implements OnInit {
 
       if (comparableDay === comparableSchedule) {
         this.scheduledHours.push(el.shift.shiftStart[0]);
+        this.scheduledOfTheDay.push(el);
       }
     });
   }
@@ -57,5 +61,12 @@ export class CalendarItemComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+  getScheduled(shiftHour) {
+    const scheduledIndex = this.scheduledHours.indexOf(shiftHour);
+    this.scheduled = this.scheduledOfTheDay[scheduledIndex];
+
+    return this.scheduled;
   }
 }
