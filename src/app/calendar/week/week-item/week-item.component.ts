@@ -54,7 +54,9 @@ export class WeekItemComponent implements OnInit {
     });
   }
 
-  isScheduledHour(shiftHour) {
+  isScheduledHour(shift) {
+    const shiftHour = shift.shiftStart[0];
+
     //COMPARE HOURS
     if (this.scheduledHours.indexOf(shiftHour) > -1) {
       return true;
@@ -63,7 +65,8 @@ export class WeekItemComponent implements OnInit {
     }
   }
 
-  getScheduled(shiftHour) {
+  getScheduled(shift) {
+    const shiftHour = shift.shiftStart[0];
     const scheduledIndex = this.scheduledHours.indexOf(shiftHour);
     this.scheduled = this.scheduledOfTheDay[scheduledIndex];
 

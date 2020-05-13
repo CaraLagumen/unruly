@@ -1,1 +1,61 @@
-<p>day works!</p>
+<app-dashboard
+  [employeeIsAuth]="employeeIsAuth"
+  [schedulerIsAuth]="schedulerIsAuth"
+  (schedulerEmitter)="schedulerControl($event)"
+></app-dashboard>
+
+<div class="calendar">
+
+  <div class="calendar__nav">
+
+    <button (click)="currentDay()">Current day</button>
+
+    <button
+      (click)="previousDay()"
+      class="calendar__nav--btn"
+    >◄</button>
+
+    <h3 class="calendar__nav--week">
+      {{ day.format('MMMM') }} {{ day.format('YYYY') }}
+    </h3>
+
+    <button
+      (click)="nextDay()"
+      class="calendar__nav--btn"
+    >►</button>
+
+  </div>
+
+  <div
+    *ngIf="isLoaded[0] && isLoaded[1]"
+    class="calendar__main"
+  >
+
+    <div class="calendar__main--heading">{{ day?.format('ddd').toUpperCase() }}</div>
+
+    <div
+      [ngClass]="{ 'today': isToday(day) }"
+      class="calendar__main--info"
+    >
+
+      <h4>{{ day?.date() }}</h4>
+
+      <div
+        *ngFor="let shift of shiftsOfTheDay;"
+        [ngClass]="{ 'scheduled': isScheduledHour(shift) }"
+        class="shift-block"
+      >
+        {{ shift?.shiftStart[0] }} {{ shift?.shiftEnd[0] }}
+        {{ shift?.location }}
+
+        <div *ngIf="isScheduledHour(shift)">
+          {{ getScheduled(shift).employee.firstName }}
+          {{ getScheduled(shift).employee.lastName }}
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

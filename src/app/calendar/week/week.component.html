@@ -24,7 +24,7 @@
       class="calendar__nav--btn"
     >►</button>
 
-    <button routerLink="/day/:id">Current day</button>
+    <button [routerLink]="['/day', date.toISOString()]">Current day</button>
 
   </div>
 

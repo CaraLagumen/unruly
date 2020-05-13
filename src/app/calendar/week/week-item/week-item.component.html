@@ -2,15 +2,15 @@
 
   <div
     *ngFor="let shift of shiftsOfTheDay;"
-    [ngClass]="{ 'scheduled': isScheduledHour(shift?.shiftStart[0]) }"
+    [ngClass]="{ 'scheduled': isScheduledHour(shift) }"
     class="shift-block"
   >
     {{ shift?.shiftStart[0] }} {{ shift?.shiftEnd[0] }}
     {{ shift?.location }}
 
-    <div *ngIf="isScheduledHour(shift?.shiftStart[0])">
-      {{ getScheduled(shift?.shiftStart[0]).employee.firstName }}
-      {{ getScheduled(shift?.shiftStart[0]).employee.lastName }}
+    <div *ngIf="isScheduledHour(shift)">
+      {{ getScheduled(shift).employee.firstName }}
+      {{ getScheduled(shift).employee.lastName }}
     </div>
   </div>
 

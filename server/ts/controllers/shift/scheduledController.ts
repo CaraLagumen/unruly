@@ -79,12 +79,23 @@ export const createScheduled = catchAsync(async (req, res, next) => {
 
 //DELETE LAST SCHEDULED BY FINDING CREATED BY (CAN DELETE IN BULK)
 export const deleteLastScheduled = catchAsync(async (req, res, next) => {
-  const scheduledDates = await Scheduled.find();
-  const lastScheduledDates = scheduledDates.map((scheduled: IScheduled) =>
+  //1. GRAB ALL RAW SCHEDULED
+  const scheduled = await Scheduled.find();
+
+  //2. CREATE AN ARR OF DATES FROM ALL SCHEDULED AND GRAB THE LATEST DATE
+  const scheduledDates = scheduled.map((scheduled: IScheduled) =>
     moment(scheduled.createdAt)
   );
-  const latestScheduledDate = moment.max(lastScheduledDates);
+  const latestScheduledDate = moment.max(scheduledDates);
 
+  //3. DON'T DELETE IF LATEST DATE IN THE PAST
+  if (latestScheduledDate < moment()) {
+    return next(
+      new AppError(`Last scheduled is in the past. Cannot delete.`, 404)
+    );
+  }
+
+  //4. DELETE ALL SCHEDULED WITH THE SAME LATEST DATE
   const docs = await Scheduled.deleteMany({
     createdAt: latestScheduledDate.toDate(),
   });
@@ -93,6 +104,7 @@ export const deleteLastScheduled = catchAsync(async (req, res, next) => {
     return next(new AppError(`No documents found.`, 404));
   }
 
+  //5. SEND DATA
   res.status(204).json({
     status: `success`,
     docs: null,
