@@ -51,7 +51,7 @@
       <h4>{{ day?.date() }}</h4>
 
       <app-calendar-item
-        *ngIf="isLoaded[0] && isLoaded[1]"
+        *ngIf="isLoaded"
         [allShifts]="allShifts"
         [allScheduled]="allScheduled"
         [day]="day"

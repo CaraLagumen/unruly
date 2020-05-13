@@ -77,19 +77,29 @@ exports.createScheduled = catchAsync_1.default((req, res, next) => __awaiter(voi
 }));
 //DELETE LAST SCHEDULED BY FINDING CREATED BY (CAN DELETE IN BULK)
 exports.deleteLastScheduled = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const scheduledDates = yield scheduledModel_1.default.find();
-    const lastScheduledDates = scheduledDates.map((scheduled) => moment_1.default(scheduled.createdAt));
-    const latestScheduledDate = moment_1.default.max(lastScheduledDates);
-    console.log(latestScheduledDate);
-    const docs = yield scheduledModel_1.default.deleteMany({
+    //1. GRAB ALL RAW SCHEDULED
+    const scheduled = yield scheduledModel_1.default.find();
+    //2. CREATE AN ARR OF DATES FROM ALL SCHEDULED AND GRAB THE LATEST SCHEDULED
+    const scheduledDates = scheduled.map((scheduled) => moment_1.default(scheduled.createdAt));
+    const latestScheduledDate = moment_1.default.max(scheduledDates);
+    const lastScheduled = yield scheduledModel_1.default.findOne({
         createdAt: latestScheduledDate.toDate(),
     });
-    if (!docs) {
+    //3. DON'T DELETE IF LATEST DATE IN THE PAST
+    if (moment_1.default(lastScheduled === null || lastScheduled === void 0 ? void 0 : lastScheduled.date) < moment_1.default()) {
+        return next(new appError_1.default(`Last scheduled is in the past. Cannot delete.`, 404));
+    }
+    //4. DELETE ALL SCHEDULED WITH THE SAME LATEST DATE
+    const doc = yield scheduledModel_1.default.deleteMany({
+        createdAt: latestScheduledDate.toDate(),
+    });
+    if (!doc) {
         return next(new appError_1.default(`No documents found.`, 404));
     }
+    //5. SEND DATA
     res.status(204).json({
         status: `success`,
-        docs: null,
+        doc: null,
     });
 }));
 //STANDARD----------------------------------------------------------

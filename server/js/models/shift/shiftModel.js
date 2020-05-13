@@ -26,6 +26,7 @@ const shiftSchema = new mongoose_1.default.Schema({
             `castle coffee 1`,
             `castle coffee 2`,
             `pool`,
+            `breaker`,
         ],
     },
     day: {

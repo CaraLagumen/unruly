@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Subscription } from "rxjs";
+import { Subscription, Observable, forkJoin } from "rxjs";
 import * as moment from "moment";
 
 import { AuthService } from "../../auth/auth.service";
@@ -18,19 +18,20 @@ import { Scheduled } from "../../shared/models/shift/scheduled.model";
 export class WeekComponent implements OnInit, OnDestroy {
   private employeeAuthListenerSub: Subscription;
   private schedulerAuthListenerSub: Subscription;
-  private shiftSub: Subscription;
-  private scheduledSub: Subscription;
 
   userType: UserType;
   daysArr: moment.Moment[];
   day: moment.Moment;
+  getAllShifts: Observable<Shift[]>;
+  getAllScheduled: Observable<Scheduled[]>;
   allShifts: Shift[];
   allScheduled: Scheduled[];
 
   employeeIsAuth = false;
   schedulerIsAuth = false;
   date = moment();
-  isLoaded = [false, false];
+  today = moment(); //FOR USE WITH URL - DO NOT ALTER
+  isLoaded = false;
 
   constructor(
     private authService: AuthService,
@@ -47,20 +48,16 @@ export class WeekComponent implements OnInit, OnDestroy {
     this.userFeature();
 
     //3. GRAB DATA
-    this.shiftSub = this.shiftService
-      .getRawAllShifts()
-      .subscribe((shift: any) => {
-        this.allShifts = shift;
-        this.isLoaded[0] = true;
-      });
+    this.getAllShifts = this.shiftService.getRawAllShifts();
+    this.getAllScheduled = this.scheduledService.getRawAllScheduled();
 
-    this.scheduledSub = this.scheduledService
-      .getRawAllScheduled()
-      .subscribe((scheduled: any) => {
-        this.allScheduled = scheduled;
-        this.isLoaded[1] = true;
-      });
+    forkJoin([this.getAllShifts, this.getAllScheduled]).subscribe((result) => {
+      this.allShifts = result[0];
+      this.allScheduled = result[1];
+      this.isLoaded = true;
+    });
   }
+
   //TOOLS----------------------------------------------------------
 
   currentWeek() {
@@ -125,7 +122,7 @@ export class WeekComponent implements OnInit, OnDestroy {
 
   schedulerControl(type) {
     const reloadCalendar = () => {
-      this.isLoaded = [false, false];
+      this.isLoaded = false;
       this.ngOnInit();
     };
 
@@ -143,8 +140,6 @@ export class WeekComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.shiftSub.unsubscribe();
-    this.scheduledSub.unsubscribe();
     this.employeeAuthListenerSub.unsubscribe();
     this.schedulerAuthListenerSub.unsubscribe();
   }

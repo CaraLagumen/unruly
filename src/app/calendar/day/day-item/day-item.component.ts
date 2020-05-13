@@ -5,11 +5,11 @@ import { Shift } from "../../../shared/models/shift/shift.model";
 import { Scheduled } from "../../../shared/models/shift/scheduled.model";
 
 @Component({
-  selector: "app-week-item",
-  templateUrl: "./week-item.component.html",
-  styleUrls: ["./week-item.component.scss"],
+  selector: "app-day-item",
+  templateUrl: "./day-item.component.html",
+  styleUrls: ["./day-item.component.scss"],
 })
-export class WeekItemComponent implements OnInit {
+export class DayItemComponent implements OnInit {
   @Input() allShifts: Shift[];
   @Input() allScheduled: Scheduled[];
   @Input() day: moment.Moment;

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { Subscription } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
+import { Subscription, Observable, forkJoin } from "rxjs";
 import * as moment from "moment";
 
 import { AuthService } from "../../auth/auth.service";
@@ -19,31 +19,35 @@ import { Scheduled } from "../../shared/models/shift/scheduled.model";
 export class DayComponent implements OnInit, OnDestroy {
   private employeeAuthListenerSub: Subscription;
   private schedulerAuthListenerSub: Subscription;
-  private shiftSub: Subscription;
-  private scheduledSub: Subscription;
 
   userType: UserType;
-  day: moment.Moment;
+  day: moment.Moment; //LIKE daysArr FROM OTHER COMPONENTS
+  getAllShifts: Observable<Shift[]>;
+  getAllScheduled: Observable<Scheduled[]>;
   allShifts: Shift[];
   allScheduled: Scheduled[];
-  scheduled: Scheduled;
 
   employeeIsAuth = false;
   schedulerIsAuth = false;
   date = moment();
-  isLoaded = [false, false];
-  shiftsOfTheDay: Shift[] = [];
-  scheduledOfTheDay: Scheduled[] = [];
-  scheduledHours: number[] = [];
+  today = moment(); //FOR USE WITH URL - DO NOT ALTER
+  isLoaded = false;
 
   constructor(
     private authService: AuthService,
     private shiftService: ShiftService,
     private scheduledService: ScheduledService,
     private weeklyScheduledService: WeeklyScheduledService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
-    this.route.params.subscribe((param) => (this.date = moment(param["date"])));
+    this.route.params.subscribe((param) => {
+      if (param) {
+        return (this.date = moment(param["date"]));
+      }
+
+      return this.date;
+    });
   }
 
   ngOnInit() {
@@ -54,44 +58,34 @@ export class DayComponent implements OnInit, OnDestroy {
     this.userFeature();
 
     //3. GRAB DATA
-    this.shiftSub = this.shiftService
-      .getRawAllShifts()
-      .subscribe((shift: any) => {
-        this.allShifts = shift;
-        this.addShiftsOfTheDay();
-        this.shiftsOfTheDay.sort(
-          (x: Shift, y: Shift) => x.shiftStart[0] - y.shiftStart[0]
-        );
-        this.isLoaded[0] = true;
-      });
+    this.getAllShifts = this.shiftService.getRawAllShifts();
+    this.getAllScheduled = this.scheduledService.getRawAllScheduled();
 
-    this.scheduledSub = this.scheduledService
-      .getRawAllScheduled()
-      .subscribe((scheduled: any) => {
-        this.allScheduled = scheduled;
-        this.isScheduledDay();
-        this.isLoaded[1] = true;
-      });
+    forkJoin([this.getAllShifts, this.getAllScheduled]).subscribe((result) => {
+      this.allShifts = result[0];
+      this.allScheduled = result[1];
+      this.isLoaded = true;
+    });
   }
 
   //TOOLS----------------------------------------------------------
 
   currentDay() {
-    this.day = moment();
+    this.date = moment();
+    this.router.navigate(["/day", this.date.toISOString()]);
     this.resetData();
-    this.ngOnInit();
   }
 
   previousDay() {
-    this.day = this.date.subtract(1, "d");
+    this.date.subtract(1, "d");
+    this.router.navigate(["/day", this.date.toISOString()]);
     this.resetData();
-    this.ngOnInit();
   }
 
   nextDay() {
-    this.day = this.date.add(1, "d");
+    this.date.add(1, "d");
+    this.router.navigate(["/day", this.date.toISOString()]);
     this.resetData();
-    this.ngOnInit();
   }
 
   isToday(day) {
@@ -102,58 +96,14 @@ export class DayComponent implements OnInit, OnDestroy {
     return moment().format("L") === day.format("L");
   }
 
-  isScheduledDay() {
-    //COMPARE DATES (EX: MAY 1, 2020 TO MAY 1, 2020)
-    const comparableDay = this.date.format("LL");
-
-    this.allScheduled.forEach((el: any) => {
-      const comparableSchedule = moment(el.date).format("LL");
-
-      if (comparableDay === comparableSchedule) {
-        this.scheduledHours.push(el.shift.shiftStart[0]);
-        this.scheduledOfTheDay.push(el);
-      }
-    });
-  }
-
-  isScheduledHour(shift) {
-    const shiftHour = shift.shiftStart[0];
-
-    //COMPARE HOURS
-    if (this.scheduledHours.indexOf(shiftHour) > -1) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  getScheduled(shift) {
-    const shiftHour = shift.shiftStart[0];
-    const scheduledIndex = this.scheduledHours.indexOf(shiftHour);
-    this.scheduled = this.scheduledOfTheDay[scheduledIndex];
-
-    return this.scheduled;
-  }
-
-  //MAIN----------------------------------------------------------
-
-  addShiftsOfTheDay() {
-    //COMPARE DAYS (EX: 0 TO 0 OR SUNDAY TO SUNDAY)
-    const comparableDay = this.date.weekday();
-
-    this.shiftsOfTheDay = this.allShifts.filter(
-      (el: any) => comparableDay === el.day
-    );
-  }
-
   resetData() {
     this.allShifts = [];
     this.allScheduled = [];
-    this.scheduled = null;
-    this.shiftsOfTheDay = [];
-    this.scheduledOfTheDay = [];
-    this.scheduledHours = [];
+    this.isLoaded = false;
+    this.ngOnInit();
   }
+
+  //MAIN----------------------------------------------------------
 
   userFeature() {
     this.employeeIsAuth = this.authService.getEmployeeIsAuth();
@@ -177,9 +127,7 @@ export class DayComponent implements OnInit, OnDestroy {
 
   schedulerControl(type) {
     const reloadCalendar = () => {
-      this.isLoaded = [false, false];
       this.resetData();
-      this.ngOnInit();
     };
 
     switch (type) {
@@ -196,8 +144,6 @@ export class DayComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.shiftSub.unsubscribe();
-    this.scheduledSub.unsubscribe();
     this.employeeAuthListenerSub.unsubscribe();
     this.schedulerAuthListenerSub.unsubscribe();
   }

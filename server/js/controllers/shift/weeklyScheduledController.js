@@ -55,7 +55,7 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
                 yield shiftModel_1.default.findById(weeklyShift.shiftDay4),
                 yield shiftModel_1.default.findById(weeklyShift.shiftDay5),
             ];
-            //3. CREATE ARR WITH DATES TO LOOP INTO WHEN CREATING DOCS
+            //3. CREATE ARR WITH DATES TO LOOP INTO WHEN CREATING DOC
             const dates = [];
             shifts.forEach((el) => {
                 //EXTRACT DAYS FROM SHIFT (MON, TUES, ETC...)
@@ -65,7 +65,7 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
                 const comingShiftDay = comingMonday.isoWeekday(shiftDay);
                 dates.push(comingShiftDay.toDate());
             });
-            //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOCS
+            //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOC
             const scheduled = [];
             for (let i = 0; i < shifts.length; i++) {
                 //5. VALIDATE INDIVIDUAL SHIFTS BEFORE PUSH
@@ -91,13 +91,13 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
         }
         finally { if (e_1) throw e_1.error; }
     }
-    //6. CREATE DOCS FROM INDIVIDUAL SCHEDULEDS
+    //6. CREATE DOC FROM INDIVIDUAL SCHEDULEDS
     //@ts-ignore
-    const docs = yield scheduledModel_1.default.create([].concat(...scheduleds));
+    const doc = yield scheduledModel_1.default.create([].concat(...scheduleds));
     res.status(201).json({
         status: `success`,
         results: scheduleds.length,
-        docs,
+        doc,
     });
 }));
 //CREATE INDIVIDUAL SCHEDULED FROM WEEKLY SCHEDULED ID (PARAM)
@@ -114,7 +114,7 @@ exports.populateToScheduled = catchAsync_1.default((req, res, next) => __awaiter
         yield shiftModel_1.default.findById(weeklyShift.shiftDay4),
         yield shiftModel_1.default.findById(weeklyShift.shiftDay5),
     ];
-    //3. CREATE ARR WITH DATES TO LOOP INTO WHEN CREATING DOCS
+    //3. CREATE ARR WITH DATES TO LOOP INTO WHEN CREATING DOC
     const dates = [];
     shifts.forEach((el) => {
         //EXTRACT DAYS FROM SHIFT (MON, TUES, ETC...)
@@ -124,7 +124,7 @@ exports.populateToScheduled = catchAsync_1.default((req, res, next) => __awaiter
         const comingShiftDay = comingMonday.isoWeekday(shiftDay);
         dates.push(comingShiftDay.toDate());
     });
-    //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOCS
+    //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOC
     const scheduled = [];
     for (let i = 0; i < shifts.length; i++) {
         //5. VALIDATE INDIVIDUAL SHIFTS BEFORE PUSH

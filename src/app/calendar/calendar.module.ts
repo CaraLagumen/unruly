@@ -9,6 +9,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { DayComponent } from "./day/day.component";
 import { WeekComponent } from "./week/week.component";
 import { WeekItemComponent } from './week/week-item/week-item.component';
+import { DayItemComponent } from './day/day-item/day-item.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { WeekItemComponent } from './week/week-item/week-item.component';
     DayComponent,
     WeekComponent,
     WeekItemComponent,
+    DayItemComponent,
   ],
   imports: [CommonModule, RouterModule, CalendarRoutingModule],
 })

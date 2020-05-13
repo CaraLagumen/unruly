@@ -10,7 +10,7 @@ const weeklyShiftSchema = new mongoose_1.default.Schema({
     name: {
         type: String,
         required: [true, `Weekly shift name required.`],
-        unique: true
+        unique: true,
     },
     position: {
         type: String,
@@ -31,6 +31,7 @@ const weeklyShiftSchema = new mongoose_1.default.Schema({
             `castle coffee 1`,
             `castle coffee 2`,
             `pool`,
+            `breaker`,
         ],
     },
     shiftDay1: {

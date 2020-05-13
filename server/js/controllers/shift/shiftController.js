@@ -33,6 +33,7 @@ exports.getShiftsByHour = catchAsync_1.default((req, res, next) => __awaiter(voi
     });
     res.status(200).json({
         status: `success`,
+        results: doc.length,
         doc,
     });
 }));

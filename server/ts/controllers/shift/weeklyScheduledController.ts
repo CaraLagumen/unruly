@@ -31,7 +31,7 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
       await Shift.findById(weeklyShift!.shiftDay5),
     ];
 
-    //3. CREATE ARR WITH DATES TO LOOP INTO WHEN CREATING DOCS
+    //3. CREATE ARR WITH DATES TO LOOP INTO WHEN CREATING DOC
     const dates: Date[] = [];
 
     shifts.forEach((el: any) => {
@@ -43,7 +43,7 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
       dates.push(comingShiftDay.toDate());
     });
 
-    //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOCS
+    //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOC
     const scheduled = [];
 
     for (let i = 0; i < shifts.length; i++) {
@@ -70,14 +70,14 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
     scheduleds.push(scheduled);
   }
 
-  //6. CREATE DOCS FROM INDIVIDUAL SCHEDULEDS
+  //6. CREATE DOC FROM INDIVIDUAL SCHEDULEDS
   //@ts-ignore
-  const docs = await Scheduled.create([].concat(...scheduleds));
+  const doc = await Scheduled.create([].concat(...scheduleds));
 
   res.status(201).json({
     status: `success`,
     results: scheduleds.length,
-    docs,
+    doc,
   });
 });
 
@@ -98,7 +98,7 @@ export const populateToScheduled = catchAsync(async (req, res, next) => {
     await Shift.findById(weeklyShift!.shiftDay5),
   ];
 
-  //3. CREATE ARR WITH DATES TO LOOP INTO WHEN CREATING DOCS
+  //3. CREATE ARR WITH DATES TO LOOP INTO WHEN CREATING DOC
   const dates: Date[] = [];
 
   shifts.forEach((el: any) => {
@@ -112,7 +112,7 @@ export const populateToScheduled = catchAsync(async (req, res, next) => {
     dates.push(comingShiftDay.toDate());
   });
 
-  //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOCS
+  //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOC
   const scheduled = [];
 
   for (let i = 0; i < shifts.length; i++) {

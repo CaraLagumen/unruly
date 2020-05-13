@@ -24,7 +24,7 @@
       class="calendar__nav--btn"
     >►</button>
 
-    <button [routerLink]="['/day', date.toISOString()]">Current day</button>
+    <button [routerLink]="['/day', today.toISOString()]">Current day</button>
 
   </div>
 
@@ -38,15 +38,12 @@
 
       <h4 class="calendar__main--days-heading">{{ day?.format('ddd').toUpperCase() }}</h4>
 
-      <div
-        *ngIf="isLoaded[0] && isLoaded[1]"
-        class="calendar__main--days-info"
-      >
+      <div class="calendar__main--days-info">
 
         <h4>{{ day?.date() }}</h4>
 
         <app-week-item
-          *ngIf="isLoaded[0] && isLoaded[1]"
+          *ngIf="isLoaded"
           [allShifts]="allShifts"
           [allScheduled]="allScheduled"
           [day]="day"

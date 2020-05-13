@@ -15,14 +15,14 @@ export class CalendarItemComponent implements OnInit {
   @Input() day: moment.Moment;
 
   shiftsOfTheDay: Shift[] = [];
-  scheduledHours: number[] = [];
 
   constructor() {}
 
   ngOnInit() {
+    //1. POPULATE SHIFTS OF THE DAY
     this.addShiftsOfTheDay();
-    this.isScheduledDay();
 
+    //2. SORT THE SHIFTS FROM SHIFT START
     this.shiftsOfTheDay.sort(
       (x: Shift, y: Shift) => x.shiftStart[0] - y.shiftStart[0]
     );
@@ -37,25 +37,25 @@ export class CalendarItemComponent implements OnInit {
     );
   }
 
-  isScheduledDay() {
-    //COMPARE DATES (EX: MAY 1, 2020 TO MAY 1, 2020)
+  isScheduledShift(shift) {
+    //1. GRAB SHIFT ID TO COMPARE WITH SCHEDULED
+    //   TO FIND IF SHIFT IS SCHEDULED
+    const shiftId = shift.id;
+    const scheduled = this.allScheduled.find(
+      (el: any) => el.shift.id === shiftId
+    );
+
+    //2. SETUP THIS DAY TO A COMPARABLE FORMAT WITH SCHEDULED DAY
     const comparableDay = this.day.format("LL");
 
-    this.allScheduled.forEach((el: any) => {
-      const comparableSchedule = moment(el.date).format("LL");
+    //3. COMPARE THIS DAY ONLY IF THERE IS A SCHEDULED
+    if (scheduled) {
+      const comparableScheduled = moment(scheduled.date).format("LL");
 
-      if (comparableDay === comparableSchedule) {
-        this.scheduledHours.push(el.shift.shiftStart[0]);
+      // ENSURE SCHEDULED DAY IS SAME AS THIS DAY
+      if (comparableScheduled === comparableDay) {
+        return true;
       }
-    });
-  }
-
-  isScheduledHour(shiftHour) {
-    //COMPARE HOURS
-    if (this.scheduledHours.indexOf(shiftHour) > -1) {
-      return true;
-    } else {
-      return false;
     }
   }
 }

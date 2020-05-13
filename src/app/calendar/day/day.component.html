@@ -8,7 +8,9 @@
 
   <div class="calendar__nav">
 
-    <button (click)="currentDay()">Current day</button>
+    <button
+      (click)="currentDay()"
+    >Current day</button>
 
     <button
       (click)="previousDay()"
@@ -26,10 +28,7 @@
 
   </div>
 
-  <div
-    *ngIf="isLoaded[0] && isLoaded[1]"
-    class="calendar__main"
-  >
+  <div class="calendar__main">
 
     <div class="calendar__main--heading">{{ day?.format('ddd').toUpperCase() }}</div>
 
@@ -40,19 +39,12 @@
 
       <h4>{{ day?.date() }}</h4>
 
-      <div
-        *ngFor="let shift of shiftsOfTheDay;"
-        [ngClass]="{ 'scheduled': isScheduledHour(shift) }"
-        class="shift-block"
-      >
-        {{ shift?.shiftStart[0] }} {{ shift?.shiftEnd[0] }}
-        {{ shift?.location }}
-
-        <div *ngIf="isScheduledHour(shift)">
-          {{ getScheduled(shift).employee.firstName }}
-          {{ getScheduled(shift).employee.lastName }}
-        </div>
-      </div>
+      <app-day-item
+        *ngIf="isLoaded"
+        [allShifts]="allShifts"
+        [allScheduled]="allScheduled"
+        [day]="day"
+      ></app-day-item>
 
     </div>
 
