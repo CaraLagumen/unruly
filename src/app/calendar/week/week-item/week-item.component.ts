@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import * as moment from "moment";
 
+import { CalendarService } from "../../calendar.service";
 import { Shift } from "../../../shared/models/shift/shift.model";
 import { Scheduled } from "../../../shared/models/shift/scheduled.model";
 
@@ -18,7 +19,7 @@ export class WeekItemComponent implements OnInit {
 
   shiftsOfTheDay: Shift[] = [];
 
-  constructor() {}
+  constructor(private calendarService: CalendarService) {}
 
   ngOnInit() {
     //1. POPULATE SHIFTS OF THE DAY
@@ -31,35 +32,20 @@ export class WeekItemComponent implements OnInit {
   }
 
   addShiftsOfTheDay() {
-    //COMPARE DAYS (EX: 0 TO 0 OR SUNDAY TO SUNDAY)
-    const comparableDay = this.day.weekday();
-
-    this.shiftsOfTheDay = this.allShifts.filter(
-      (el: any) => comparableDay === el.day
+    this.shiftsOfTheDay = this.calendarService.addShiftsOfTheDay(
+      this.day,
+      this.allShifts
     );
   }
 
   isScheduledShift(shift) {
-    //1. GRAB SHIFT ID TO COMPARE WITH SCHEDULED
-    //   TO FIND IF SHIFT IS SCHEDULED & GRAB THE SCHEDULED
-    const shiftId = shift.id;
-    this.scheduled = this.allScheduled.find(
-      (el: any) => el.shift.id === shiftId
+    const data = this.calendarService.isScheduledShift(
+      shift,
+      this.allScheduled,
+      this.day
     );
+    this.scheduled = data[1];
 
-    //2. SETUP THIS DAY TO A COMPARABLE FORMAT WITH SCHEDULED DAY
-    const comparableDay = this.day.format("LL");
-
-    //3. COMPARE THIS DAY ONLY IF THERE IS A SCHEDULED
-    if (this.scheduled) {
-      const comparableScheduled = moment(this.scheduled.date).format("LL");
-
-      // ENSURE SCHEDULED DAY IS SAME AS THIS DAY
-      if (comparableScheduled === comparableDay) {
-        return true;
-      }
-    }
-
-    return false;
+    return data[0];
   }
 }

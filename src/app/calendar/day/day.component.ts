@@ -3,11 +3,10 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription, Observable, forkJoin } from "rxjs";
 import * as moment from "moment";
 
-import { AuthService } from "../../auth/auth.service";
-import { UserType } from "../../shared/models/custom-types";
+import { CalendarService } from "../calendar.service";
 import { ShiftService } from "../../shared/services/shift/shift.service";
 import { ScheduledService } from "../../shared/services/shift/scheduled.service";
-import { WeeklyScheduledService } from "../../shared/services/shift/weekly-scheduled.service";
+import { UserType } from "../../shared/models/custom-types";
 import { Shift } from "../../shared/models/shift/shift.model";
 import { Scheduled } from "../../shared/models/shift/scheduled.model";
 
@@ -34,10 +33,9 @@ export class DayComponent implements OnInit, OnDestroy {
   isLoaded = false;
 
   constructor(
-    private authService: AuthService,
     private shiftService: ShiftService,
     private scheduledService: ScheduledService,
-    private weeklyScheduledService: WeeklyScheduledService,
+    private calendarService: CalendarService,
     private route: ActivatedRoute,
     private router: Router
   ) {
@@ -89,11 +87,7 @@ export class DayComponent implements OnInit, OnDestroy {
   }
 
   isToday(day) {
-    if (!day) {
-      return false;
-    }
-
-    return moment().format("L") === day.format("L");
+    this.calendarService.isToday(day);
   }
 
   resetData() {
@@ -106,41 +100,19 @@ export class DayComponent implements OnInit, OnDestroy {
   //MAIN----------------------------------------------------------
 
   userFeature() {
-    this.employeeIsAuth = this.authService.getEmployeeIsAuth();
-    this.employeeAuthListenerSub = this.authService
-      .getEmployeeAuthStatusListener()
-      .subscribe((isAuth) => {
-        this.employeeIsAuth = isAuth;
-        this.userType = `employee`;
-      });
+    const userAuthData = this.calendarService.userFeature();
 
-    this.schedulerIsAuth = this.authService.getSchedulerIsAuth();
-    this.schedulerAuthListenerSub = this.authService
-      .getSchedulerAuthStatusListener()
-      .subscribe((isAuth) => {
-        this.schedulerIsAuth = isAuth;
-        this.userType = `scheduler`;
-      });
+    this.userType = userAuthData.userType;
+    this.employeeIsAuth = userAuthData.employeeIsAuth;
+    this.employeeAuthListenerSub = userAuthData.employeeAuthListenerSub;
+    this.schedulerIsAuth = userAuthData.schedulerIsAuth;
+    this.schedulerAuthListenerSub = userAuthData.schedulerAuthListenerSub;
   }
 
-  //DASHBOARD----------------------------------------------------------
-
   schedulerControl(type) {
-    const reloadCalendar = () => {
-      this.resetData();
-    };
-
-    switch (type) {
-      case `populateAllToScheduled`:
-        this.weeklyScheduledService.populateAllToScheduled().subscribe(() => {
-          reloadCalendar();
-        });
-
-      case `deleteLastScheduled`:
-        this.scheduledService.deleteLastScheduled().subscribe(() => {
-          reloadCalendar();
-        });
-    }
+    this.calendarService
+      .schedulerControl(type)
+      .subscribe(() => this.resetData());
   }
 
   ngOnDestroy() {
