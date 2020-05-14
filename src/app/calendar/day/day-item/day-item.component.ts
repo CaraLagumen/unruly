@@ -30,6 +30,21 @@ export class DayItemComponent implements OnInit {
     );
   }
 
+  getLocationStyle(shift) {
+    switch (shift.location) {
+      case `rotunda`:
+        return { "grid-column": "1 / 2" };
+      case `food court`:
+        return { "grid-column": "2 / 3" };
+      case `castle coffee 1`:
+      case `castle coffee 2`:
+      case `breaker`:
+        return { "grid-column": "3 / 4" };
+      case `pool`:
+        return { "grid-column": "4 / 5" };
+    }
+  }
+
   addShiftsOfTheDay() {
     //COMPARE DAYS (EX: 0 TO 0 OR SUNDAY TO SUNDAY)
     const comparableDay = this.day.weekday();

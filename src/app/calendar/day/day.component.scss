@@ -32,6 +32,8 @@
     }
 
     &--info {
+      display: grid;
+
       height: inherit;
 
       background-color: lightgray;

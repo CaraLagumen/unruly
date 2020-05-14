@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { ShiftService } from "src/app/shared/services/shift/shift.service";
-import { WeeklyShiftService } from "src/app/shared/services/shift/weekly-shift.service";
-import { Shift } from "src/app/shared/models/shift/shift.model";
-import { WeeklyShift } from "src/app/shared/models/shift/weekly-shift.model";
+import { ShiftService } from "../../shared/services/shift/shift.service";
+import { WeeklyShiftService } from "../../shared/services/shift/weekly-shift.service";
+import { Shift } from "../../shared/models/shift/shift.model";
+import { WeeklyShift } from "../../shared/models/shift/weekly-shift.model";
 
 @Component({
   selector: "app-shifts",

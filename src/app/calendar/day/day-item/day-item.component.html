@@ -1,13 +1,22 @@
-<div
-  *ngFor="let shift of shiftsOfTheDay;"
-  [ngClass]="{ 'scheduled': isScheduledShift(shift) }"
-  class="shift-block"
->
-  {{ shift?.shiftStart[0] }} {{ shift?.shiftEnd[0] }}
-  {{ shift?.location }}
+<div class="container">
 
-  <div *ngIf="isScheduledShift(shift)">
-    {{ scheduled.employee.firstName }}
-    {{ scheduled.employee.lastName }}
+  <div
+    *ngFor="let shift of shiftsOfTheDay;"
+    [ngClass]="{ 'scheduled': isScheduledShift(shift) }"
+    [ngStyle]="getLocationStyle(shift)"
+    class="shift-block"
+  >
+    {{ shift?.shiftStart[0] }} {{ shift?.shiftEnd[0] }}
+    {{ shift?.position }} {{ shift?.location }}
+
+    <div *ngIf="isScheduledShift(shift)">
+      {{ scheduled.employee.firstName }}
+      {{ scheduled.employee.lastName }}
+      {{ scheduled.employee.position }}
+      {{ scheduled.employee.status }}
+      {{ scheduled.employee.seniority }}
+      {{ scheduled.employee.hireDate }}
+    </div>
   </div>
+
 </div>

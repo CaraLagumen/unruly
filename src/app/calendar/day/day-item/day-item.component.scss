@@ -1,6 +1,8 @@
-.shift-block {
-  display: inline-block;
+.container {
+  display: grid;
+}
 
+.shift-block {
   width: 100%;
   margin: 0.1rem;
 

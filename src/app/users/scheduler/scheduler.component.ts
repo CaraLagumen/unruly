@@ -5,7 +5,7 @@ import { FormGroup, FormControl, Validators, NgForm } from "@angular/forms";
 import { UsersService } from "../users.service";
 import { AuthService } from "../../auth/auth.service";
 import { SchedulerData } from "../users-data.model";
-import { Scheduler } from "src/app/shared/models/users/scheduler.model";
+import { Scheduler } from "../../shared/models/users/scheduler.model";
 
 @Component({
   selector: "app-scheduler",
