@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import * as moment from "moment";
 
 import { CalendarService } from "../../calendar.service";
@@ -14,6 +14,8 @@ export class WeekItemComponent implements OnInit {
   @Input() allShifts: Shift[];
   @Input() allScheduled: Scheduled[];
   @Input() day: moment.Moment;
+  
+  @Output() editShiftEmitter = new EventEmitter<[Shift, Scheduled | null]>();
 
   scheduled: Scheduled;
 
@@ -38,7 +40,7 @@ export class WeekItemComponent implements OnInit {
     );
   }
 
-  isScheduledShift(shift) {
+  isScheduledShift(shift: Shift) {
     const data = this.calendarService.isScheduledShift(
       shift,
       this.allScheduled,
@@ -47,5 +49,15 @@ export class WeekItemComponent implements OnInit {
     this.scheduled = data[1];
 
     return data[0];
+  }
+
+  editShiftEmitterButton(shift: Shift) {
+    const data = this.calendarService.isScheduledShift(
+      shift,
+      this.allScheduled,
+      this.day
+    );
+
+    this.editShiftEmitter.emit([shift, data[1]]);
   }
 }

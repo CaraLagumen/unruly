@@ -14,14 +14,14 @@ export class EmployeeResetComponent implements OnInit, OnDestroy {
 
   token: string;
 
-  isLoading = false;
+  isLoaded = false;
 
   constructor(public authService: AuthService) {}
 
   ngOnInit() {
     this.authStatusSub = this.authService
       .getEmployeeAuthStatusListener()
-      .subscribe((authStatus) => (this.isLoading = false));
+      .subscribe((authStatus) => (this.isLoaded = false));
   }
 
   onReset(form: NgForm) {
@@ -29,7 +29,7 @@ export class EmployeeResetComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isLoading = true;
+    this.isLoaded = true;
     this.authService.resetPassword(
       `employee`,
       this.token,

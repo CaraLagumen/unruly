@@ -14,14 +14,14 @@ export class SchedulerResetComponent implements OnInit, OnDestroy {
 
   token: string;
 
-  isLoading = false;
+  isLoaded = false;
 
   constructor(public authService: AuthService) {}
 
   ngOnInit() {
     this.authStatusSub = this.authService
       .getSchedulerAuthStatusListener()
-      .subscribe((authStatus) => (this.isLoading = false));
+      .subscribe((authStatus) => (this.isLoaded = false));
   }
 
   onReset(form: NgForm) {
@@ -29,7 +29,7 @@ export class SchedulerResetComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isLoading = true;
+    this.isLoaded = true;
     this.authService.resetPassword(
       `scheduler`,
       this.token,

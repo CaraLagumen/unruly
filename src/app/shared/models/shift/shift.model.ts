@@ -1,4 +1,5 @@
 export interface Shift {
+  id: string;
   position: string;
   slot: string;
   location: string;

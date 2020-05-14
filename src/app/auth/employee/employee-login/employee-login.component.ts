@@ -12,14 +12,14 @@ import { AuthService } from "../../auth.service";
 export class EmployeeLoginComponent implements OnInit, OnDestroy {
   private authStatusSub: Subscription;
 
-  isLoading = false;
+  isLoaded = false;
 
   constructor(public authService: AuthService) {}
 
   ngOnInit() {
     this.authStatusSub = this.authService
       .getEmployeeAuthStatusListener()
-      .subscribe((authStatus) => (this.isLoading = false));
+      .subscribe((authStatus) => (this.isLoaded = false));
   }
 
   onLogin(form: NgForm) {
@@ -27,7 +27,7 @@ export class EmployeeLoginComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isLoading = true;
+    this.isLoaded = true;
     this.authService.login(`employee`, form.value.email, form.value.password);
   }
 

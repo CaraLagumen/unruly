@@ -2,6 +2,17 @@
   *ngIf="schedulerIsAuth"
   class="scheduler"
 >
+  <div
+    *ngIf="editShiftMenu"
+    class="menu"
+  >
+    <button (click)="schedulerEmitterButton('updateShift')">Update shift</button>
+    <button (click)="schedulerEmitterButton('updateScheduled')">Update scheduled</button>
+    <button (click)="schedulerEmitterButton('deleteShift')">Delete shift</button>
+    <button (click)="schedulerEmitterButton('deleteScheduled')">Delete scheduled</button>
+    <button (click)="toggleEditShift()">Close</button>
+  </div>
+
   <h3>Auto populate</h3>
 
   <button (click)="schedulerEmitterButton('populateAllToScheduled')">Populate full-time</button>

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Subscription, Observable, forkJoin } from "rxjs";
+import { Subscription, Observable, forkJoin, Subject } from "rxjs";
 import * as moment from "moment";
 
 import { ShiftService } from "../shared/services/shift/shift.service";
@@ -30,6 +30,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   schedulerIsAuth = false;
   date = moment();
   isLoaded = false;
+  editShiftSubject = new Subject();
 
   constructor(
     private shiftService: ShiftService,
@@ -89,7 +90,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   //MAIN----------------------------------------------------------
 
-  createCalendar(month) {
+  createCalendar(month: moment.Moment) {
     //1. SETUP VARS
     let firstDay = moment(month).startOf("M");
     const lastDay = moment(month).endOf("M");
@@ -136,10 +137,18 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.schedulerAuthListenerSub = userAuthData.schedulerAuthListenerSub;
   }
 
-  schedulerControl(type) {
+  //DASHBOARD----------------------------------------------------------
+
+  //FROM dashboard TO calendar-service
+  schedulerControl(emittedData) {
     this.calendarService
-      .schedulerControl(type)
+      .schedulerControl(emittedData)
       .subscribe(() => this.resetData());
+  }
+
+  //FROM calendar-item TO dashboard
+  editShiftControl(emittedData: [Shift, Scheduled | null]) {
+    this.editShiftSubject.next(emittedData);
   }
 
   ngOnDestroy() {

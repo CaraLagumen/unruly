@@ -12,14 +12,14 @@ import { AuthService } from "../../auth.service";
 export class EmployeeRegisterComponent implements OnInit, OnDestroy {
   private authStatusSub: Subscription;
 
-  isLoading = false;
+  isLoaded = false;
 
   constructor(public authService: AuthService) {}
 
   ngOnInit() {
     this.authStatusSub = this.authService
       .getEmployeeAuthStatusListener()
-      .subscribe((authStatus) => (this.isLoading = false));
+      .subscribe((authStatus) => (this.isLoaded = false));
   }
 
   onRegister(form: NgForm) {
@@ -27,7 +27,7 @@ export class EmployeeRegisterComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isLoading = true;
+    this.isLoaded = true;
 
     this.authService.register(
       `employee`,

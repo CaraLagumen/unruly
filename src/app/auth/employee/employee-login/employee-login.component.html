@@ -3,7 +3,7 @@
 <form
   (submit)="onLogin(loginForm)"
   #loginForm="ngForm"
-  *ngIf="!isLoading"
+  *ngIf="!isLoaded"
 >
 
   <span>Email</span>
@@ -31,4 +31,4 @@
 
 </form>
 
-<span *ngIf="isLoading">Loading...</span>
+<span *ngIf="isLoaded">Loading...</span>

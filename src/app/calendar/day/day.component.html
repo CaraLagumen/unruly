@@ -1,6 +1,7 @@
 <app-dashboard
   [employeeIsAuth]="employeeIsAuth"
   [schedulerIsAuth]="schedulerIsAuth"
+  [editShiftObs]="editShiftSubject.asObservable()"
   (schedulerEmitter)="schedulerControl($event)"
 ></app-dashboard>
 
@@ -42,6 +43,7 @@
         [allShifts]="allShifts"
         [allScheduled]="allScheduled"
         [day]="day"
+        (editShiftEmitter)="editShiftControl($event)"
       ></app-day-item>
 
     </div>

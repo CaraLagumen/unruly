@@ -1,0 +1,13 @@
+.menu {
+  display: grid;
+
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  height: 10rem;
+  width: 10rem;
+
+  background: darkgray;
+}

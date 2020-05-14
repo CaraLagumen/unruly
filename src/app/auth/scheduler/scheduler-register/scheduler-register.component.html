@@ -3,7 +3,7 @@
 <form
   (submit)="onRegister(registerForm)"
   #registerForm="ngForm"
-  *ngIf="!isLoading"
+  *ngIf="!isLoaded"
 >
 
   <span>First name</span>
@@ -55,4 +55,4 @@
 
 </form>
 
-<span *ngIf="isLoading">Loading...</span>
+<span *ngIf="isLoaded">Loading...</span>

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Subscription, Observable, forkJoin } from "rxjs";
+import { Subscription, Observable, forkJoin, Subject } from "rxjs";
 import * as moment from "moment";
 
 import { ShiftService } from "../../shared/services/shift/shift.service";
@@ -31,6 +31,7 @@ export class WeekComponent implements OnInit, OnDestroy {
   date = moment();
   today = moment(); //FOR USE WITH URL - DO NOT ALTER
   isLoaded = false;
+  editShiftSubject = new Subject();
 
   constructor(
     private shiftService: ShiftService,
@@ -73,7 +74,7 @@ export class WeekComponent implements OnInit, OnDestroy {
     this.daysArr = this.createCalendarWeek(this.date);
   }
 
-  isToday(day) {
+  isToday(day: moment.Moment) {
     this.calendarService.isToday(day);
   }
 
@@ -86,7 +87,7 @@ export class WeekComponent implements OnInit, OnDestroy {
 
   //MAIN----------------------------------------------------------
 
-  createCalendarWeek(week) {
+  createCalendarWeek(week: moment.Moment) {
     //1. SETUP VARS
     let firstDay = moment(week).startOf("w");
 
@@ -113,10 +114,15 @@ export class WeekComponent implements OnInit, OnDestroy {
 
   //DASHBOARD----------------------------------------------------------
 
-  schedulerControl(type) {
+  schedulerControl(emittedData) {
     this.calendarService
-      .schedulerControl(type)
+      .schedulerControl(emittedData)
       .subscribe(() => this.resetData());
+  }
+
+  //FROM calendar-item TO dashboard
+  editShiftControl(emittedData: [Shift, Scheduled | null]) {
+    this.editShiftSubject.next(emittedData);
   }
 
   ngOnDestroy() {

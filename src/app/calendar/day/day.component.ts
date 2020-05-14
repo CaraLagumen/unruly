@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { Subscription, Observable, forkJoin } from "rxjs";
+import { Subscription, Observable, forkJoin, Subject } from "rxjs";
 import * as moment from "moment";
 
 import { CalendarService } from "../calendar.service";
@@ -31,6 +31,7 @@ export class DayComponent implements OnInit, OnDestroy {
   date = moment();
   today = moment(); //FOR USE WITH URL - DO NOT ALTER
   isLoaded = false;
+  editShiftSubject = new Subject();
 
   constructor(
     private shiftService: ShiftService,
@@ -86,7 +87,7 @@ export class DayComponent implements OnInit, OnDestroy {
     this.resetData();
   }
 
-  isToday(day) {
+  isToday(day: moment.Moment) {
     this.calendarService.isToday(day);
   }
 
@@ -109,10 +110,17 @@ export class DayComponent implements OnInit, OnDestroy {
     this.schedulerAuthListenerSub = userAuthData.schedulerAuthListenerSub;
   }
 
-  schedulerControl(type) {
+  //DASHBOARD----------------------------------------------------------
+
+  schedulerControl(emittedData) {
     this.calendarService
-      .schedulerControl(type)
+      .schedulerControl(emittedData)
       .subscribe(() => this.resetData());
+  }
+
+  //FROM calendar-item TO dashboard
+  editShiftControl(emittedData: [Shift, Scheduled | null]) {
+    this.editShiftSubject.next(emittedData);
   }
 
   ngOnDestroy() {

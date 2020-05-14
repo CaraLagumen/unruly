@@ -2,9 +2,11 @@ import { Injectable } from "@angular/core";
 import * as moment from "moment";
 
 import { AuthService } from "../auth/auth.service";
+import { ShiftService } from "../shared/services/shift/shift.service";
 import { ScheduledService } from "../shared/services/shift/scheduled.service";
 import { WeeklyScheduledService } from "../shared/services/shift/weekly-scheduled.service";
 import { UserType } from "../shared/models/custom-types";
+import { Shift } from "../shared/models/shift/shift.model";
 import { Scheduled } from "../shared/models/shift/scheduled.model";
 
 @Injectable({
@@ -13,13 +15,14 @@ import { Scheduled } from "../shared/models/shift/scheduled.model";
 export class CalendarService {
   constructor(
     private authService: AuthService,
+    private shiftService: ShiftService,
     private scheduledService: ScheduledService,
     private weeklyScheduledService: WeeklyScheduledService
   ) {}
 
   //TOOLS----------------------------------------------------------
 
-  addShiftsOfTheDay(day, allShifts) {
+  addShiftsOfTheDay(day: moment.Moment, allShifts: Shift[]) {
     //COMPARE DAYS (EX: 0 TO 0 OR SUNDAY TO SUNDAY)
     const comparableDay = day.weekday();
 
@@ -30,7 +33,12 @@ export class CalendarService {
     return shiftsOfTheDay;
   }
 
-  isScheduledShift(shift, allScheduled: Scheduled[], day) {
+  //CAN GRAB SCHEDULED FROM SHIFT
+  isScheduledShift(
+    shift: Shift,
+    allScheduled: Scheduled[],
+    day: moment.Moment
+  ): [boolean, Scheduled | null] {
     //1. GRAB SHIFT ID TO COMPARE WITH SCHEDULED
     //   TO FIND IF SHIFT IS SCHEDULED
     const shiftId = shift.id;
@@ -49,10 +57,10 @@ export class CalendarService {
       }
     }
 
-    return false;
+    return [false, null];
   }
 
-  isNotThisMonth(day, date) {
+  isNotThisMonth(day: moment.Moment, date: moment.Moment) {
     let firstDay = moment(date).startOf("M");
     const lastDay = moment(date).endOf("M");
 
@@ -79,7 +87,7 @@ export class CalendarService {
     let employeeIsAuth = this.authService.getEmployeeIsAuth();
     let employeeAuthListenerSub = this.authService
       .getEmployeeAuthStatusListener()
-      .subscribe((isAuth) => {
+      .subscribe((isAuth: boolean) => {
         employeeIsAuth = isAuth;
         userType = `employee`;
       });
@@ -87,7 +95,7 @@ export class CalendarService {
     let schedulerIsAuth = this.authService.getSchedulerIsAuth();
     let schedulerAuthListenerSub = this.authService
       .getSchedulerAuthStatusListener()
-      .subscribe((isAuth) => {
+      .subscribe((isAuth: boolean) => {
         schedulerIsAuth = isAuth;
         userType = `scheduler`;
       });
@@ -103,13 +111,28 @@ export class CalendarService {
 
   //DASHBOARD----------------------------------------------------------
 
-  schedulerControl(type: string) {
+  schedulerControl(emittedData) {
+    const [type, data] = emittedData;
+
+    //DATA IS [SHIFT, SCHEDULED]
     switch (type) {
+      //MAIN
       case `populateAllToScheduled`:
         return this.weeklyScheduledService.populateAllToScheduled();
-
       case `deleteLastScheduled`:
         return this.scheduledService.deleteLastScheduled();
+
+      // //EDIT SHIFT
+      // // case `updateShift`:
+      // //   return this.shiftService.updateShift();
+      // // case `updateScheduled`:
+      // //   return this.scheduledService.updateScheduled();
+      case `deleteShift`:
+        const shiftId: string = data[0].id;
+        return this.shiftService.deleteShift(shiftId);
+      case `deleteScheduled`:
+        const scheduledId: string = data[1].id;
+        return this.scheduledService.deleteScheduled(scheduledId);
     }
   }
 }
