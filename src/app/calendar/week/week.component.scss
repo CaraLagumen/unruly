@@ -23,17 +23,14 @@
   &__main {
     grid-row: 2 / -1;
 
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: auto 1fr;
+    gap: 0.4rem;
+
     background-color: darkgray;
 
     &--days {
-      grid-column: 2 / -1;
-
-      display: grid;
-      grid-template-columns: auto 1fr;
-      grid-template-rows: repeat(7, 1fr);
-      gap: 0.4rem;
-
-      height: 8rem;
       width: 100%;
 
       background-color: lightgray;
@@ -45,8 +42,6 @@
         height: inherit;
 
         background-color: darkgray;
-        text-orientation: upright;
-        writing-mode: vertical-lr;
       }
 
       &-info {

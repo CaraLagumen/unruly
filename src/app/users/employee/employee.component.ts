@@ -78,9 +78,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   }
 
   onUpdateEmployee() {
-    if (this.updateEmployeeForm.invalid) {
-      return;
-    }
+    if (this.updateEmployeeForm.invalid) return;
 
     //CONVERT STRING TO NUMBER FOR SUBMISSION TO API
     const dayOff1 = this.daysOff.indexOf(
@@ -106,9 +104,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   }
 
   onChangePassword(form: NgForm) {
-    if (form.invalid) {
-      return;
-    }
+    if (form.invalid) return;
 
     this.authService.changePassword(
       `employee`,

@@ -114,14 +114,14 @@ export class WeekComponent implements OnInit, OnDestroy {
 
   //DASHBOARD----------------------------------------------------------
 
-  schedulerControl(emittedData) {
+  schedulerServiceControl(emittedData) {
     this.calendarService
-      .schedulerControl(emittedData)
+      .schedulerServiceControl(emittedData)
       .subscribe(() => this.resetData());
   }
 
   //FROM calendar-item TO dashboard
-  editShiftControl(emittedData: [Shift, Scheduled | null]) {
+  editShiftEmitControl(emittedData: [Shift, Scheduled | null]) {
     this.editShiftSubject.next(emittedData);
   }
 

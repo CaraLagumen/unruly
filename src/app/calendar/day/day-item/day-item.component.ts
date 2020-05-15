@@ -14,7 +14,7 @@ export class DayItemComponent implements OnInit {
   @Input() allShifts: Shift[];
   @Input() allScheduled: Scheduled[];
   @Input() day: moment.Moment;
-  
+
   @Output() editShiftEmitter = new EventEmitter<[Shift, Scheduled | null]>();
 
   scheduled: Scheduled;
@@ -39,8 +39,8 @@ export class DayItemComponent implements OnInit {
         return { "grid-column": "1 / 2" };
       case `food court`:
         return { "grid-column": "2 / 3" };
-      case `castle coffee 1`:
-      case `castle coffee 2`:
+      case `tower 1`:
+      case `tower 2`:
       case `breaker`:
         return { "grid-column": "3 / 4" };
       case `pool`:

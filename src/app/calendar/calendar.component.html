@@ -1,8 +1,9 @@
 <app-dashboard
+  *ngIf="employeeIsAuth || schedulerIsAuth"
   [employeeIsAuth]="employeeIsAuth"
   [schedulerIsAuth]="schedulerIsAuth"
   [editShiftObs]="editShiftSubject.asObservable()"
-  (schedulerEmitter)="schedulerControl($event)"
+  (schedulerEmitter)="schedulerServiceControl($event)"
 ></app-dashboard>
 
 <div class="calendar">
@@ -17,7 +18,7 @@
     >◄</button>
 
     <h3 class="calendar__nav--month">
-      {{ date.format('MMMM') }} {{ date.format('YYYY') }}
+      {{ date?.format('MMMM') }} {{ date?.format('YYYY') }}
     </h3>
 
     <button
@@ -56,7 +57,7 @@
         [allShifts]="allShifts"
         [allScheduled]="allScheduled"
         [day]="day"
-        (editShiftEmitter)="editShiftControl($event)"
+        (editShiftEmitter)="editShiftEmitControl($event)"
       ></app-calendar-item>
 
     </div>

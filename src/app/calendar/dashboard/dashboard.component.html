@@ -2,20 +2,117 @@
   *ngIf="schedulerIsAuth"
   class="scheduler"
 >
+
+  <div>
+    <h3>Auto populate</h3>
+
+    <button (click)="schedulerEmitterButton('populateAllToScheduled')">Populate full-time</button>
+    <button>Populate steady extra</button>
+    <button (click)="schedulerEmitterButton('deleteLastScheduled')">Delete last scheduled</button>
+
+  </div>
+
+  <div
+    *ngIf="editShiftForm"
+    class="form"
+  >
+
+    <form
+      (submit)="onUpdateShift()"
+      [formGroup]="updateShiftForm"
+    >
+
+      <span>Position</span>
+      <select formControlName="positionControl">
+        <option
+          *ngFor="let position of positions"
+          [ngValue]="position"
+        >{{ position }}</option>
+      </select>
+
+      <span>Slot</span>
+      <select formControlName="slotControl">
+        <option
+          *ngFor="let slot of slots"
+          [ngValue]="slot"
+        >{{ slot }}</option>
+      </select>
+
+      <span>Location</span>
+      <select formControlName="locationControl">
+        <option
+          *ngFor="let location of locations"
+          [ngValue]="location"
+        >{{ location }}</option>
+      </select>
+
+      <span>Day</span>
+      <select formControlName="dayControl">
+        <option
+          *ngFor="let day of days"
+          [ngValue]="day"
+        >{{ day }}</option>
+      </select>
+
+      <span>Shift start and end</span>
+      <select formControlName="shiftStartControl">
+        <option
+          *ngFor="let shiftStart of shiftHours"
+          [ngValue]="shiftStart"
+        >{{ shiftStart }}</option>
+      </select>
+      <select formControlName="shiftEndControl">
+        <option
+          *ngFor="let shiftEnd of shiftHours"
+          [ngValue]="shiftEnd"
+        >{{ shiftEnd }}</option>
+      </select>
+
+      <button
+        [disabled]="!updateShiftForm.valid"
+        type="submit"
+      >Update</button>
+    </form>
+
+    <button (click)="toggleEditShiftForm('close')">Close</button>
+
+  </div>
+
   <div
     *ngIf="editShiftMenu"
     class="menu"
   >
-    <button (click)="schedulerEmitterButton('updateShift')">Update shift</button>
-    <button (click)="schedulerEmitterButton('updateScheduled')">Update scheduled</button>
-    <button (click)="schedulerEmitterButton('deleteShift')">Delete shift</button>
-    <button (click)="schedulerEmitterButton('deleteScheduled')">Delete scheduled</button>
-    <button (click)="toggleEditShift()">Close</button>
+
+    <div>
+
+      <div>
+        Shift details
+        {{ editShift[0]?.day }}
+        {{ editShift[0]?.slot }}
+        {{ editShift[0]?.shiftStart }} {{ editShift[0]?.shiftEnd }}
+        {{ editShift[0]?.location }}
+      </div>
+
+      <div *ngIf="editShift[1]">
+        Scheduled details
+        {{ editShift[1]?.date }}
+        {{ editShift[1]?.employee.firstName }} {{ editShift[1]?.employee.lastName }}
+        {{ editShift[1]?.employee.position }}
+        {{ editShift[1]?.employee.status }}
+        {{ editShift[1]?.employee.seniority }}
+        {{ editShift[1]?.employee.hireDate }}
+      </div>
+
+    </div>
+
+    <div class="btns">
+      <button (click)="toggleEditShiftForm('open')">Update shift</button>
+      <button (click)="schedulerEmitterButton('updateScheduled')">Update scheduled</button>
+      <button (click)="schedulerEmitterButton('deleteShift')">Delete shift</button>
+      <button (click)="schedulerEmitterButton('deleteScheduled')">Delete scheduled</button>
+      <button (click)="toggleEditShiftMenu('close')">Close</button>
+    </div>
+
   </div>
 
-  <h3>Auto populate</h3>
-
-  <button (click)="schedulerEmitterButton('populateAllToScheduled')">Populate full-time</button>
-  <button>Populate steady extra</button>
-  <button (click)="schedulerEmitterButton('deleteLastScheduled')">Delete last scheduled</button>
 </div>

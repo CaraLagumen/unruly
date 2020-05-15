@@ -25,14 +25,7 @@ const weeklyShiftSchema = new mongoose_1.default.Schema({
     location: {
         type: [String],
         required: [true, `Weekly shift location/s required.`],
-        enum: [
-            `rotunda`,
-            `food court`,
-            `castle coffee 1`,
-            `castle coffee 2`,
-            `pool`,
-            `breaker`,
-        ],
+        enum: [`rotunda`, `food court`, `tower 1`, `tower 2`, `pool`, `breaker`],
     },
     shiftDay1: {
         type: mongoose_1.default.Schema.Types.ObjectId,

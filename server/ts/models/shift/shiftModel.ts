@@ -22,8 +22,8 @@ const shiftSchema: Schema = new mongoose.Schema(
       enum: [
         `rotunda`,
         `food court`,
-        `castle coffee 1`,
-        `castle coffee 2`,
+        `tower 1`,
+        `tower 2`,
         `pool`,
         `breaker`,
       ],

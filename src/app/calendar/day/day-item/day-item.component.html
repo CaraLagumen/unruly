@@ -11,12 +11,12 @@
     {{ shift?.position }} {{ shift?.location }}
 
     <div *ngIf="isScheduledShift(shift)">
-      {{ scheduled.employee.firstName }}
-      {{ scheduled.employee.lastName }}
-      {{ scheduled.employee.position }}
-      {{ scheduled.employee.status }}
-      {{ scheduled.employee.seniority }}
-      {{ scheduled.employee.hireDate }}
+      {{ scheduled?.employee.firstName }}
+      {{ scheduled?.employee.lastName }}
+      {{ scheduled?.employee.position }}
+      {{ scheduled?.employee.status }}
+      {{ scheduled?.employee.seniority }}
+      {{ scheduled?.employee.hireDate }}
     </div>
   </div>
 

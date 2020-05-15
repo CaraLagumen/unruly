@@ -98,8 +98,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
     let counter = 0;
 
     //2. CREATE ARR OF DAYS
+    //   START WITH AN EMPTY ARRAY WITH A LENGTH OF THE DAYS OF THE MONTH
     let days = Array.apply(null, { length: month.daysInMonth() })
-      //COUNT UP NUMBERS
+      //COUNT UP NUMBERS AND FILL THEM
       .map(Number.call, Number)
       //START FROM MONTH'S FIRST DAY
       .map((el) => moment(firstDay).add(el, "d"));
@@ -140,14 +141,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
   //DASHBOARD----------------------------------------------------------
 
   //FROM dashboard TO calendar-service
-  schedulerControl(emittedData) {
+  schedulerServiceControl(emittedData) {
     this.calendarService
-      .schedulerControl(emittedData)
+      .schedulerServiceControl(emittedData)
       .subscribe(() => this.resetData());
   }
 
   //FROM calendar-item TO dashboard
-  editShiftControl(emittedData: [Shift, Scheduled | null]) {
+  editShiftEmitControl(emittedData: [Shift, Scheduled | null]) {
     this.editShiftSubject.next(emittedData);
   }
 

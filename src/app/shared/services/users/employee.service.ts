@@ -31,7 +31,7 @@ export class EmployeeService {
     return this.http.post<Employee>(`${ROOT_URL}`, employeeData);
   }
 
-  updateEmployee(employeeId: number, employeeData: Employee) {
+  updateEmployee(employeeId: string, employeeData: Employee) {
     this.http.patch<Employee>(`${ROOT_URL}/${employeeId}`, employeeData);
   }
 

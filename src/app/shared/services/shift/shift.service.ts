@@ -18,11 +18,12 @@ export class ShiftService {
   //RAW SHIFTS (NO LIMIT)
   getRawAllShifts(): Observable<Shift[]> {
     return this.http.get<Shift[]>(`${ROOT_URL}/raw`).pipe(
-      map((shift: any) =>
-        shift.doc
-          //SORT BY SHIFT START AND DAY
-          .sort((x: Shift, y: Shift) => x.shiftStart[0] - y.shiftStart[0])
-          // .sort((x: Shift, y: Shift) => x.day - y.day)
+      map(
+        (shift: any) =>
+          shift.doc
+            //SORT BY SHIFT START AND DAY
+            .sort((x: Shift, y: Shift) => x.shiftStart[0] - y.shiftStart[0])
+        // .sort((x: Shift, y: Shift) => x.day - y.day)
       )
     );
   }
@@ -34,7 +35,9 @@ export class ShiftService {
   }
 
   getShift(shiftId: string): Observable<Shift> {
-    return this.http.get<Shift>(`${ROOT_URL}/${shiftId}`);
+    return this.http
+      .get<Shift>(`${ROOT_URL}/${shiftId}`)
+      .pipe(map((shift: any) => shift.doc));
   }
 
   getShiftsByHour(shiftEvent: ShiftEvent, shiftTime: number) {
@@ -50,8 +53,10 @@ export class ShiftService {
     return this.http.post<Shift>(`${ROOT_URL}`, shiftData);
   }
 
-  updateShift(shiftId: number, shiftData: Shift) {
-    this.http.patch<Shift>(`${ROOT_URL}/${shiftId}`, shiftData);
+  updateShift(shiftId: string, shiftData: Shift) {
+    this.http
+      .patch<Shift>(`${ROOT_URL}/${shiftId}`, shiftData)
+      .subscribe(() => location.reload());
   }
 
   deleteShift(shiftId: string): Observable<Shift> {

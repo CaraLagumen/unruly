@@ -45,9 +45,7 @@ export class SchedulerComponent implements OnInit, OnDestroy {
   }
 
   onUpdateScheduler() {
-    if (this.updateSchedulerForm.invalid) {
-      return;
-    }
+    if (this.updateSchedulerForm.invalid) return;
 
     const schedulerData: SchedulerData = {
       email: this.updateSchedulerForm.value.email,
@@ -59,9 +57,7 @@ export class SchedulerComponent implements OnInit, OnDestroy {
   }
 
   onChangePassword(form: NgForm) {
-    if (form.invalid) {
-      return;
-    }
+    if (form.invalid) return;
 
     this.authService.changePassword(
       `scheduler`,

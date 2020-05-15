@@ -111,10 +111,10 @@ export class CalendarService {
 
   //DASHBOARD----------------------------------------------------------
 
-  schedulerControl(emittedData) {
+  schedulerServiceControl(emittedData) {
     const [type, data] = emittedData;
 
-    //DATA IS [SHIFT, SCHEDULED]
+    //data = [SHIFT, SCHEDULED]
     switch (type) {
       //MAIN
       case `populateAllToScheduled`:
