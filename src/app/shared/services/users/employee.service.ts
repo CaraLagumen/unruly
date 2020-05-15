@@ -14,7 +14,7 @@ const ROOT_URL = `${environment.apiUrl}/employee`;
 export class EmployeeService {
   constructor(private http: HttpClient) {}
 
-  getAllEmployee(): Observable<Employee[]> {
+  getAllEmployees(): Observable<Employee[]> {
     return this.http
       .get<Employee[]>(`${ROOT_URL}?sort=lastName`)
       .pipe(map((employee: any) => employee.doc));

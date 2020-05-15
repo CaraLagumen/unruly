@@ -9,9 +9,9 @@ import {
 import { Observable, Subscription } from "rxjs";
 import { FormGroup, FormControl } from "@angular/forms";
 
+import { ShiftService } from "../../shared/services/shift/shift.service";
 import { Shift } from "../../shared/models/shift/shift.model";
 import { Scheduled } from "../../shared/models/shift/scheduled.model";
-import { ShiftService } from "src/app/shared/services/shift/shift.service";
 
 @Component({
   selector: "app-dashboard",
@@ -34,6 +34,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   editShiftMenu = false;
   editShiftForm = false;
+
+  //EDIT SHIFT FORM
   positions = ["general manager", "assistant manager", "lead", "barista"];
   slots = ["morning", "day", "swing", "graveyard"];
   locations = [
@@ -58,6 +60,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     );
   }
 
+  //TOOLS----------------------------------------------------------
+
   schedulerEmitterButton(type: string) {
     const data = this.editShift;
 
@@ -81,6 +85,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.editShiftForm = false;
   }
+
+  //EDIT SHIFT FORM----------------------------------------------------------
 
   initEditShiftForm() {
     //1. INITIALIZE SHIFT FORM
@@ -131,12 +137,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     };
 
     this.shiftService.updateShift(this.editShiftId, shiftData);
-    
+
     this.updateShiftForm.reset();
   }
 
   ngOnDestroy() {
-    this.editShiftSub.unsubscribe();
+    if (this.editShiftSub) this.editShiftSub.unsubscribe();
     if (this.shiftSub) this.shiftSub.unsubscribe();
   }
 }

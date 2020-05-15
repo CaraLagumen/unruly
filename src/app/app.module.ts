@@ -4,16 +4,17 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { FormsModule } from "@angular/forms";
 import { LocationStrategy, HashLocationStrategy } from "@angular/common";
 
+import { AuthInterceptor } from "./auth/auth-interceptor";
 import { AppRoutingModule } from "./app-routing.module";
-import { CalendarModule } from "./calendar/calendar.module";
 import { AuthModule } from "./auth/auth.module";
 import { UsersModule } from "./users/users.module";
-import { AuthInterceptor } from "./auth/auth-interceptor";
+import { CalendarModule } from "./calendar/calendar.module";
+import { EditorModule } from "./editor/editor.module";
+import { StatsModule } from "./stats/stats.module";
 import { AppComponent } from "./app.component";
 import { HeaderComponent } from "./components/header/header.component";
 import { FooterComponent } from "./components/footer/footer.component";
 import { AlertComponent } from "./components/alert/alert.component";
-import { StatsModule } from "./stats/stats.module";
 
 @NgModule({
   declarations: [
@@ -29,9 +30,10 @@ import { StatsModule } from "./stats/stats.module";
     FormsModule,
     HttpClientModule,
     FormsModule,
-    CalendarModule,
     AuthModule,
     UsersModule,
+    CalendarModule,
+    EditorModule,
     StatsModule,
   ],
   providers: [

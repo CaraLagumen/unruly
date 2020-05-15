@@ -7,9 +7,9 @@ import { RosterComponent } from "./roster/roster.component";
 import { ShiftsComponent } from "./shifts/shifts.component";
 
 const routes: Routes = [
-  { path: "stats", component: StatsComponent },
-  { path: "stats/roster", component: RosterComponent },
-  { path: "stats/shifts", component: ShiftsComponent },
+  { path: "", component: StatsComponent },
+  { path: "roster", component: RosterComponent },
+  { path: "shifts", component: ShiftsComponent },
 ];
 
 @NgModule({

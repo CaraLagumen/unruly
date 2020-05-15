@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
 
 import { Employee } from "../shared/models/users/employee.model";
 import { Scheduler } from "../shared/models/users/scheduler.model";
@@ -26,7 +25,7 @@ export class StatsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.employees$ = this.employeeService.getAllEmployee();
+    this.employees$ = this.employeeService.getAllEmployees();
     this.schedulers$ = this.schedulerService.getAllScheduler();
     this.shifts$ = this.shiftService.getRawAllShifts();
   }

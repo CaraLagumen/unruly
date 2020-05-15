@@ -21,7 +21,7 @@ export class RosterComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.employees$ = this.employeeService.getAllEmployee();
+    this.employees$ = this.employeeService.getAllEmployees();
     this.schedulers$ = this.schedulerService.getAllScheduler();
   }
 }

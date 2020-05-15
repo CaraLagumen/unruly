@@ -28,11 +28,15 @@ export class ScheduledService {
   }
 
   getScheduled(scheduledId: string): Observable<Scheduled> {
-    return this.http.get<Scheduled>(`${ROOT_URL}/${scheduledId}`);
+    return this.http
+      .get<Scheduled>(`${ROOT_URL}/${scheduledId}`)
+      .pipe(map((scheduled: any) => scheduled.doc));
   }
 
   getEmployeeSchedule(employeeId: string): Observable<Scheduled[]> {
-    return this.http.get<Scheduled[]>(`${ROOT_URL}/employee/${employeeId}`);
+    return this.http
+      .get<Scheduled[]>(`${ROOT_URL}/employee/${employeeId}`)
+      .pipe(map((scheduled: any) => scheduled.doc));
   }
 
   //PROTECTED----------------------------------------------------------

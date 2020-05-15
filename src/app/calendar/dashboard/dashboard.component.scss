@@ -1,17 +1,17 @@
-.menu {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+// .menu {
+//   display: grid;
+//   grid-template-columns: 1fr 1fr;
 
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+//   position: fixed;
+//   top: 50%;
+//   left: 50%;
+//   transform: translate(-50%, -50%);
 
-  background: darkgray;
-}
+//   background: darkgray;
+// }
 
-.btns {
-  grid-column: 2 / -1;
+// .btns {
+//   grid-column: 2 / -1;
 
-  display: grid;
-}
+//   display: grid;
+// }

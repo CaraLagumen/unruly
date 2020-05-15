@@ -3,6 +3,8 @@
   class="scheduler"
 >
 
+  <!--MAIN DASHBOARD------------------------------------------------------------>
+
   <div>
     <h3>Auto populate</h3>
 
@@ -11,6 +13,53 @@
     <button (click)="schedulerEmitterButton('deleteLastScheduled')">Delete last scheduled</button>
 
   </div>
+
+  <!--EDIT SHIFT MENU------------------------------------------------------------>
+
+  <div
+    *ngIf="editShiftMenu"
+    class="menu"
+  >
+
+    <div>
+
+      <div>
+        Shift details
+        {{ editShift[0]?.day }}
+        {{ editShift[0]?.slot }}
+        {{ editShift[0]?.shiftStart }} {{ editShift[0]?.shiftEnd }}
+        {{ editShift[0]?.location }}
+      </div>
+
+      <div *ngIf="editShift[1]">
+        Scheduled details
+        {{ editShift[1]?.date }}
+        {{ editShift[1]?.employee.firstName }} {{ editShift[1]?.employee.lastName }}
+        {{ editShift[1]?.employee.position }}
+        {{ editShift[1]?.employee.status }}
+        {{ editShift[1]?.employee.seniority }}
+        {{ editShift[1]?.employee.hireDate }}
+      </div>
+
+    </div>
+
+    <div class="btns">
+
+      <button (click)="toggleEditShiftForm('open')">Update shift</button>
+      <button (click)="schedulerEmitterButton('deleteShift')">Delete shift</button>
+
+      <button [routerLink]="['/editor/scheduled', editShift[0].id]">Create scheduled</button>
+      <button
+        *ngIf="editShift[1]"
+        (click)="schedulerEmitterButton('deleteScheduled')"
+      >Delete scheduled</button>
+
+      <button (click)="toggleEditShiftMenu('close')">Close</button>
+    </div>
+
+  </div>
+
+  <!--EDIT SHIFT FORM------------------------------------------------------------>
 
   <div
     *ngIf="editShiftForm"
@@ -71,47 +120,10 @@
       <button
         [disabled]="!updateShiftForm.valid"
         type="submit"
-      >Update</button>
+      >Update shift</button>
     </form>
 
     <button (click)="toggleEditShiftForm('close')">Close</button>
-
-  </div>
-
-  <div
-    *ngIf="editShiftMenu"
-    class="menu"
-  >
-
-    <div>
-
-      <div>
-        Shift details
-        {{ editShift[0]?.day }}
-        {{ editShift[0]?.slot }}
-        {{ editShift[0]?.shiftStart }} {{ editShift[0]?.shiftEnd }}
-        {{ editShift[0]?.location }}
-      </div>
-
-      <div *ngIf="editShift[1]">
-        Scheduled details
-        {{ editShift[1]?.date }}
-        {{ editShift[1]?.employee.firstName }} {{ editShift[1]?.employee.lastName }}
-        {{ editShift[1]?.employee.position }}
-        {{ editShift[1]?.employee.status }}
-        {{ editShift[1]?.employee.seniority }}
-        {{ editShift[1]?.employee.hireDate }}
-      </div>
-
-    </div>
-
-    <div class="btns">
-      <button (click)="toggleEditShiftForm('open')">Update shift</button>
-      <button (click)="schedulerEmitterButton('updateScheduled')">Update scheduled</button>
-      <button (click)="schedulerEmitterButton('deleteShift')">Delete shift</button>
-      <button (click)="schedulerEmitterButton('deleteScheduled')">Delete scheduled</button>
-      <button (click)="toggleEditShiftMenu('close')">Close</button>
-    </div>
 
   </div>
 
