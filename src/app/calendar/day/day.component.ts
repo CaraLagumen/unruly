@@ -6,7 +6,7 @@ import * as moment from "moment";
 import { CalendarService } from "../calendar.service";
 import { ShiftService } from "../../shared/services/shift/shift.service";
 import { ScheduledService } from "../../shared/services/shift/scheduled.service";
-import { UserType } from "../../shared/models/custom-types";
+import { UserType, EditShiftEmit } from "../../shared/models/custom-types";
 import { Shift } from "../../shared/models/shift/shift.model";
 import { Scheduled } from "../../shared/models/shift/scheduled.model";
 
@@ -30,8 +30,8 @@ export class DayComponent implements OnInit, OnDestroy {
   schedulerIsAuth = false;
   date = moment();
   today = moment(); //FOR USE WITH URL - DO NOT ALTER
-  isLoaded = false;
   editShiftSubject = new Subject();
+  isLoaded = false;
 
   constructor(
     private shiftService: ShiftService,
@@ -69,26 +69,29 @@ export class DayComponent implements OnInit, OnDestroy {
 
   //TOOLS----------------------------------------------------------
 
-  currentDay() {
+  onCurrentDay() {
     this.date = moment();
-    this.router.navigate(["/day", this.date.toISOString()]);
+    const param = this.date.toISOString();
+    this.router.navigate(["/day", param]);
     this.resetData();
   }
 
-  previousDay() {
+  onPreviousDay() {
     this.date.subtract(1, "d");
-    this.router.navigate(["/day", this.date.toISOString()]);
+    const param = this.date.toISOString();
+    this.router.navigate(["/day", param]);
     this.resetData();
   }
 
-  nextDay() {
+  onNextDay() {
     this.date.add(1, "d");
-    this.router.navigate(["/day", this.date.toISOString()]);
+    const param = this.date.toISOString();
+    this.router.navigate(["/day", param]);
     this.resetData();
   }
 
-  isToday(day: moment.Moment) {
-    this.calendarService.isToday(day);
+  isToday(day: moment.Moment): boolean {
+    return this.calendarService.isToday(day);
   }
 
   resetData() {
@@ -112,14 +115,14 @@ export class DayComponent implements OnInit, OnDestroy {
 
   //DASHBOARD----------------------------------------------------------
 
-  schedulerServiceControl(emittedData) {
+  onSchedulerServiceControl(emittedData) {
     this.calendarService
       .schedulerServiceControl(emittedData)
       .subscribe(() => this.resetData());
   }
 
-  //FROM calendar-item TO dashboard
-  editShiftEmitControl(emittedData: [Shift, Scheduled | null]) {
+  //FROM [calendar-item | week-item | day-item] TO dashboard
+  onEditShiftEmitControl(emittedData: EditShiftEmit) {
     this.editShiftSubject.next(emittedData);
   }
 

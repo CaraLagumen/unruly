@@ -3,17 +3,17 @@
   [employeeIsAuth]="employeeIsAuth"
   [schedulerIsAuth]="schedulerIsAuth"
   [editShiftObs]="editShiftSubject.asObservable()"
-  (schedulerEmitter)="schedulerServiceControl($event)"
+  (schedulerEmitter)="onSchedulerServiceControl($event)"
 ></app-dashboard>
 
 <div class="calendar">
 
   <div class="calendar__nav">
 
-    <button (click)="currentDay()">Current day</button>
+    <button (click)="onCurrentDay()">Current day</button>
 
     <button
-      (click)="previousDay()"
+      (click)="onPreviousDay()"
       class="calendar__nav--btn"
     >◄</button>
 
@@ -22,7 +22,7 @@
     </h3>
 
     <button
-      (click)="nextDay()"
+      (click)="onNextDay()"
       class="calendar__nav--btn"
     >►</button>
 
@@ -44,7 +44,7 @@
         [allShifts]="allShifts"
         [allScheduled]="allScheduled"
         [day]="day"
-        (editShiftEmitter)="editShiftEmitControl($event)"
+        (editShiftEmitter)="onEditShiftEmitControl($event)"
       ></app-day-item>
 
     </div>

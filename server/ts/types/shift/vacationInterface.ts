@@ -3,7 +3,7 @@ import { Document } from "mongoose";
 import IEmployee from "../users/employeeInterface";
 import IScheduler from "../users/schedulerInterface";
 
-interface IPreferred extends Document {
+interface IVacation extends Document {
   employee: IEmployee;
   scheduler?: IScheduler; //ADDED ONCE VAC APPROVED
   date: Date;

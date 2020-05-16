@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subscription, Observable, forkJoin, Subject } from "rxjs";
+import { Router, ActivatedRoute } from "@angular/router";
 import * as moment from "moment";
 
 import { ShiftService } from "../../shared/services/shift/shift.service";
 import { ScheduledService } from "../../shared/services/shift/scheduled.service";
 import { CalendarService } from "../calendar.service";
-import { UserType } from "../../shared/models/custom-types";
+import { UserType, EditShiftEmit } from "../../shared/models/custom-types";
 import { Shift } from "../../shared/models/shift/shift.model";
 import { Scheduled } from "../../shared/models/shift/scheduled.model";
 
@@ -30,14 +31,24 @@ export class WeekComponent implements OnInit, OnDestroy {
   schedulerIsAuth = false;
   date = moment();
   today = moment(); //FOR USE WITH URL - DO NOT ALTER
-  isLoaded = false;
   editShiftSubject = new Subject();
+  isLoaded = false;
 
   constructor(
     private shiftService: ShiftService,
     private scheduledService: ScheduledService,
-    private calendarService: CalendarService
-  ) {}
+    private calendarService: CalendarService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    this.route.params.subscribe((param) => {
+      if (param) {
+        return (this.date = moment(param["date"]));
+      }
+
+      return this.date;
+    });
+  }
 
   ngOnInit() {
     //1. INITIALIZE WEEK
@@ -59,23 +70,27 @@ export class WeekComponent implements OnInit, OnDestroy {
 
   //TOOLS----------------------------------------------------------
 
-  currentWeek() {
+  onCurrentWeek() {
     this.date = moment();
+    const param = this.date.toISOString();
+    this.router.navigate(["/week", param]);
     this.daysArr = this.createCalendarWeek(this.date);
   }
 
-  previousWeek() {
-    this.date.subtract(1, "w");
+  onPreviousWeek() {
+    const param = this.date.subtract(1, "w").toISOString();
+    this.router.navigate(["/week", param]);
     this.daysArr = this.createCalendarWeek(this.date);
   }
 
-  nextWeek() {
-    this.date.add(1, "w");
+  onNextWeek() {
+    const param = this.date.add(1, "w").toISOString();
+    this.router.navigate(["/week", param]);
     this.daysArr = this.createCalendarWeek(this.date);
   }
 
-  isToday(day: moment.Moment) {
-    this.calendarService.isToday(day);
+  isToday(day: moment.Moment): boolean {
+    return this.calendarService.isToday(day);
   }
 
   resetData() {
@@ -87,7 +102,7 @@ export class WeekComponent implements OnInit, OnDestroy {
 
   //MAIN----------------------------------------------------------
 
-  createCalendarWeek(week: moment.Moment) {
+  createCalendarWeek(week: moment.Moment): moment.Moment[] {
     //1. SETUP VARS
     let firstDay = moment(week).startOf("w");
 
@@ -114,14 +129,14 @@ export class WeekComponent implements OnInit, OnDestroy {
 
   //DASHBOARD----------------------------------------------------------
 
-  schedulerServiceControl(emittedData) {
+  onSchedulerServiceControl(emittedData) {
     this.calendarService
       .schedulerServiceControl(emittedData)
       .subscribe(() => this.resetData());
   }
 
-  //FROM calendar-item TO dashboard
-  editShiftEmitControl(emittedData: [Shift, Scheduled | null]) {
+  //FROM [calendar-item | week-item | day-item] TO dashboard
+  onEditShiftEmitControl(emittedData: EditShiftEmit) {
     this.editShiftSubject.next(emittedData);
   }
 

@@ -22,7 +22,7 @@ export class CalendarService {
 
   //TOOLS----------------------------------------------------------
 
-  addShiftsOfTheDay(day: moment.Moment, allShifts: Shift[]) {
+  addShiftsOfTheDay(day: moment.Moment, allShifts: Shift[]): Shift[] {
     //COMPARE DAYS (EX: 0 TO 0 OR SUNDAY TO SUNDAY)
     const comparableDay = day.weekday();
 
@@ -33,7 +33,7 @@ export class CalendarService {
     return shiftsOfTheDay;
   }
 
-  //CAN GRAB SCHEDULED FROM SHIFT
+  //CAN GRAB SCHEDULED FROM SHIFT FOR dashboard AND editor
   isScheduledShift(
     shift: Shift,
     allScheduled: Scheduled[],
@@ -71,7 +71,7 @@ export class CalendarService {
     return [false, null, day];
   }
 
-  isNotThisMonth(day: moment.Moment, date: moment.Moment) {
+  isNotThisMonth(day: moment.Moment, date: moment.Moment): boolean {
     let firstDay = moment(date).startOf("M");
     const lastDay = moment(date).endOf("M");
 
@@ -82,7 +82,7 @@ export class CalendarService {
     return false;
   }
 
-  isToday(day) {
+  isToday(day): boolean {
     if (!day) {
       return false;
     }

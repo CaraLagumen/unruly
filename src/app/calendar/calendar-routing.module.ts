@@ -9,7 +9,7 @@ import { WeekComponent } from "./week/week.component";
 const routes: Routes = [
   { path: "", component: CalendarComponent },
   { path: "day/:date", component: DayComponent },
-  { path: "week", component: WeekComponent },
+  { path: "week/:date", component: WeekComponent },
 ];
 
 @NgModule({

@@ -1,12 +1,12 @@
 import moment from "moment";
 
 import Scheduled from "../../models/shift/scheduledModel";
+import IScheduled from "../../types/shift/scheduledInterface";
 import Shift from "../../models/shift/shiftModel";
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import APIFeatures from "../../utils/apiFeatures";
 import AppError from "../../utils/appError";
-import IScheduled from "ts/types/shift/scheduledInterface";
 
 //----------------------FOR SCHEDULER USE
 
@@ -18,12 +18,23 @@ export const validateScheduled = catchAsync(async (req, res, next) => {
   const shift = await Shift.findById(req.body.shiftId);
 
   //2. SETUP VARS FOR DAYS COMPARISON
+  const today = moment();
   const day = shift!.day;
-  const date = req.body.date;
+  const date: Date = req.body.date;
   const dateDay = moment(date, "YYYY-MM-DD").weekday();
 
-  //3. THROW ERROR IF DAYS DON'T MATCH
+  //3. THROW ERROR IF DATE IS IN THE PAST
+  if (moment(date) <= today) {
+    return next(
+      new AppError(
+        `Scheduled date is in the past. Please enter a date in the future.`,
+        400
+      )
+    );
+  }
+
   if (day !== dateDay) {
+    //4. THROW ERROR IF DAYS DON'T MATCH
     return next(
       new AppError(
         `Shift day and scheduled date day do not match. Please enter a date that matches the shift day.`,
@@ -32,7 +43,7 @@ export const validateScheduled = catchAsync(async (req, res, next) => {
     );
   }
 
-  //4. ALLOW IF MATCH
+  //5. ALLOW WHEN ALL VALIDATED
   next();
 });
 

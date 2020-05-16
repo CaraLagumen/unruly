@@ -11,7 +11,7 @@ import { FormGroup, FormControl } from "@angular/forms";
 
 import { ShiftService } from "../../shared/services/shift/shift.service";
 import { Shift } from "../../shared/models/shift/shift.model";
-import { Scheduled } from "../../shared/models/shift/scheduled.model";
+import { EditShift, EditShiftEmit } from "../../shared/models/custom-types";
 
 @Component({
   selector: "app-dashboard",
@@ -26,9 +26,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   @Input() schedulerIsAuth;
   @Input() editShiftObs: Observable<any>;
 
-  @Output() schedulerEmitter = new EventEmitter<[string, any | null]>();
+  @Output() schedulerEmitter = new EventEmitter<[string, EditShift]>();
 
-  editShift: [Shift, Scheduled | null];
+  editShift: EditShift;
   editShiftId: string;
   editShiftDay: moment.Moment;
   updateShiftForm: FormGroup;
@@ -55,34 +55,34 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     //GRAB EDIT SHIFT INFO FROM PARENT (CALENDAR) OBS
     this.editShiftSub = this.editShiftObs.subscribe(
-      (emittedData: [Shift, Scheduled | null, moment.Moment]) => {
+      (emittedData: EditShiftEmit) => {
         this.editShift = [emittedData[0], emittedData[1]];
         this.editShiftId = emittedData[0].id;
         this.editShiftDay = emittedData[2];
-        this.toggleEditShiftMenu(`open`);
+        this.onToggleEditShiftMenu(`open`);
       }
     );
   }
 
   //TOOLS----------------------------------------------------------
 
-  schedulerEmitterButton(type: string) {
+  onSchedulerEmitter(type: string) {
     const data = this.editShift;
 
     this.schedulerEmitter.emit([type, data]);
 
     if (this.editShiftMenu) {
-      this.toggleEditShiftMenu(`close`);
+      this.onToggleEditShiftMenu(`close`);
     }
   }
 
-  toggleEditShiftMenu(type: `open` | `close`) {
+  onToggleEditShiftMenu(type: `open` | `close`) {
     type === `open`
       ? (this.editShiftMenu = true)
       : (this.editShiftMenu = false);
   }
 
-  toggleEditShiftForm(type: `open` | `close`) {
+  onToggleEditShiftForm(type: `open` | `close`) {
     if (type === `open`) {
       this.initEditShiftForm();
     }

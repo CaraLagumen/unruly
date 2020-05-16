@@ -4,6 +4,7 @@ import * as moment from "moment";
 import { CalendarService } from "../../calendar.service";
 import { Shift } from "../../../shared/models/shift/shift.model";
 import { Scheduled } from "../../../shared/models/shift/scheduled.model";
+import { EditShiftEmit } from "../../../shared/models/custom-types";
 
 @Component({
   selector: "app-day-item",
@@ -15,9 +16,7 @@ export class DayItemComponent implements OnInit {
   @Input() allScheduled: Scheduled[];
   @Input() day: moment.Moment;
 
-  @Output() editShiftEmitter = new EventEmitter<
-    [Shift, Scheduled | null, moment.Moment]
-  >();
+  @Output() editShiftEmitter = new EventEmitter<EditShiftEmit>();
 
   scheduled: Scheduled;
 
@@ -57,7 +56,7 @@ export class DayItemComponent implements OnInit {
     );
   }
 
-  isScheduledShift(shift) {
+  isScheduledShift(shift): boolean {
     const data = this.calendarService.isScheduledShift(
       shift,
       this.allScheduled,
@@ -68,7 +67,7 @@ export class DayItemComponent implements OnInit {
     return data[0];
   }
 
-  editShiftEmitterButton(shift: Shift) {
+  onEditShiftEmitter(shift: Shift) {
     const data = this.calendarService.isScheduledShift(
       shift,
       this.allScheduled,

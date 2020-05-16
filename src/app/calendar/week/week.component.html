@@ -3,17 +3,17 @@
   [employeeIsAuth]="employeeIsAuth"
   [schedulerIsAuth]="schedulerIsAuth"
   [editShiftObs]="editShiftSubject.asObservable()"
-  (schedulerEmitter)="schedulerServiceControl($event)"
+  (schedulerEmitter)="onSchedulerServiceControl($event)"
 ></app-dashboard>
 
 <div class="calendar">
 
   <div class="calendar__nav">
 
-    <button (click)="currentWeek()">Current week</button>
+    <button (click)="onCurrentWeek()">Current week</button>
 
     <button
-      (click)="previousWeek()"
+      (click)="onPreviousWeek()"
       class="calendar__nav--btn"
     >◄</button>
 
@@ -22,7 +22,7 @@
     </h3>
 
     <button
-      (click)="nextWeek()"
+      (click)="onNextWeek()"
       class="calendar__nav--btn"
     >►</button>
 
@@ -42,14 +42,14 @@
 
       <div class="calendar__main--days-info">
 
-        <h4>{{ day?.date() }}</h4>
+        <h4 [routerLink]="['/day', day.toISOString()]">{{ day?.date() }}</h4>
 
         <app-week-item
           *ngIf="isLoaded"
           [allShifts]="allShifts"
           [allScheduled]="allScheduled"
           [day]="day"
-          (editShiftEmitter)="editShiftEmitControl($event)"
+          (editShiftEmitter)="onEditShiftEmitControl($event)"
         ></app-week-item>
 
       </div>

@@ -5,7 +5,7 @@ import * as moment from "moment";
 import { ShiftService } from "../shared/services/shift/shift.service";
 import { ScheduledService } from "../shared/services/shift/scheduled.service";
 import { CalendarService } from "./calendar.service";
-import { UserType } from "../shared/models/custom-types";
+import { UserType, EditShiftEmit } from "../shared/models/custom-types";
 import { Shift } from "../shared/models/shift/shift.model";
 import { Scheduled } from "../shared/models/shift/scheduled.model";
 
@@ -29,8 +29,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
   employeeIsAuth = false;
   schedulerIsAuth = false;
   date = moment();
-  isLoaded = false;
   editShiftSubject = new Subject();
+  isLoaded = false;
 
   constructor(
     private shiftService: ShiftService,
@@ -60,27 +60,27 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   //TOOLS----------------------------------------------------------
 
-  currentMonth() {
+  onCurrentMonth() {
     this.date = moment();
     this.daysArr = this.createCalendar(this.date);
   }
 
-  previousMonth() {
+  onPreviousMonth() {
     this.date.subtract(1, "M");
     this.daysArr = this.createCalendar(this.date);
   }
 
-  nextMonth() {
+  onNextMonth() {
     this.date.add(1, "M");
     this.daysArr = this.createCalendar(this.date);
   }
 
-  isNotThisMonth(day) {
-    this.calendarService.isNotThisMonth(day, this.date);
+  isNotThisMonth(day: moment.Moment): boolean {
+    return this.calendarService.isNotThisMonth(day, this.date);
   }
 
-  isToday(day) {
-    this.calendarService.isToday(day);
+  isToday(day: moment.Moment): boolean {
+    return this.calendarService.isToday(day);
   }
 
   resetData() {
@@ -92,7 +92,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   //MAIN----------------------------------------------------------
 
-  createCalendar(month: moment.Moment) {
+  createCalendar(month: moment.Moment): moment.Moment[] {
     //1. SETUP VARS
     let firstDay = moment(month).startOf("M");
     const lastDay = moment(month).endOf("M");
@@ -143,14 +143,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
   //DASHBOARD----------------------------------------------------------
 
   //FROM dashboard TO calendar-service
-  schedulerServiceControl(emittedData) {
+  onSchedulerServiceControl(emittedData) {
     this.calendarService
       .schedulerServiceControl(emittedData)
       .subscribe(() => this.resetData());
   }
 
-  //FROM calendar-item | week-item | day-item TO dashboard
-  editShiftEmitControl(emittedData: [Shift, Scheduled | null, moment.Moment]) {
+  //FROM [calendar-item | week-item | day-item] TO dashboard
+  onEditShiftEmitControl(emittedData: EditShiftEmit) {
     this.editShiftSubject.next(emittedData);
   }
 

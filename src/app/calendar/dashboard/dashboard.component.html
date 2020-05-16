@@ -8,9 +8,9 @@
   <div>
     <h3>Auto populate</h3>
 
-    <button (click)="schedulerEmitterButton('populateAllToScheduled')">Populate full-time</button>
+    <button (click)="onSchedulerEmitter('populateAllToScheduled')">Populate full-time</button>
     <button>Populate steady extra</button>
-    <button (click)="schedulerEmitterButton('deleteLastScheduled')">Delete last scheduled</button>
+    <button (click)="onSchedulerEmitter('deleteLastScheduled')">Delete last scheduled</button>
 
   </div>
 
@@ -45,17 +45,17 @@
 
     <div class="btns">
 
-      <button (click)="toggleEditShiftForm('open')">Update shift</button>
-      <button (click)="schedulerEmitterButton('deleteShift')">Delete shift</button>
+      <button (click)="onToggleEditShiftForm('open')">Update shift</button>
+      <button (click)="onSchedulerEmitter('deleteShift')">Delete shift</button>
 
       <button [routerLink]="['/editor/scheduled', editShift[0].id, editShiftDay.toISOString()]">
         Create scheduled</button>
       <button
         *ngIf="editShift[1]"
-        (click)="schedulerEmitterButton('deleteScheduled')"
+        (click)="onSchedulerEmitter('deleteScheduled')"
       >Delete scheduled</button>
 
-      <button (click)="toggleEditShiftMenu('close')">Close</button>
+      <button (click)="onToggleEditShiftMenu('close')">Close</button>
     </div>
 
   </div>
@@ -124,7 +124,7 @@
       >Update shift</button>
     </form>
 
-    <button (click)="toggleEditShiftForm('close')">Close</button>
+    <button (click)="onToggleEditShiftForm('close')">Close</button>
 
   </div>
 

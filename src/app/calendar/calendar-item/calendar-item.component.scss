@@ -1,11 +1,12 @@
 .container {
-  overflow-y: auto;
-
   height: 80%;
+
+  overflow-y: auto;
 }
 
 .shift-block {
   display: inline-block;
+
   width: 2rem;
   margin: 0.1rem;
 

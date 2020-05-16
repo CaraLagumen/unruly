@@ -26,6 +26,7 @@
 
     &--days {
       grid-row: 1 / 2;
+      z-index: 1000;
 
       width: 100%;
 
@@ -60,4 +61,8 @@
 
 .inactive {
   background-color: darkgray;
+}
+
+hr {
+  height: 1rem;
 }

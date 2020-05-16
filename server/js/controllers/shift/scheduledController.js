@@ -33,14 +33,19 @@ exports.validateScheduled = catchAsync_1.default((req, res, next) => __awaiter(v
     //1. GRAB RAW SHIFT FROM ENTERED SHIFT ID
     const shift = yield shiftModel_1.default.findById(req.body.shiftId);
     //2. SETUP VARS FOR DAYS COMPARISON
+    const today = moment_1.default();
     const day = shift.day;
     const date = req.body.date;
     const dateDay = moment_1.default(date, "YYYY-MM-DD").weekday();
-    //3. THROW ERROR IF DAYS DON'T MATCH
+    //3. THROW ERROR IF DATE IS IN THE PAST
+    if (moment_1.default(date) <= today) {
+        return next(new appError_1.default(`Scheduled date is in the past. Please enter a date in the future.`, 400));
+    }
     if (day !== dateDay) {
+        //4. THROW ERROR IF DAYS DON'T MATCH
         return next(new appError_1.default(`Shift day and scheduled date day do not match. Please enter a date that matches the shift day.`, 400));
     }
-    //4. ALLOW IF MATCH
+    //5. ALLOW WHEN ALL VALIDATED
     next();
 }));
 //MAIN----------------------------------------------------------
