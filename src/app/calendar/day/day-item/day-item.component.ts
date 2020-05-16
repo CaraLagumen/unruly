@@ -15,7 +15,9 @@ export class DayItemComponent implements OnInit {
   @Input() allScheduled: Scheduled[];
   @Input() day: moment.Moment;
 
-  @Output() editShiftEmitter = new EventEmitter<[Shift, Scheduled | null]>();
+  @Output() editShiftEmitter = new EventEmitter<
+    [Shift, Scheduled | null, moment.Moment]
+  >();
 
   scheduled: Scheduled;
 
@@ -73,6 +75,6 @@ export class DayItemComponent implements OnInit {
       this.day
     );
 
-    this.editShiftEmitter.emit([shift, data[1]]);
+    this.editShiftEmitter.emit([shift, data[1], data[2]]);
   }
 }

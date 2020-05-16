@@ -34,8 +34,8 @@ exports.validateScheduled = catchAsync_1.default((req, res, next) => __awaiter(v
     const shift = yield shiftModel_1.default.findById(req.body.shiftId);
     //2. SETUP VARS FOR DAYS COMPARISON
     const day = shift.day;
-    const date = new Date(req.body.date);
-    const dateDay = date.getDay();
+    const date = req.body.date;
+    const dateDay = moment_1.default(date, "YYYY-MM-DD").weekday();
     //3. THROW ERROR IF DAYS DON'T MATCH
     if (day !== dateDay) {
         return next(new appError_1.default(`Shift day and scheduled date day do not match. Please enter a date that matches the shift day.`, 400));
@@ -68,7 +68,7 @@ exports.createScheduled = catchAsync_1.default((req, res, next) => __awaiter(voi
     const shift = req.body.shiftId;
     const employee = req.body.employeeId;
     const scheduler = req.scheduler.id;
-    const date = req.body.date;
+    const date = req.body.date; //DATE MUST BE IN YYYY-MM-DD ORDER TO VALIDATE
     const doc = yield scheduledModel_1.default.create({ shift, employee, scheduler, date });
     res.status(201).json({
         status: `success`,

@@ -47,8 +47,11 @@ export class VacationService {
     return this.http.get<Vacation>(`${ROOT_URL}/${vacationId}`);
   }
 
-  updateVacation(vacationId: number, vacationData: Vacation) {
-    this.http.patch<Vacation>(`${ROOT_URL}/${vacationId}`, vacationData);
+  updateVacation(
+    vacationId: number,
+    vacationData: Vacation
+  ): Observable<Vacation> {
+    return this.http.patch<Vacation>(`${ROOT_URL}/${vacationId}`, vacationData);
   }
 
   deleteVacation(vacationId: string): Observable<Vacation> {

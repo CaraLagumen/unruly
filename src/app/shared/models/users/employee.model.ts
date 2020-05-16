@@ -1,5 +1,6 @@
 //READ ONLY - ALTERABLE DATA IN USERS FOLDER
 export interface Employee {
+  id?: string;
   firstName: string;
   lastName: string;
   email: string;

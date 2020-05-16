@@ -38,26 +38,28 @@ export class CalendarService {
     shift: Shift,
     allScheduled: Scheduled[],
     day: moment.Moment
-  ): [boolean, Scheduled | null] {
+  ): [boolean, Scheduled | null, moment.Moment] {
     //1. GRAB SHIFT ID TO COMPARE WITH SCHEDULED
     //   TO FIND IF SHIFT IS SCHEDULED
     const shiftId = shift.id;
     const scheduled = allScheduled.find((el: any) => el.shift.id === shiftId);
 
     //2. SETUP THIS DAY TO A COMPARABLE FORMAT WITH SCHEDULED DAY
-    const comparableDay = day.format("LL");
+    const comparableDay = day.format("YYYY-MM-DD");
 
     //3. COMPARE THIS DAY ONLY IF THERE IS A SCHEDULED
     if (scheduled) {
-      const comparableScheduled = moment(scheduled.date).format("LL");
+      const comparableScheduled = moment(scheduled.date).format("YYYY-MM-DD");
 
-      // ENSURE SCHEDULED DAY IS SAME AS THIS DAY
-      if (comparableScheduled === comparableDay) {
-        return [true, scheduled];
+      // AND PASS SCHEDULED DATA PLUS DAY FOR EDITOR
+      if (comparableScheduled == comparableDay) {
+        return [true, scheduled, day];
       }
     }
 
-    return [false, null];
+    //4. RETURN FALSE AND NULL IF NOT A SCHEDULED SHIFT
+    //   BUT STILL PASS THE DAY FOR EDITOR
+    return [false, null, day];
   }
 
   isNotThisMonth(day: moment.Moment, date: moment.Moment) {

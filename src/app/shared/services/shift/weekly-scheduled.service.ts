@@ -50,8 +50,8 @@ export class WeeklyScheduledService {
   updateWeeklyScheduled(
     weeklyScheduledId: string,
     weeklyScheduledData: WeeklyScheduled
-  ) {
-    this.http.patch<WeeklyScheduled>(
+  ): Observable<WeeklyScheduled> {
+    return this.http.patch<WeeklyScheduled>(
       `${ROOT_URL}/${weeklyScheduledId}`,
       weeklyScheduledData
     );

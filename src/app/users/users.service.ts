@@ -21,12 +21,13 @@ export class UsersService {
       .pipe(map((user: any) => user.doc));
   }
 
-  updateUser(userType: UserType, userData: EmployeeData | SchedulerData) {
-    this.http
-      .patch<EmployeeData | SchedulerData>(
-        `${ROOT_URL}/${userType}/updateMe`,
-        userData
-      )
-      .subscribe(() => location.reload());
+  updateUser(
+    userType: UserType,
+    userData: EmployeeData | SchedulerData
+  ): Observable<any> {
+    return this.http.patch<EmployeeData | SchedulerData>(
+      `${ROOT_URL}/${userType}/updateMe`,
+      userData
+    );
   }
 }

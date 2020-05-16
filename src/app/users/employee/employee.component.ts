@@ -30,7 +30,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   ];
 
   constructor(
-    private userService: UsersService,
+    private usersService: UsersService,
     private authService: AuthService
   ) {}
 
@@ -49,7 +49,7 @@ export class EmployeeComponent implements OnInit, OnDestroy {
 
     //2. EXPOSE EMPLOYEE DATA FOR DISPLAY AND PLUG IN
     //   EXISTING VALUES FOR FORM
-    this.employeeSub = this.userService
+    this.employeeSub = this.usersService
       .getUser(`employee`)
       .subscribe((employeeData: Employee) => {
         this.employee = employeeData;
@@ -98,9 +98,9 @@ export class EmployeeComponent implements OnInit, OnDestroy {
       preferredDaysOff: [dayOff1, dayOff2],
     };
 
-    this.userService.updateUser(`employee`, employeeData);
-
-    this.updateEmployeeForm.reset();
+    this.usersService
+      .updateUser(`employee`, employeeData)
+      .subscribe(() => this.updateEmployeeForm.reset());
   }
 
   onChangePassword(form: NgForm) {

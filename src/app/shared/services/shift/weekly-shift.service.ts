@@ -31,8 +31,11 @@ export class WeeklyShiftService {
     return this.http.post<WeeklyShift>(`${ROOT_URL}`, weeklyShiftData);
   }
 
-  updateWeeklyShift(weeklyShiftId: string, weeklyShiftData: WeeklyShift) {
-    this.http.patch<WeeklyShift>(
+  updateWeeklyShift(
+    weeklyShiftId: string,
+    weeklyShiftData: WeeklyShift
+  ): Observable<WeeklyShift> {
+    return this.http.patch<WeeklyShift>(
       `${ROOT_URL}/${weeklyShiftId}`,
       weeklyShiftData
     );

@@ -1,1 +1,81 @@
-<p>editor-scheduled works!</p>
+<div>
+
+  <h2>Scheduled editor</h2>
+
+  <form
+    (submit)="onCreateScheduled()"
+    [formGroup]="createScheduledForm"
+  >
+
+    <span>Shift</span>
+    <input
+      formControlName="shiftControl"
+      type="text"
+    >
+
+    <span>Employee</span>
+    <input
+      formControlName="employeeControl"
+      type="text"
+    >
+
+    <span>Date</span>
+    <input
+      formControlName="dateControl"
+      type="date"
+    >
+
+    <button
+      [disabled]="!createScheduledForm.valid"
+      type="submit"
+    >Create scheduled</button>
+  </form>
+
+  <div class="options">
+
+    <div>
+
+      <h3>Shifts</h3>
+
+      <div
+        *ngFor="let shift of (shifts$ | async)"
+        (click)="onSelectShift(shift)"
+      >
+        <!-- {{ shift?.position}}
+  {{ shift?.slot }}
+  {{ shift?.location }} -->
+        {{ shift?.shiftStart[0] }}
+        {{ days[shift?.day] }}
+        <!-- {{ shift?.shiftEnd[0] }} -->
+        <span>{{ shift?.id }}</span>
+
+      </div>
+
+    </div>
+
+
+    <div>
+
+      <h3>Employee</h3>
+
+      <div
+        *ngFor="let employee of (employees$ | async)"
+        (click)="onSelectEmployee(employee)"
+      >
+        {{ employee?.lastName }}, {{ employee?.firstName }}
+        {{ employee?.id }}
+        <!-- {{ employee?.position }}
+  {{ employee?.status }}
+  {{ employee?.seniority }}
+  {{ employee?.hireDate | date: 'MMM d y' }}
+  {{ employee?.preferredShiftSlots }}
+  {{ employee?.preferredDaysOff }} -->
+      </div>
+
+    </div>
+
+
+  </div>
+
+
+</div>

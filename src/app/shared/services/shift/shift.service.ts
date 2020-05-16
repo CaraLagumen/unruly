@@ -53,10 +53,8 @@ export class ShiftService {
     return this.http.post<Shift>(`${ROOT_URL}`, shiftData);
   }
 
-  updateShift(shiftId: string, shiftData: Shift) {
-    this.http
-      .patch<Shift>(`${ROOT_URL}/${shiftId}`, shiftData)
-      .subscribe(() => location.reload());
+  updateShift(shiftId: string, shiftData: Shift): Observable<Shift> {
+    return this.http.patch<Shift>(`${ROOT_URL}/${shiftId}`, shiftData);
   }
 
   deleteShift(shiftId: string): Observable<Shift> {

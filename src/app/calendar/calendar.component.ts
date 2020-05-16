@@ -21,8 +21,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
   userType: UserType;
   daysArr: moment.Moment[];
   day: moment.Moment;
-  getAllShifts: Observable<Shift[]>;
-  getAllScheduled: Observable<Scheduled[]>;
+  forkAllShifts: Observable<Shift[]>;
+  forkAllScheduled: Observable<Scheduled[]>;
   allShifts: Shift[];
   allScheduled: Scheduled[];
 
@@ -46,14 +46,16 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.userFeature();
 
     //3. GRAB DATA
-    this.getAllShifts = this.shiftService.getRawAllShifts();
-    this.getAllScheduled = this.scheduledService.getRawAllScheduled();
+    this.forkAllShifts = this.shiftService.getRawAllShifts();
+    this.forkAllScheduled = this.scheduledService.getRawAllScheduled();
 
-    forkJoin([this.getAllShifts, this.getAllScheduled]).subscribe((result) => {
-      this.allShifts = result[0];
-      this.allScheduled = result[1];
-      this.isLoaded = true;
-    });
+    forkJoin([this.forkAllShifts, this.forkAllScheduled]).subscribe(
+      (result) => {
+        this.allShifts = result[0];
+        this.allScheduled = result[1];
+        this.isLoaded = true;
+      }
+    );
   }
 
   //TOOLS----------------------------------------------------------
@@ -147,8 +149,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
       .subscribe(() => this.resetData());
   }
 
-  //FROM calendar-item TO dashboard
-  editShiftEmitControl(emittedData: [Shift, Scheduled | null]) {
+  //FROM calendar-item | week-item | day-item TO dashboard
+  editShiftEmitControl(emittedData: [Shift, Scheduled | null, moment.Moment]) {
     this.editShiftSubject.next(emittedData);
   }
 

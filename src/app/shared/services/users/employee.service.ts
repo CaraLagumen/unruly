@@ -32,7 +32,7 @@ export class EmployeeService {
   }
 
   updateEmployee(employeeId: string, employeeData: Employee) {
-    this.http.patch<Employee>(`${ROOT_URL}/${employeeId}`, employeeData);
+    return this.http.patch<Employee>(`${ROOT_URL}/${employeeId}`, employeeData);
   }
 
   deleteEmployee(employeeId: string): Observable<Employee> {

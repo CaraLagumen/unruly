@@ -1,1 +1,8 @@
-<p>editor works!</p>
+<app-editor-shifts
+  [employees]="employees$ | async"
+  [schedulers]="schedulers$"
+  [shifts]="shifts$"
+  [scheduled]="scheduled$"
+  [weeklyShifts]="weeklyShifts$"
+  [weeklyScheduled]="weeklyScheduled$"
+></app-editor-shifts>

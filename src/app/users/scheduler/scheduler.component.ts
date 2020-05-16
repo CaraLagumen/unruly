@@ -19,7 +19,7 @@ export class SchedulerComponent implements OnInit, OnDestroy {
   scheduler: Scheduler;
 
   constructor(
-    private userService: UsersService,
+    private usersService: UsersService,
     private authService: AuthService
   ) {}
 
@@ -33,7 +33,7 @@ export class SchedulerComponent implements OnInit, OnDestroy {
 
     //2. EXPOSE SCHEDULER DATA FOR DISPLAY AND PLUG IN
     //   EXISTING VALUES FOR FORM
-    this.schedulerSub = this.userService
+    this.schedulerSub = this.usersService
       .getUser(`scheduler`)
       .subscribe((schedulerData: Scheduler) => {
         this.scheduler = schedulerData;
@@ -51,9 +51,9 @@ export class SchedulerComponent implements OnInit, OnDestroy {
       email: this.updateSchedulerForm.value.email,
     };
 
-    this.userService.updateUser(`scheduler`, schedulerData);
-
-    this.updateSchedulerForm.reset();
+    this.usersService
+      .updateUser(`scheduler`, schedulerData)
+      .subscribe(() => this.updateSchedulerForm.reset());
   }
 
   onChangePassword(form: NgForm) {

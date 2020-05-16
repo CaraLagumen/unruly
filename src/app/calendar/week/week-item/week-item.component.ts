@@ -14,8 +14,10 @@ export class WeekItemComponent implements OnInit {
   @Input() allShifts: Shift[];
   @Input() allScheduled: Scheduled[];
   @Input() day: moment.Moment;
-  
-  @Output() editShiftEmitter = new EventEmitter<[Shift, Scheduled | null]>();
+
+  @Output() editShiftEmitter = new EventEmitter<
+    [Shift, Scheduled | null, moment.Moment]
+  >();
 
   scheduled: Scheduled;
 
@@ -58,6 +60,6 @@ export class WeekItemComponent implements OnInit {
       this.day
     );
 
-    this.editShiftEmitter.emit([shift, data[1]]);
+    this.editShiftEmitter.emit([shift, data[1], data[2]]);
   }
 }

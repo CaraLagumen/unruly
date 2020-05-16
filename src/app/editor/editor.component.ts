@@ -1,6 +1,7 @@
-import { Component, OnInit } from "@angular/core";
-import { Observable } from "rxjs";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Observable, Subscription } from "rxjs";
 
+import { UsersService } from "../users/users.service";
 import { EmployeeService } from "../shared/services/users/employee.service";
 import { SchedulerService } from "../shared/services/users/scheduler.service";
 import { ShiftService } from "../shared/services/shift/shift.service";
@@ -19,7 +20,10 @@ import { WeeklyScheduled } from "../shared/models/shift/weekly-scheduled.model";
   templateUrl: "./editor.component.html",
   styleUrls: ["./editor.component.scss"],
 })
-export class EditorComponent implements OnInit {
+export class EditorComponent implements OnInit, OnDestroy {
+  private schedulerSub: Subscription;
+
+  scheduler: Scheduler;
   employees$: Observable<Employee[]>;
   schedulers$: Observable<Scheduler[]>;
   shifts$: Observable<Shift[]>;
@@ -28,6 +32,7 @@ export class EditorComponent implements OnInit {
   weeklyScheduled$: Observable<WeeklyScheduled[]>;
 
   constructor(
+    private usersService: UsersService,
     private employeeService: EmployeeService,
     private schedulerService: SchedulerService,
     private shiftService: ShiftService,
@@ -43,5 +48,15 @@ export class EditorComponent implements OnInit {
     this.scheduled$ = this.scheduledService.getRawAllScheduled();
     this.weeklyShifts$ = this.weeklyShiftService.getAllWeeklyShifts();
     this.weeklyScheduled$ = this.weeklyScheduledService.getAllWeeklyScheduled();
+
+    this.schedulerSub = this.usersService
+      .getUser(`scheduler`)
+      .subscribe((schedulerData: Scheduler) => {
+        this.scheduler = schedulerData;
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.schedulerSub) this.schedulerSub.unsubscribe();
   }
 }

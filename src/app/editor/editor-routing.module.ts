@@ -8,8 +8,8 @@ import { EditorScheduledComponent } from "./editor-scheduled/editor-scheduled.co
 
 const routes: Routes = [
   { path: "", component: EditorComponent },
-  { path: "shifts/:id", component: EditorShiftsComponent },
-  { path: "scheduled/:shiftId", component: EditorScheduledComponent },
+  { path: "shifts/:shiftId", component: EditorShiftsComponent },
+  { path: "scheduled/:shiftId/:shiftDate", component: EditorScheduledComponent },
 ];
 
 @NgModule({

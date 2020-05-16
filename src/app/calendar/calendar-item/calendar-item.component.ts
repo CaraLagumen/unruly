@@ -15,7 +15,9 @@ export class CalendarItemComponent implements OnInit {
   @Input() allScheduled: Scheduled[];
   @Input() day: moment.Moment;
 
-  @Output() editShiftEmitter = new EventEmitter<[Shift, Scheduled | null]>();
+  @Output() editShiftEmitter = new EventEmitter<
+    [Shift, Scheduled | null, moment.Moment]
+  >();
 
   shiftsOfTheDay: Shift[] = [];
 
@@ -55,6 +57,6 @@ export class CalendarItemComponent implements OnInit {
       this.day
     );
 
-    this.editShiftEmitter.emit([shift, data[1]]);
+    this.editShiftEmitter.emit([shift, data[1], data[2]]);
   }
 }

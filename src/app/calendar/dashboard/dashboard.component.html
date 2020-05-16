@@ -48,7 +48,8 @@
       <button (click)="toggleEditShiftForm('open')">Update shift</button>
       <button (click)="schedulerEmitterButton('deleteShift')">Delete shift</button>
 
-      <button [routerLink]="['/editor/scheduled', editShift[0].id]">Create scheduled</button>
+      <button [routerLink]="['/editor/scheduled', editShift[0].id, editShiftDay.toISOString()]">
+        Create scheduled</button>
       <button
         *ngIf="editShift[1]"
         (click)="schedulerEmitterButton('deleteScheduled')"

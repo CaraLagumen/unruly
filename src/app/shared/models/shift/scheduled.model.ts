@@ -10,3 +10,13 @@ export interface Scheduled {
   date: Date;
   createdAt: Date;
 }
+
+//FOR FORMS ONLY
+export interface ScheduledData {
+  id?: string;
+  shiftId: string;
+  employeeId: string;
+  schedulerId?: string;
+  date: any;
+  createdAt?: Date;
+}

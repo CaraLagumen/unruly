@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
 import { environment } from "../../../../environments/environment";
-import { Scheduled } from "../../models/shift/scheduled.model";
+import { Scheduled, ScheduledData } from "../../models/shift/scheduled.model";
 
 const ROOT_URL = `${environment.apiUrl}/scheduled`;
 
@@ -42,7 +42,7 @@ export class ScheduledService {
   //PROTECTED----------------------------------------------------------
 
   //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
-  createScheduled(scheduledData: Scheduled): Observable<Scheduled> {
+  createScheduled(scheduledData: ScheduledData): Observable<Scheduled> {
     return this.http.post<Scheduled>(`${ROOT_URL}`, scheduledData);
   }
 

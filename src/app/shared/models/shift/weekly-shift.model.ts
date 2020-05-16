@@ -1,6 +1,7 @@
 import { Shift } from "./shift.model";
 
 export interface WeeklyShift {
+  id?: string;
   name: string;
   position: string;
   slot: string[];

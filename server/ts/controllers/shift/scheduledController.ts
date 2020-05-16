@@ -19,8 +19,8 @@ export const validateScheduled = catchAsync(async (req, res, next) => {
 
   //2. SETUP VARS FOR DAYS COMPARISON
   const day = shift!.day;
-  const date = new Date(req.body.date);
-  const dateDay = date.getDay();
+  const date = req.body.date;
+  const dateDay = moment(date, "YYYY-MM-DD").weekday();
 
   //3. THROW ERROR IF DAYS DON'T MATCH
   if (day !== dateDay) {
@@ -67,7 +67,7 @@ export const createScheduled = catchAsync(async (req, res, next) => {
   const shift = req.body.shiftId;
   const employee = req.body.employeeId;
   const scheduler = req.scheduler.id;
-  const date = req.body.date;
+  const date = req.body.date; //DATE MUST BE IN YYYY-MM-DD ORDER TO VALIDATE
 
   const doc = await Scheduled.create({ shift, employee, scheduler, date });
 

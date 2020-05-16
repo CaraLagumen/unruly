@@ -30,6 +30,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   editShift: [Shift, Scheduled | null];
   editShiftId: string;
+  editShiftDay: moment.Moment;
   updateShiftForm: FormGroup;
 
   editShiftMenu = false;
@@ -52,9 +53,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(private shiftService: ShiftService) {}
 
   ngOnInit() {
+    //GRAB EDIT SHIFT INFO FROM PARENT (CALENDAR) OBS
     this.editShiftSub = this.editShiftObs.subscribe(
-      (emittedData: [Shift, Scheduled | null]) => {
-        this.editShift = emittedData;
+      (emittedData: [Shift, Scheduled | null, moment.Moment]) => {
+        this.editShift = [emittedData[0], emittedData[1]];
+        this.editShiftId = emittedData[0].id;
+        this.editShiftDay = emittedData[2];
         this.toggleEditShiftMenu(`open`);
       }
     );
@@ -101,7 +105,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     //2. EXPOSE SHIFT DATA FOR DISPLAY AND PLUG IN
     //   EXISTING VALUES FOR FORM
-    this.editShiftId = this.editShift[0].id;
     this.shiftSub = this.shiftService
       .getShift(this.editShiftId)
       .subscribe((shiftData: Shift) => {
@@ -136,9 +139,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       shiftEnd: [this.updateShiftForm.value.shiftEndControl, 0],
     };
 
-    this.shiftService.updateShift(this.editShiftId, shiftData);
-
-    this.updateShiftForm.reset();
+    this.shiftService
+      .updateShift(this.editShiftId, shiftData)
+      .subscribe(() => location.reload());
   }
 
   ngOnDestroy() {
