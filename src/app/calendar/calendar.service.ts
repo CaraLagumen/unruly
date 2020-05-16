@@ -40,24 +40,33 @@ export class CalendarService {
     day: moment.Moment
   ): [boolean, Scheduled | null, moment.Moment] {
     //1. GRAB SHIFT ID TO COMPARE WITH SCHEDULED
-    //   TO FIND IF SHIFT IS SCHEDULED
+    //   TO FIND IF SHIFT MIGHT HAVE A SCHEDULED
     const shiftId = shift.id;
-    const scheduled = allScheduled.find((el: any) => el.shift.id === shiftId);
+    const allMatchedScheduled = allScheduled.filter(
+      (scheduled: Scheduled) => scheduled.shift.id === shiftId
+    );
 
-    //2. SETUP THIS DAY TO A COMPARABLE FORMAT WITH SCHEDULED DAY
-    const comparableDay = day.format("YYYY-MM-DD");
+    //2. COMPARE THIS DAY ONLY IF THERE ARE MATCHING SCHEDULED
+    if (allMatchedScheduled) {
+      const comparableDay = day.format("YYYY-MM-DD");
 
-    //3. COMPARE THIS DAY ONLY IF THERE IS A SCHEDULED
-    if (scheduled) {
-      const comparableScheduled = moment(scheduled.date).format("YYYY-MM-DD");
+      //3. OF ALL THE POSSIBLE SCHEDULED, FIND THE ONE FOR THAT DAY
+      const isScheduledData = allMatchedScheduled.find(
+        (scheduled: Scheduled) => {
+          const comparableScheduled = moment(scheduled.date).format(
+            "YYYY-MM-DD"
+          );
 
-      // AND PASS SCHEDULED DATA PLUS DAY FOR EDITOR
-      if (comparableScheduled == comparableDay) {
-        return [true, scheduled, day];
-      }
+          //4. AND PASS SCHEDULED DATA
+          if (comparableScheduled === comparableDay) return scheduled;
+        }
+      );
+
+      //6. RETURN TRUE AND SCHEDULED DATA FOR DASHBOARD AND DAY FOR EDITOR
+      if (isScheduledData) return [true, isScheduledData, day];
     }
 
-    //4. RETURN FALSE AND NULL IF NOT A SCHEDULED SHIFT
+    //7. RETURN FALSE AND NULL IF NOT A SCHEDULED SHIFT
     //   BUT STILL PASS THE DAY FOR EDITOR
     return [false, null, day];
   }
@@ -123,12 +132,7 @@ export class CalendarService {
         return this.weeklyScheduledService.populateAllToScheduled();
       case `deleteLastScheduled`:
         return this.scheduledService.deleteLastScheduled();
-
-      // //EDIT SHIFT
-      // // case `updateShift`:
-      // //   return this.shiftService.updateShift();
-      // // case `updateScheduled`:
-      // //   return this.scheduledService.updateScheduled();
+      //EDIT SHIFT
       case `deleteShift`:
         const shiftId: string = data[0].id;
         return this.shiftService.deleteShift(shiftId);
