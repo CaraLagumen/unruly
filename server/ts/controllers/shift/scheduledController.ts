@@ -15,7 +15,7 @@ import AppError from "../../utils/appError";
 //ENSURE SHIFT DAY AND SCHEDULED DATE DAY MATCHES
 export const validateScheduled = catchAsync(async (req, res, next) => {
   //1. GRAB RAW SHIFT FROM ENTERED SHIFT ID
-  const shift = await Shift.findById(req.body.shiftId);
+  const shift = await Shift.findById(req.body.shift);
 
   //2. SETUP VARS FOR DAYS COMPARISON
   const today = moment();
@@ -75,8 +75,8 @@ export const getEmployeeSchedule = catchAsync(async (req, res, next) => {
 
 //CREATE SCHEDULED SHIFT WITH EMPLOYEE FROM SHIFT ID AND EMPLOYEE ID (ENTERED)
 export const createScheduled = catchAsync(async (req, res, next) => {
-  const shift = req.body.shiftId;
-  const employee = req.body.employeeId;
+  const shift = req.body.shift;
+  const employee = req.body.employee;
   const scheduler = req.scheduler.id;
   const date = req.body.date; //DATE MUST BE IN YYYY-MM-DD ORDER TO VALIDATE
 

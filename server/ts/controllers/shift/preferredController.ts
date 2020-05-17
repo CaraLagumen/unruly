@@ -24,7 +24,7 @@ export const saveMyPreferred = catchAsync(async (req, res, next) => {
 
 //DELETE MY PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
 export const deleteMyPreferred = catchAsync(async (req, res, next) => {
-  const shift = req.body.shiftId;
+  const shift = req.body.shift;
   const employee = req.employee.id;
 
   const doc = await Preferred.deleteOne({ shift, employee });

@@ -15,6 +15,7 @@
 
     <span>Employee</span>
     <input
+      (click)="onSelectFormForEmployee('scheduled')"
       formControlName="employeeControl"
       type="text"
     >
@@ -29,6 +30,38 @@
       [disabled]="!createScheduledForm.valid"
       type="submit"
     >Create scheduled</button>
+  </form>
+
+  <h2>Create weekly schedule</h2>
+
+  <form
+    (submit)="onCreateWeeklyScheduled()"
+    [formGroup]="createWeeklyScheduledForm"
+  >
+
+    <span>Weekly shift</span>
+    <input
+      formControlName="weeklyShiftControl"
+      type="text"
+    >
+
+    <span>Employee</span>
+    <input
+      (click)="onSelectFormForEmployee('weeklyScheduled')"
+      formControlName="employeeControl"
+      type="text"
+    >
+
+    <span>Start date</span>
+    <input
+      formControlName="startDateControl"
+      type="date"
+    >
+
+    <button
+      [disabled]="!createWeeklyScheduledForm.valid"
+      type="submit"
+    >Create weekly scheduled</button>
   </form>
 
   <div class="options">
@@ -47,7 +80,26 @@
         {{ days[shift?.day] }}
         <!-- {{ shift?.shiftEnd[0] }} -->
         <span>{{ shift?.id }}</span>
+      </div>
+    </div>
 
+    <div>
+      <h3>Weekly shifts</h3>
+
+      <div
+        *ngFor="let weeklyShift of (weeklyShifts$ | async)"
+        (click)="onSelectWeeklyShift(weeklyShift)"
+      >
+        {{ weeklyShift?.name }}
+        {{ weeklyShift?.position}}
+        {{ weeklyShift?.slot }}
+        {{ weeklyShift?.location }}
+        {{ weeklyShift?.shiftDay1.shiftStart[0] }}
+        {{ weeklyShift?.shiftDay2.shiftStart[0] }}
+        {{ weeklyShift?.shiftDay3.shiftStart[0] }}
+        {{ weeklyShift?.shiftDay4.shiftStart[0] }}
+        {{ weeklyShift?.shiftDay5.shiftStart[0] }}
+        {{ weeklyShift?.id }}
       </div>
     </div>
 

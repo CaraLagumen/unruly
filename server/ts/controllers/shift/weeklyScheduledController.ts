@@ -1,3 +1,4 @@
+import { RequestHandler } from "express";
 import moment from "moment";
 
 import WeeklyScheduled from "../../models/shift/weeklyScheduledModel";
@@ -9,6 +10,14 @@ import catchAsync from "../../utils/catchAsync";
 import AppError from "../../utils/appError";
 
 //----------------------FOR SCHEDULER USE
+
+//TOOLS----------------------------------------------------------
+
+//GET LOGGED IN SCHEDULER
+export const getScheduler: RequestHandler = (req, res, next) => {
+  req.body.scheduler = req.scheduler.id;
+  next();
+};
 
 //MAIN----------------------------------------------------------
 

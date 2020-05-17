@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
 import { environment } from "../../../../environments/environment";
-import { WeeklyScheduled } from "../../models/shift/weekly-scheduled.model";
+import { WeeklyScheduled, WeeklyScheduledData } from "../../models/shift/weekly-scheduled.model";
 
 const ROOT_URL = `${environment.apiUrl}/weeklyScheduled`;
 
@@ -42,7 +42,7 @@ export class WeeklyScheduledService {
   }
 
   createWeeklyScheduled(
-    weeklyScheduledData: WeeklyScheduled
+    weeklyScheduledData: WeeklyScheduledData
   ): Observable<WeeklyScheduled> {
     return this.http.post<WeeklyScheduled>(`${ROOT_URL}`, weeklyScheduledData);
   }

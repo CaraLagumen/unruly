@@ -35,6 +35,12 @@ const factory = __importStar(require("../handlerFactory"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const appError_1 = __importDefault(require("../../utils/appError"));
 //----------------------FOR SCHEDULER USE
+//TOOLS----------------------------------------------------------
+//GET LOGGED IN SCHEDULER
+exports.getScheduler = (req, res, next) => {
+    req.body.scheduler = req.scheduler.id;
+    next();
+};
 //MAIN----------------------------------------------------------
 //CREATE ALL INDIVIDUAL SCHEDULED FROM WEEKLY SCHEDULED IDS
 exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {

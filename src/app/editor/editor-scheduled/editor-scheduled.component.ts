@@ -19,7 +19,10 @@ import {
   ScheduledData,
 } from "../../shared/models/shift/scheduled.model";
 import { WeeklyShift } from "../../shared/models/shift/weekly-shift.model";
-import { WeeklyScheduled } from "../../shared/models/shift/weekly-scheduled.model";
+import {
+  WeeklyScheduled,
+  WeeklyScheduledData,
+} from "../../shared/models/shift/weekly-scheduled.model";
 
 @Component({
   selector: "app-editor-scheduled",
@@ -37,6 +40,9 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
   weeklyShifts$: Observable<WeeklyShift[]>;
   weeklyScheduled$: Observable<WeeklyScheduled[]>;
   createScheduledForm: FormGroup;
+  createWeeklyScheduledForm: FormGroup;
+
+  selectedFormForEmployee: `scheduled` | `weeklyScheduled` = `scheduled`;
 
   shiftId = "";
   shiftDate = moment().format("YYYY-MM-DD");
@@ -80,7 +86,8 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
       this.route.snapshot.paramMap.get("shiftDate")
     ).format("YYYY-MM-DD");
 
-    this.initEditorScheduledForm();
+    this.initCreateScheduledForm();
+    this.initCreateWeeklyScheduledForm();
   }
 
   //TOOLS----------------------------------------------------------
@@ -90,16 +97,34 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
     this.createScheduledForm.controls["shiftControl"].setValue(selectedShiftId);
   }
 
+  onSelectWeeklyShift(weeklyShift: WeeklyShift) {
+    const selectedWeeklyShiftId = weeklyShift.id;
+    this.createWeeklyScheduledForm.controls["weeklyShiftControl"].setValue(
+      selectedWeeklyShiftId
+    );
+  }
+
   onSelectEmployee(employee: Employee) {
     const selectedEmployeeId = employee.id;
-    this.createScheduledForm.controls["employeeControl"].setValue(
-      selectedEmployeeId
-    );
+
+    if (this.selectedFormForEmployee === `scheduled`) {
+      this.createScheduledForm.controls["employeeControl"].setValue(
+        selectedEmployeeId
+      );
+    } else if (this.selectedFormForEmployee === `weeklyScheduled`) {
+      this.createWeeklyScheduledForm.controls["employeeControl"].setValue(
+        selectedEmployeeId
+      );
+    }
+  }
+
+  onSelectFormForEmployee(form: `scheduled` | `weeklyScheduled`) {
+    this.selectedFormForEmployee = form;
   }
 
   //SCHEDULED FORM----------------------------------------------------------
 
-  initEditorScheduledForm() {
+  initCreateScheduledForm() {
     //1. INITIALIZE SCHEDULED FORM
     this.createScheduledForm = new FormGroup({
       shiftControl: new FormControl(null),
@@ -121,14 +146,45 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
     ).toISOString();
 
     const scheduledData: ScheduledData = {
-      shiftId: this.createScheduledForm.value.shiftControl,
-      employeeId: this.createScheduledForm.value.employeeControl,
+      shift: this.createScheduledForm.value.shiftControl,
+      employee: this.createScheduledForm.value.employeeControl,
       date: parsedDate,
     };
 
     this.scheduledService.createScheduled(scheduledData).subscribe(() => {
       this.createScheduledForm.reset();
     });
+  }
+
+  //WEEKLY SCHEDULED FORM----------------------------------------------------------
+
+  initCreateWeeklyScheduledForm() {
+    //1. INITIALIZE SCHEDULED FORM
+    this.createWeeklyScheduledForm = new FormGroup({
+      employeeControl: new FormControl(null),
+      weeklyShiftControl: new FormControl(null),
+      startDateControl: new FormControl(null),
+    });
+  }
+
+  onCreateWeeklyScheduled() {
+    if (this.createWeeklyScheduledForm.invalid) return;
+
+    const parsedDate = moment(
+      this.createWeeklyScheduledForm.value.startDateControl
+    ).toISOString();
+
+    const weeklyScheduledData: WeeklyScheduledData = {
+      employee: this.createWeeklyScheduledForm.value.employeeControl,
+      weeklyShift: this.createWeeklyScheduledForm.value.weeklyShiftControl,
+      startDate: parsedDate,
+    };
+
+    this.weeklyScheduledService
+      .createWeeklyScheduled(weeklyScheduledData)
+      .subscribe(() => {
+        this.createWeeklyScheduledForm.reset();
+      });
   }
 
   ngOnDestroy() {

@@ -31,7 +31,7 @@ const appError_1 = __importDefault(require("../../utils/appError"));
 //ENSURE SHIFT DAY AND SCHEDULED DATE DAY MATCHES
 exports.validateScheduled = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     //1. GRAB RAW SHIFT FROM ENTERED SHIFT ID
-    const shift = yield shiftModel_1.default.findById(req.body.shiftId);
+    const shift = yield shiftModel_1.default.findById(req.body.shift);
     //2. SETUP VARS FOR DAYS COMPARISON
     const today = moment_1.default();
     const day = shift.day;
@@ -70,8 +70,8 @@ exports.getEmployeeSchedule = catchAsync_1.default((req, res, next) => __awaiter
 }));
 //CREATE SCHEDULED SHIFT WITH EMPLOYEE FROM SHIFT ID AND EMPLOYEE ID (ENTERED)
 exports.createScheduled = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const shift = req.body.shiftId;
-    const employee = req.body.employeeId;
+    const shift = req.body.shift;
+    const employee = req.body.employee;
     const scheduler = req.scheduler.id;
     const date = req.body.date; //DATE MUST BE IN YYYY-MM-DD ORDER TO VALIDATE
     const doc = yield scheduledModel_1.default.create({ shift, employee, scheduler, date });

@@ -8,3 +8,10 @@ export interface WeeklyScheduled {
   weeklyShift: WeeklyShift;
   startDate: Date;
 }
+
+export interface WeeklyScheduledData {
+  employee: string;
+  scheduler?: string;
+  weeklyShift: string;
+  startDate: any;
+}

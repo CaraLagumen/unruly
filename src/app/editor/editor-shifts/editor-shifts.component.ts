@@ -32,7 +32,8 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
   locations = ShiftProperties.locations;
   days = ShiftProperties.days;
   shiftHours = ShiftProperties.shiftHours;
-  shiftDayNumber: 1 | 2 | 3 | 4 | 5 = 1;
+  
+  selectedShiftDayNumber: 1 | 2 | 3 | 4 | 5 = 1;
 
   constructor(
     private usersService: UsersService,
@@ -62,19 +63,18 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
   onSelectShift(shift: Shift) {
     const selectedShiftId = shift.id;
     this.createWeeklyShiftForm.controls[
-      `shift${this.shiftDayNumber}Control`
+      `shift${this.selectedShiftDayNumber}Control`
     ].setValue(selectedShiftId);
   }
 
   //FOR USE WITH WEEKLY SHIFT FORM
   onSelectShiftDayNumber(selectedNumber: 1 | 2 | 3 | 4 | 5) {
-    this.shiftDayNumber = selectedNumber;
+    this.selectedShiftDayNumber = selectedNumber;
   }
 
   //SINGLE SHIFT FORM----------------------------------------------------------
 
   initCreateShiftForm() {
-    //1. INITIALIZE SHIFT FORM
     this.createShiftForm = new FormGroup({
       positionControl: new FormControl(null),
       slotControl: new FormControl(null),
@@ -105,7 +105,6 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
   //WEEKLY SHIFT FORM----------------------------------------------------------
 
   initCreateWeeklyShiftForm() {
-    //1. INITIALIZE SCHEDULED FORM
     this.createWeeklyShiftForm = new FormGroup({
       nameControl: new FormControl(null),
       positionControl: new FormControl(null),

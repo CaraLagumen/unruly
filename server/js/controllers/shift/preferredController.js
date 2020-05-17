@@ -39,7 +39,7 @@ exports.saveMyPreferred = catchAsync_1.default((req, res, next) => __awaiter(voi
 }));
 //DELETE MY PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
 exports.deleteMyPreferred = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const shift = req.body.shiftId;
+    const shift = req.body.shift;
     const employee = req.employee.id;
     const doc = yield preferredModel_1.default.deleteOne({ shift, employee });
     if (!doc) {

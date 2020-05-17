@@ -144,7 +144,7 @@
 
       <div
         *ngFor="let shift of (shifts$ | async)"
-        (click)="onSelectShift(shift, shiftDayNumber)"
+        (click)="onSelectShift(shift, selectedShiftDayNumber)"
       >
         <!-- {{ shift?.position}}
   {{ shift?.slot }}

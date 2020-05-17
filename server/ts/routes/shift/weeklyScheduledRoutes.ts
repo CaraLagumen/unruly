@@ -28,6 +28,7 @@ router.post(
 router.post(
   `/`,
   schedulerAuthController.protect,
+  weeklyScheduledController.getScheduler,
   weeklyScheduledController.createWeeklyScheduled
 );
 
