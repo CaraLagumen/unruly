@@ -105,9 +105,11 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateData() {
-    this.shifts$ = this.shiftService.getRawAllShifts();
-    this.weeklyShifts$ = this.weeklyShiftService.getAllWeeklyShifts();
+  updateData(type: `scheduled` | `weeklyScheduled`) {
+    if (type === `scheduled`)
+      this.scheduled$ = this.scheduledService.getRawAllScheduled();
+    if (type === `weeklyScheduled`)
+      this.weeklyScheduled$ = this.weeklyScheduledService.getAllWeeklyScheduled();
   }
 
   onSelectShift(shift: Shift) {
@@ -170,7 +172,7 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
 
     this.scheduledService.createScheduled(scheduledData).subscribe(() => {
       this.createScheduledForm.reset();
-      this.updateData();
+      this.updateData(`scheduled`);
     });
   }
 
@@ -202,7 +204,7 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
       .createWeeklyScheduled(weeklyScheduledData)
       .subscribe(() => {
         this.createWeeklyScheduledForm.reset();
-        this.updateData();
+        this.updateData(`weeklyScheduled`);
       });
   }
 

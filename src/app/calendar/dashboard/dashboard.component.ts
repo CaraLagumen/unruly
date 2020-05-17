@@ -9,10 +9,14 @@ import {
 import { Observable, Subscription } from "rxjs";
 import { FormGroup, FormControl } from "@angular/forms";
 
+import { EmployeeService } from "../../shared/services/users/employee.service";
 import { ShiftService } from "../../shared/services/shift/shift.service";
+import { ScheduledService } from "../../shared/services/shift/scheduled.service";
+import { Employee } from "../../shared/models/users/employee.model";
 import { Shift } from "../../shared/models/shift/shift.model";
 import { EditShift, EditShiftEmit } from "../../shared/models/custom-types";
 import { ShiftProperties } from "../../shared/tools/custom-classes";
+import { ScheduledData } from "../../shared/models/shift/scheduled.model";
 
 @Component({
   selector: "app-dashboard",
@@ -21,7 +25,7 @@ import { ShiftProperties } from "../../shared/tools/custom-classes";
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   private editShiftSub: Subscription;
-  private shiftSub: Subscription;
+  private employeeSub: Subscription;
 
   @Input() employeeIsAuth;
   @Input() schedulerIsAuth;
@@ -29,22 +33,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   @Output() schedulerEmitter = new EventEmitter<[string, EditShift]>();
 
+  employees: Employee[];
   editShift: EditShift;
   editShiftId: string;
   editShiftDay: moment.Moment;
   updateShiftForm: FormGroup;
+  createScheduledForm: FormGroup;
 
   editShiftMenu = false;
-  editShiftForm = false;
+  updateShiftFormToggle = false;
+  createScheduledFormToggle = false;
 
-  //EDIT SHIFT FORM
+  //UPDATE SHIFT FORM
   positions = ShiftProperties.positions;
   slots = ShiftProperties.slots;
   locations = ShiftProperties.locations;
   days = ShiftProperties.days;
   shiftHours = ShiftProperties.shiftHours;
 
-  constructor(private shiftService: ShiftService) {}
+  constructor(
+    private employeeService: EmployeeService,
+    private shiftService: ShiftService,
+    private scheduledService: ScheduledService
+  ) {}
 
   ngOnInit() {
     //GRAB EDIT SHIFT INFO FROM PARENT (CALENDAR) OBS
@@ -76,17 +87,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
       : (this.editShiftMenu = false);
   }
 
-  onToggleEditShiftForm(type: `open` | `close`) {
-    if (type === `open`) {
-      this.initEditShiftForm();
-    }
-
-    this.editShiftForm = false;
+  onToggleUpdateShiftForm(type: `open` | `close`) {
+    type === `open`
+      ? this.initUpdateShiftForm()
+      : (this.updateShiftFormToggle = false);
   }
 
+  onToggleCreateScheduledForm(type: `open` | `close`) {
+    type === `open`
+      ? this.initCreateScheduledForm()
+      : (this.createScheduledFormToggle = false);
+  }
   //EDIT SHIFT FORM----------------------------------------------------------
 
-  initEditShiftForm() {
+  initUpdateShiftForm() {
     //1. INITIALIZE SHIFT FORM
     this.updateShiftForm = new FormGroup({
       positionControl: new FormControl(null),
@@ -99,26 +113,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     //2. EXPOSE SHIFT DATA FOR DISPLAY AND PLUG IN
     //   EXISTING VALUES FOR FORM
-    this.shiftSub = this.shiftService
-      .getShift(this.editShiftId)
-      .subscribe((shiftData: Shift) => {
-        this.updateShiftForm.controls["positionControl"].setValue(
-          shiftData.position
-        );
-        this.updateShiftForm.controls["slotControl"].setValue(shiftData.slot);
-        this.updateShiftForm.controls["locationControl"].setValue(
-          shiftData.location
-        );
-        this.updateShiftForm.controls["dayControl"].setValue(shiftData.day);
-        this.updateShiftForm.controls["shiftStartControl"].setValue(
-          shiftData.shiftStart[0]
-        );
-        this.updateShiftForm.controls["shiftEndControl"].setValue(
-          shiftData.shiftEnd[0]
-        );
+    this.updateShiftForm.controls["positionControl"].setValue(
+      this.editShift[0].position
+    );
+    this.updateShiftForm.controls["slotControl"].setValue(
+      this.editShift[0].slot
+    );
+    this.updateShiftForm.controls["locationControl"].setValue(
+      this.editShift[0].location
+    );
+    this.updateShiftForm.controls["dayControl"].setValue(this.editShift[0].day);
+    this.updateShiftForm.controls["shiftStartControl"].setValue(
+      this.editShift[0].shiftStart[0]
+    );
+    this.updateShiftForm.controls["shiftEndControl"].setValue(
+      this.editShift[0].shiftEnd[0]
+    );
 
-        this.editShiftForm = true;
-      });
+    //3. DISPLAY FORM
+    this.updateShiftFormToggle = true;
   }
 
   onUpdateShift() {
@@ -138,8 +151,49 @@ export class DashboardComponent implements OnInit, OnDestroy {
       .subscribe(() => location.reload());
   }
 
+  //CREATE SCHEDULED FORM----------------------------------------------------------
+
+  getEmployees() {
+    this.employeeSub = this.employeeService
+      .getAllEmployees()
+      .subscribe((employees: Employee[]) => (this.employees = employees));
+  }
+
+  initCreateScheduledForm() {
+    this.getEmployees();
+
+    //1. INITIALIZE SCHEDULED FORM
+    this.createScheduledForm = new FormGroup({
+      employeeControl: new FormControl(null),
+    });
+
+    //2. EXPOSE SCHEDULED DATA IF ANY FOR DISPLAY AND PLUG IN
+    //   EXISTING VALUES FOR FORM
+    if (this.editShift[1] !== null)
+      this.createScheduledForm.controls["employeeControl"].setValue(
+        this.editShift[1].employee.id
+      );
+
+    //3. DISPLAY FORM
+    this.createScheduledFormToggle = true;
+  }
+
+  onCreateScheduled() {
+    if (this.createScheduledForm.invalid) return;
+
+    const scheduledData: ScheduledData = {
+      shift: this.editShiftId,
+      employee: this.createScheduledForm.value.employeeControl,
+      date: this.editShiftDay.toISOString(),
+    };
+
+    this.scheduledService
+      .createScheduled(scheduledData)
+      .subscribe(() => location.reload());
+  }
+
   ngOnDestroy() {
     if (this.editShiftSub) this.editShiftSub.unsubscribe();
-    if (this.shiftSub) this.shiftSub.unsubscribe();
+    if (this.employeeSub) this.employeeSub.unsubscribe();
   }
 }

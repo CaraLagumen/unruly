@@ -74,9 +74,10 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
     }
   }
 
-  updateData() {
-    this.shifts$ = this.shiftService.getRawAllShifts();
-    this.weeklyShifts$ = this.weeklyShiftService.getAllWeeklyShifts();
+  updateData(type: `shift` | `weeklyShift`) {
+    if (type === `shift`) this.shifts$ = this.shiftService.getRawAllShifts();
+    if (type === `weeklyShift`)
+      this.weeklyShifts$ = this.weeklyShiftService.getAllWeeklyShifts();
   }
 
   onSelectShift(shift: Shift) {
@@ -87,13 +88,15 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
   }
 
   onDeleteShift(shift: Shift) {
-    this.shiftService.deleteShift(shift.id).subscribe(() => this.updateData());
+    this.shiftService
+      .deleteShift(shift.id)
+      .subscribe(() => this.updateData(`shift`));
   }
 
   onDeleteWeeklyShift(weeklyShift: WeeklyShift) {
     this.weeklyShiftService
       .deleteWeeklyShift(weeklyShift.id)
-      .subscribe(() => this.updateData());
+      .subscribe(() => this.updateData(`weeklyShift`));
   }
 
   //FOR USE WITH WEEKLY SHIFT FORM
@@ -128,7 +131,7 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
 
     this.shiftService.createShift(shiftData).subscribe(() => {
       this.createShiftForm.reset();
-      this.updateData();
+      this.updateData(`shift`);
     });
   }
 
@@ -165,7 +168,7 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
 
     this.weeklyShiftService.createWeeklyShift(weeklyShiftData).subscribe(() => {
       this.createShiftForm.reset();
-      this.updateData();
+      this.updateData(`weeklyShift`);
     });
   }
 

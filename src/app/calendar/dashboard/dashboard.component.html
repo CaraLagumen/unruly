@@ -16,10 +16,7 @@
 
   <!--EDIT SHIFT MENU------------------------------------------------------------>
 
-  <div
-    *ngIf="editShiftMenu"
-    class="menu"
-  >
+  <div *ngIf="editShiftMenu">
 
     <div>
 
@@ -45,11 +42,10 @@
 
     <div class="btns">
 
-      <button (click)="onToggleEditShiftForm('open')">Update shift</button>
+      <button (click)="onToggleUpdateShiftForm('open')">Update shift</button>
       <button (click)="onSchedulerEmitter('deleteShift')">Delete shift</button>
 
-      <button [routerLink]="['/editor/scheduled', editShift[0].id, editShiftDay.toISOString()]">
-        Create scheduled</button>
+      <button (click)="onToggleCreateScheduledForm('open')">Create scheduled</button>
       <button
         *ngIf="editShift[1]"
         (click)="onSchedulerEmitter('deleteScheduled')"
@@ -60,12 +56,9 @@
 
   </div>
 
-  <!--EDIT SHIFT FORM------------------------------------------------------------>
+  <!--UPDATE SHIFT FORM------------------------------------------------------------>
 
-  <div
-    *ngIf="editShiftForm"
-    class="form"
-  >
+  <div *ngIf="updateShiftFormToggle">
 
     <form
       (submit)="onUpdateShift()"
@@ -124,7 +117,34 @@
       >Update shift</button>
     </form>
 
-    <button (click)="onToggleEditShiftForm('close')">Close</button>
+    <button (click)="onToggleUpdateShiftForm('close')">Close</button>
+
+  </div>
+
+  <!--CREATE SCHEDULED FORM------------------------------------------------------------>
+
+  <div *ngIf="createScheduledFormToggle">
+
+    <form
+      (submit)="onCreateScheduled()"
+      [formGroup]="createScheduledForm"
+    >
+
+      <span>Employee</span>
+      <select formControlName="employeeControl">
+        <option
+          *ngFor="let employee of employees"
+          [ngValue]="employee?.id"
+        >{{ employee?.id }}</option>
+      </select>
+
+      <button
+        [disabled]="!createScheduledForm.valid"
+        type="submit"
+      >Create scheduled</button>
+    </form>
+
+    <button (click)="onToggleCreateScheduledForm('close')">Close</button>
 
   </div>
 
