@@ -1,0 +1,36 @@
+<div class="options">
+
+  <div>
+    <h3>Shifts</h3>
+
+    <div *ngFor="let shift of (shifts | async)">
+      <button (click)="onSelectShift(shift, selectedShiftDayNumber)">Select</button>
+      <button (click)="onDeleteShift(shift)">Delete</button>
+      {{ shift?.position}}
+      {{ shift?.slot }}
+      {{ shift?.location }}
+      {{ days[shift?.day] }}
+      {{ shift?.shiftStart[0] }}
+      {{ shift?.shiftEnd[0] }}
+    </div>
+
+  </div>
+
+  <div>
+    <h3>Weekly shifts</h3>
+
+    <div *ngFor="let weeklyShift of (weeklyShifts | async)">
+      <button (click)="onDeleteWeeklyShift(weeklyShift)">Delete</button>
+      {{ weeklyShift?.name }}
+      {{ weeklyShift?.position}}
+      {{ weeklyShift?.slot }}
+      {{ weeklyShift?.location }}
+      {{ weeklyShift?.shiftDay1.shiftStart[0] }}
+      {{ weeklyShift?.shiftDay2.shiftStart[0] }}
+      {{ weeklyShift?.shiftDay3.shiftStart[0] }}
+      {{ weeklyShift?.shiftDay4.shiftStart[0] }}
+      {{ weeklyShift?.shiftDay5.shiftStart[0] }}
+    </div>
+  </div>
+
+</div>

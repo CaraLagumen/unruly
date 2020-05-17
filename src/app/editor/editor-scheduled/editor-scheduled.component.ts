@@ -23,6 +23,7 @@ import {
   WeeklyScheduled,
   WeeklyScheduledData,
 } from "../../shared/models/shift/weekly-scheduled.model";
+import { ShiftProperties } from "../../shared/tools/custom-classes";
 
 @Component({
   selector: "app-editor-scheduled",
@@ -46,15 +47,7 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
 
   shiftId = "";
   shiftDate = moment().format("YYYY-MM-DD");
-  days = [
-    `sunday`,
-    `monday`,
-    `tuesday`,
-    `wednesday`,
-    `thursday`,
-    `friday`,
-    `saturday`,
-  ];
+  days = ShiftProperties.days;
 
   constructor(
     private route: ActivatedRoute,
@@ -68,6 +61,7 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    //1. GRAB DATA
     this.employees$ = this.employeeService.getAllEmployees();
     this.schedulers$ = this.schedulerService.getAllScheduler();
     this.shifts$ = this.shiftService.getRawAllShifts();
@@ -75,46 +69,69 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
     this.weeklyShifts$ = this.weeklyShiftService.getAllWeeklyShifts();
     this.weeklyScheduled$ = this.weeklyScheduledService.getAllWeeklyScheduled();
 
+    //2. GRAB SCHEDULER ID
     this.schedulerSub = this.usersService
       .getUser(`scheduler`)
       .subscribe((schedulerData: Scheduler) => {
         this.scheduler = schedulerData;
       });
 
+    //3. GRAB SHIFT ID IF REROUTED FROM dashboard
     this.shiftId = this.route.snapshot.paramMap.get("shiftId");
     this.shiftDate = moment(
       this.route.snapshot.paramMap.get("shiftDate")
     ).format("YYYY-MM-DD");
 
+    //2. INIT FORMS
     this.initCreateScheduledForm();
     this.initCreateWeeklyScheduledForm();
   }
 
   //TOOLS----------------------------------------------------------
 
+  onEditorScheduledControl(
+    emittedData: [Shift | WeeklyShift | Employee, string]
+  ) {
+    switch (emittedData[1]) {
+      case `onSelectShift`:
+        this.onSelectShift(emittedData[0] as Shift);
+        break;
+      case `onSelectWeeklyShift`:
+        this.onSelectWeeklyShift(emittedData[0] as WeeklyShift);
+        break;
+      case `onSelectEmployee`:
+        this.onSelectEmployee(emittedData[0] as Employee);
+        break;
+    }
+  }
+
+  updateData() {
+    this.shifts$ = this.shiftService.getRawAllShifts();
+    this.weeklyShifts$ = this.weeklyShiftService.getAllWeeklyShifts();
+  }
+
   onSelectShift(shift: Shift) {
-    const selectedShiftId = shift.id;
-    this.createScheduledForm.controls["shiftControl"].setValue(selectedShiftId);
+    this.createScheduledForm.controls["shiftControl"].setValue(shift.id);
   }
 
   onSelectWeeklyShift(weeklyShift: WeeklyShift) {
-    const selectedWeeklyShiftId = weeklyShift.id;
     this.createWeeklyScheduledForm.controls["weeklyShiftControl"].setValue(
-      selectedWeeklyShiftId
+      weeklyShift.id
     );
   }
 
   onSelectEmployee(employee: Employee) {
-    const selectedEmployeeId = employee.id;
-
-    if (this.selectedFormForEmployee === `scheduled`) {
-      this.createScheduledForm.controls["employeeControl"].setValue(
-        selectedEmployeeId
-      );
-    } else if (this.selectedFormForEmployee === `weeklyScheduled`) {
-      this.createWeeklyScheduledForm.controls["employeeControl"].setValue(
-        selectedEmployeeId
-      );
+    switch (this.selectedFormForEmployee) {
+      case `scheduled`:
+        this.createScheduledForm.controls["employeeControl"].setValue(
+          employee.id
+        );
+        break;
+      case `weeklyScheduled`:
+        this.createWeeklyScheduledForm.controls["employeeControl"].setValue(
+          employee.id
+        );
+        break;
     }
   }
 
@@ -153,6 +170,7 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
 
     this.scheduledService.createScheduled(scheduledData).subscribe(() => {
       this.createScheduledForm.reset();
+      this.updateData();
     });
   }
 
@@ -184,6 +202,7 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
       .createWeeklyScheduled(weeklyScheduledData)
       .subscribe(() => {
         this.createWeeklyScheduledForm.reset();
+        this.updateData();
       });
   }
 

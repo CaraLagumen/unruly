@@ -137,26 +137,11 @@
     >Create weekly shift</button>
   </form>
 
-  <div class="options">
-
-    <div>
-      <h3>Shifts</h3>
-
-      <div
-        *ngFor="let shift of (shifts$ | async)"
-        (click)="onSelectShift(shift, selectedShiftDayNumber)"
-      >
-        <!-- {{ shift?.position}}
-  {{ shift?.slot }}
-  {{ shift?.location }} -->
-        {{ shift?.shiftStart[0] }}
-        {{ days[shift?.day] }}
-        <!-- {{ shift?.shiftEnd[0] }} -->
-        <span>{{ shift?.id }}</span>
-
-      </div>
-
-    </div>
-  </div>
-
+  <app-editor-shifts-item
+    [shifts]="shifts$"
+    [weeklyShifts]="weeklyShifts$"
+    [days]="days"
+    [selectedShiftDayNumber]="selectedShiftDayNumber"
+    (editorShiftsEmitter)="onEditorShiftsControl($event)"
+  ></app-editor-shifts-item>
 </div>

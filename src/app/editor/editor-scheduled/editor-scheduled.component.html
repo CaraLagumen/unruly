@@ -64,63 +64,12 @@
     >Create weekly scheduled</button>
   </form>
 
-  <div class="options">
-
-    <div>
-      <h3>Shifts</h3>
-
-      <div
-        *ngFor="let shift of (shifts$ | async)"
-        (click)="onSelectShift(shift)"
-      >
-        <!-- {{ shift?.position}}
-  {{ shift?.slot }}
-  {{ shift?.location }} -->
-        {{ shift?.shiftStart[0] }}
-        {{ days[shift?.day] }}
-        <!-- {{ shift?.shiftEnd[0] }} -->
-        <span>{{ shift?.id }}</span>
-      </div>
-    </div>
-
-    <div>
-      <h3>Weekly shifts</h3>
-
-      <div
-        *ngFor="let weeklyShift of (weeklyShifts$ | async)"
-        (click)="onSelectWeeklyShift(weeklyShift)"
-      >
-        {{ weeklyShift?.name }}
-        {{ weeklyShift?.position}}
-        {{ weeklyShift?.slot }}
-        {{ weeklyShift?.location }}
-        {{ weeklyShift?.shiftDay1.shiftStart[0] }}
-        {{ weeklyShift?.shiftDay2.shiftStart[0] }}
-        {{ weeklyShift?.shiftDay3.shiftStart[0] }}
-        {{ weeklyShift?.shiftDay4.shiftStart[0] }}
-        {{ weeklyShift?.shiftDay5.shiftStart[0] }}
-        {{ weeklyShift?.id }}
-      </div>
-    </div>
-
-    <div>
-      <h3>Employee</h3>
-
-      <div
-        *ngFor="let employee of (employees$ | async)"
-        (click)="onSelectEmployee(employee)"
-      >
-        {{ employee?.lastName }}, {{ employee?.firstName }}
-        {{ employee?.id }}
-        <!-- {{ employee?.position }}
-  {{ employee?.status }}
-  {{ employee?.seniority }}
-  {{ employee?.hireDate | date: 'MMM d y' }}
-  {{ employee?.preferredShiftSlots }}
-  {{ employee?.preferredDaysOff }} -->
-      </div>
-    </div>
-
-  </div>
+  <app-editor-scheduled-item
+    [employees]="employees$"
+    [shifts]="shifts$"
+    [weeklyShifts]="weeklyShifts$"
+    [days]="days"
+    (editorScheduledEmitter)="onEditorScheduledControl($event)"
+  ></app-editor-scheduled-item>
 
 </div>

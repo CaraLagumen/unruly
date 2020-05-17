@@ -11,16 +11,14 @@
   {{ weeklyShift?.shiftDay3.shiftStart[0] }}
   {{ weeklyShift?.shiftDay4.shiftStart[0] }}
   {{ weeklyShift?.shiftDay5.shiftStart[0] }}
-  {{ weeklyShift?.id }}
 </div>
 
 <h3>Shifts</h3>
 <div *ngFor="let shift of (shifts$ | async)">
-  <!-- {{ shift?.position}}
+  {{ shift?.position}}
   {{ shift?.slot }}
-  {{ shift?.location }} -->
+  {{ shift?.location }}
   {{ shift?.shiftStart[0] }}
   {{ days[shift?.day] }}
-  <!-- {{ shift?.shiftEnd[0] }} -->
-  <span>{{ shift?.id }}</span>
+  {{ shift?.shiftEnd[0] }}
 </div>

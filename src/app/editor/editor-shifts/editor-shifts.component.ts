@@ -32,7 +32,7 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
   locations = ShiftProperties.locations;
   days = ShiftProperties.days;
   shiftHours = ShiftProperties.shiftHours;
-  
+
   selectedShiftDayNumber: 1 | 2 | 3 | 4 | 5 = 1;
 
   constructor(
@@ -60,11 +60,40 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
 
   //TOOLS----------------------------------------------------------
 
+  onEditorShiftsControl(emittedData: [Shift | WeeklyShift, string]) {
+    switch (emittedData[1]) {
+      case `onSelectShift`:
+        this.onSelectShift(emittedData[0] as Shift);
+        break;
+      case `onDeleteShift`:
+        this.onDeleteShift(emittedData[0] as Shift);
+        break;
+      case `onDeleteWeeklyShift`:
+        this.onDeleteWeeklyShift(emittedData[0] as WeeklyShift);
+        break;
+    }
+  }
+
+  updateData() {
+    this.shifts$ = this.shiftService.getRawAllShifts();
+    this.weeklyShifts$ = this.weeklyShiftService.getAllWeeklyShifts();
+  }
+
   onSelectShift(shift: Shift) {
     const selectedShiftId = shift.id;
     this.createWeeklyShiftForm.controls[
       `shift${this.selectedShiftDayNumber}Control`
     ].setValue(selectedShiftId);
+  }
+
+  onDeleteShift(shift: Shift) {
+    this.shiftService.deleteShift(shift.id).subscribe(() => this.updateData());
+  }
+
+  onDeleteWeeklyShift(weeklyShift: WeeklyShift) {
+    this.weeklyShiftService
+      .deleteWeeklyShift(weeklyShift.id)
+      .subscribe(() => this.updateData());
   }
 
   //FOR USE WITH WEEKLY SHIFT FORM
@@ -97,9 +126,10 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
       shiftEnd: [this.createShiftForm.value.shiftEndControl, 0],
     };
 
-    this.shiftService
-      .createShift(shiftData)
-      .subscribe(() => this.createShiftForm.reset());
+    this.shiftService.createShift(shiftData).subscribe(() => {
+      this.createShiftForm.reset();
+      this.updateData();
+    });
   }
 
   //WEEKLY SHIFT FORM----------------------------------------------------------
@@ -134,7 +164,8 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
     };
 
     this.weeklyShiftService.createWeeklyShift(weeklyShiftData).subscribe(() => {
-      this.createWeeklyShiftForm.reset();
+      this.createShiftForm.reset();
+      this.updateData();
     });
   }
 

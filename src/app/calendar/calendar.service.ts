@@ -5,7 +5,7 @@ import { AuthService } from "../auth/auth.service";
 import { ShiftService } from "../shared/services/shift/shift.service";
 import { ScheduledService } from "../shared/services/shift/scheduled.service";
 import { WeeklyScheduledService } from "../shared/services/shift/weekly-scheduled.service";
-import { UserType } from "../shared/models/custom-types";
+import { UserType, EditShift } from "../shared/models/custom-types";
 import { Shift } from "../shared/models/shift/shift.model";
 import { Scheduled } from "../shared/models/shift/scheduled.model";
 
@@ -122,7 +122,7 @@ export class CalendarService {
 
   //DASHBOARD----------------------------------------------------------
 
-  schedulerServiceControl(emittedData) {
+  schedulerServiceControl(emittedData: [string, EditShift]) {
     const [type, data] = emittedData;
 
     //data = [SHIFT, SCHEDULED]

@@ -60,7 +60,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   //TOOLS----------------------------------------------------------
 
-  onSchedulerEmitter(type: string) {
+  onSchedulerEmitter(type: `deleteShift` | `deleteScheduled`) {
     const data = this.editShift;
 
     this.schedulerEmitter.emit([type, data]);

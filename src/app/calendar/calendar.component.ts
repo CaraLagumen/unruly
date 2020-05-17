@@ -5,7 +5,11 @@ import * as moment from "moment";
 import { ShiftService } from "../shared/services/shift/shift.service";
 import { ScheduledService } from "../shared/services/shift/scheduled.service";
 import { CalendarService } from "./calendar.service";
-import { UserType, EditShiftEmit } from "../shared/models/custom-types";
+import {
+  UserType,
+  EditShift,
+  EditShiftEmit,
+} from "../shared/models/custom-types";
 import { Shift } from "../shared/models/shift/shift.model";
 import { Scheduled } from "../shared/models/shift/scheduled.model";
 
@@ -143,7 +147,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   //DASHBOARD----------------------------------------------------------
 
   //FROM dashboard TO calendar-service
-  onSchedulerServiceControl(emittedData) {
+  onSchedulerServiceControl(emittedData: [string, EditShift]) {
     this.calendarService
       .schedulerServiceControl(emittedData)
       .subscribe(() => this.resetData());
