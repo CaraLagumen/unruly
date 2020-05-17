@@ -16,7 +16,7 @@ export abstract class ShiftProperties {
     "breaker",
   ];
   static readonly days = [0, 1, 2, 3, 4, 5, 6];
-  static readonly shiftHours = Array.apply(null, { length: 24 }).map(
+  static readonly shiftHours: number[] = Array.apply(null, { length: 24 }).map(
     Number.call,
     Number
   );

@@ -21,7 +21,6 @@ import {
 import { WeeklyShift } from "../../shared/models/shift/weekly-shift.model";
 import { WeeklyScheduled } from "../../shared/models/shift/weekly-scheduled.model";
 
-
 @Component({
   selector: "app-editor-scheduled",
   templateUrl: "./editor-scheduled.component.html",
@@ -84,6 +83,22 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
     this.initEditorScheduledForm();
   }
 
+  //TOOLS----------------------------------------------------------
+
+  onSelectShift(shift: Shift) {
+    const selectedShiftId = shift.id;
+    this.createScheduledForm.controls["shiftControl"].setValue(selectedShiftId);
+  }
+
+  onSelectEmployee(employee: Employee) {
+    const selectedEmployeeId = employee.id;
+    this.createScheduledForm.controls["employeeControl"].setValue(
+      selectedEmployeeId
+    );
+  }
+
+  //SCHEDULED FORM----------------------------------------------------------
+
   initEditorScheduledForm() {
     //1. INITIALIZE SCHEDULED FORM
     this.createScheduledForm = new FormGroup({
@@ -114,18 +129,6 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
     this.scheduledService.createScheduled(scheduledData).subscribe(() => {
       this.createScheduledForm.reset();
     });
-  }
-
-  onSelectShift(shift: Shift) {
-    const selectedShiftId = shift.id;
-    this.createScheduledForm.controls["shiftControl"].setValue(selectedShiftId);
-  }
-
-  onSelectEmployee(employee: Employee) {
-    const selectedEmployeeId = employee.id;
-    this.createScheduledForm.controls["employeeControl"].setValue(
-      selectedEmployeeId
-    );
   }
 
   ngOnDestroy() {

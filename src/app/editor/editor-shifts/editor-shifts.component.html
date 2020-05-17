@@ -59,4 +59,104 @@
     >Create shift</button>
   </form>
 
+  <h2>Create weekly shift</h2>
+
+  <form
+    (submit)="onCreateWeeklyShift()"
+    [formGroup]="createWeeklyShiftForm"
+  >
+
+    <span>Name</span>
+    <input
+      formControlName="nameControl"
+      type="text"
+    >
+
+    <span>Position</span>
+    <select formControlName="positionControl">
+      <option
+        *ngFor="let position of positions"
+        [ngValue]="position"
+      >{{ position }}</option>
+    </select>
+
+    <span>Slot</span>
+    <select formControlName="slotControl">
+      <option
+        *ngFor="let slot of slots"
+        [ngValue]="slot"
+      >{{ slot }}</option>
+    </select>
+
+    <span>Location</span>
+    <select formControlName="locationControl">
+      <option
+        *ngFor="let location of locations"
+        [ngValue]="location"
+      >{{ location }}</option>
+    </select>
+
+    <span>Shift day 1</span>
+    <input
+      (click)="onSelectShiftDayNumber(1)"
+      formControlName="shift1Control"
+      type="text"
+    >
+
+    <span>Shift day 2</span>
+    <input
+      (click)="onSelectShiftDayNumber(2)"
+      formControlName="shift2Control"
+      type="text"
+    >
+
+    <span>Shift day 3</span>
+    <input
+      (click)="onSelectShiftDayNumber(3)"
+      formControlName="shift3Control"
+      type="text"
+    >
+
+    <span>Shift day 4</span>
+    <input
+      (click)="onSelectShiftDayNumber(4)"
+      formControlName="shift4Control"
+      type="text"
+    >
+
+    <span>Shift day 5</span>
+    <input
+      (click)="onSelectShiftDayNumber(5)"
+      formControlName="shift5Control"
+      type="text"
+    >
+
+    <button
+      [disabled]="!createWeeklyShiftForm.valid"
+      type="submit"
+    >Create weekly shift</button>
+  </form>
+
+  <div class="options">
+
+    <div>
+      <h3>Shifts</h3>
+
+      <div
+        *ngFor="let shift of (shifts$ | async)"
+        (click)="onSelectShift(shift, shiftDayNumber)"
+      >
+        <!-- {{ shift?.position}}
+  {{ shift?.slot }}
+  {{ shift?.location }} -->
+        {{ shift?.shiftStart[0] }}
+        {{ days[shift?.day] }}
+        <!-- {{ shift?.shiftEnd[0] }} -->
+        <span>{{ shift?.id }}</span>
+
+      </div>
+
+    </div>
+  </div>
+
 </div>

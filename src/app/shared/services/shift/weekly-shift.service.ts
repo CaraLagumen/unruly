@@ -4,7 +4,10 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
 import { environment } from "../../../../environments/environment";
-import { WeeklyShift } from "../../models/shift/weekly-shift.model";
+import {
+  WeeklyShift,
+  WeeklyShiftData,
+} from "../../models/shift/weekly-shift.model";
 
 const ROOT_URL = `${environment.apiUrl}/weeklyShifts`;
 
@@ -27,7 +30,7 @@ export class WeeklyShiftService {
   //PROTECTED----------------------------------------------------------
 
   //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
-  createWeeklyShift(weeklyShiftData: WeeklyShift): Observable<WeeklyShift> {
+  createWeeklyShift(weeklyShiftData: WeeklyShiftData): Observable<WeeklyShift> {
     return this.http.post<WeeklyShift>(`${ROOT_URL}`, weeklyShiftData);
   }
 

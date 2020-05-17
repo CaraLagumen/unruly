@@ -3,18 +3,14 @@ import { Subscription, Observable } from "rxjs";
 import { FormGroup, FormControl } from "@angular/forms";
 
 import { UsersService } from "../../users/users.service";
-import { EmployeeService } from "../../shared/services/users/employee.service";
-import { SchedulerService } from "../../shared/services/users/scheduler.service";
 import { ShiftService } from "../../shared/services/shift/shift.service";
-import { ScheduledService } from "../../shared/services/shift/scheduled.service";
 import { WeeklyShiftService } from "../../shared/services/shift/weekly-shift.service";
-import { WeeklyScheduledService } from "../../shared/services/shift/weekly-scheduled.service";
-import { Employee } from "../../shared/models/users/employee.model";
 import { Scheduler } from "../../shared/models/users/scheduler.model";
 import { Shift } from "../../shared/models/shift/shift.model";
-import { Scheduled } from "../../shared/models/shift/scheduled.model";
-import { WeeklyShift } from "../../shared/models/shift/weekly-shift.model";
-import { WeeklyScheduled } from "../../shared/models/shift/weekly-scheduled.model";
+import {
+  WeeklyShift,
+  WeeklyShiftData,
+} from "../../shared/models/shift/weekly-shift.model";
 import { ShiftProperties } from "../../shared/tools/custom-classes";
 
 @Component({
@@ -26,46 +22,56 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
   private schedulerSub: Subscription;
 
   scheduler: Scheduler;
-  employees$: Observable<Employee[]>;
-  schedulers$: Observable<Scheduler[]>;
   shifts$: Observable<Shift[]>;
-  scheduled$: Observable<Scheduled[]>;
   weeklyShifts$: Observable<WeeklyShift[]>;
-  weeklyScheduled$: Observable<WeeklyScheduled[]>;
   createShiftForm: FormGroup;
+  createWeeklyShiftForm: FormGroup;
 
   positions = ShiftProperties.positions;
   slots = ShiftProperties.slots;
   locations = ShiftProperties.locations;
   days = ShiftProperties.days;
   shiftHours = ShiftProperties.shiftHours;
+  shiftDayNumber: 1 | 2 | 3 | 4 | 5 = 1;
 
   constructor(
     private usersService: UsersService,
-    private employeeService: EmployeeService,
-    private schedulerService: SchedulerService,
     private shiftService: ShiftService,
-    private scheduledService: ScheduledService,
-    private weeklyShiftService: WeeklyShiftService,
-    private weeklyScheduledService: WeeklyScheduledService
+    private weeklyShiftService: WeeklyShiftService
   ) {}
 
   ngOnInit() {
-    this.employees$ = this.employeeService.getAllEmployees();
-    this.schedulers$ = this.schedulerService.getAllScheduler();
+    //1. GRAB DATA
     this.shifts$ = this.shiftService.getRawAllShifts();
-    this.scheduled$ = this.scheduledService.getRawAllScheduled();
     this.weeklyShifts$ = this.weeklyShiftService.getAllWeeklyShifts();
-    this.weeklyScheduled$ = this.weeklyScheduledService.getAllWeeklyScheduled();
 
+    //2. GRAB SCHEDULER ID
     this.schedulerSub = this.usersService
       .getUser(`scheduler`)
       .subscribe((schedulerData: Scheduler) => {
         this.scheduler = schedulerData;
       });
 
+    //3. INIT FORMS
     this.initCreateShiftForm();
+    this.initCreateWeeklyShiftForm();
   }
+
+  //TOOLS----------------------------------------------------------
+
+  onSelectShift(shift: Shift) {
+    const selectedShiftId = shift.id;
+    this.createWeeklyShiftForm.controls[
+      `shift${this.shiftDayNumber}Control`
+    ].setValue(selectedShiftId);
+  }
+
+  //FOR USE WITH WEEKLY SHIFT FORM
+  onSelectShiftDayNumber(selectedNumber: 1 | 2 | 3 | 4 | 5) {
+    this.shiftDayNumber = selectedNumber;
+  }
+
+  //SINGLE SHIFT FORM----------------------------------------------------------
 
   initCreateShiftForm() {
     //1. INITIALIZE SHIFT FORM
@@ -94,6 +100,43 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
     this.shiftService
       .createShift(shiftData)
       .subscribe(() => this.createShiftForm.reset());
+  }
+
+  //WEEKLY SHIFT FORM----------------------------------------------------------
+
+  initCreateWeeklyShiftForm() {
+    //1. INITIALIZE SCHEDULED FORM
+    this.createWeeklyShiftForm = new FormGroup({
+      nameControl: new FormControl(null),
+      positionControl: new FormControl(null),
+      slotControl: new FormControl(null),
+      locationControl: new FormControl(null),
+      shift1Control: new FormControl(null),
+      shift2Control: new FormControl(null),
+      shift3Control: new FormControl(null),
+      shift4Control: new FormControl(null),
+      shift5Control: new FormControl(null),
+    });
+  }
+
+  onCreateWeeklyShift() {
+    if (this.createWeeklyShiftForm.invalid) return;
+
+    const weeklyShiftData: WeeklyShiftData = {
+      name: this.createWeeklyShiftForm.value.nameControl,
+      position: this.createWeeklyShiftForm.value.positionControl,
+      slot: this.createWeeklyShiftForm.value.slotControl,
+      location: this.createWeeklyShiftForm.value.locationControl,
+      shiftDay1: this.createWeeklyShiftForm.value.shift1Control,
+      shiftDay2: this.createWeeklyShiftForm.value.shift2Control,
+      shiftDay3: this.createWeeklyShiftForm.value.shift3Control,
+      shiftDay4: this.createWeeklyShiftForm.value.shift4Control,
+      shiftDay5: this.createWeeklyShiftForm.value.shift5Control,
+    };
+
+    this.weeklyShiftService.createWeeklyShift(weeklyShiftData).subscribe(() => {
+      this.createWeeklyShiftForm.reset();
+    });
   }
 
   ngOnDestroy() {
