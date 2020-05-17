@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Subscription, Observable } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
 import { FormGroup, FormControl } from "@angular/forms";
 import * as moment from "moment";
@@ -20,7 +21,6 @@ import {
 import { WeeklyShift } from "../../shared/models/shift/weekly-shift.model";
 import { WeeklyScheduled } from "../../shared/models/shift/weekly-scheduled.model";
 
-import { Subscription, Observable } from "rxjs";
 
 @Component({
   selector: "app-editor-scheduled",

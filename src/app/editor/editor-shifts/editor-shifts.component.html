@@ -1,1 +1,62 @@
-<h2>Shifts editor</h2>
+<div>
+
+  <h2>Create shifts</h2>
+
+  <form
+    (submit)="onCreateShift()"
+    [formGroup]="createShiftForm"
+  >
+
+    <span>Position</span>
+    <select formControlName="positionControl">
+      <option
+        *ngFor="let position of positions"
+        [ngValue]="position"
+      >{{ position }}</option>
+    </select>
+
+    <span>Slot</span>
+    <select formControlName="slotControl">
+      <option
+        *ngFor="let slot of slots"
+        [ngValue]="slot"
+      >{{ slot }}</option>
+    </select>
+
+    <span>Location</span>
+    <select formControlName="locationControl">
+      <option
+        *ngFor="let location of locations"
+        [ngValue]="location"
+      >{{ location }}</option>
+    </select>
+
+    <span>Day</span>
+    <select formControlName="dayControl">
+      <option
+        *ngFor="let day of days"
+        [ngValue]="day"
+      >{{ day }}</option>
+    </select>
+
+    <span>Shift start and end</span>
+    <select formControlName="shiftStartControl">
+      <option
+        *ngFor="let shiftStart of shiftHours"
+        [ngValue]="shiftStart"
+      >{{ shiftStart }}</option>
+    </select>
+    <select formControlName="shiftEndControl">
+      <option
+        *ngFor="let shiftEnd of shiftHours"
+        [ngValue]="shiftEnd"
+      >{{ shiftEnd }}</option>
+    </select>
+
+    <button
+      [disabled]="!createShiftForm.valid"
+      type="submit"
+    >Create shift</button>
+  </form>
+
+</div>

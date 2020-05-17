@@ -12,6 +12,7 @@ import { FormGroup, FormControl } from "@angular/forms";
 import { ShiftService } from "../../shared/services/shift/shift.service";
 import { Shift } from "../../shared/models/shift/shift.model";
 import { EditShift, EditShiftEmit } from "../../shared/models/custom-types";
+import { ShiftProperties } from "../../shared/tools/custom-classes";
 
 @Component({
   selector: "app-dashboard",
@@ -37,18 +38,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   editShiftForm = false;
 
   //EDIT SHIFT FORM
-  positions = ["general manager", "assistant manager", "lead", "barista"];
-  slots = ["morning", "day", "swing", "graveyard"];
-  locations = [
-    "rotunda",
-    "food court",
-    "tower 1",
-    "tower 2",
-    "pool",
-    "breaker",
-  ];
-  days = [0, 1, 2, 3, 4, 5, 6];
-  shiftHours = Array.apply(null, { length: 24 }).map(Number.call, Number);
+  positions = ShiftProperties.positions;
+  slots = ShiftProperties.slots;
+  locations = ShiftProperties.locations;
+  days = ShiftProperties.days;
+  shiftHours = ShiftProperties.shiftHours;
 
   constructor(private shiftService: ShiftService) {}
 

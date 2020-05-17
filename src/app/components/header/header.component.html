@@ -10,6 +10,12 @@
     <button routerLink="/stats/shifts">Shifts</button>
   </div>
 
+  <div>
+    <h2 routerLink="/editor">Editor</h2>
+    <button routerLink="/editor/shifts">Shifts</button>
+    <button routerLink="/editor/scheduled">Scheduled</button>
+  </div>
+
   <div *ngIf="!employeeIsAuth && !schedulerIsAuth">
     <div class="employee">
 
