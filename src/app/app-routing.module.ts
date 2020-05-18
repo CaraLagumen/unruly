@@ -1,7 +1,8 @@
 import { NgModule } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
-import { AuthGuard } from "./auth/auth.guard";
+import { AuthGuard } from "./auth/guards/auth.guard";
+import { AuthSchedulerGuard } from "./auth/guards/auth-scheduler.guard";
 
 const routes: Routes = [
   {
@@ -15,10 +16,12 @@ const routes: Routes = [
   },
   {
     path: "editor",
+    canActivate: [AuthSchedulerGuard],
     loadChildren: "./editor/editor.module#EditorModule",
   },
   {
     path: "stats",
+    canActivate: [AuthGuard],
     loadChildren: "./stats/stats.module#StatsModule",
   },
 ];
@@ -26,6 +29,6 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [AuthGuard],
+  providers: [AuthGuard, AuthSchedulerGuard],
 })
 export class AppRoutingModule {}

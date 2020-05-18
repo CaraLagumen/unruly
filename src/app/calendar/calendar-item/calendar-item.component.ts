@@ -4,7 +4,7 @@ import * as moment from "moment";
 import { CalendarService } from "../calendar.service";
 import { Scheduled } from "../../shared/models/shift/scheduled.model";
 import { Shift } from "../../shared/models/shift/shift.model";
-import { EditShiftEmit } from "src/app/shared/models/custom-types";
+import { EditShiftEmit } from "../../shared/models/custom-types";
 
 @Component({
   selector: "app-calendar-item",

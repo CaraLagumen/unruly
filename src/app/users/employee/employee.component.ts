@@ -6,6 +6,7 @@ import { UsersService } from "../users.service";
 import { AuthService } from "../../auth/auth.service";
 import { EmployeeData } from "../users-data.model";
 import { Employee } from "../../shared/models/users/employee.model";
+import { ShiftProperties } from "../../shared/tools/custom-classes";
 
 @Component({
   selector: "app-employee",
@@ -18,16 +19,8 @@ export class EmployeeComponent implements OnInit, OnDestroy {
   updateEmployeeForm: FormGroup;
   employee: Employee;
 
-  shiftSlots = [`morning`, `day`, `swing`, `graveyard`];
-  daysOff = [
-    `sunday`,
-    `monday`,
-    `tuesday`,
-    `wednesday`,
-    `thursday`,
-    `friday`,
-    `saturday`,
-  ];
+  shiftSlots = ShiftProperties.slots;
+  daysOff = ShiftProperties.daysInWords;
 
   constructor(
     private usersService: UsersService,

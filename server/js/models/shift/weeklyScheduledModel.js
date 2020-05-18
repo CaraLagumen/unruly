@@ -30,9 +30,9 @@ const weeklyScheduledSchema = new mongoose_1.default.Schema({
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
 });
-//SHOW IN FIND: EMPLOYEE AND SCHEDULER
+//SHOW IN FIND: EMPLOYEE, SCHEDULER, AND WEEKLYSHIFT
 weeklyScheduledSchema.pre(/^find/, function (next) {
-    this.populate(`employee`).populate(`scheduler`);
+    this.populate(`employee`).populate(`scheduler`).populate(`weeklyShift`);
     next();
 });
 const WeeklyScheduled = mongoose_1.default.model(`WeeklyScheduled`, weeklyScheduledSchema);

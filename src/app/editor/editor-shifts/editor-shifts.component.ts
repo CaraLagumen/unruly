@@ -68,6 +68,9 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
       case `onDeleteShift`:
         this.onDeleteShift(emittedData[0] as Shift);
         break;
+      case `onSelectWeeklyShift`:
+        this.onSelectWeeklyShift(emittedData[0] as WeeklyShift);
+        break;
       case `onDeleteWeeklyShift`:
         this.onDeleteWeeklyShift(emittedData[0] as WeeklyShift);
         break;
@@ -81,10 +84,39 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
   }
 
   onSelectShift(shift: Shift) {
-    const selectedShiftId = shift.id;
     this.createWeeklyShiftForm.controls[
       `shift${this.selectedShiftDayNumber}Control`
-    ].setValue(selectedShiftId);
+    ].setValue(shift.id);
+  }
+
+  onSelectWeeklyShift(weeklyShift: WeeklyShift) {
+    this.createWeeklyShiftForm.controls[`nameControl`].setValue(
+      weeklyShift.name
+    );
+    this.createWeeklyShiftForm.controls[`positionControl`].setValue(
+      weeklyShift.position
+    );
+    this.createWeeklyShiftForm.controls[`slotControl`].setValue(
+      weeklyShift.slot
+    );
+    this.createWeeklyShiftForm.controls[`locationControl`].setValue(
+      weeklyShift.location
+    );
+    this.createWeeklyShiftForm.controls[`shift1Control`].setValue(
+      weeklyShift.shiftDay1.id
+    );
+    this.createWeeklyShiftForm.controls[`shift2Control`].setValue(
+      weeklyShift.shiftDay2.id
+    );
+    this.createWeeklyShiftForm.controls[`shift3Control`].setValue(
+      weeklyShift.shiftDay3.id
+    );
+    this.createWeeklyShiftForm.controls[`shift4Control`].setValue(
+      weeklyShift.shiftDay4.id
+    );
+    this.createWeeklyShiftForm.controls[`shift5Control`].setValue(
+      weeklyShift.shiftDay5.id
+    );
   }
 
   onDeleteShift(shift: Shift) {
@@ -167,7 +199,7 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
     };
 
     this.weeklyShiftService.createWeeklyShift(weeklyShiftData).subscribe(() => {
-      this.createShiftForm.reset();
+      this.createWeeklyShiftForm.reset();
       this.updateData(`weeklyShift`);
     });
   }

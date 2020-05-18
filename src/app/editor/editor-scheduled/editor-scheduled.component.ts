@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subscription, Observable } from "rxjs";
-import { ActivatedRoute } from "@angular/router";
 import { FormGroup, FormControl } from "@angular/forms";
 import * as moment from "moment";
 
@@ -44,13 +43,9 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
   createWeeklyScheduledForm: FormGroup;
 
   selectedFormForEmployee: `scheduled` | `weeklyScheduled` = `scheduled`;
-
-  shiftId = "";
-  shiftDate = moment().format("YYYY-MM-DD");
   days = ShiftProperties.days;
 
   constructor(
-    private route: ActivatedRoute,
     private usersService: UsersService,
     private employeeService: EmployeeService,
     private schedulerService: SchedulerService,
@@ -76,13 +71,7 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
         this.scheduler = schedulerData;
       });
 
-    //3. GRAB SHIFT ID IF REROUTED FROM dashboard
-    this.shiftId = this.route.snapshot.paramMap.get("shiftId");
-    this.shiftDate = moment(
-      this.route.snapshot.paramMap.get("shiftDate")
-    ).format("YYYY-MM-DD");
-
-    //2. INIT FORMS
+    //3. INIT FORMS
     this.initCreateScheduledForm();
     this.initCreateWeeklyScheduledForm();
   }
@@ -90,7 +79,7 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
   //TOOLS----------------------------------------------------------
 
   onEditorScheduledControl(
-    emittedData: [Shift | WeeklyShift | Employee, string]
+    emittedData: [Shift | WeeklyShift | WeeklyScheduled | Employee, string]
   ) {
     switch (emittedData[1]) {
       case `onSelectShift`:
@@ -98,6 +87,12 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
         break;
       case `onSelectWeeklyShift`:
         this.onSelectWeeklyShift(emittedData[0] as WeeklyShift);
+        break;
+      case `onSelectWeeklyScheduled`:
+        this.onSelectWeeklyScheduled(emittedData[0] as WeeklyScheduled);
+        break;
+      case `onDeleteWeeklyScheduled`:
+        this.onDeleteWeeklyScheduled(emittedData[0] as WeeklyScheduled);
         break;
       case `onSelectEmployee`:
         this.onSelectEmployee(emittedData[0] as Employee);
@@ -122,6 +117,21 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
     );
   }
 
+  onSelectWeeklyScheduled(weeklyScheduled: WeeklyScheduled) {
+    this.createWeeklyScheduledForm.controls["weeklyShiftControl"].setValue(
+      weeklyScheduled.weeklyShift.id
+    );
+    this.createWeeklyScheduledForm.controls["employeeControl"].setValue(
+      weeklyScheduled.employee.id
+    );
+  }
+
+  onDeleteWeeklyScheduled(weeklyScheduled: WeeklyScheduled) {
+    this.weeklyScheduledService
+      .deleteWeeklyScheduled(weeklyScheduled.id)
+      .subscribe(() => this.updateData(`weeklyScheduled`));
+  }
+
   onSelectEmployee(employee: Employee) {
     switch (this.selectedFormForEmployee) {
       case `scheduled`:
@@ -144,17 +154,11 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
   //SCHEDULED FORM----------------------------------------------------------
 
   initCreateScheduledForm() {
-    //1. INITIALIZE SCHEDULED FORM
     this.createScheduledForm = new FormGroup({
       shiftControl: new FormControl(null),
       employeeControl: new FormControl(null),
       dateControl: new FormControl(null),
     });
-
-    //2. EXPOSE SCHEDULED DATA IF ANY FOR DISPLAY AND PLUG IN
-    //   EXISTING VALUES FOR FORM
-    this.createScheduledForm.controls["shiftControl"].setValue(this.shiftId);
-    this.createScheduledForm.controls["dateControl"].setValue(this.shiftDate);
   }
 
   onCreateScheduled() {

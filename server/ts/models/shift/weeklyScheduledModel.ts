@@ -32,9 +32,9 @@ const weeklyScheduledSchema: Schema = new mongoose.Schema(
   }
 );
 
-//SHOW IN FIND: EMPLOYEE AND SCHEDULER
+//SHOW IN FIND: EMPLOYEE, SCHEDULER, AND WEEKLYSHIFT
 weeklyScheduledSchema.pre(/^find/, function (this: any, next) {
-  this.populate(`employee`).populate(`scheduler`);
+  this.populate(`employee`).populate(`scheduler`).populate(`weeklyShift`);
   next();
 });
 

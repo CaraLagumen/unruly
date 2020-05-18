@@ -30,6 +30,10 @@ export class EditorShiftsItemComponent implements OnInit {
     this.editorShiftsEmitter.emit([shift, `onDeleteShift`]);
   }
 
+  onSelectWeeklyShift(weeklyShift: WeeklyShift) {
+    this.editorShiftsEmitter.emit([weeklyShift, `onSelectWeeklyShift`]);
+  }
+
   onDeleteWeeklyShift(weeklyShift: WeeklyShift) {
     this.editorShiftsEmitter.emit([weeklyShift, `onDeleteWeeklyShift`]);
   }

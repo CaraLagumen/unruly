@@ -8,12 +8,12 @@ import {
 } from "@angular/router";
 import { Observable } from "rxjs";
 
-import { AuthService } from "./auth.service";
+import { AuthService } from "../auth.service";
 
 @Injectable({
   providedIn: "root",
 })
-export class AuthGuard implements CanActivate {
+export class AuthEmployeeGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(
@@ -25,12 +25,12 @@ export class AuthGuard implements CanActivate {
     | boolean
     | UrlTree {
     const employeeIsAuth = this.authService.getEmployeeIsAuth();
-    const schedulerIsAuth = this.authService.getSchedulerIsAuth();
 
-    if (!employeeIsAuth || !schedulerIsAuth) {
+    if (!employeeIsAuth) {
       this.router.navigate(["/"]);
-    } else if (employeeIsAuth || schedulerIsAuth) {
-      return;
+      return false;
+    } else if (employeeIsAuth) {
+      return true;
     }
   }
 }

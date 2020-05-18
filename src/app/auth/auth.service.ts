@@ -122,7 +122,6 @@ export class AuthService {
         //   autoClose: true,
         //   keepAfterRouteChange: true,
         // });
-        console.log(`${userType} registered`);
 
         this.login(userType, email, password);
       },
@@ -321,7 +320,6 @@ export class AuthService {
             //     keepAfterRouteChange: true,
             //   }
             // );
-            console.log(`${userType} changed password`);
 
             //6. DISPLAY IN UI USER IS LOGGED
             if (userType === `employee`) {
@@ -370,8 +368,6 @@ export class AuthService {
           //   autoClose: true,
           //   keepAfterRouteChange: true,
           // });
-
-          console.log(`${userType} email sent`);
         },
         (err) => {
           //3. ALERT AND ENSURE LISTENERS OFF IF ERR
@@ -431,7 +427,6 @@ export class AuthService {
             //   autoClose: true,
             //   keepAfterRouteChange: true,
             // });
-            console.log(`${userType} successful password reset`);
 
             //6. DISPLAY IN UI USER IS LOGGED
             if (userType === `employee`) {

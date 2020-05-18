@@ -1,4 +1,8 @@
 .options {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
+  
+  height: 75vh;
+
+  overflow: auto;
 }

@@ -16,6 +16,15 @@ export abstract class ShiftProperties {
     "breaker",
   ];
   static readonly days = [0, 1, 2, 3, 4, 5, 6];
+  static readonly daysInWords = [
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+  ];
   static readonly shiftHours: number[] = Array.apply(null, { length: 24 }).map(
     Number.call,
     Number

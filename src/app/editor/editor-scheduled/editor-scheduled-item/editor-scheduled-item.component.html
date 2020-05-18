@@ -1,6 +1,6 @@
 <div class="options">
 
-  <div>
+  <div class="shifts">
     <h3>Shifts</h3>
 
     <div *ngFor="let shift of (shifts | async)">
@@ -20,7 +20,7 @@
     <div *ngFor="let weeklyShift of (weeklyShifts | async)">
       <button (click)="onSelectWeeklyShift(weeklyShift)">Select</button>
       {{ weeklyShift?.name }}
-      {{ weeklyShift?.position}}
+      {{ weeklyShift?.position }}
       {{ weeklyShift?.slot }}
       {{ weeklyShift?.location }}
       {{ weeklyShift?.shiftDay1.shiftStart[0] }}
@@ -28,6 +28,21 @@
       {{ weeklyShift?.shiftDay3.shiftStart[0] }}
       {{ weeklyShift?.shiftDay4.shiftStart[0] }}
       {{ weeklyShift?.shiftDay5.shiftStart[0] }}
+    </div>
+  </div>
+
+
+  <div>
+    <h3>Weekly scheduled</h3>
+
+    <div *ngFor="let weeklyScheduled of (weeklyScheduled | async)">
+      <button (click)="onSelectWeeklyScheduled(weeklyScheduled)">Select</button>
+      <button (click)="onDeleteWeeklyScheduled(weeklyScheduled)">Delete</button>
+      {{ weeklyScheduled?.employee.lastName }}
+      {{ weeklyScheduled?.scheduler.lastName }}
+      {{ weeklyScheduled?.weeklyShift.location }}
+      {{ weeklyScheduled?.weeklyShift.shiftDay1.shiftStart[0] }}
+      {{ weeklyScheduled?.startDate }}
     </div>
   </div>
 

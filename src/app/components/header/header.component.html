@@ -4,14 +4,14 @@
     <h1 routerLink="/">Unruly</h1> by Cara Lagumen
   </div>
 
-  <div>
+  <div *ngIf="employeeIsAuth || schedulerIsAuth">
     <h2 routerLink="/stats">Statistics</h2>
     <button routerLink="/stats/roster">Roster</button>
     <button routerLink="/stats/shifts">Shifts</button>
   </div>
 
-  <div>
-    <h2 routerLink="/editor">Editor</h2>
+  <div *ngIf="schedulerIsAuth">
+    <h2>Editor</h2>
     <button routerLink="/editor/shifts">Shifts</button>
     <button routerLink="/editor/scheduled">Scheduled</button>
   </div>

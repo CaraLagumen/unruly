@@ -17,12 +17,12 @@ const weeklyShiftSchema: Schema = new mongoose.Schema(
       enum: [`general manager`, `assistant manager`, `lead`, `barista`],
     },
     slot: {
-      type: [String],
+      type: String,
       required: [true, `Weekly shift time slot/s required.`],
       enum: [`morning`, `day`, `swing`, `graveyard`],
     },
     location: {
-      type: [String],
+      type: String,
       required: [true, `Weekly shift location/s required.`],
       enum: [`rotunda`, `food court`, `tower 1`, `tower 2`, `pool`, `breaker`],
     },
@@ -58,7 +58,7 @@ const weeklyShiftSchema: Schema = new mongoose.Schema(
   }
 );
 
-//SHOW IN FIND: SHIFT
+//SHOW IN FIND: SHIFTS
 weeklyShiftSchema.pre(/^find/, function (this: any, next) {
   this.populate(`shiftDay1`)
     .populate(`shiftDay2`)
@@ -78,7 +78,7 @@ weeklyShiftSchema.virtual(`weeklyScheduled`, {
 });
 
 const WeeklyShift = mongoose.model<IWeeklyShift>(
-  `weeklyShift`,
+  `WeeklyShift`,
   weeklyShiftSchema
 );
 export default WeeklyShift;

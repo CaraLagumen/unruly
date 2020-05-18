@@ -20,6 +20,7 @@
     <h3>Weekly shifts</h3>
 
     <div *ngFor="let weeklyShift of (weeklyShifts | async)">
+      <button (click)="onSelectWeeklyShift(weeklyShift)">Select</button>
       <button (click)="onDeleteWeeklyShift(weeklyShift)">Delete</button>
       {{ weeklyShift?.name }}
       {{ weeklyShift?.position}}

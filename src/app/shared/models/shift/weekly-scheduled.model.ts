@@ -3,6 +3,8 @@ import { Scheduler } from "../users/scheduler.model";
 import { WeeklyShift } from "./weekly-shift.model";
 
 export interface WeeklyScheduled {
+  id?: string;
+  _id?: string;
   employee: Employee;
   scheduler: Scheduler;
   weeklyShift: WeeklyShift;
@@ -10,6 +12,8 @@ export interface WeeklyScheduled {
 }
 
 export interface WeeklyScheduledData {
+  id?: string;
+  _id?: string;
   employee: string;
   scheduler?: string;
   weeklyShift: string;
