@@ -20,11 +20,37 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const preferredModel_1 = __importDefault(require("../../models/shift/preferredModel"));
+const shiftModel_1 = __importDefault(require("../../models/shift/shiftModel"));
 const factory = __importStar(require("../handlerFactory"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const apiFeatures_1 = __importDefault(require("../../utils/apiFeatures"));
 const appError_1 = __importDefault(require("../../utils/appError"));
 //----------------------FOR EMPLOYEE USE
+//MAIN----------------------------------------------------------
+//TOOLS----------------------------------------------------------
+//EACH EMPLOYEE SHOULD ONLY HAVE 3 PREFERRED PER DAY
+//ENSURE PREFERRED IS NOT THE 4TH PREFERRRED SHIFT OF THE DAY
+exports.validatePreferred = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    //1. FIND EQUIVALENT SHIFT FROM SHIFT ID (ENTERED) AND RANK (ENTERED)
+    const shift = yield shiftModel_1.default.findById(req.body.shift);
+    const rank = req.body.rank;
+    //2. FIND ALL PREFERRED BELONGING TO EMPLOYEE AND FILTER BY
+    //    MATCHING THE PREFERRED SHIFT DAYS TO THE ENTERED SHIFT DAY
+    const allMyPreferred = yield preferredModel_1.default.find({ employee: req.employee.id });
+    const allMyPreferredOfTheDay = allMyPreferred.filter((preferred) => preferred.shift.day === shift.day);
+    //3. THROW ERROR IF PREFERRED FOR THE DAY EXCEEDED
+    if (allMyPreferredOfTheDay.length > 2) {
+        return next(new appError_1.default(`Number of preferred for this day exceeded. Only 3 allowed per day.`, 400));
+    }
+    //4. FILTER RANK BY MATCHING PREFERRED RANK TO THE ENTERED RANK
+    const preferredRankMatch = allMyPreferredOfTheDay.filter((preferred) => preferred.rank === rank);
+    //5. THROW ERROR IF FOUND A MATCHED RANK
+    if (preferredRankMatch.length > 0) {
+        return next(new appError_1.default(`Rank is a duplicate. Please enter a different rank.`, 400));
+    }
+    //4. ALLOW WHEN ALL VALIDATED
+    next();
+}));
 //MAIN----------------------------------------------------------
 //SAVE PREFERRED OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
 exports.saveMyPreferred = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -62,7 +88,7 @@ exports.deleteMyPreferred = catchAsync_1.default((req, res, next) => __awaiter(v
         doc: null,
     });
 }));
-//GET ALL PREFERRED SHIFTS OF LOGGED IN EMPLOYEE
+//GET ALL PREFERRED OF LOGGED IN EMPLOYEE
 exports.getAllMyPreferred = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     //1. ADD SEARCH FUNCTIONALITY
     const features = new apiFeatures_1.default(preferredModel_1.default.find({ employee: req.employee.id }), req.query)

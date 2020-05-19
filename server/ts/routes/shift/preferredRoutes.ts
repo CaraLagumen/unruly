@@ -19,12 +19,18 @@ router.get(`/`, preferredController.getAllPreferred);
 router
   .route(`/me`)
   .get(preferredController.getAllMyPreferred)
-  .post(preferredController.saveMyPreferred);
+  .post(
+    preferredController.validatePreferred,
+    preferredController.saveMyPreferred
+  );
 
 //UPDATE ONE AND DELETE ONE OF LOGGED IN EMPLOYEE
 router
   .route(`/:id`)
-  .patch(preferredController.updateMyPreferred)
+  .patch(
+    preferredController.validatePreferred,
+    preferredController.updateMyPreferred
+  )
   .delete(preferredController.deleteMyPreferred);
 
 //DATABASE ONLY----------------------------------------------------------

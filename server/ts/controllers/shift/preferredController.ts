@@ -1,10 +1,55 @@
 import Preferred from "../../models/shift/preferredModel";
+import Shift from "../../models/shift/shiftModel";
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import APIFeatures from "../../utils/apiFeatures";
 import AppError from "../../utils/appError";
 
 //----------------------FOR EMPLOYEE USE
+
+//MAIN----------------------------------------------------------
+
+//TOOLS----------------------------------------------------------
+
+//EACH EMPLOYEE SHOULD ONLY HAVE 3 PREFERRED PER DAY
+//ENSURE PREFERRED IS NOT THE 4TH PREFERRRED SHIFT OF THE DAY
+export const validatePreferred = catchAsync(async (req, res, next) => {
+  //1. FIND EQUIVALENT SHIFT FROM SHIFT ID (ENTERED) AND RANK (ENTERED)
+  const shift = await Shift.findById(req.body.shift);
+  const rank = req.body.rank;
+
+  //2. FIND ALL PREFERRED BELONGING TO EMPLOYEE AND FILTER BY
+  //    MATCHING THE PREFERRED SHIFT DAYS TO THE ENTERED SHIFT DAY
+  const allMyPreferred = await Preferred.find({ employee: req.employee.id });
+  const allMyPreferredOfTheDay = allMyPreferred.filter(
+    (preferred) => preferred.shift.day === shift!.day
+  );
+
+  //3. THROW ERROR IF PREFERRED FOR THE DAY EXCEEDED
+  if (allMyPreferredOfTheDay.length > 2) {
+    return next(
+      new AppError(
+        `Number of preferred for this day exceeded. Only 3 allowed per day.`,
+        400
+      )
+    );
+  }
+
+  //4. FILTER RANK BY MATCHING PREFERRED RANK TO THE ENTERED RANK
+  const preferredRankMatch = allMyPreferredOfTheDay.filter(
+    (preferred) => preferred.rank === rank
+  );
+
+  //5. THROW ERROR IF FOUND A MATCHED RANK
+  if (preferredRankMatch.length > 0) {
+    return next(
+      new AppError(`Rank is a duplicate. Please enter a different rank.`, 400)
+    );
+  }
+
+  //4. ALLOW WHEN ALL VALIDATED
+  next();
+});
 
 //MAIN----------------------------------------------------------
 
@@ -53,7 +98,7 @@ export const deleteMyPreferred = catchAsync(async (req, res, next) => {
   });
 });
 
-//GET ALL PREFERRED SHIFTS OF LOGGED IN EMPLOYEE
+//GET ALL PREFERRED OF LOGGED IN EMPLOYEE
 export const getAllMyPreferred = catchAsync(async (req, res, next) => {
   //1. ADD SEARCH FUNCTIONALITY
   const features = new APIFeatures(
