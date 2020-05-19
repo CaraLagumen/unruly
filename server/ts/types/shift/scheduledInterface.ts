@@ -6,7 +6,7 @@ import IScheduler from "../users/schedulerInterface";
 
 interface IScheduled extends Document {
   shift: IShift;
-  employee: IEmployee;
+  employee: IEmployee | string; //STRING FOR GRABBING EMPLOYEE SCHEDULE
   scheduler: IScheduler;
   date: Date;
   createdAt: Date;

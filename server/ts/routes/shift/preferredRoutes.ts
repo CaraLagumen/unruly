@@ -28,6 +28,7 @@ router
 router
   .route(`/:id`)
   .patch(
+    preferredController.getBody,
     preferredController.validatePreferred,
     preferredController.updateMyPreferred
   )

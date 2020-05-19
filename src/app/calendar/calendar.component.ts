@@ -199,6 +199,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   //DASHBOARD----------------------------------------------------------
 
+  //FROM dashboard TO calendar-service
   onFormSubmitEmitter(type: `shift` | `scheduled` | `preferred`) {
     switch (type) {
       case `shift`:

@@ -20,7 +20,7 @@ const router = express_1.default.Router();
 router
     .route(`/me`)
     .get(employeeAuthController.protect, vacationController.getAllMyVacations)
-    .post(employeeAuthController.protect, vacationController.requestVacation);
+    .post(employeeAuthController.protect, vacationController.validateVacation, vacationController.requestVacation);
 router.delete(`/me/:id`, employeeAuthController.protect, vacationController.deleteMyVacation);
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 router.use(schedulerAuthController.protect);

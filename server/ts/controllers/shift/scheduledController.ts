@@ -33,8 +33,8 @@ export const validateScheduled = catchAsync(async (req, res, next) => {
     );
   }
 
+  //4. THROW ERROR IF DAYS DON'T MATCH
   if (day !== dateDay) {
-    //4. THROW ERROR IF DAYS DON'T MATCH
     return next(
       new AppError(
         `Shift day and scheduled date day do not match. Please enter a date that matches the shift day.`,
@@ -53,7 +53,6 @@ export const validateScheduled = catchAsync(async (req, res, next) => {
 export const getEmployeeSchedule = catchAsync(async (req, res, next) => {
   //1. ADD SEARCH FUNCTIONALITY
   const features = new APIFeatures(
-    //@ts-ignore
     Scheduled.find({ employee: req.params.id }),
     req.query
   )
@@ -105,7 +104,7 @@ export const deleteLastScheduled = catchAsync(async (req, res, next) => {
   //3. DON'T DELETE IF LATEST DATE IN THE PAST
   if (moment(lastScheduled?.date) < moment()) {
     return next(
-      new AppError(`Last scheduled is in the past. Cannot delete.`, 404)
+      new AppError(`Last scheduled is in the past. Cannot delete.`, 400)
     );
   }
 

@@ -27,6 +27,6 @@ router
 //UPDATE ONE AND DELETE ONE OF LOGGED IN EMPLOYEE
 router
     .route(`/:id`)
-    .patch(preferredController.validatePreferred, preferredController.updateMyPreferred)
+    .patch(preferredController.getBody, preferredController.validatePreferred, preferredController.updateMyPreferred)
     .delete(preferredController.deleteMyPreferred);
 module.exports = router;

@@ -26,8 +26,13 @@ const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const apiFeatures_1 = __importDefault(require("../../utils/apiFeatures"));
 const appError_1 = __importDefault(require("../../utils/appError"));
 //----------------------FOR EMPLOYEE USE
-//MAIN----------------------------------------------------------
 //TOOLS----------------------------------------------------------
+//GRAB SHIFT ID FROM PREFERRED FOR VALIDATION ON UPDATE
+exports.getBody = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const preferred = yield preferredModel_1.default.findById(req.params.id);
+    req.body.shift = preferred.shift.id;
+    next();
+}));
 //EACH EMPLOYEE SHOULD ONLY HAVE 3 PREFERRED PER DAY
 //ENSURE PREFERRED IS NOT THE 4TH PREFERRRED SHIFT OF THE DAY
 exports.validatePreferred = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -35,18 +40,18 @@ exports.validatePreferred = catchAsync_1.default((req, res, next) => __awaiter(v
     const shift = yield shiftModel_1.default.findById(req.body.shift);
     const rank = req.body.rank;
     //2. FIND ALL PREFERRED BELONGING TO EMPLOYEE AND FILTER BY
-    //    MATCHING THE PREFERRED SHIFT DAYS TO THE ENTERED SHIFT DAY
+    //   MATCHING THE PREFERRED SHIFT DAYS TO THE ENTERED SHIFT DAY
     const allMyPreferred = yield preferredModel_1.default.find({ employee: req.employee.id });
     const allMyPreferredOfTheDay = allMyPreferred.filter((preferred) => preferred.shift.day === shift.day);
-    //3. THROW ERROR IF PREFERRED FOR THE DAY EXCEEDED
-    if (allMyPreferredOfTheDay.length > 2) {
-        return next(new appError_1.default(`Number of preferred for this day exceeded. Only 3 allowed per day.`, 400));
-    }
-    //4. FILTER RANK BY MATCHING PREFERRED RANK TO THE ENTERED RANK
+    //3. FILTER RANK BY MATCHING PREFERRED RANK TO THE ENTERED RANK
     const preferredRankMatch = allMyPreferredOfTheDay.filter((preferred) => preferred.rank === rank);
-    //5. THROW ERROR IF FOUND A MATCHED RANK
+    //4. THROW ERROR IF FOUND A MATCHED RANK
     if (preferredRankMatch.length > 0) {
         return next(new appError_1.default(`Rank is a duplicate. Please enter a different rank.`, 400));
+    }
+    //5. THROW ERROR IF PREFERRED FOR THE DAY EXCEEDED
+    if (allMyPreferredOfTheDay.length > 2) {
+        return next(new appError_1.default(`Number of preferred for this day exceeded. Only 3 allowed per day.`, 400));
     }
     //4. ALLOW WHEN ALL VALIDATED
     next();

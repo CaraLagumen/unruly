@@ -41,8 +41,8 @@ exports.validateScheduled = catchAsync_1.default((req, res, next) => __awaiter(v
     if (moment_1.default(date) <= today) {
         return next(new appError_1.default(`Scheduled date is in the past. Please enter a date in the future.`, 400));
     }
+    //4. THROW ERROR IF DAYS DON'T MATCH
     if (day !== dateDay) {
-        //4. THROW ERROR IF DAYS DON'T MATCH
         return next(new appError_1.default(`Shift day and scheduled date day do not match. Please enter a date that matches the shift day.`, 400));
     }
     //5. ALLOW WHEN ALL VALIDATED
@@ -52,9 +52,7 @@ exports.validateScheduled = catchAsync_1.default((req, res, next) => __awaiter(v
 //GET ALL SCHEDULED SHIFTS OF EMPLOYEE FROM EMPLOYEE ID (ENTERED)
 exports.getEmployeeSchedule = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     //1. ADD SEARCH FUNCTIONALITY
-    const features = new apiFeatures_1.default(
-    //@ts-ignore
-    scheduledModel_1.default.find({ employee: req.params.id }), req.query)
+    const features = new apiFeatures_1.default(scheduledModel_1.default.find({ employee: req.params.id }), req.query)
         .filter()
         .sort()
         .limitFields()
@@ -92,7 +90,7 @@ exports.deleteLastScheduled = catchAsync_1.default((req, res, next) => __awaiter
     });
     //3. DON'T DELETE IF LATEST DATE IN THE PAST
     if (moment_1.default(lastScheduled === null || lastScheduled === void 0 ? void 0 : lastScheduled.date) < moment_1.default()) {
-        return next(new appError_1.default(`Last scheduled is in the past. Cannot delete.`, 404));
+        return next(new appError_1.default(`Last scheduled is in the past. Cannot delete.`, 400));
     }
     //4. DELETE ALL SCHEDULED WITH THE SAME LATEST DATE
     const doc = yield scheduledModel_1.default.deleteMany({

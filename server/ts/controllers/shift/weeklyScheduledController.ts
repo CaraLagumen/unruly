@@ -125,9 +125,9 @@ export const populateToScheduled = catchAsync(async (req, res, next) => {
   //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOC
   const scheduled = [];
 
+  //5. VALIDATE INDIVIDUAL SHIFTS BEFORE PUSH
+  //   ENSURE SHIFT DAY AND SCHEDULED DATE DAY MATCHES
   for (let i = 0; i < shifts.length; i++) {
-    //5. VALIDATE INDIVIDUAL SHIFTS BEFORE PUSH
-    //   ENSURE SHIFT DAY AND SCHEDULED DATE DAY MATCHES
     if (shifts[i]!.day !== dates[i].getDay()) {
       return next(
         new AppError(

@@ -133,9 +133,9 @@ exports.populateToScheduled = catchAsync_1.default((req, res, next) => __awaiter
     });
     //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOC
     const scheduled = [];
+    //5. VALIDATE INDIVIDUAL SHIFTS BEFORE PUSH
+    //   ENSURE SHIFT DAY AND SCHEDULED DATE DAY MATCHES
     for (let i = 0; i < shifts.length; i++) {
-        //5. VALIDATE INDIVIDUAL SHIFTS BEFORE PUSH
-        //   ENSURE SHIFT DAY AND SCHEDULED DATE DAY MATCHES
         if (shifts[i].day !== dates[i].getDay()) {
             return next(new appError_1.default(`Shift day and scheduled date day do not match. Please enter a date that matches the shift day.`, 400));
         }

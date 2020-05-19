@@ -14,7 +14,11 @@ const router = express.Router();
 router
   .route(`/me`)
   .get(employeeAuthController.protect, vacationController.getAllMyVacations)
-  .post(employeeAuthController.protect, vacationController.requestVacation);
+  .post(
+    employeeAuthController.protect,
+    vacationController.validateVacation,
+    vacationController.requestVacation
+  );
 router.delete(
   `/me/:id`,
   employeeAuthController.protect,
