@@ -120,13 +120,31 @@ export class CalendarComponent implements OnInit, OnDestroy {
     return this.calendarService.isToday(day);
   }
 
-  resetData() {
-    this.allShifts = [];
-    this.allScheduled = [];
-    this.allMyPreferred = [];
-    this.allMyVacations = [];
-    this.isLoaded = false;
-    this.ngOnInit();
+  updateData(type: `shift` | `scheduled` | `preferred` | `vacation`) {
+    switch (type) {
+      case `shift`:
+        return this.shiftService
+          .getRawAllShifts()
+          .subscribe((shifts: Shift[]) => (this.allShifts = shifts));
+      case `scheduled`:
+        return this.scheduledService
+          .getRawAllScheduled()
+          .subscribe(
+            (scheduled: Scheduled[]) => (this.allScheduled = scheduled)
+          );
+      case `preferred`:
+        return this.preferredService
+          .getAllMyPreferred()
+          .subscribe(
+            (preferred: Preferred[]) => (this.allMyPreferred = preferred)
+          );
+      case `vacation`:
+        return this.vacationService
+          .getAllMyVacations()
+          .subscribe(
+            (vacations: Vacation[]) => (this.allMyVacations = vacations)
+          );
+    }
   }
 
   //MAIN----------------------------------------------------------
@@ -181,14 +199,31 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   //DASHBOARD----------------------------------------------------------
 
+  onFormSubmitEmitter(type: `shift` | `scheduled` | `preferred`) {
+    switch (type) {
+      case `shift`:
+        return this.updateData(`shift`);
+      case `scheduled`:
+        return this.updateData(`scheduled`);
+      case `preferred`:
+        return this.updateData(`preferred`);
+    }
+  }
+
   //----------------------FOR EMPLOYEE USE
   //FROM dashboard TO calendar-service
   onEmployeeServiceControl(
     emittedData: [string, [CalendarItem, EmployeeOptions]]
   ) {
-    this.calendarService
-      .employeeServiceControl(emittedData)
-      .subscribe(() => this.resetData());
+    this.calendarService.employeeServiceControl(emittedData).subscribe(() => {
+      switch (emittedData[0]) {
+        case `deletePreferred`:
+          return this.updateData(`preferred`);
+        case `requestVacation`:
+        case `deleteVacation`:
+          return this.updateData(`vacation`);
+      }
+    });
   }
 
   //----------------------FOR EMPLOYEE USE
@@ -200,9 +235,16 @@ export class CalendarComponent implements OnInit, OnDestroy {
   //----------------------FOR SCHEDULER USE
   //FROM dashboard TO calendar-service
   onSchedulerServiceControl(emittedData: [string, CalendarItem]) {
-    this.calendarService
-      .schedulerServiceControl(emittedData)
-      .subscribe(() => this.resetData());
+    this.calendarService.schedulerServiceControl(emittedData).subscribe(() => {
+      switch (emittedData[0]) {
+        case `populateAllToScheduled`:
+        case `deleteLastScheduled`:
+        case `deleteScheduled`:
+          return this.updateData(`scheduled`);
+        case `deleteShift`:
+          return this.updateData(`shift`);
+      }
+    });
   }
 
   //----------------------FOR SCHEDULER USE

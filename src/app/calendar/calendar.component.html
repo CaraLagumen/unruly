@@ -6,6 +6,7 @@
   [employeeOptionsObs]="employeeOptionsSubject.asObservable()"
   (employeeEmitter)="onEmployeeServiceControl($event)"
   (schedulerEmitter)="onSchedulerServiceControl($event)"
+  (formSubmitEmitter)="onFormSubmitEmitter($event)"
 ></app-dashboard>
 
 <div class="calendar">

@@ -3,12 +3,21 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription, Observable, forkJoin, Subject } from "rxjs";
 import * as moment from "moment";
 
-import { CalendarService } from "../calendar.service";
 import { ShiftService } from "../../shared/services/shift/shift.service";
 import { ScheduledService } from "../../shared/services/shift/scheduled.service";
-import { UserType, CalendarItemEmit } from "../../shared/models/custom-types";
+import { PreferredService } from "../../shared/services/shift/preferred.service";
+import { VacationService } from "../../shared/services/shift/vacation.service";
+import { CalendarService } from "../calendar.service";
+import {
+  UserType,
+  CalendarItem,
+  CalendarItemEmit,
+  EmployeeOptions,
+} from "../../shared/models/custom-types";
 import { Shift } from "../../shared/models/shift/shift.model";
 import { Scheduled } from "../../shared/models/shift/scheduled.model";
+import { Preferred } from "../../shared/models/shift/preferred.model";
+import { Vacation } from "../../shared/models/shift/vacation.model";
 
 @Component({
   selector: "app-day",
@@ -21,24 +30,31 @@ export class DayComponent implements OnInit, OnDestroy {
 
   userType: UserType;
   day: moment.Moment; //LIKE daysArr FROM OTHER COMPONENTS
-  getAllShifts: Observable<Shift[]>;
-  getAllScheduled: Observable<Scheduled[]>;
+  forkAllShifts: Observable<Shift[]>;
+  forkAllScheduled: Observable<Scheduled[]>;
+  forkAllMyPreferred: Observable<Preferred[]>;
+  forkAllMyVacations: Observable<Vacation[]>;
   allShifts: Shift[];
   allScheduled: Scheduled[];
+  allMyPreferred: Preferred[];
+  allMyVacations: Vacation[];
 
   employeeIsAuth = false;
   schedulerIsAuth = false;
   date = moment();
   today = moment(); //FOR USE WITH URL - DO NOT ALTER
   calendarItemSubject = new Subject();
+  employeeOptionsSubject = new Subject();
   isLoaded = false;
 
   constructor(
+    private route: ActivatedRoute,
+    private router: Router,
     private shiftService: ShiftService,
     private scheduledService: ScheduledService,
-    private calendarService: CalendarService,
-    private route: ActivatedRoute,
-    private router: Router
+    private preferredService: PreferredService,
+    private vacationService: VacationService,
+    private calendarService: CalendarService
   ) {
     this.route.params.subscribe((param) => {
       if (param) {
@@ -57,14 +73,37 @@ export class DayComponent implements OnInit, OnDestroy {
     this.userFeature();
 
     //3. GRAB DATA
-    this.getAllShifts = this.shiftService.getRawAllShifts();
-    this.getAllScheduled = this.scheduledService.getRawAllScheduled();
+    this.forkAllShifts = this.shiftService.getRawAllShifts();
+    this.forkAllScheduled = this.scheduledService.getRawAllScheduled();
 
-    forkJoin([this.getAllShifts, this.getAllScheduled]).subscribe((result) => {
-      this.allShifts = result[0];
-      this.allScheduled = result[1];
-      this.isLoaded = true;
-    });
+    //4. GRAB EMPLOYEE OPTIONS ONLY IF EMPLOYEE IS AUTH
+    if (this.employeeIsAuth) {
+      this.forkAllMyPreferred = this.preferredService.getAllMyPreferred();
+      this.forkAllMyVacations = this.vacationService.getAllMyVacations();
+
+      forkJoin([
+        this.forkAllShifts,
+        this.forkAllScheduled,
+        this.forkAllMyPreferred,
+        this.forkAllMyVacations,
+      ]).subscribe((result) => {
+        this.allShifts = result[0];
+        this.allScheduled = result[1];
+        this.allMyPreferred = result[2];
+        this.allMyVacations = result[3];
+        this.isLoaded = true;
+      });
+    } else {
+      forkJoin([this.forkAllShifts, this.forkAllScheduled]).subscribe(
+        (result) => {
+          this.allShifts = result[0];
+          this.allScheduled = result[1];
+          this.allMyPreferred = [];
+          this.allMyVacations = [];
+          this.isLoaded = true;
+        }
+      );
+    }
   }
 
   //TOOLS----------------------------------------------------------
@@ -94,9 +133,38 @@ export class DayComponent implements OnInit, OnDestroy {
     return this.calendarService.isToday(day);
   }
 
+  updateData(type: `shift` | `scheduled` | `preferred` | `vacation`) {
+    switch (type) {
+      case `shift`:
+        return this.shiftService
+          .getRawAllShifts()
+          .subscribe((shifts: Shift[]) => (this.allShifts = shifts));
+      case `scheduled`:
+        return this.scheduledService
+          .getRawAllScheduled()
+          .subscribe(
+            (scheduled: Scheduled[]) => (this.allScheduled = scheduled)
+          );
+      case `preferred`:
+        return this.preferredService
+          .getAllMyPreferred()
+          .subscribe(
+            (preferred: Preferred[]) => (this.allMyPreferred = preferred)
+          );
+      case `vacation`:
+        return this.vacationService
+          .getAllMyVacations()
+          .subscribe(
+            (vacations: Vacation[]) => (this.allMyVacations = vacations)
+          );
+    }
+  }
+
   resetData() {
     this.allShifts = [];
     this.allScheduled = [];
+    this.allMyPreferred = [];
+    this.allMyVacations = [];
     this.isLoaded = false;
     this.ngOnInit();
   }
@@ -115,12 +183,55 @@ export class DayComponent implements OnInit, OnDestroy {
 
   //DASHBOARD----------------------------------------------------------
 
-  onSchedulerServiceControl(emittedData) {
-    this.calendarService
-      .schedulerServiceControl(emittedData)
-      .subscribe(() => this.resetData());
+  onFormSubmitEmitter(type: `shift` | `scheduled` | `preferred`) {
+    switch (type) {
+      case `shift`:
+        return this.updateData(`shift`);
+      case `scheduled`:
+        return this.updateData(`scheduled`);
+      case `preferred`:
+        return this.updateData(`preferred`);
+    }
   }
 
+  //----------------------FOR EMPLOYEE USE
+  //FROM dashboard TO calendar-service
+  onEmployeeServiceControl(
+    emittedData: [string, [CalendarItem, EmployeeOptions]]
+  ) {
+    this.calendarService.employeeServiceControl(emittedData).subscribe(() => {
+      switch (emittedData[0]) {
+        case `deletePreferred`:
+          return this.updateData(`preferred`);
+        case `requestVacation`:
+        case `deleteVacation`:
+          return this.updateData(`vacation`);
+      }
+    });
+  }
+
+  //----------------------FOR EMPLOYEE USE
+  //FROM [calendar-item | week-item | day-item] TO dashboard
+  onEmployeeOptionsEmitControl(emittedData: EmployeeOptions) {
+    this.employeeOptionsSubject.next(emittedData);
+  }
+
+  //----------------------FOR SCHEDULER USE
+  //FROM dashboard TO calendar-service
+  onSchedulerServiceControl(emittedData: [string, CalendarItem]) {
+    this.calendarService.schedulerServiceControl(emittedData).subscribe(() => {
+      switch (emittedData[0]) {
+        case `populateAllToScheduled`:
+        case `deleteLastScheduled`:
+        case `deleteScheduled`:
+          return this.updateData(`scheduled`);
+        case `deleteShift`:
+          return this.updateData(`shift`);
+      }
+    });
+  }
+
+  //----------------------FOR SCHEDULER USE
   //FROM [calendar-item | week-item | day-item] TO dashboard
   onCalendarItemEmitControl(emittedData: CalendarItemEmit) {
     this.calendarItemSubject.next(emittedData);

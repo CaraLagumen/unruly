@@ -3,7 +3,10 @@
   [employeeIsAuth]="employeeIsAuth"
   [schedulerIsAuth]="schedulerIsAuth"
   [calendarItemObs]="calendarItemSubject.asObservable()"
+  [employeeOptionsObs]="employeeOptionsSubject.asObservable()"
+  (employeeEmitter)="onEmployeeServiceControl($event)"
   (schedulerEmitter)="onSchedulerServiceControl($event)"
+  (formSubmitEmitter)="onFormSubmitEmitter($event)"
 ></app-dashboard>
 
 <div class="calendar">
@@ -48,7 +51,10 @@
           *ngIf="isLoaded"
           [allShifts]="allShifts"
           [allScheduled]="allScheduled"
+          [allMyPreferred]="allMyPreferred"
+          [allMyVacations]="allMyVacations"
           [day]="day"
+          (employeeOptionsEmitter)="onEmployeeOptionsEmitControl($event)"
           (calendarItemEmitter)="onCalendarItemEmitControl($event)"
         ></app-week-item>
 

@@ -78,9 +78,12 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
   }
 
   updateData(type: `shift` | `weeklyShift`) {
-    if (type === `shift`) this.shifts$ = this.shiftService.getRawAllShifts();
-    if (type === `weeklyShift`)
-      this.weeklyShifts$ = this.weeklyShiftService.getAllWeeklyShifts();
+    switch (type) {
+      case `shift`:
+        return (this.shifts$ = this.shiftService.getRawAllShifts());
+      case `weeklyShift`:
+        return (this.weeklyShifts$ = this.weeklyShiftService.getAllWeeklyShifts());
+    }
   }
 
   onSelectShift(shift: Shift) {

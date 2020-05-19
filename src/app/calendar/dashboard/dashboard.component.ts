@@ -44,6 +44,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     [string, [CalendarItem, EmployeeOptions]]
   >();
   @Output() schedulerEmitter = new EventEmitter<[string, CalendarItem]>();
+  @Output() formSubmitEmitter = new EventEmitter<string>();
 
   employees: Employee[];
   calendarItem: CalendarItem;
@@ -99,8 +100,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  //----------------------FOR EMPLOYEE USE
   //TOOLS----------------------------------------------------------
+
+  onFormSubmitEmitter(type: `shift` | `scheduled` | `preferred`) {
+    this.formSubmitEmitter.emit(type);
+  }
+
+  //----------------------FOR EMPLOYEE USE
 
   onEmployeeEmitter(
     type: `deletePreferred` | `requestVacation` | `deleteVacation`
@@ -128,7 +134,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   //----------------------FOR SCHEDULER USE
-  //TOOLS----------------------------------------------------------
 
   onSchedulerEmitter(type: `deleteShift` | `deleteScheduled`) {
     const data = this.calendarItem;
@@ -155,6 +160,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       ? this.initCreateScheduledForm()
       : (this.createScheduledFormToggle = false);
   }
+
+  //FORMS----------------------------------------------------------
 
   //----------------------FOR EMPLOYEE USE
   //ADD PREFERRED FORM----------------------------------------------------------
@@ -187,11 +194,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.employeeOptions[0]) {
       this.preferredService
         .updateMyPreferred(this.employeeOptions[0].id, preferred)
-        .subscribe(() => location.reload());
+        .subscribe(() => this.onFormSubmitEmitter(`preferred`));
     } else {
       this.preferredService
         .saveMyPreferred(preferred)
-        .subscribe(() => location.reload());
+        .subscribe(() => this.onFormSubmitEmitter(`preferred`));
     }
   }
 
@@ -248,7 +255,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.shiftService
       .updateShift(this.calendarItemId, shiftData)
-      .subscribe(() => location.reload());
+      .subscribe(() => this.onFormSubmitEmitter(`shift`));
   }
 
   //----------------------FOR SCHEDULER USE
@@ -282,15 +289,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
   onCreateScheduled() {
     if (this.createScheduledForm.invalid) return;
 
+    const parsedDate = this.calendarItemDay.startOf("d").toISOString();
+
     const scheduledData: ScheduledData = {
       shift: this.calendarItemId,
       employee: this.createScheduledForm.value.employeeControl,
-      date: this.calendarItemDay.toISOString(),
+      date: parsedDate,
     };
 
     this.scheduledService
       .createScheduled(scheduledData)
-      .subscribe(() => location.reload());
+      .subscribe(() => this.onFormSubmitEmitter(`scheduled`));
   }
 
   ngOnDestroy() {

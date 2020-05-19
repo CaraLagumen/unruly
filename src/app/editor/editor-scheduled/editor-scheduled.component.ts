@@ -101,10 +101,12 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
   }
 
   updateData(type: `scheduled` | `weeklyScheduled`) {
-    if (type === `scheduled`)
-      this.scheduled$ = this.scheduledService.getRawAllScheduled();
-    if (type === `weeklyScheduled`)
-      this.weeklyScheduled$ = this.weeklyScheduledService.getAllWeeklyScheduled();
+    switch (type) {
+      case `scheduled`:
+        return (this.scheduled$ = this.scheduledService.getRawAllScheduled());
+      case `weeklyScheduled`:
+        return (this.weeklyScheduled$ = this.weeklyScheduledService.getAllWeeklyScheduled());
+    }
   }
 
   onSelectShift(shift: Shift) {
@@ -164,9 +166,9 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
   onCreateScheduled() {
     if (this.createScheduledForm.invalid) return;
 
-    const parsedDate = moment(
-      this.createScheduledForm.value.dateControl
-    ).toISOString();
+    const parsedDate = moment(this.createScheduledForm.value.dateControl)
+      .startOf("d")
+      .toISOString();
 
     const scheduledData: ScheduledData = {
       shift: this.createScheduledForm.value.shiftControl,
