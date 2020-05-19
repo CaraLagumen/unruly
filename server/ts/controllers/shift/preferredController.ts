@@ -8,7 +8,7 @@ import AppError from "../../utils/appError";
 
 //MAIN----------------------------------------------------------
 
-//SAVE PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
+//SAVE PREFERRED OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
 export const saveMyPreferred = catchAsync(async (req, res, next) => {
   const shift = req.body.shift;
   const employee = req.employee.id;
@@ -22,8 +22,8 @@ export const saveMyPreferred = catchAsync(async (req, res, next) => {
   });
 });
 
-//UPDATE PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
-export const updatePreferred = catchAsync(async (req, res, next) => {
+//UPDATE PREFERRED OF LOGGED IN EMPLOYEE FROM PREFERRED ID (ENTERED)
+export const updateMyPreferred = catchAsync(async (req, res, next) => {
   const doc = await Preferred.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -39,7 +39,7 @@ export const updatePreferred = catchAsync(async (req, res, next) => {
   });
 });
 
-//DELETE MY PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
+//DELETE PREFERRED OF LOGGED IN EMPLOYEE FROM PREFERRED ID (PARAM)
 export const deleteMyPreferred = catchAsync(async (req, res, next) => {
   const doc = await Preferred.findByIdAndDelete(req.params.id);
 

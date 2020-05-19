@@ -24,7 +24,7 @@ export class VacationService {
       .pipe(map((vacation: any) => vacation.doc));
   }
 
-  createMyVacation(vacationData: Vacation): Observable<Vacation> {
+  requestVacation(vacationData: Vacation): Observable<Vacation> {
     return this.http.post<Vacation>(`${ROOT_URL}/me`, vacationData);
   }
 

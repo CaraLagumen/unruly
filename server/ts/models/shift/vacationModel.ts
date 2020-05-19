@@ -2,7 +2,6 @@ import mongoose, { Schema } from "mongoose";
 
 import IVacation from "../../types/shift/vacationInterface";
 
-//LIMITED 3 PER DAY OF THE WEEK FOR EACH EMPLOYEE
 const vacationSchema: Schema = new mongoose.Schema(
   {
     employee: {

@@ -12,19 +12,17 @@ import { FormGroup, FormControl } from "@angular/forms";
 import { EmployeeService } from "../../shared/services/users/employee.service";
 import { ShiftService } from "../../shared/services/shift/shift.service";
 import { ScheduledService } from "../../shared/services/shift/scheduled.service";
-import { PreferredService } from "src/app/shared/services/shift/preferred.service";
+import { PreferredService } from "../../shared/services/shift/preferred.service";
 import { Employee } from "../../shared/models/users/employee.model";
 import { Shift } from "../../shared/models/shift/shift.model";
 import {
   CalendarItem,
   CalendarItemEmit,
+  EmployeeOptions,
 } from "../../shared/models/custom-types";
 import { ShiftProperties } from "../../shared/tools/custom-classes";
 import { ScheduledData } from "../../shared/models/shift/scheduled.model";
-import {
-  Preferred,
-  PreferredData,
-} from "../../shared/models/shift/preferred.model";
+import { PreferredData } from "../../shared/models/shift/preferred.model";
 
 //FROM dashboard TO [calendar-item | week-item | day-item]
 @Component({
@@ -35,15 +33,15 @@ import {
 export class DashboardComponent implements OnInit, OnDestroy {
   private employeeSub: Subscription;
   private calendarItemSub: Subscription;
-  private myPreferredSub: Subscription;
+  private employeeOptionsSub: Subscription;
 
   @Input() employeeIsAuth;
   @Input() schedulerIsAuth;
   @Input() calendarItemObs: Observable<any>;
-  @Input() myPreferredObs: Observable<any>;
+  @Input() employeeOptionsObs: Observable<any>;
 
   @Output() employeeEmitter = new EventEmitter<
-    [string, CalendarItem, Preferred]
+    [string, [CalendarItem, EmployeeOptions]]
   >();
   @Output() schedulerEmitter = new EventEmitter<[string, CalendarItem]>();
 
@@ -51,7 +49,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   calendarItem: CalendarItem;
   calendarItemId: string;
   calendarItemDay: moment.Moment;
-  myPreferred: Preferred;
+  employeeOptions: EmployeeOptions;
   addPreferredForm: FormGroup;
   updateShiftForm: FormGroup;
   createScheduledForm: FormGroup;
@@ -93,10 +91,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
       }
     );
 
-    //3. GRAB MY PREFERRED IF EMPLOYEE IS AUTH
+    //3. GRAB EMPLOYEE OPTIONS IF EMPLOYEE IS AUTH
     if (this.employeeIsAuth) {
-      this.myPreferredSub = this.myPreferredObs.subscribe(
-        (emittedData: Preferred) => (this.myPreferred = emittedData)
+      this.employeeOptionsSub = this.employeeOptionsObs.subscribe(
+        (emittedData: EmployeeOptions) => (this.employeeOptions = emittedData)
       );
     }
   }
@@ -104,10 +102,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
   //----------------------FOR EMPLOYEE USE
   //TOOLS----------------------------------------------------------
 
-  onEmployeeEmitter(type: `deletePreferred` | `requestVacation`) {
-    const data = this.calendarItem;
+  onEmployeeEmitter(
+    type: `deletePreferred` | `requestVacation` | `deleteVacation`
+  ) {
+    const data: [CalendarItem, EmployeeOptions] = [
+      this.calendarItem as CalendarItem,
+      this.employeeOptions as EmployeeOptions,
+    ];
 
-    this.employeeEmitter.emit([type, data, this.myPreferred]);
+    this.employeeEmitter.emit([type, data]);
 
     if (this.employeeOptionsMenu) this.onToggleEmployeeOptionsMenu(`close`);
   }
@@ -164,9 +167,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     //2. EXPOSE PREFERRED DATA IF ANY FOR DISPLAY AND PLUG IN
     //   EXISTING VALUES FOR FORM
-    if (this.myPreferred !== null)
+    if (this.employeeOptions[0] !== null)
       this.addPreferredForm.controls["rankControl"].setValue(
-        this.myPreferred.rank
+        this.employeeOptions[0].rank
       );
 
     //3. DISPLAY FORM
@@ -181,9 +184,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       rank: this.addPreferredForm.value.rankControl,
     };
 
-    if (this.myPreferred) {
+    if (this.employeeOptions[0]) {
       this.preferredService
-        .updateMyPreferred(this.myPreferred.id, preferred)
+        .updateMyPreferred(this.employeeOptions[0].id, preferred)
         .subscribe(() => location.reload());
     } else {
       this.preferredService
@@ -293,6 +296,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.employeeSub) this.employeeSub.unsubscribe();
     if (this.calendarItemSub) this.calendarItemSub.unsubscribe();
-    if (this.myPreferredSub) this.myPreferredSub.unsubscribe();
+    if (this.employeeOptionsSub) this.employeeOptionsSub.unsubscribe();
   }
 }

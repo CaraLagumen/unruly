@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 import * as moment from "moment";
 
 import { AuthService } from "../auth/auth.service";
@@ -7,10 +8,15 @@ import { ScheduledService } from "../shared/services/shift/scheduled.service";
 import { WeeklyScheduledService } from "../shared/services/shift/weekly-scheduled.service";
 import { PreferredService } from "../shared/services/shift/preferred.service";
 import { VacationService } from "../shared/services/shift/vacation.service";
-import { UserType, CalendarItem } from "../shared/models/custom-types";
+import {
+  UserType,
+  CalendarItem,
+  EmployeeOptions,
+} from "../shared/models/custom-types";
 import { Shift } from "../shared/models/shift/shift.model";
 import { Scheduled } from "../shared/models/shift/scheduled.model";
 import { Preferred } from "../shared/models/shift/preferred.model";
+import { Vacation } from "../shared/models/shift/vacation.model";
 
 @Injectable({
   providedIn: "root",
@@ -90,6 +96,20 @@ export class CalendarService {
     return [false, null];
   }
 
+  isMyVacationDay(
+    allMyVacations: Vacation[],
+    day: moment.Moment
+  ): [boolean, Vacation | null] {
+    const myVacation = allMyVacations.find(
+      (vacation: Vacation) =>
+        moment(vacation.date).format("L") === day.format("L")
+    );
+
+    if (myVacation) return [true, myVacation];
+
+    return [false, null];
+  }
+
   isNotThisMonth(day: moment.Moment, date: moment.Moment): boolean {
     let firstDay = moment(date).startOf("M");
     const lastDay = moment(date).endOf("M");
@@ -137,19 +157,28 @@ export class CalendarService {
 
   //DASHBOARD----------------------------------------------------------
 
-  employeeServiceControl(emittedData: [string, CalendarItem, Preferred]) {
-    const [type, data, preferred] = emittedData;
+  employeeServiceControl(
+    emittedData: [string, [CalendarItem, EmployeeOptions]]
+  ): Observable<any> {
+    const [type, data] = emittedData;
 
-    //data = [SHIFT, SCHEDULED]
+    //data = [[SHIFT, SCHEDULED], [PREFERRED, VACATIONS]]
     switch (type) {
       case `deletePreferred`:
-        return this.preferredService.deleteMyPreferred(preferred.id);
+        const preferredId = data[1][0].id;
+        return this.preferredService.deleteMyPreferred(preferredId);
       case `requestVacation`:
-      // return this.vacationService.createMyVacation();
+        const vacation = data[1][1];
+        return this.vacationService.requestVacation(vacation);
+      case `deleteVacation`:
+        const vacationId = data[1][1].id;
+        return this.vacationService.deleteMyVacation(vacationId);
     }
   }
 
-  schedulerServiceControl(emittedData: [string, CalendarItem]) {
+  schedulerServiceControl(
+    emittedData: [string, CalendarItem]
+  ): Observable<any> {
     const [type, data] = emittedData;
 
     //data = [SHIFT, SCHEDULED]
@@ -161,10 +190,10 @@ export class CalendarService {
         return this.scheduledService.deleteLastScheduled();
       //CALENDAR ITEM
       case `deleteShift`:
-        const shiftId: string = data[0].id;
+        const shiftId = data[0].id;
         return this.shiftService.deleteShift(shiftId);
       case `deleteScheduled`:
-        const scheduledId: string = data[1].id;
+        const scheduledId = data[1].id;
         return this.scheduledService.deleteScheduled(scheduledId);
     }
   }

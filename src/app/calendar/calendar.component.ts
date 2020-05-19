@@ -5,15 +5,18 @@ import * as moment from "moment";
 import { ShiftService } from "../shared/services/shift/shift.service";
 import { ScheduledService } from "../shared/services/shift/scheduled.service";
 import { PreferredService } from "../shared/services/shift/preferred.service";
+import { VacationService } from "../shared/services/shift/vacation.service";
 import { CalendarService } from "./calendar.service";
 import {
   UserType,
   CalendarItem,
   CalendarItemEmit,
+  EmployeeOptions,
 } from "../shared/models/custom-types";
 import { Shift } from "../shared/models/shift/shift.model";
 import { Scheduled } from "../shared/models/shift/scheduled.model";
 import { Preferred } from "../shared/models/shift/preferred.model";
+import { Vacation } from "../shared/models/shift/vacation.model";
 
 @Component({
   selector: "app-calendar",
@@ -30,21 +33,24 @@ export class CalendarComponent implements OnInit, OnDestroy {
   forkAllShifts: Observable<Shift[]>;
   forkAllScheduled: Observable<Scheduled[]>;
   forkAllMyPreferred: Observable<Preferred[]>;
+  forkAllMyVacations: Observable<Vacation[]>;
   allShifts: Shift[];
   allScheduled: Scheduled[];
   allMyPreferred: Preferred[];
+  allMyVacations: Vacation[];
 
   employeeIsAuth = false;
   schedulerIsAuth = false;
   date = moment();
   calendarItemSubject = new Subject();
-  myPreferredSubject = new Subject();
+  employeeOptionsSubject = new Subject();
   isLoaded = false;
 
   constructor(
     private shiftService: ShiftService,
     private scheduledService: ScheduledService,
     private preferredService: PreferredService,
+    private vacationService: VacationService,
     private calendarService: CalendarService
   ) {}
 
@@ -59,18 +65,21 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.forkAllShifts = this.shiftService.getRawAllShifts();
     this.forkAllScheduled = this.scheduledService.getRawAllScheduled();
 
-    //4. GRAB PREFERRED ONLY IF EMPLOYEE IS AUTH
+    //4. GRAB EMPLOYEE OPTIONS ONLY IF EMPLOYEE IS AUTH
     if (this.employeeIsAuth) {
       this.forkAllMyPreferred = this.preferredService.getAllMyPreferred();
+      this.forkAllMyVacations = this.vacationService.getAllMyVacations();
 
       forkJoin([
         this.forkAllShifts,
         this.forkAllScheduled,
         this.forkAllMyPreferred,
+        this.forkAllMyVacations,
       ]).subscribe((result) => {
         this.allShifts = result[0];
         this.allScheduled = result[1];
         this.allMyPreferred = result[2];
+        this.allMyVacations = result[3];
         this.isLoaded = true;
       });
     } else {
@@ -78,6 +87,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
         (result) => {
           this.allShifts = result[0];
           this.allScheduled = result[1];
+          this.allMyPreferred = [];
+          this.allMyVacations = [];
           this.isLoaded = true;
         }
       );
@@ -112,6 +123,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
   resetData() {
     this.allShifts = [];
     this.allScheduled = [];
+    this.allMyPreferred = [];
+    this.allMyVacations = [];
     this.isLoaded = false;
     this.ngOnInit();
   }
@@ -169,7 +182,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
   //DASHBOARD----------------------------------------------------------
 
   //----------------------FOR EMPLOYEE USE
-  onEmployeeServiceControl(emittedData: [string, CalendarItem, Preferred]) {
+  //FROM dashboard TO calendar-service
+  onEmployeeServiceControl(
+    emittedData: [string, [CalendarItem, EmployeeOptions]]
+  ) {
     this.calendarService
       .employeeServiceControl(emittedData)
       .subscribe(() => this.resetData());
@@ -177,8 +193,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   //----------------------FOR EMPLOYEE USE
   //FROM [calendar-item | week-item | day-item] TO dashboard
-  onMyPreferredEmitControl(emittedData: Preferred) {
-    this.myPreferredSubject.next(emittedData);
+  onEmployeeOptionsEmitControl(emittedData: EmployeeOptions) {
+    this.employeeOptionsSubject.next(emittedData);
   }
 
   //----------------------FOR SCHEDULER USE

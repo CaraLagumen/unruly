@@ -13,12 +13,12 @@ const router = express.Router();
 //ALLOW EMPLOYEE TO GET, CREATE WITH VALIDATION, AND DELETE WITH VALIDATION
 router
   .route(`/me`)
-  .get(employeeAuthController.protect, vacationController.getAllVacations)
-  .post(employeeAuthController.protect, vacationController.createVacation);
+  .get(employeeAuthController.protect, vacationController.getAllMyVacations)
+  .post(employeeAuthController.protect, vacationController.requestVacation);
 router.delete(
   `/me/:id`,
   employeeAuthController.protect,
-  vacationController.deleteVacation
+  vacationController.deleteMyVacation
 );
 
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE

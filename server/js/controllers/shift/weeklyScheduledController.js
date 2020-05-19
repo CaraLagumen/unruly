@@ -52,7 +52,8 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
     try {
         for (var allWeeklyScheduled_1 = __asyncValues(allWeeklyScheduled), allWeeklyScheduled_1_1; allWeeklyScheduled_1_1 = yield allWeeklyScheduled_1.next(), !allWeeklyScheduled_1_1.done;) {
             let el = allWeeklyScheduled_1_1.value;
-            //2. GRAB RAW WEEKLY SCHEDULED FROM PARAM ID TO EXTRACT WEEKLY SHIFT THEN INDIVIDUAL SHIFTS
+            //2. GRAB RAW WEEKLY SCHEDULED FROM PARAM ID TO EXTRACT
+            //   WEEKLY SHIFT THEN INDIVIDUAL SHIFTS
             const weeklyShift = yield weeklyShiftModel_1.default.findById(el.weeklyShift);
             const shifts = [
                 yield shiftModel_1.default.findById(weeklyShift.shiftDay1),

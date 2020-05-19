@@ -29,7 +29,8 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
   const scheduleds = [];
 
   for await (let el of allWeeklyScheduled) {
-    //2. GRAB RAW WEEKLY SCHEDULED FROM PARAM ID TO EXTRACT WEEKLY SHIFT THEN INDIVIDUAL SHIFTS
+    //2. GRAB RAW WEEKLY SCHEDULED FROM PARAM ID TO EXTRACT
+    //   WEEKLY SHIFT THEN INDIVIDUAL SHIFTS
     const weeklyShift = await WeeklyShift.findById(el.weeklyShift);
 
     const shifts = [

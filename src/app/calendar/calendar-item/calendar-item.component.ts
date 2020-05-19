@@ -4,8 +4,12 @@ import * as moment from "moment";
 import { CalendarService } from "../calendar.service";
 import { Scheduled } from "../../shared/models/shift/scheduled.model";
 import { Shift } from "../../shared/models/shift/shift.model";
-import { Preferred } from "src/app/shared/models/shift/preferred.model";
-import { CalendarItemEmit } from "../../shared/models/custom-types";
+import { Preferred } from "../../shared/models/shift/preferred.model";
+import { Vacation } from "../../shared/models/shift/vacation.model";
+import {
+  CalendarItemEmit,
+  EmployeeOptions,
+} from "../../shared/models/custom-types";
 
 @Component({
   selector: "app-calendar-item",
@@ -16,10 +20,11 @@ export class CalendarItemComponent implements OnInit {
   @Input() allShifts: Shift[];
   @Input() allScheduled: Scheduled[];
   @Input() allMyPreferred: Preferred[];
+  @Input() allMyVacations: Vacation[];
   @Input() day: moment.Moment;
 
   @Output() calendarItemEmitter = new EventEmitter<CalendarItemEmit>();
-  @Output() myPreferredEmitter = new EventEmitter<Preferred>();
+  @Output() employeeOptionsEmitter = new EventEmitter<EmployeeOptions>();
 
   shiftsOfTheDay: Shift[] = [];
 
@@ -61,6 +66,15 @@ export class CalendarItemComponent implements OnInit {
     return data[0];
   }
 
+  isMyVacationDay() {
+    const data = this.calendarService.isMyVacationDay(
+      this.allMyVacations,
+      this.day
+    );
+
+    return data[0];
+  }
+
   onCalendarItemEmitter(shift: Shift) {
     const data = this.calendarService.isScheduledShift(
       shift,
@@ -71,12 +85,26 @@ export class CalendarItemComponent implements OnInit {
     this.calendarItemEmitter.emit([shift, data[1], data[2]]);
   }
 
-  onMyPreferredEmitter(shift: Shift) {
-    const data = this.calendarService.isMyPreferredShift(
+  onEmployeeOptionsEmitter(shift: Shift) {
+    //1. GRAB DATA
+    const preferred = this.calendarService.isMyPreferredShift(
       shift,
       this.allMyPreferred
     );
+    const vacation = this.calendarService.isMyVacationDay(
+      this.allMyVacations,
+      this.day
+    );
 
-    this.myPreferredEmitter.emit(data[1]);
+    //2. EMIT WITH VACATION IF ANY
+    if (vacation[1]) {
+      this.employeeOptionsEmitter.emit([preferred[1], vacation[1]]);
+    } else {
+      //3. EMIT WITH A DUMMY VACATION FOR REQUEST IF WANTED
+      this.employeeOptionsEmitter.emit([
+        preferred[1],
+        { date: this.day.toDate() },
+      ]);
+    }
   }
 }

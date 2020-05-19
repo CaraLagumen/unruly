@@ -26,7 +26,7 @@ const apiFeatures_1 = __importDefault(require("../../utils/apiFeatures"));
 const appError_1 = __importDefault(require("../../utils/appError"));
 //----------------------FOR EMPLOYEE USE
 //MAIN----------------------------------------------------------
-//SAVE PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
+//SAVE PREFERRED OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
 exports.saveMyPreferred = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const shift = req.body.shift;
     const employee = req.employee.id;
@@ -37,8 +37,8 @@ exports.saveMyPreferred = catchAsync_1.default((req, res, next) => __awaiter(voi
         doc,
     });
 }));
-//UPDATE PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
-exports.updatePreferred = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+//UPDATE PREFERRED OF LOGGED IN EMPLOYEE FROM PREFERRED ID (ENTERED)
+exports.updateMyPreferred = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const doc = yield preferredModel_1.default.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true,
@@ -51,7 +51,7 @@ exports.updatePreferred = catchAsync_1.default((req, res, next) => __awaiter(voi
         doc,
     });
 }));
-//DELETE MY PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
+//DELETE PREFERRED OF LOGGED IN EMPLOYEE FROM PREFERRED ID (PARAM)
 exports.deleteMyPreferred = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const doc = yield preferredModel_1.default.findByIdAndDelete(req.params.id);
     if (!doc) {

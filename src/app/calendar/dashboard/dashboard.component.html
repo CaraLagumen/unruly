@@ -178,13 +178,13 @@
         {{ calendarItem[1]?.employee.hireDate }}
       </div>
 
-      <div *ngIf="myPreferred">
+      <div *ngIf="employeeOptions[0]">
         My preferred details
-        {{ myPreferred.shift.day }}
-        {{ myPreferred.rank }}
-        {{ myPreferred.shift.slot }}
-        {{ myPreferred.shift.shiftStart }} {{ myPreferred.shift.shiftEnd }}
-        {{ myPreferred.shift.location }}
+        {{ employeeOptions[0].shift.day }}
+        {{ employeeOptions[0].rank }}
+        {{ employeeOptions[0].shift.slot }}
+        {{ employeeOptions[0].shift.shiftStart }} {{ employeeOptions[0].shift.shiftEnd }}
+        {{ employeeOptions[0].shift.location }}
       </div>
 
     </div>
@@ -196,6 +196,7 @@
       <button (click)="onEmployeeEmitter('deletePreferred')">Delete preferred</button>
 
       <button (click)="onEmployeeEmitter('requestVacation')">Request vacation</button>
+      <button (click)="onEmployeeEmitter('deleteVacation')">Delete vacation</button>
 
       <button (click)="onToggleEmployeeOptionsMenu('close')">Close</button>
     </div>
