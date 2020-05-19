@@ -4,7 +4,8 @@ import * as moment from "moment";
 import { CalendarService } from "../calendar.service";
 import { Scheduled } from "../../shared/models/shift/scheduled.model";
 import { Shift } from "../../shared/models/shift/shift.model";
-import { EditShiftEmit } from "../../shared/models/custom-types";
+import { Preferred } from "src/app/shared/models/shift/preferred.model";
+import { CalendarItemEmit } from "../../shared/models/custom-types";
 
 @Component({
   selector: "app-calendar-item",
@@ -14,9 +15,11 @@ import { EditShiftEmit } from "../../shared/models/custom-types";
 export class CalendarItemComponent implements OnInit {
   @Input() allShifts: Shift[];
   @Input() allScheduled: Scheduled[];
+  @Input() allMyPreferred: Preferred[];
   @Input() day: moment.Moment;
 
-  @Output() editShiftEmitter = new EventEmitter<EditShiftEmit>();
+  @Output() calendarItemEmitter = new EventEmitter<CalendarItemEmit>();
+  @Output() myPreferredEmitter = new EventEmitter<Preferred>();
 
   shiftsOfTheDay: Shift[] = [];
 
@@ -49,13 +52,31 @@ export class CalendarItemComponent implements OnInit {
     return data[0];
   }
 
-  onEditShiftEmitter(shift: Shift) {
+  isMyPreferredShift(shift: Shift): boolean {
+    const data = this.calendarService.isMyPreferredShift(
+      shift,
+      this.allMyPreferred
+    );
+
+    return data[0];
+  }
+
+  onCalendarItemEmitter(shift: Shift) {
     const data = this.calendarService.isScheduledShift(
       shift,
       this.allScheduled,
       this.day
     );
 
-    this.editShiftEmitter.emit([shift, data[1], data[2]]);
+    this.calendarItemEmitter.emit([shift, data[1], data[2]]);
+  }
+
+  onMyPreferredEmitter(shift: Shift) {
+    const data = this.calendarService.isMyPreferredShift(
+      shift,
+      this.allMyPreferred
+    );
+
+    this.myPreferredEmitter.emit(data[1]);
   }
 }

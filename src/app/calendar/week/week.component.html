@@ -2,7 +2,7 @@
   *ngIf="employeeIsAuth || schedulerIsAuth"
   [employeeIsAuth]="employeeIsAuth"
   [schedulerIsAuth]="schedulerIsAuth"
-  [editShiftObs]="editShiftSubject.asObservable()"
+  [calendarItemObs]="calendarItemSubject.asObservable()"
   (schedulerEmitter)="onSchedulerServiceControl($event)"
 ></app-dashboard>
 
@@ -49,7 +49,7 @@
           [allShifts]="allShifts"
           [allScheduled]="allScheduled"
           [day]="day"
-          (editShiftEmitter)="onEditShiftEmitControl($event)"
+          (calendarItemEmitter)="onCalendarItemEmitControl($event)"
         ></app-week-item>
 
       </div>

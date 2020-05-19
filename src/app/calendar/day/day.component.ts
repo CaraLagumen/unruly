@@ -6,7 +6,7 @@ import * as moment from "moment";
 import { CalendarService } from "../calendar.service";
 import { ShiftService } from "../../shared/services/shift/shift.service";
 import { ScheduledService } from "../../shared/services/shift/scheduled.service";
-import { UserType, EditShiftEmit } from "../../shared/models/custom-types";
+import { UserType, CalendarItemEmit } from "../../shared/models/custom-types";
 import { Shift } from "../../shared/models/shift/shift.model";
 import { Scheduled } from "../../shared/models/shift/scheduled.model";
 
@@ -30,7 +30,7 @@ export class DayComponent implements OnInit, OnDestroy {
   schedulerIsAuth = false;
   date = moment();
   today = moment(); //FOR USE WITH URL - DO NOT ALTER
-  editShiftSubject = new Subject();
+  calendarItemSubject = new Subject();
   isLoaded = false;
 
   constructor(
@@ -122,8 +122,8 @@ export class DayComponent implements OnInit, OnDestroy {
   }
 
   //FROM [calendar-item | week-item | day-item] TO dashboard
-  onEditShiftEmitControl(emittedData: EditShiftEmit) {
-    this.editShiftSubject.next(emittedData);
+  onCalendarItemEmitControl(emittedData: CalendarItemEmit) {
+    this.calendarItemSubject.next(emittedData);
   }
 
   ngOnDestroy() {

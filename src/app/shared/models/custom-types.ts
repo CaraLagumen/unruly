@@ -3,5 +3,5 @@ import { Scheduled } from "./shift/scheduled.model";
 
 export type UserType = `employee` | `scheduler`;
 export type ShiftEvent = `shiftStart` | `shiftEnd`;
-export type EditShift = [Shift, Scheduled | null];
-export type EditShiftEmit = [Shift, Scheduled | null, moment.Moment];
+export type CalendarItem = [Shift, Scheduled | null];
+export type CalendarItemEmit = [Shift, Scheduled | null, moment.Moment];

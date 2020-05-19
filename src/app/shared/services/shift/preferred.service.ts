@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
 import { environment } from "../../../../environments/environment";
-import { Preferred } from "../../models/shift/preferred.model";
+import { Preferred, PreferredData } from "../../models/shift/preferred.model";
 
 const ROOT_URL = `${environment.apiUrl}/preferred`;
 
@@ -29,17 +29,21 @@ export class PreferredService {
       .pipe(map((preferred: any) => preferred.doc));
   }
 
-  saveMyPreferred(
-    shiftId: string,
-    preferredData: Preferred
+  saveMyPreferred(preferredData: PreferredData): Observable<Preferred> {
+    return this.http.post<Preferred>(`${ROOT_URL}/me`, preferredData);
+  }
+
+  updateMyPreferred(
+    preferredId: string,
+    preferredData: PreferredData
   ): Observable<Preferred> {
-    return this.http.post<Preferred>(
-      `${ROOT_URL}/me/${shiftId}`,
+    return this.http.patch<Preferred>(
+      `${ROOT_URL}/${preferredId}`,
       preferredData
     );
   }
 
   deleteMyPreferred(preferredId: string): Observable<Preferred> {
-    return this.http.delete<Preferred>(`${ROOT_URL}/me/${preferredId}`);
+    return this.http.delete<Preferred>(`${ROOT_URL}/${preferredId}`);
   }
 }

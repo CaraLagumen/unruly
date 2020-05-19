@@ -15,13 +15,16 @@ router.use(employeeAuthController.protect);
 //GET ALL
 router.get(`/`, preferredController.getAllPreferred);
 
-//GET ALL OF LOGGED IN EMPLOYEE
-router.get(`/me`, preferredController.getAllMyPreferred);
-
-//SAVE ONE AND DELETE ONE OF LOGGED IN EMPLOYEE
+//GET ALL AND SAVE ONE OF LOGGED IN EMPLOYEE
 router
-  .route(`/me/:id`)
-  .post(preferredController.saveMyPreferred)
+  .route(`/me`)
+  .get(preferredController.getAllMyPreferred)
+  .post(preferredController.saveMyPreferred);
+
+//UPDATE ONE AND DELETE ONE OF LOGGED IN EMPLOYEE
+router
+  .route(`/:id`)
+  .patch(preferredController.updatePreferred)
   .delete(preferredController.deleteMyPreferred);
 
 //DATABASE ONLY----------------------------------------------------------

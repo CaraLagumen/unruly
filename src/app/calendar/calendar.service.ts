@@ -5,9 +5,12 @@ import { AuthService } from "../auth/auth.service";
 import { ShiftService } from "../shared/services/shift/shift.service";
 import { ScheduledService } from "../shared/services/shift/scheduled.service";
 import { WeeklyScheduledService } from "../shared/services/shift/weekly-scheduled.service";
-import { UserType, EditShift } from "../shared/models/custom-types";
+import { PreferredService } from "../shared/services/shift/preferred.service";
+import { VacationService } from "../shared/services/shift/vacation.service";
+import { UserType, CalendarItem } from "../shared/models/custom-types";
 import { Shift } from "../shared/models/shift/shift.model";
 import { Scheduled } from "../shared/models/shift/scheduled.model";
+import { Preferred } from "../shared/models/shift/preferred.model";
 
 @Injectable({
   providedIn: "root",
@@ -17,7 +20,9 @@ export class CalendarService {
     private authService: AuthService,
     private shiftService: ShiftService,
     private scheduledService: ScheduledService,
-    private weeklyScheduledService: WeeklyScheduledService
+    private weeklyScheduledService: WeeklyScheduledService,
+    private preferredService: PreferredService,
+    private vacationService: VacationService
   ) {}
 
   //TOOLS----------------------------------------------------------
@@ -71,21 +76,31 @@ export class CalendarService {
     return [false, null, day];
   }
 
+  isMyPreferredShift(
+    shift: Shift,
+    allMyPreferred: Preferred[]
+  ): [boolean, Preferred | null] {
+    const shiftId = shift.id;
+    const myPreferred = allMyPreferred.find(
+      (preferred: Preferred) => preferred.shift.id === shiftId
+    );
+
+    if (myPreferred) return [true, myPreferred];
+
+    return [false, null];
+  }
+
   isNotThisMonth(day: moment.Moment, date: moment.Moment): boolean {
     let firstDay = moment(date).startOf("M");
     const lastDay = moment(date).endOf("M");
 
-    if (day < firstDay || day > lastDay) {
-      return true;
-    }
+    if (day < firstDay || day > lastDay) return true;
 
     return false;
   }
 
   isToday(day): boolean {
-    if (!day) {
-      return false;
-    }
+    if (!day) return false;
 
     return moment().format("L") === day.format("L");
   }
@@ -122,7 +137,19 @@ export class CalendarService {
 
   //DASHBOARD----------------------------------------------------------
 
-  schedulerServiceControl(emittedData: [string, EditShift]) {
+  employeeServiceControl(emittedData: [string, CalendarItem, Preferred]) {
+    const [type, data, preferred] = emittedData;
+
+    //data = [SHIFT, SCHEDULED]
+    switch (type) {
+      case `deletePreferred`:
+        return this.preferredService.deleteMyPreferred(preferred.id);
+      case `requestVacation`:
+      // return this.vacationService.createMyVacation();
+    }
+  }
+
+  schedulerServiceControl(emittedData: [string, CalendarItem]) {
     const [type, data] = emittedData;
 
     //data = [SHIFT, SCHEDULED]
@@ -132,7 +159,7 @@ export class CalendarService {
         return this.weeklyScheduledService.populateAllToScheduled();
       case `deleteLastScheduled`:
         return this.scheduledService.deleteLastScheduled();
-      //EDIT SHIFT
+      //CALENDAR ITEM
       case `deleteShift`:
         const shiftId: string = data[0].id;
         return this.shiftService.deleteShift(shiftId);

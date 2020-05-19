@@ -2,7 +2,7 @@
 
   <div
     *ngFor="let shift of shiftsOfTheDay;"
-    (click)="onEditShiftEmitter(shift)"
+    (click)="onCalendarItemEmitter(shift)"
     [ngClass]="{ 'scheduled': isScheduledShift(shift) }"
     [ngStyle]="getLocationStyle(shift)"
     class="shift-block"

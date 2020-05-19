@@ -2,7 +2,9 @@
   *ngIf="employeeIsAuth || schedulerIsAuth"
   [employeeIsAuth]="employeeIsAuth"
   [schedulerIsAuth]="schedulerIsAuth"
-  [editShiftObs]="editShiftSubject.asObservable()"
+  [calendarItemObs]="calendarItemSubject.asObservable()"
+  [myPreferredObs]="myPreferredSubject.asObservable()"
+  (employeeEmitter)="onEmployeeServiceControl($event)"
   (schedulerEmitter)="onSchedulerServiceControl($event)"
 ></app-dashboard>
 
@@ -56,8 +58,10 @@
         *ngIf="isLoaded"
         [allShifts]="allShifts"
         [allScheduled]="allScheduled"
+        [allMyPreferred]="allMyPreferred"
         [day]="day"
-        (editShiftEmitter)="onEditShiftEmitControl($event)"
+        (myPreferredEmitter)="onMyPreferredEmitControl($event)"
+        (calendarItemEmitter)="onCalendarItemEmitControl($event)"
       ></app-calendar-item>
 
       <hr [routerLink]="['/week', day.toISOString()]">

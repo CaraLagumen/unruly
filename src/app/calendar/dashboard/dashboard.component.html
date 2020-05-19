@@ -14,44 +14,43 @@
 
   </div>
 
-  <!--EDIT SHIFT MENU------------------------------------------------------------>
+  <!--SCHEDULER OPTIONS MENU------------------------------------------------------------>
 
-  <div *ngIf="editShiftMenu">
+  <div *ngIf="schedulerOptionsMenu">
 
     <div>
 
       <div>
         Shift details
-        {{ editShift[0]?.day }}
-        {{ editShift[0]?.slot }}
-        {{ editShift[0]?.shiftStart }} {{ editShift[0]?.shiftEnd }}
-        {{ editShift[0]?.location }}
+        {{ calendarItem[0]?.day }}
+        {{ calendarItem[0]?.slot }}
+        {{ calendarItem[0]?.shiftStart }} {{ calendarItem[0]?.shiftEnd }}
+        {{ calendarItem[0]?.location }}
       </div>
 
-      <div *ngIf="editShift[1]">
+      <div *ngIf="calendarItem[1]">
         Scheduled details
-        {{ editShift[1]?.date }}
-        {{ editShift[1]?.employee.firstName }} {{ editShift[1]?.employee.lastName }}
-        {{ editShift[1]?.employee.position }}
-        {{ editShift[1]?.employee.status }}
-        {{ editShift[1]?.employee.seniority }}
-        {{ editShift[1]?.employee.hireDate }}
+        {{ calendarItem[1]?.date }}
+        {{ calendarItem[1]?.employee.firstName }} {{ calendarItem[1]?.employee.lastName }}
+        {{ calendarItem[1]?.employee.position }}
+        {{ calendarItem[1]?.employee.status }}
+        {{ calendarItem[1]?.employee.seniority }}
+        {{ calendarItem[1]?.employee.hireDate }}
       </div>
 
     </div>
 
-    <div class="btns">
-
+    <div>
       <button (click)="onToggleUpdateShiftForm('open')">Update shift</button>
       <button (click)="onSchedulerEmitter('deleteShift')">Delete shift</button>
 
       <button (click)="onToggleCreateScheduledForm('open')">Create scheduled</button>
       <button
-        *ngIf="editShift[1]"
+        *ngIf="calendarItem[1]"
         (click)="onSchedulerEmitter('deleteScheduled')"
       >Delete scheduled</button>
 
-      <button (click)="onToggleEditShiftMenu('close')">Close</button>
+      <button (click)="onToggleSchedulerOptionsMenu('close')">Close</button>
     </div>
 
   </div>
@@ -145,6 +144,88 @@
     </form>
 
     <button (click)="onToggleCreateScheduledForm('close')">Close</button>
+
+  </div>
+
+</div>
+
+<div
+  *ngIf="employeeIsAuth"
+  class="employee"
+>
+
+  <!--EMPLOYEE OPTIONS MENU------------------------------------------------------------>
+
+  <div *ngIf="employeeOptionsMenu">
+
+    <div>
+
+      <div>
+        Shift details
+        {{ calendarItem[0]?.day }}
+        {{ calendarItem[0]?.slot }}
+        {{ calendarItem[0]?.shiftStart }} {{ calendarItem[0]?.shiftEnd }}
+        {{ calendarItem[0]?.location }}
+      </div>
+
+      <div *ngIf="calendarItem[1]">
+        Scheduled details
+        {{ calendarItem[1]?.date }}
+        {{ calendarItem[1]?.employee.firstName }} {{ calendarItem[1]?.employee.lastName }}
+        {{ calendarItem[1]?.employee.position }}
+        {{ calendarItem[1]?.employee.status }}
+        {{ calendarItem[1]?.employee.seniority }}
+        {{ calendarItem[1]?.employee.hireDate }}
+      </div>
+
+      <div *ngIf="myPreferred">
+        My preferred details
+        {{ myPreferred.shift.day }}
+        {{ myPreferred.rank }}
+        {{ myPreferred.shift.slot }}
+        {{ myPreferred.shift.shiftStart }} {{ myPreferred.shift.shiftEnd }}
+        {{ myPreferred.shift.location }}
+      </div>
+
+    </div>
+
+    <div>
+      <h3>Options</h3>
+
+      <button (click)="onToggleAddPreferredForm('open')">Add to preferred</button>
+      <button (click)="onEmployeeEmitter('deletePreferred')">Delete preferred</button>
+
+      <button (click)="onEmployeeEmitter('requestVacation')">Request vacation</button>
+
+      <button (click)="onToggleEmployeeOptionsMenu('close')">Close</button>
+    </div>
+
+  </div>
+
+  <!--ADD PREFERRED FORM------------------------------------------------------------>
+
+  <div *ngIf="addPreferredFormToggle">
+
+    <form
+      (submit)="onAddPreferred()"
+      [formGroup]="addPreferredForm"
+    >
+
+      <span>Rank</span>
+      <select formControlName="rankControl">
+        <option
+          *ngFor="let rank of ranks"
+          [ngValue]="rank"
+        >{{ rank }}</option>
+      </select>
+
+      <button
+        [disabled]="!addPreferredForm.valid"
+        type="submit"
+      >Add to preferred</button>
+    </form>
+
+    <button (click)="onToggleAddPreferredForm('close')">Close</button>
 
   </div>
 

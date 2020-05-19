@@ -26,9 +26,9 @@ const apiFeatures_1 = __importDefault(require("../../utils/apiFeatures"));
 const appError_1 = __importDefault(require("../../utils/appError"));
 //----------------------FOR EMPLOYEE USE
 //MAIN----------------------------------------------------------
-//SAVE PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (PARAM)
+//SAVE PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
 exports.saveMyPreferred = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const shift = req.params.id;
+    const shift = req.body.shift;
     const employee = req.employee.id;
     const rank = req.body.rank;
     const doc = yield preferredModel_1.default.create({ shift, employee, rank });
@@ -37,11 +37,23 @@ exports.saveMyPreferred = catchAsync_1.default((req, res, next) => __awaiter(voi
         doc,
     });
 }));
+//UPDATE PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
+exports.updatePreferred = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const doc = yield preferredModel_1.default.findByIdAndUpdate(req.params.id, req.body, {
+        new: true,
+        runValidators: true,
+    });
+    if (!doc) {
+        return next(new appError_1.default(`No document found with that ID.`, 404));
+    }
+    res.status(201).json({
+        status: `success`,
+        doc,
+    });
+}));
 //DELETE MY PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
 exports.deleteMyPreferred = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const shift = req.body.shift;
-    const employee = req.employee.id;
-    const doc = yield preferredModel_1.default.deleteOne({ shift, employee });
+    const doc = yield preferredModel_1.default.findByIdAndDelete(req.params.id);
     if (!doc) {
         return next(new appError_1.default(`No document found with that ID.`, 404));
     }

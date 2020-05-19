@@ -8,9 +8,9 @@ import AppError from "../../utils/appError";
 
 //MAIN----------------------------------------------------------
 
-//SAVE PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (PARAM)
+//SAVE PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
 export const saveMyPreferred = catchAsync(async (req, res, next) => {
-  const shift = req.params.id;
+  const shift = req.body.shift;
   const employee = req.employee.id;
   const rank = req.body.rank;
 
@@ -22,12 +22,26 @@ export const saveMyPreferred = catchAsync(async (req, res, next) => {
   });
 });
 
+//UPDATE PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
+export const updatePreferred = catchAsync(async (req, res, next) => {
+  const doc = await Preferred.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!doc) {
+    return next(new AppError(`No document found with that ID.`, 404));
+  }
+
+  res.status(201).json({
+    status: `success`,
+    doc,
+  });
+});
+
 //DELETE MY PREFERRED SHIFT OF LOGGED IN EMPLOYEE FROM SHIFT ID (ENTERED)
 export const deleteMyPreferred = catchAsync(async (req, res, next) => {
-  const shift = req.body.shift;
-  const employee = req.employee.id;
-
-  const doc = await Preferred.deleteOne({ shift, employee });
+  const doc = await Preferred.findByIdAndDelete(req.params.id);
 
   if (!doc) {
     return next(new AppError(`No document found with that ID.`, 404));

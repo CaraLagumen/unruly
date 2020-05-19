@@ -4,14 +4,16 @@ import * as moment from "moment";
 
 import { ShiftService } from "../shared/services/shift/shift.service";
 import { ScheduledService } from "../shared/services/shift/scheduled.service";
+import { PreferredService } from "../shared/services/shift/preferred.service";
 import { CalendarService } from "./calendar.service";
 import {
   UserType,
-  EditShift,
-  EditShiftEmit,
+  CalendarItem,
+  CalendarItemEmit,
 } from "../shared/models/custom-types";
 import { Shift } from "../shared/models/shift/shift.model";
 import { Scheduled } from "../shared/models/shift/scheduled.model";
+import { Preferred } from "../shared/models/shift/preferred.model";
 
 @Component({
   selector: "app-calendar",
@@ -27,18 +29,22 @@ export class CalendarComponent implements OnInit, OnDestroy {
   day: moment.Moment;
   forkAllShifts: Observable<Shift[]>;
   forkAllScheduled: Observable<Scheduled[]>;
+  forkAllMyPreferred: Observable<Preferred[]>;
   allShifts: Shift[];
   allScheduled: Scheduled[];
+  allMyPreferred: Preferred[];
 
   employeeIsAuth = false;
   schedulerIsAuth = false;
   date = moment();
-  editShiftSubject = new Subject();
+  calendarItemSubject = new Subject();
+  myPreferredSubject = new Subject();
   isLoaded = false;
 
   constructor(
     private shiftService: ShiftService,
     private scheduledService: ScheduledService,
+    private preferredService: PreferredService,
     private calendarService: CalendarService
   ) {}
 
@@ -53,13 +59,29 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.forkAllShifts = this.shiftService.getRawAllShifts();
     this.forkAllScheduled = this.scheduledService.getRawAllScheduled();
 
-    forkJoin([this.forkAllShifts, this.forkAllScheduled]).subscribe(
-      (result) => {
+    //4. GRAB PREFERRED ONLY IF EMPLOYEE IS AUTH
+    if (this.employeeIsAuth) {
+      this.forkAllMyPreferred = this.preferredService.getAllMyPreferred();
+
+      forkJoin([
+        this.forkAllShifts,
+        this.forkAllScheduled,
+        this.forkAllMyPreferred,
+      ]).subscribe((result) => {
         this.allShifts = result[0];
         this.allScheduled = result[1];
+        this.allMyPreferred = result[2];
         this.isLoaded = true;
-      }
-    );
+      });
+    } else {
+      forkJoin([this.forkAllShifts, this.forkAllScheduled]).subscribe(
+        (result) => {
+          this.allShifts = result[0];
+          this.allScheduled = result[1];
+          this.isLoaded = true;
+        }
+      );
+    }
   }
 
   //TOOLS----------------------------------------------------------
@@ -146,16 +168,31 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   //DASHBOARD----------------------------------------------------------
 
+  //----------------------FOR EMPLOYEE USE
+  onEmployeeServiceControl(emittedData: [string, CalendarItem, Preferred]) {
+    this.calendarService
+      .employeeServiceControl(emittedData)
+      .subscribe(() => this.resetData());
+  }
+
+  //----------------------FOR EMPLOYEE USE
+  //FROM [calendar-item | week-item | day-item] TO dashboard
+  onMyPreferredEmitControl(emittedData: Preferred) {
+    this.myPreferredSubject.next(emittedData);
+  }
+
+  //----------------------FOR SCHEDULER USE
   //FROM dashboard TO calendar-service
-  onSchedulerServiceControl(emittedData: [string, EditShift]) {
+  onSchedulerServiceControl(emittedData: [string, CalendarItem]) {
     this.calendarService
       .schedulerServiceControl(emittedData)
       .subscribe(() => this.resetData());
   }
 
+  //----------------------FOR SCHEDULER USE
   //FROM [calendar-item | week-item | day-item] TO dashboard
-  onEditShiftEmitControl(emittedData: EditShiftEmit) {
-    this.editShiftSubject.next(emittedData);
+  onCalendarItemEmitControl(emittedData: CalendarItemEmit) {
+    this.calendarItemSubject.next(emittedData);
   }
 
   ngOnDestroy() {
