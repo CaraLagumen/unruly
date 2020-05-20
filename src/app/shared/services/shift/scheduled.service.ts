@@ -18,7 +18,7 @@ export class ScheduledService {
   getRawAllScheduled(): Observable<Scheduled[]> {
     return this.http
       .get<Scheduled[]>(`${ROOT_URL}/raw`)
-      .pipe(map((shift: any) => shift.doc));
+      .pipe(map((scheduled: any) => scheduled.doc));
   }
 
   getAllScheduled(): Observable<Scheduled[]> {
@@ -42,6 +42,10 @@ export class ScheduledService {
   //PROTECTED----------------------------------------------------------
 
   //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
+  populateSteadyExtra() {
+    return this.http.post(`${ROOT_URL}/populate`, null);
+  }
+
   createScheduled(scheduledData: ScheduledData): Observable<Scheduled> {
     return this.http.post<Scheduled>(`${ROOT_URL}`, scheduledData);
   }

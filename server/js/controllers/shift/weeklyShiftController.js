@@ -84,7 +84,7 @@ exports.validateWeeklyShift = catchAsync_1.default((req, res, next) => __awaiter
             return next(new appError_1.default(`Overtime found. Please enter shifts with no overtime.`, 400));
         }
     }
-    //----C. ALLOW NEXT WHEN EVERYTHING PASSED
+    //----C. ALLOW NEXT WHEN ALL VALIDATED
     next();
 }));
 //FOR UPDATES AND USING validateWeeklyShiftDays

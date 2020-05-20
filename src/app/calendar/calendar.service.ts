@@ -186,6 +186,8 @@ export class CalendarService {
       //MAIN
       case `populateAllToScheduled`:
         return this.weeklyScheduledService.populateAllToScheduled();
+      case `populateSteadyExtra`:
+        return this.scheduledService.populateSteadyExtra();
       case `deleteLastScheduled`:
         return this.scheduledService.deleteLastScheduled();
       //CALENDAR ITEM

@@ -2,7 +2,7 @@
 
 Created with [TypeScript, Node.js, Angular, Express, & MongoDB]
 
-Scheduling app for the unruly.
+Comprehensive scheduling app for the unruly.
 
 ## Development
 

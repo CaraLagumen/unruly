@@ -37,10 +37,10 @@ const appError_1 = __importDefault(require("../../utils/appError"));
 //----------------------FOR SCHEDULER USE
 //TOOLS----------------------------------------------------------
 //GET LOGGED IN SCHEDULER
-exports.getScheduler = (req, res, next) => {
+exports.getScheduler = catchAsync_1.default((req, res, next) => {
     req.body.scheduler = req.scheduler.id;
     next();
-};
+});
 //MAIN----------------------------------------------------------
 //CREATE ALL INDIVIDUAL SCHEDULED FROM WEEKLY SCHEDULED IDS
 exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
@@ -78,7 +78,7 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
                 //5. VALIDATE INDIVIDUAL SHIFTS BEFORE PUSH
                 //   ENSURE SHIFT DAY AND SCHEDULED DATE DAY MATCHES
                 if (shifts[i].day !== dates[i].getDay()) {
-                    return next(new appError_1.default(`Shift day and scheduled date day do not match. Please enter a date that matches the shift day.`, 400));
+                    return next(new appError_1.default(`Weekly shift is flawed. A shift day and scheduled date day did not match.`, 400));
                 }
                 scheduled.push({
                     //SCHEDULEDS MUST HAVE { shift, employee, scheduler, date }
@@ -137,7 +137,7 @@ exports.populateToScheduled = catchAsync_1.default((req, res, next) => __awaiter
     //   ENSURE SHIFT DAY AND SCHEDULED DATE DAY MATCHES
     for (let i = 0; i < shifts.length; i++) {
         if (shifts[i].day !== dates[i].getDay()) {
-            return next(new appError_1.default(`Shift day and scheduled date day do not match. Please enter a date that matches the shift day.`, 400));
+            return next(new appError_1.default(`Weekly shift is flawed. A shift day and scheduled date day did not match.`, 400));
         }
         scheduled.push({
             //SCHEDULEDS MUST HAVE { shift, employee, scheduler, date }

@@ -49,6 +49,63 @@ exports.validateScheduled = catchAsync_1.default((req, res, next) => __awaiter(v
     next();
 }));
 //MAIN----------------------------------------------------------
+//CREATE A BUNCH OF WEEKLY SHIFT REFS FOR ON-CALL EMPLOYEES
+exports.populateSteadyExtra = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const blankShifts = yield shiftModel_1.default.find();
+    const allTheScheduledEver = yield scheduledModel_1.default.find();
+    //----A. SET UP VARS FOR WEEKLY SHIFT REF
+    //1. FIND FULL-TIME SCHEDULED BY FILTERING THOSE AFTER THE SCHEDULED SUNDAY
+    const comingMonday = moment_1.default().add(2, "w").isoWeekday(-1);
+    const scheduledWeek = [...allTheScheduledEver].filter((scheduled) => moment_1.default(scheduled.date) >= comingMonday);
+    //2. FIND SHIFTS TO FILL BY FILTERING THE ALREADY SCHEDULED ONES FROM ALL SHIFTS
+    const scheduledShifts = scheduledWeek.map((scheduled) => scheduled.shift.id);
+    const shiftsToFill = [...blankShifts].filter((shift) => !scheduledShifts.includes(shift.id));
+    shiftsToFill.sort((x, y) => x.shiftStart[0] - y.shiftStart[0]);
+    //3. ARR IS A BUNCH OF SHIFTS ARRS, ONE FOR EACH DAY (MON[], TUE[], WED[], ETC.)
+    let sortedShiftsToFill = [[], [], [], [], [], [], []];
+    shiftsToFill.forEach((shift) => {
+        sortedShiftsToFill[shift.day].push(shift);
+    });
+    //----B. CREATE THE WEEKLY SHIFT REFS
+    //1. CREATE WEEKLY SHIFT REFERENCE FOR EASIER SCHEDULED ALLOCATION
+    //   GOAL TO CREATE MULTIPLE ARRS OF 5 SHIFTS
+    let weeklyShiftRefs = [];
+    //2. USE RECURSION TO BE ABLE TO STOP EVERY CREATED ARR WITH 5 SHIFTS
+    const shiftFillerRecursion = () => {
+        //2a. CREATE NEW ARR PER RECURSION IF THERE ARE SHIFTS AVAILABLE
+        //    GOAL IS TO PUT 5 SHIFTS PER ARR
+        if (sortedShiftsToFill.length > 1)
+            weeklyShiftRefs.push(new Array());
+        //2b. RESET COUNTER BEFORE NEXT LOOP
+        let counter = 0;
+        //2c. LOOP THROUGH EACH SUN, MON, TUE, ETC. ARR
+        sortedShiftsToFill.forEach((dayArr) => {
+            //2c.1 DELETE THE DAY ARR IF NO MORE SHIFTS
+            if (dayArr.length === 0)
+                return sortedShiftsToFill.shift();
+            //2c.2 DO NOT CONTINUE IF 5 SHIFTS HAVE BEEN ADDED
+            counter++;
+            if (counter > 5)
+                return;
+            //2c.3 PLUG IN SHIFT TO THE LATEST ARR
+            const latestIndex = weeklyShiftRefs.length - 1;
+            weeklyShiftRefs[latestIndex].push(dayArr[0]);
+            //2c.4 DELETE THE SHIFT THAT WAS JUST ADDED
+            dayArr.shift();
+        });
+        //2d. RECURSION STOPPER - WHEN sortedShiftsToFill HAS BEEN EMPTIED BY 2c.1
+        if (sortedShiftsToFill.length === 0)
+            return;
+        shiftFillerRecursion();
+    };
+    shiftFillerRecursion();
+    console.log(weeklyShiftRefs.sort((x, y) => y.length - x.length));
+    //GRAB ON-CALL EMPLOYEES
+    // const steadyExtras = await Employee.find({ status: `on-call` });
+    res.status(200).json({
+        status: `success`,
+    });
+}));
 //GET ALL SCHEDULED SHIFTS OF EMPLOYEE FROM EMPLOYEE ID (ENTERED)
 exports.getEmployeeSchedule = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     //1. ADD SEARCH FUNCTIONALITY

@@ -9,7 +9,7 @@
     <h3>Auto populate</h3>
 
     <button (click)="onSchedulerEmitter('populateAllToScheduled')">Populate full-time</button>
-    <button>Populate steady extra</button>
+    <button (click)="onSchedulerEmitter('populateSteadyExtra')">Populate steady extra</button>
     <button (click)="onSchedulerEmitter('deleteLastScheduled')">Delete last scheduled</button>
 
   </div>

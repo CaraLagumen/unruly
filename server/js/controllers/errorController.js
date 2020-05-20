@@ -40,14 +40,14 @@ const sendErrorDev = (err, req, res, next) => {
 const sendErrorProd = (err, req, res, next) => {
     //1. API
     if (req.originalUrl.startsWith(`/api`)) {
-        //1.A OPERATIONAL (TRUSTED ERROR) - SEND TO CLIENT
+        //OPERATIONAL (TRUSTED ERROR) - SEND TO CLIENT
         if (err.isOperational) {
             return res.status(err.statusCode).json({
                 status: err.status,
                 message: err.message,
             });
         }
-        //1.B PROGRAMMING OR OTHER ERROR (PROTECT FROM LEAKS)
+        //PROGRAMMING OR OTHER ERROR (PROTECT FROM LEAKS)
         console.log(`>>>> Error`, err);
         return res.status(500).json({
             status: `error`,
@@ -55,14 +55,14 @@ const sendErrorProd = (err, req, res, next) => {
         });
     }
     //2. RENDERED WEBSITE
-    //2.A OPERATIONAL (TRUSTED ERROR) - SEND TO CLIENT
+    //OPERATIONAL (TRUSTED ERROR) - SEND TO CLIENT
     if (err.isOperational) {
         return res.status(err.statusCode).render(`error`, {
             title: `Something went wrong.`,
             msg: err.message,
         });
     }
-    //2.B PROGRAMMING OR OTHER ERROR (PROTECT FROM LEAKS)
+    //PROGRAMMING OR OTHER ERROR (PROTECT FROM LEAKS)
     console.log(`>>>> Error:`, err);
     return res.status(err.statusCode).render(`error`, {
         title: `Something went wrong.`,

@@ -1,4 +1,3 @@
-import { RequestHandler } from "express";
 import moment from "moment";
 
 import WeeklyScheduled from "../../models/shift/weeklyScheduledModel";
@@ -14,10 +13,10 @@ import AppError from "../../utils/appError";
 //TOOLS----------------------------------------------------------
 
 //GET LOGGED IN SCHEDULER
-export const getScheduler: RequestHandler = (req, res, next) => {
+export const getScheduler = catchAsync((req, res, next) => {
   req.body.scheduler = req.scheduler.id;
   next();
-};
+});
 
 //MAIN----------------------------------------------------------
 
@@ -62,7 +61,7 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
       if (shifts[i]!.day !== dates[i].getDay()) {
         return next(
           new AppError(
-            `Shift day and scheduled date day do not match. Please enter a date that matches the shift day.`,
+            `Weekly shift is flawed. A shift day and scheduled date day did not match.`,
             400
           )
         );
@@ -131,7 +130,7 @@ export const populateToScheduled = catchAsync(async (req, res, next) => {
     if (shifts[i]!.day !== dates[i].getDay()) {
       return next(
         new AppError(
-          `Shift day and scheduled date day do not match. Please enter a date that matches the shift day.`,
+          `Weekly shift is flawed. A shift day and scheduled date day did not match.`,
           400
         )
       );

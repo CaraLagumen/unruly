@@ -1,7 +1,7 @@
 {
   "name": "unruly",
   "version": "1.0.0",
-  "description": "Scheduling app for the unruly workforce.",
+  "description": "Comprehensive scheduling app for the unruly workforce.",
   "author": "Cara Lagumen",
   "license": "MIT",
   "main": "app.js",

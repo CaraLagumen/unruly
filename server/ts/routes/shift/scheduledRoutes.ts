@@ -10,6 +10,13 @@ const router = express.Router();
 //PROTECTED----------------------------------------------------------
 
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
+//POPULATE STEADY EXTRA
+router.post(
+  `/populate`,
+  schedulerAuthController.protect,
+  scheduledController.populateSteadyExtra
+);
+
 //CREATE ONE
 router.post(
   `/`,
