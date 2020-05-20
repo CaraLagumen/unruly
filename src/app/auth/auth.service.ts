@@ -99,23 +99,19 @@ export class AuthService {
 
   register(
     userType: UserType,
-    firstName: string,
-    lastName: string,
-    email: string,
-    password: string,
-    passwordConfirm: string
+    authData: AuthData,
+    employeeExtraData: Object | null
   ) {
-    //1. GRAB DATA INPUT
-    const authData: AuthData = {
-      firstName,
-      lastName,
-      email,
-      password,
-      passwordConfirm,
-    };
+    //1. GRAB EXTRA DATA IF EMPLOYEE (TEMPORARY)
+    let newAuthData;
+    if (userType === `employee`) {
+      newAuthData = { ...authData, ...employeeExtraData };
+    } else {
+      newAuthData = authData;
+    }
 
     //2. POST TO API
-    this.http.post(`${ROOT_URL}/${userType}/register`, authData).subscribe(
+    this.http.post(`${ROOT_URL}/${userType}/register`, newAuthData).subscribe(
       () => {
         //3. ALERT AND LOGIN AUTOMATICALLY IF SUCCESSFUL
         // this.alertService.success("Welcome, you registered successfully.", {
@@ -123,7 +119,7 @@ export class AuthService {
         //   keepAfterRouteChange: true,
         // });
 
-        this.login(userType, email, password);
+        this.login(userType, authData.email, authData.password);
       },
       (err) => {
         //4. ALERT AND ENSURE LISTENERS OFF IF ERR
@@ -214,7 +210,6 @@ export class AuthService {
             //   autoClose: true,
             //   keepAfterRouteChange: true,
             // });
-            console.log(`${userType} logged in`);
 
             //5. DISPLAY IN UI USER IS LOGGED
             if (userType === `employee`) {

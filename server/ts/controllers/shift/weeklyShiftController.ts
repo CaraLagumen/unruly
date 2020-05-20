@@ -87,7 +87,7 @@ export const validateWeeklyShift = catchAsync(async (req, res, next) => {
     }
   }
 
-  //----C. ALLOW NEXT WHEN EVERYTHING PASSED
+  //----C. ALLOW NEXT WHEN ALL VALIDATED
   next();
 });
 

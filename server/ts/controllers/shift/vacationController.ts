@@ -131,6 +131,7 @@ export const getAllMyVacations = catchAsync(async (req, res, next) => {
 });
 
 //----------------------FOR SCHEDULER USE
+
 //STANDARD----------------------------------------------------------
 
 export const getAllVacations = factory.getAll(Vacation);

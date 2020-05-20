@@ -3,6 +3,7 @@ import { Subscription } from "rxjs";
 import { NgForm } from "@angular/forms";
 
 import { AuthService } from "../../auth.service";
+import { AuthData } from "../../auth.model";
 
 @Component({
   selector: "app-scheduler-register",
@@ -23,20 +24,18 @@ export class SchedulerRegisterComponent implements OnInit, OnDestroy {
   }
 
   onRegister(form: NgForm) {
-    if (form.invalid) {
-      return;
-    }
+    if (form.invalid) return;
 
+    const authData: AuthData = {
+      firstName: form.value.firstName,
+      lastName: form.value.lastName,
+      email: form.value.email,
+      password: form.value.password,
+      passwordConfirm: form.value.passwordConfirm,
+    };
+
+    this.authService.register(`scheduler`, authData, null);
     this.isLoaded = true;
-
-    this.authService.register(
-      `scheduler`,
-      form.value.firstName,
-      form.value.lastName,
-      form.value.email,
-      form.value.password,
-      form.value.passwordConfirm
-    );
   }
 
   ngOnDestroy() {
