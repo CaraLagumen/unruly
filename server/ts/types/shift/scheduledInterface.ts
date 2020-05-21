@@ -5,11 +5,12 @@ import IEmployee from "../users/employeeInterface";
 import IScheduler from "../users/schedulerInterface";
 
 interface IScheduled extends Document {
-  shift: IShift;
+  id?: string;
+  shift: IShift
   employee: IEmployee | string; //STRING FOR GRABBING EMPLOYEE SCHEDULE
   scheduler: IScheduler;
   date: Date;
-  createdAt: Date;
+  createdAt?: Date;
 }
 
 export default IScheduled;

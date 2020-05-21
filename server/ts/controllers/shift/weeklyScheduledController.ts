@@ -25,7 +25,7 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
   //1. GRAB WHAT WE CAN FROM AVAILABLE
   const allWeeklyScheduled = await WeeklyScheduled.find();
   const scheduler = req.scheduler.id;
-  const scheduleds = [];
+  const allScheduled = [];
 
   for await (let el of allWeeklyScheduled) {
     //2. GRAB RAW WEEKLY SCHEDULED FROM PARAM ID TO EXTRACT
@@ -48,8 +48,8 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
       const shiftDay = el.day;
       const comingMonday = moment().add(2, "w").isoWeekday(1);
       //FROM THAT MONDAY, ADD SHIFT DAY TO MATCH
-      const comingShiftDay = comingMonday.isoWeekday(shiftDay);
-      dates.push(comingShiftDay.toDate());
+      const comingShiftDay = comingMonday.isoWeekday(shiftDay).toDate();
+      dates.push(comingShiftDay);
     });
 
     //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOC
@@ -68,7 +68,7 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
       }
 
       scheduled.push({
-        //SCHEDULEDS MUST HAVE { shift, employee, scheduler, date }
+        //ALL SCHEDULED MUST HAVE { shift, employee, scheduler, date }
         shift: shifts[i]!.id,
         employee: el!.employee.id,
         scheduler,
@@ -76,16 +76,15 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
       });
     }
 
-    scheduleds.push(scheduled);
+    allScheduled.push(scheduled);
   }
 
-  //6. CREATE DOC FROM INDIVIDUAL SCHEDULEDS
-  //@ts-ignore
-  const doc = await Scheduled.create([].concat(...scheduleds));
+  //6. CREATE DOC FROM INDIVIDUAL ALL SCHEDULED
+  const doc = await Scheduled.insertMany(([] as any[]).concat(...allScheduled));
 
   res.status(201).json({
     status: `success`,
-    results: scheduleds.length,
+    results: allScheduled.length,
     doc,
   });
 });

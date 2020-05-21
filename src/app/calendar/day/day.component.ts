@@ -223,6 +223,7 @@ export class DayComponent implements OnInit, OnDestroy {
     this.calendarService.schedulerServiceControl(emittedData).subscribe(() => {
       switch (emittedData[0]) {
         case `populateAllToScheduled`:
+        case `populateSteadyExtra`:
         case `deleteLastScheduled`:
         case `deleteScheduled`:
           return this.updateData(`scheduled`);

@@ -1,6 +1,7 @@
 import { Document } from "mongoose";
 
 interface IShift extends Document {
+  id?: string;
   position: "general manager" | "assistant manager" | "lead" | "barista";
   slot: "morning" | "day" | "swing" | "graveyard";
   location:

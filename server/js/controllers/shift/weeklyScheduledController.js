@@ -48,7 +48,7 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
     //1. GRAB WHAT WE CAN FROM AVAILABLE
     const allWeeklyScheduled = yield weeklyScheduledModel_1.default.find();
     const scheduler = req.scheduler.id;
-    const scheduleds = [];
+    const allScheduled = [];
     try {
         for (var allWeeklyScheduled_1 = __asyncValues(allWeeklyScheduled), allWeeklyScheduled_1_1; allWeeklyScheduled_1_1 = yield allWeeklyScheduled_1.next(), !allWeeklyScheduled_1_1.done;) {
             let el = allWeeklyScheduled_1_1.value;
@@ -69,8 +69,8 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
                 const shiftDay = el.day;
                 const comingMonday = moment_1.default().add(2, "w").isoWeekday(1);
                 //FROM THAT MONDAY, ADD SHIFT DAY TO MATCH
-                const comingShiftDay = comingMonday.isoWeekday(shiftDay);
-                dates.push(comingShiftDay.toDate());
+                const comingShiftDay = comingMonday.isoWeekday(shiftDay).toDate();
+                dates.push(comingShiftDay);
             });
             //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOC
             const scheduled = [];
@@ -81,14 +81,14 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
                     return next(new appError_1.default(`Weekly shift is flawed. A shift day and scheduled date day did not match.`, 400));
                 }
                 scheduled.push({
-                    //SCHEDULEDS MUST HAVE { shift, employee, scheduler, date }
+                    //ALL SCHEDULED MUST HAVE { shift, employee, scheduler, date }
                     shift: shifts[i].id,
                     employee: el.employee.id,
                     scheduler,
                     date: dates[i],
                 });
             }
-            scheduleds.push(scheduled);
+            allScheduled.push(scheduled);
         }
     }
     catch (e_1_1) { e_1 = { error: e_1_1 }; }
@@ -98,12 +98,11 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
         }
         finally { if (e_1) throw e_1.error; }
     }
-    //6. CREATE DOC FROM INDIVIDUAL SCHEDULEDS
-    //@ts-ignore
-    const doc = yield scheduledModel_1.default.create([].concat(...scheduleds));
+    //6. CREATE DOC FROM INDIVIDUAL ALL SCHEDULED
+    const doc = yield scheduledModel_1.default.insertMany([].concat(...allScheduled));
     res.status(201).json({
         status: `success`,
-        results: scheduleds.length,
+        results: allScheduled.length,
         doc,
     });
 }));
