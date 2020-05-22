@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-import IScheduled from "../../types/shift/scheduledInterface";
+import { IScheduled } from "../../types/shift/scheduledInterface";
 
 //MOST CREATED DATA
 const scheduledSchema: Schema = new mongoose.Schema(

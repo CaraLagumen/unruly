@@ -63,69 +63,80 @@ exports.populateSteadyExtra = catchAsync_1.default((req, res, next) => __awaiter
     const scheduledShifts = scheduledWeek.map((scheduled) => scheduled.shift.id);
     const shiftsToFill = [...blankShifts].filter((shift) => !scheduledShifts.includes(shift.id));
     shiftsToFill.sort((x, y) => x.shiftStart[0] - y.shiftStart[0]);
-    //3. ARR IS A BUNCH OF SHIFTS ARRS, ONE FOR EACH DAY (MON[], TUE[], WED[], ETC.)
+    //3. CREATE A BUNCH OF SHIFTS ARRS, ONE FOR EACH DAY (MON[], TUE[], WED[], ETC.)
     const sortedShiftsToFill = [[], [], [], [], [], [], []];
     shiftsToFill.forEach((shift) => {
         sortedShiftsToFill[shift.day].push(shift);
     });
-    //----B. CREATE THE WEEKLY SHIFT REFS
-    //1. CREATE WEEKLY SHIFT REFS FOR EASIER SCHEDULED ALLOCATION
-    //   GOAL TO CREATE MULTIPLE ARRS OF 5 SHIFTS
-    const weeklyShiftRefs = [[]];
-    //2. USE RECURSION TO BE ABLE TO STOP EVERY CREATED ARR WITH 5 SHIFTS
-    const weeklyShiftRefsFiller = () => {
-        //2a. CREATE NEW ARR (ENTRY) PER RECURSION IF THERE ARE SHIFTS AVAILABLE
-        //    GOAL IS TO PUT 5 SHIFTS PER ARR
-        const latestIndex = weeklyShiftRefs.length - 1;
-        const latestEntry = weeklyShiftRefs[latestIndex];
-        if (sortedShiftsToFill.length > 1 && latestEntry.length > 4)
-            weeklyShiftRefs.push(new Array());
-        //2b. LOOP THROUGH EACH SUN, MON, TUE, ETC. ARR
-        sortedShiftsToFill.forEach((dayArr) => {
-            //2b.1 DELETE THE DAY ARR IF NO MORE SHIFTS
-            if (dayArr.length === 0)
-                return sortedShiftsToFill.shift();
-            //2b.2 DO NOT CONTINUE IF 5 SHIFTS HAVE BEEN ADDED
-            if (latestEntry.length > 5)
-                return;
-            //2b.3 IF CONTAINS THE SAME DAY, REPLACE LATEST ENTRY WITH NEW
-            const containsDay = latestEntry.filter((shift) => shift.day === dayArr[0].day);
-            if (containsDay)
-                weeklyShiftRefs.push(new Array());
-            //2b.4 PLUG IN SHIFT TO THE LATEST ENTRY
-            latestEntry.push(dayArr[0]);
-            //2b.5 DELETE THE SHIFT THAT WAS JUST ADDED
-            dayArr.shift();
-        });
-        //2d. RECURSION STOPPER - WHEN sortedShiftsToFill HAS BEEN EMPTIED BY 2c.1
-        if (sortedShiftsToFill.length === 0)
-            return;
-        //2e. OTHERWISE, REDO
-        weeklyShiftRefsFiller();
-    };
-    //3. EXECUTE RECURSION AND SORT RESULT
-    weeklyShiftRefsFiller();
-    weeklyShiftRefs.sort((x, y) => y.length - x.length);
-    //----C. ASSEMBLE DETAILS INTO SCHEDULED ARR FOR CREATION
-    //1. GRAB ON-CALL EMPLOYEES AND SORT BY SENIORITY
+    //4. PREPARE ARR TO START WITH THE DAY WITH MOST SHIFTS
+    if (sortedShiftsToFill[sortedShiftsToFill.length - 1].length >
+        sortedShiftsToFill[0].length) {
+        sortedShiftsToFill.reverse();
+    }
+    //----B. CREATE SCHEDULEDS FROM SHIFTS TO FILL AND ON-CALL EMPLOYEES
     const steadyExtras = yield employeeModel_1.default.find({ status: `on-call` });
     steadyExtras.sort((x, y) => x.seniority - y.seniority);
     const allScheduled = [];
-    steadyExtras.forEach((steadyExtra) => {
-        if (weeklyShiftRefs[0]) {
-            weeklyShiftRefs[0].forEach((shift) => {
+    let employeeIndex = 0;
+    let employeeShiftsCounter = new Array(steadyExtras.length).fill(0);
+    const allScheduledFiller = () => {
+        //GO THROUGH EACH DAY ARR [MON[], TUE[], WED[], ETC.] AND ASSIGN FIRST SHIFT
+        sortedShiftsToFill.forEach((shiftsOfTheDay) => {
+            const employee = steadyExtras[employeeIndex];
+            //CONDITIONS TO START
+            //NO MORE SHIFTS, END LOOP
+            if (shiftsOfTheDay.length === 0)
+                return;
+            //ALL EMPLOYEES HAVE 5 SHIFTS, END RECURSION
+            if (employeeShiftsCounter[employeeShiftsCounter.length - 1] === 5)
+                return;
+            //CONDITION TO CONTINUE IF EMPLOYEE HASN'T MET 5 SHIFTS YET
+            if (employeeShiftsCounter[employeeIndex] < 5) {
+                //FIND OUT DATE FOR THE SHIFT AND PARSE IT
+                const firstShiftOfTheDay = shiftsOfTheDay[0];
                 const comingMonday = moment_1.default().add(2, "w").isoWeekday(1);
-                const parsedDate = comingMonday.isoWeekday(shift.day).toDate();
+                const parsedDate = comingMonday
+                    .isoWeekday(firstShiftOfTheDay.day)
+                    .toDate();
+                console.log(employee.firstName, employeeIndex, employeeShiftsCounter[employeeIndex], employeeShiftsCounter);
+                //ASSEMBLE SCHEDULED AND ADD TO WHAT WILL BE THE DOC
                 allScheduled.push({
-                    shift: shift.id,
-                    employee: steadyExtra.id,
+                    shift: firstShiftOfTheDay.id,
+                    employee: employee.id,
                     scheduler,
                     date: parsedDate,
                 });
-            });
-            weeklyShiftRefs.shift();
+                //COUNT SHIFT THAT WAS SCHEDULED FOR EMPLOYEE
+                employeeShiftsCounter[employeeIndex]++;
+                //DELETE SHIFT ALREADY SCHEDULED
+                shiftsOfTheDay.shift();
+            }
+            else {
+                return;
+            }
+            //CONDITIONS TO END
+            //EMPLOYEE ALREADY HAS 5 SHIFTS, RETURN AND GO NEXT EMPLOYEE
+            if (employeeShiftsCounter[employeeIndex] === 5)
+                return employeeIndex++;
+            //ALL EMPLOYEES HAVE 5 SHIFTS, END RECURSION
+            if (employeeShiftsCounter[employeeShiftsCounter.length - 1] === 5)
+                return;
+        });
+        //CONDITION TO CONTINUE
+        //DAY SHIFTS ALL SCHEDULED, DELETE THE DAY ARR
+        if (sortedShiftsToFill[0].length === 0) {
+            sortedShiftsToFill.shift();
         }
-    });
+        //CONDITIONS TO END
+        //ALL EMPLOYEES HAVE 5 SHIFTS, END RECURSION
+        if (employeeShiftsCounter[employeeShiftsCounter.length - 1] === 5)
+            return;
+        //ALL SHIFTS ARE SCHEDULED, END RECURSION
+        if (sortedShiftsToFill.length === 0)
+            return;
+        allScheduledFiller();
+    };
+    allScheduledFiller();
     const doc = yield scheduledModel_1.default.insertMany(allScheduled);
     res.status(201).json({
         status: `success`,

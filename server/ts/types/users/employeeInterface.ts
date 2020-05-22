@@ -1,6 +1,7 @@
 import { Document } from "mongoose";
 
 interface IEmployee extends Document {
+  id?: string;
   firstName: string;
   lastName: string;
   email: string;

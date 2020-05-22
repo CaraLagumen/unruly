@@ -67,7 +67,7 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
             shifts.forEach((el) => {
                 //EXTRACT DAYS FROM SHIFT (MON, TUES, ETC...)
                 const shiftDay = el.day;
-                const comingMonday = moment_1.default().add(2, "w").isoWeekday(1);
+                const comingMonday = moment_1.default().add(1, "w").isoWeekday(1);
                 //FROM THAT MONDAY, ADD SHIFT DAY TO MATCH
                 const comingShiftDay = comingMonday.isoWeekday(shiftDay).toDate();
                 dates.push(comingShiftDay);
