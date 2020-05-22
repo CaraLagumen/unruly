@@ -82,50 +82,41 @@ export const populateSteadyExtra = catchAsync(async (req, res, next) => {
   });
 
   //4. PREPARE ARR TO START WITH THE DAY WITH MOST SHIFTS
-  if (
-    sortedShiftsToFill[sortedShiftsToFill.length - 1].length >
-    sortedShiftsToFill[0].length
-  ) {
-    sortedShiftsToFill.reverse();
-  }
+  sortedShiftsToFill.sort((x, y) => y.length - x.length);
 
   //----B. CREATE SCHEDULEDS FROM SHIFTS TO FILL AND ON-CALL EMPLOYEES
 
+  //1. GRAB ON-CALL EMPLOYEES AND SORT BY SENIORITY
   const steadyExtras = await Employee.find({ status: `on-call` });
   steadyExtras.sort((x, y) => x.seniority - y.seniority);
 
+  //2. PREPARE VARS FOR SCHEDULED CREATION
   const allScheduled: IScheduledData[] = [];
   let employeeIndex = 0;
   let employeeShiftsCounter: number[] = new Array(steadyExtras.length).fill(0);
 
+  //3. USE RECURSION TO MANIPULATE EMPLOYEES TO ONLY HAVE 5 SHIFTS OR LESS
   const allScheduledFiller = () => {
-    //GO THROUGH EACH DAY ARR [MON[], TUE[], WED[], ETC.] AND ASSIGN FIRST SHIFT
+    //3a. GO THROUGH EACH DAY ARR [MON[], TUE[], WED[], ETC.] AND ASSIGN FIRST SHIFT
     sortedShiftsToFill.forEach((shiftsOfTheDay) => {
       const employee = steadyExtras[employeeIndex];
 
-      //CONDITIONS TO START
-      //NO MORE SHIFTS, END LOOP
+      //3a.1 CONDITIONS TO START
+      //     NO MORE SHIFTS, END LOOP
       if (shiftsOfTheDay.length === 0) return;
-      //ALL EMPLOYEES HAVE 5 SHIFTS, END RECURSION
+      //     ALL EMPLOYEES HAVE 5 SHIFTS, END RECURSION
       if (employeeShiftsCounter[employeeShiftsCounter.length - 1] === 5) return;
 
-      //CONDITION TO CONTINUE IF EMPLOYEE HASN'T MET 5 SHIFTS YET
+      //3a.2 CONDITION TO CONTINUE IF EMPLOYEE HASN'T MET 5 SHIFTS YET
       if (employeeShiftsCounter[employeeIndex] < 5) {
-        //FIND OUT DATE FOR THE SHIFT AND PARSE IT
+        //   FIND OUT DATE FOR THE SHIFT AND PARSE IT
         const firstShiftOfTheDay = shiftsOfTheDay[0];
         const comingMonday = moment().add(2, "w").isoWeekday(1);
         const parsedDate = comingMonday
           .isoWeekday(firstShiftOfTheDay.day)
           .toDate();
 
-        console.log(
-          employee.firstName,
-          employeeIndex,
-          employeeShiftsCounter[employeeIndex],
-          employeeShiftsCounter
-        );
-
-        //ASSEMBLE SCHEDULED AND ADD TO WHAT WILL BE THE DOC
+        //   ASSEMBLE SCHEDULED AND ADD TO WHAT WILL BE THE DOC
         allScheduled.push({
           shift: firstShiftOfTheDay.id as string,
           employee: employee.id as string,
@@ -133,35 +124,43 @@ export const populateSteadyExtra = catchAsync(async (req, res, next) => {
           date: parsedDate,
         });
 
-        //COUNT SHIFT THAT WAS SCHEDULED FOR EMPLOYEE
+        //   COUNT SHIFT THAT WAS SCHEDULED FOR EMPLOYEE
         employeeShiftsCounter[employeeIndex]++;
-        //DELETE SHIFT ALREADY SCHEDULED
+        //   DELETE SHIFT ALREADY SCHEDULED
         shiftsOfTheDay.shift();
       } else {
         return;
       }
 
-      //CONDITIONS TO END
-      //EMPLOYEE ALREADY HAS 5 SHIFTS, RETURN AND GO NEXT EMPLOYEE
-      if (employeeShiftsCounter[employeeIndex] === 5) return employeeIndex++;
-      //ALL EMPLOYEES HAVE 5 SHIFTS, END RECURSION
+      //3a.3 CONDITIONS TO END
+      //     EMPLOYEE ALREADY HAS 5 SHIFTS, RETURN AND GO NEXT EMPLOYEE
+      if (employeeShiftsCounter[employeeIndex] === 5) return;
+      //     ALL EMPLOYEES HAVE 5 SHIFTS, END RECURSION
       if (employeeShiftsCounter[employeeShiftsCounter.length - 1] === 5) return;
     });
 
-    //CONDITION TO CONTINUE
-    //DAY SHIFTS ALL SCHEDULED, DELETE THE DAY ARR
+    //3b. MOVE TO NEXT EMPLOYEE ON NEXT LOOP THROUGH DAYS
+    if (employeeIndex < steadyExtras.length) employeeIndex++;
+
+    //3c. CONDITION TO CONTINUE
+    //    DAY SHIFTS ALL SCHEDULED, DELETE THE DAY ARR
     if (sortedShiftsToFill[0].length === 0) {
       sortedShiftsToFill.shift();
     }
 
-    //CONDITIONS TO END
-    //ALL EMPLOYEES HAVE 5 SHIFTS, END RECURSION
+    //3d. CONDITIONS TO END
+    //    REACHED LAST EMPLOYEE
+    if (employeeShiftsCounter[employeeShiftsCounter.length - 1]) return;
+    //    ALL EMPLOYEES HAVE 5 SHIFTS, END RECURSION
     if (employeeShiftsCounter[employeeShiftsCounter.length - 1] === 5) return;
-    //ALL SHIFTS ARE SCHEDULED, END RECURSION
+    //    ALL SHIFTS ARE SCHEDULED, END RECURSION
     if (sortedShiftsToFill.length === 0) return;
 
+    //3e. GO THROUGH DAYS LOOP AGAIN
     allScheduledFiller();
   };
+
+  //----C. CREATE ALL SCHEDULED AND SEND
 
   allScheduledFiller();
 
