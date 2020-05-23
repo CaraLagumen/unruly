@@ -24,6 +24,8 @@ router
 router.delete(`/me/:id`, employeeAuthController.protect, vacationController.deleteMyVacation);
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 router.use(schedulerAuthController.protect);
+//GET RAW ALL
+router.get(`/raw`, vacationController.getRawAllVacations);
 //GET ALL AND CREATE ONE
 router
     .route(`/`)

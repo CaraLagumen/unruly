@@ -9,3 +9,12 @@ export interface Vacation {
   approved?: Boolean;
   createdAt?: Date;
 }
+
+export interface VacationData {
+  id?: string;
+  employee?: string;
+  scheduler?: string; //ADDED ONCE VAC APPROVED
+  date?: Date;
+  approved?: Boolean;
+  createdAt?: Date;
+}

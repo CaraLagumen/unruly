@@ -1,0 +1,16 @@
+.main {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-template-rows: repeat(auto, 1fr);
+  gap: 0.4rem;
+
+  background-color: darkgray;
+
+  &--days {
+    height: 8rem;
+    width: 100%;
+
+    background-color: lightgray;
+    border: solid white 0.1rem;
+  }
+}

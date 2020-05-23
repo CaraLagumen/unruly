@@ -33,16 +33,10 @@ export class DayItemComponent implements OnInit {
   constructor(private calendarService: CalendarService) {}
 
   ngOnInit() {
-    //1. POPULATE SHIFTS OF THE DAY
     this.addShiftsOfTheDay();
-
-    //2. SORT THE SHIFTS FROM SHIFT START
-    this.shiftsOfTheDay.sort(
-      (x: Shift, y: Shift) => x.shiftStart[0] - y.shiftStart[0]
-    );
   }
 
-  getLocationStyle(shift) {
+  getLocationStyle(shift: Shift) {
     switch (shift.location) {
       case `rotunda`:
         return { "grid-column": "1 / 2" };
@@ -64,7 +58,7 @@ export class DayItemComponent implements OnInit {
     );
   }
 
-  isScheduledShift(shift): boolean {
+  isScheduledShift(shift: Shift): boolean {
     const data = this.calendarService.isScheduledShift(
       shift,
       this.allScheduled,

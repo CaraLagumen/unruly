@@ -8,6 +8,8 @@ import { EditorShiftsComponent } from "./editor-shifts/editor-shifts.component";
 import { EditorShiftsItemComponent } from './editor-shifts/editor-shifts-item/editor-shifts-item.component';
 import { EditorScheduledComponent } from "./editor-scheduled/editor-scheduled.component";
 import { EditorScheduledItemComponent } from './editor-scheduled/editor-scheduled-item/editor-scheduled-item.component';
+import { EditorVacationsComponent } from './editor-vacations/editor-vacations.component';
+import { EditorVacationsItemComponent } from './editor-vacations/editor-vacations-item/editor-vacations-item.component';
 
 @NgModule({
   declarations: [
@@ -15,6 +17,8 @@ import { EditorScheduledItemComponent } from './editor-scheduled/editor-schedule
     EditorShiftsItemComponent,
     EditorScheduledComponent,
     EditorScheduledItemComponent,
+    EditorVacationsComponent,
+    EditorVacationsItemComponent,
   ],
   imports: [
     CommonModule,

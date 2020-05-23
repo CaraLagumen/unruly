@@ -134,6 +134,7 @@ export const getAllMyVacations = catchAsync(async (req, res, next) => {
 
 //STANDARD----------------------------------------------------------
 
+export const getRawAllVacations = factory.getRawAll(Vacation);
 export const getAllVacations = factory.getAll(Vacation);
 export const getVacation = factory.getOne(Vacation);
 export const createVacation = factory.createOne(Vacation);

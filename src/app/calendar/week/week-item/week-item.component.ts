@@ -33,13 +33,7 @@ export class WeekItemComponent implements OnInit {
   constructor(private calendarService: CalendarService) {}
 
   ngOnInit() {
-    //1. POPULATE SHIFTS OF THE DAY
     this.addShiftsOfTheDay();
-
-    //2. SORT THE SHIFTS FROM SHIFT START
-    this.shiftsOfTheDay.sort(
-      (x: Shift, y: Shift) => x.shiftStart[0] - y.shiftStart[0]
-    );
   }
 
   addShiftsOfTheDay() {

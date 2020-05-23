@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
 import { environment } from "../../../../environments/environment";
-import { Vacation } from "../../models/shift/vacation.model";
+import { Vacation, VacationData } from "../../models/shift/vacation.model";
 
 const ROOT_URL = `${environment.apiUrl}/vacations`;
 
@@ -33,6 +33,18 @@ export class VacationService {
   }
 
   //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
+
+  //RAW VACATIONS (NO LIMIT)
+  getRawAllVacations(): Observable<Vacation[]> {
+    return this.http
+      .get<Vacation[]>(`${ROOT_URL}/raw`)
+      .pipe(
+        map((vacations: any) =>
+          vacations.doc.sort((x: Vacation, y: Vacation) => x.date > y.date)
+        )
+      );
+  }
+
   getAllVacations(): Observable<Vacation[]> {
     return this.http
       .get<Vacation[]>(`${ROOT_URL}`)
@@ -48,8 +60,8 @@ export class VacationService {
   }
 
   updateVacation(
-    vacationId: number,
-    vacationData: Vacation
+    vacationId: string,
+    vacationData: VacationData
   ): Observable<Vacation> {
     return this.http.patch<Vacation>(`${ROOT_URL}/${vacationId}`, vacationData);
   }

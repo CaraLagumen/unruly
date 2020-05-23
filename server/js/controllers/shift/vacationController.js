@@ -116,6 +116,7 @@ exports.getAllMyVacations = catchAsync_1.default((req, res, next) => __awaiter(v
 }));
 //----------------------FOR SCHEDULER USE
 //STANDARD----------------------------------------------------------
+exports.getRawAllVacations = factory.getRawAll(vacationModel_1.default);
 exports.getAllVacations = factory.getAll(vacationModel_1.default);
 exports.getVacation = factory.getOne(vacationModel_1.default);
 exports.createVacation = factory.createOne(vacationModel_1.default);

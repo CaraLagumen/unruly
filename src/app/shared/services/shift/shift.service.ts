@@ -18,12 +18,11 @@ export class ShiftService {
   //RAW SHIFTS (NO LIMIT)
   getRawAllShifts(): Observable<Shift[]> {
     return this.http.get<Shift[]>(`${ROOT_URL}/raw`).pipe(
-      map(
-        (shift: any) =>
-          shift.doc
-            //SORT BY SHIFT START AND DAY
-            .sort((x: Shift, y: Shift) => x.shiftStart[0] - y.shiftStart[0])
-        // .sort((x: Shift, y: Shift) => x.day - y.day)
+      map((shift: any) =>
+        shift.doc
+          //SORT BY SHIFT START AND LOCATION
+          .sort((x: Shift, y: Shift) => x.location > y.location)
+          .sort((x: Shift, y: Shift) => x.shiftStart[0] - y.shiftStart[0])
       )
     );
   }
