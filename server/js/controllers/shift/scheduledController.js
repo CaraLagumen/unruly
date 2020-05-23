@@ -52,7 +52,6 @@ exports.validateScheduled = catchAsync_1.default((req, res, next) => __awaiter(v
         employee: req.body.employee,
     });
     const matchingDate = employeeVacations.find((vacation) => moment_1.default(vacation.date).format("LL") === moment_1.default(date).format("LL"));
-    console.log(matchingDate, date);
     if (matchingDate) {
         if (matchingDate.approved === true) {
             return next(new appError_1.default(`Employee has an approved vacation day for this day. Please set another employee for this shift.`, 400));
@@ -75,6 +74,9 @@ exports.populateSteadyExtra = catchAsync_1.default((req, res, next) => __awaiter
     const scheduledShifts = scheduledWeek.map((scheduled) => scheduled.shift.id);
     const shiftsToFill = [...blankShifts].filter((shift) => !scheduledShifts.includes(shift.id));
     shiftsToFill.sort((x, y) => x.shiftStart[0] - y.shiftStart[0]);
+    if (!shiftsToFill.length) {
+        return next(new appError_1.default(`All shifts have already been filled for coming week. Cannot populate.`, 400));
+    }
     //3. CREATE A BUNCH OF SHIFTS ARRS, ONE FOR EACH DAY (MON[], TUE[], WED[], ETC.)
     const sortedShiftsToFill = [[], [], [], [], [], [], []];
     shiftsToFill.forEach((shift) => {

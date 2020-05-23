@@ -192,7 +192,7 @@ exports.resetPassword = catchAsync_1.default((req, res, next) => __awaiter(void 
 //UPDATE PASSWORD
 exports.updatePassword = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     //1. GET SCHEDULER FROM COLLECTION
-    const scheduler = yield schedulerModel_1.default.findById(req.scheduler.id).select(`+password`);
+    const scheduler = (yield schedulerModel_1.default.findById(req.scheduler.id).select(`+password`));
     //2. CHECK IF POSTED CURRENT PASSWORD CORRECT
     if (!(yield scheduler.correctPassword(req.body.passwordCurrent, scheduler.password))) {
         return next(new appError_1.default(`The password entered is incorrect.`, 401));

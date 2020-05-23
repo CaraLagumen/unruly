@@ -26,6 +26,28 @@ const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const appError_1 = __importDefault(require("../../utils/appError"));
 //----------------------FOR SCHEDULER USE
 //TOOLS----------------------------------------------------------
+//FOR UPDATES AND USING validateWeeklyShiftDays
+//CREATE REF SINCE req.body WILL HAVE INCOMPLETE INFO FOR VALIDATION
+exports.setupUpdatedWeeklyShift = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    //1. GRAB RAW WEEKLY SHIFT FROM PARAM ID FOR ELABORATE COMPARISON
+    const weeklyShift = yield weeklyShiftModel_1.default.findById(req.params.id);
+    //2. CREATE OBJ TO BE COMPATIBLE WITH ENTERED JSON
+    //   ALL IDS GRABBED TO ACCOUNT FOR ANY SHIFT CHOSEN TO REPLACE
+    let shiftsRef = {
+        shiftDay1: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay1.id,
+        shiftDay2: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay2.id,
+        shiftDay3: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay3.id,
+        shiftDay4: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay4.id,
+        shiftDay5: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay5.id,
+    };
+    //3. GRAB ENTERED SHIFTS FOR REPLACEMENT
+    const shiftsToBeReplaced = req.body;
+    //4. REPLACE
+    Object.assign(shiftsRef, shiftsToBeReplaced);
+    //5. SEND NEW req.body
+    req.body = shiftsRef;
+    next();
+}));
 exports.validateWeeklyShift = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     //----A. ENSURE ALL SHIFTS HAVE DIFFERENT DAYS (MON, TUES, ETC...)
     //1. GRAB RAW SHIFTS FROM ENTERED SHIFT IDS FOR ELABORATE COMPARISON
@@ -85,28 +107,6 @@ exports.validateWeeklyShift = catchAsync_1.default((req, res, next) => __awaiter
         }
     }
     //----C. ALLOW NEXT WHEN ALL VALIDATED
-    next();
-}));
-//FOR UPDATES AND USING validateWeeklyShiftDays
-//CREATE REF SINCE req.body WILL HAVE INCOMPLETE INFO FOR VALIDATION
-exports.setupUpdatedWeeklyShift = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    //1. GRAB RAW WEEKLY SHIFT FROM PARAM ID FOR ELABORATE COMPARISON
-    const weeklyShift = yield weeklyShiftModel_1.default.findById(req.params.id);
-    //2. CREATE OBJ TO BE COMPATIBLE WITH ENTERED JSON
-    //   ALL IDS GRABBED TO ACCOUNT FOR ANY SHIFT CHOSEN TO REPLACE
-    let shiftsRef = {
-        shiftDay1: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay1.id,
-        shiftDay2: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay2.id,
-        shiftDay3: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay3.id,
-        shiftDay4: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay4.id,
-        shiftDay5: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay5.id,
-    };
-    //3. GRAB ENTERED SHIFTS FOR REPLACEMENT
-    const shiftsToBeReplaced = req.body;
-    //4. REPLACE
-    Object.assign(shiftsRef, shiftsToBeReplaced);
-    //5. SEND NEW req.body
-    req.body = shiftsRef;
     next();
 }));
 //STANDARD----------------------------------------------------------

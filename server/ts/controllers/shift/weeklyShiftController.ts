@@ -8,6 +8,33 @@ import AppError from "../../utils/appError";
 
 //TOOLS----------------------------------------------------------
 
+//FOR UPDATES AND USING validateWeeklyShiftDays
+//CREATE REF SINCE req.body WILL HAVE INCOMPLETE INFO FOR VALIDATION
+export const setupUpdatedWeeklyShift = catchAsync(async (req, res, next) => {
+  //1. GRAB RAW WEEKLY SHIFT FROM PARAM ID FOR ELABORATE COMPARISON
+  const weeklyShift = await WeeklyShift.findById(req.params.id);
+
+  //2. CREATE OBJ TO BE COMPATIBLE WITH ENTERED JSON
+  //   ALL IDS GRABBED TO ACCOUNT FOR ANY SHIFT CHOSEN TO REPLACE
+  let shiftsRef = {
+    shiftDay1: weeklyShift?.shiftDay1.id,
+    shiftDay2: weeklyShift?.shiftDay2.id,
+    shiftDay3: weeklyShift?.shiftDay3.id,
+    shiftDay4: weeklyShift?.shiftDay4.id,
+    shiftDay5: weeklyShift?.shiftDay5.id,
+  };
+
+  //3. GRAB ENTERED SHIFTS FOR REPLACEMENT
+  const shiftsToBeReplaced: object = req.body;
+
+  //4. REPLACE
+  Object.assign(shiftsRef, shiftsToBeReplaced);
+
+  //5. SEND NEW req.body
+  req.body = shiftsRef;
+  next();
+});
+
 export const validateWeeklyShift = catchAsync(async (req, res, next) => {
   //----A. ENSURE ALL SHIFTS HAVE DIFFERENT DAYS (MON, TUES, ETC...)
 
@@ -23,7 +50,7 @@ export const validateWeeklyShift = catchAsync(async (req, res, next) => {
   shifts.sort((el1: any, el2: any) => el1.day - el2.day);
 
   //2. CREATE ARR WITH DAYS (MON, TUES, ETC...) TO FIND DUPLICATES
-  const days = shifts.map((el: any) => el.day);
+  const days: number[] = shifts.map((el: any) => el.day);
   const duplicates = days.filter((el: any, i) => days.indexOf(el) !== i);
 
   //3. ERROR IF DUPLICATE DAYS FOUND
@@ -42,8 +69,8 @@ export const validateWeeklyShift = catchAsync(async (req, res, next) => {
   //       THEY ARE ALSO 8 HOURS IN BETWEEN
 
   //1. CREATE ARRS WITH HOURS TO COMPARE (ARR: [[4, 0], [4, 0], ETC...])
-  const startHours = shifts.map((el: any) => el.shiftStart);
-  const endHours = shifts.map((el: any) => el.shiftEnd);
+  const startHours: number[] = shifts.map((el: any) => el.shiftStart);
+  const endHours: number[] = shifts.map((el: any) => el.shiftEnd);
 
   //2. CHECK ONLY THE CONSECUTIVE DAYS, DELETE IF NOT
   for (let i = 0; i < days.length; i++) {
@@ -88,33 +115,6 @@ export const validateWeeklyShift = catchAsync(async (req, res, next) => {
   }
 
   //----C. ALLOW NEXT WHEN ALL VALIDATED
-  next();
-});
-
-//FOR UPDATES AND USING validateWeeklyShiftDays
-//CREATE REF SINCE req.body WILL HAVE INCOMPLETE INFO FOR VALIDATION
-export const setupUpdatedWeeklyShift = catchAsync(async (req, res, next) => {
-  //1. GRAB RAW WEEKLY SHIFT FROM PARAM ID FOR ELABORATE COMPARISON
-  const weeklyShift = await WeeklyShift.findById(req.params.id);
-
-  //2. CREATE OBJ TO BE COMPATIBLE WITH ENTERED JSON
-  //   ALL IDS GRABBED TO ACCOUNT FOR ANY SHIFT CHOSEN TO REPLACE
-  let shiftsRef = {
-    shiftDay1: weeklyShift?.shiftDay1.id,
-    shiftDay2: weeklyShift?.shiftDay2.id,
-    shiftDay3: weeklyShift?.shiftDay3.id,
-    shiftDay4: weeklyShift?.shiftDay4.id,
-    shiftDay5: weeklyShift?.shiftDay5.id,
-  };
-
-  //3. GRAB ENTERED SHIFTS FOR REPLACEMENT
-  const shiftsToBeReplaced = req.body;
-
-  //4. REPLACE
-  Object.assign(shiftsRef, shiftsToBeReplaced);
-
-  //5. SEND NEW req.body
-  req.body = shiftsRef;
   next();
 });
 

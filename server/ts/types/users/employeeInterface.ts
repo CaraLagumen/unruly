@@ -11,12 +11,12 @@ interface IEmployee extends Document {
   passwordResetToken?: any;
   passwordResetExpires?: any;
   active?: boolean;
-  position: string;
-  status: string;
+  position: `general manager` | `assistant manager` | `lead` | `barista`;
+  status: `full-time` | `part-time` | `on-call`;
   seniority: number;
   hireDate: Date;
-  preferredShiftSlots: string[];
-  preferredDaysOff: number[];
+  preferredShiftSlots: `morning` | `day` | `swing` | `graveyard`;
+  preferredDaysOff: [number, number];
 
   correctPassword(password: string, passwordConfirm: string): Promise<boolean>;
   changedPasswordAfter(JWTTimestamp: number): Promise<boolean>;

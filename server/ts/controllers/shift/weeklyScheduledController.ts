@@ -3,6 +3,7 @@ import moment from "moment";
 import WeeklyScheduled from "../../models/shift/weeklyScheduledModel";
 import WeeklyShift from "../../models/shift/weeklyShiftModel";
 import Scheduled from "../../models/shift/scheduledModel";
+import { IScheduledData } from "../../types/shift/scheduledInterface";
 import Shift from "../../models/shift/shiftModel";
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
@@ -25,7 +26,7 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
   //1. GRAB WHAT WE CAN FROM AVAILABLE
   const allWeeklyScheduled = await WeeklyScheduled.find();
   const scheduler = req.scheduler.id;
-  const allScheduled = [];
+  const allScheduled: IScheduledData[][] = [];
 
   for await (let el of allWeeklyScheduled) {
     //2. GRAB RAW WEEKLY SCHEDULED FROM PARAM ID TO EXTRACT
@@ -53,7 +54,7 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
     });
 
     //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOC
-    const scheduled = [];
+    const scheduled: IScheduledData[] = [];
 
     for (let i = 0; i < shifts.length; i++) {
       //5. VALIDATE INDIVIDUAL SHIFTS BEFORE PUSH
@@ -69,8 +70,8 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
 
       scheduled.push({
         //ALL SCHEDULED MUST HAVE { shift, employee, scheduler, date }
-        shift: shifts[i]!.id,
-        employee: el!.employee.id,
+        shift: shifts[i]!.id as string,
+        employee: el!.employee.id as string,
         scheduler,
         date: dates[i],
       });
@@ -92,7 +93,7 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
 //CREATE INDIVIDUAL SCHEDULED FROM WEEKLY SCHEDULED ID (PARAM)
 export const populateToScheduled = catchAsync(async (req, res, next) => {
   //1. GRAB WHAT WE CAN FROM AVAILABLE
-  const scheduler = req.scheduler.id;
+  const scheduler: string = req.scheduler.id;
 
   //2. GRAB RAW WEEKLY SCHEDULED FROM PARAM ID TO EXTRACT WEEKLY SHIFT THEN INDIVIDUAL SHIFTS
   const weeklyScheduled = await WeeklyScheduled.findById(req.params.id);
@@ -121,7 +122,7 @@ export const populateToScheduled = catchAsync(async (req, res, next) => {
   });
 
   //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOC
-  const scheduled = [];
+  const scheduled: IScheduledData[] = [];
 
   //5. VALIDATE INDIVIDUAL SHIFTS BEFORE PUSH
   //   ENSURE SHIFT DAY AND SCHEDULED DATE DAY MATCHES
@@ -137,8 +138,8 @@ export const populateToScheduled = catchAsync(async (req, res, next) => {
 
     scheduled.push({
       //SCHEDULEDS MUST HAVE { shift, employee, scheduler, date }
-      shift: shifts[i]!.id,
-      employee: weeklyScheduled!.employee.id,
+      shift: shifts[i]!.id as string,
+      employee: weeklyScheduled!.employee.id as string,
       scheduler,
       date: dates[i],
     });

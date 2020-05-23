@@ -10,10 +10,10 @@ export interface Employee {
   passwordResetToken?: any;
   passwordResetExpires?: any;
   active?: boolean;
-  position: string;
-  status: string;
+  position: `general manager` | `assistant manager` | `lead` | `barista`;
+  status: `full-time` | `part-time` | `on-call`;
   seniority: number;
   hireDate: Date;
-  preferredShiftSlots: string[];
-  preferredDaysOff: number[];
+  preferredShiftSlots: `morning` | `day` | `swing` | `graveyard`;
+  preferredDaysOff: [number, number];
 }

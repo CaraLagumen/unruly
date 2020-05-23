@@ -80,7 +80,7 @@ export const validateScheduled = catchAsync(async (req, res, next) => {
 export const populateSteadyExtra = catchAsync(async (req, res, next) => {
   const blankShifts = await Shift.find();
   const allTheScheduledEver = await Scheduled.find();
-  const scheduler = req.scheduler.id;
+  const scheduler: string = req.scheduler.id;
 
   //----A. SET UP VARS FOR WEEKLY SHIFT REF
 
@@ -96,6 +96,15 @@ export const populateSteadyExtra = catchAsync(async (req, res, next) => {
     (shift) => !scheduledShifts.includes(shift.id)
   );
   shiftsToFill.sort((x, y) => x.shiftStart[0] - y.shiftStart[0]);
+
+  if (!shiftsToFill.length) {
+    return next(
+      new AppError(
+        `All shifts have already been filled for coming week. Cannot populate.`,
+        400
+      )
+    );
+  }
 
   //3. CREATE A BUNCH OF SHIFTS ARRS, ONE FOR EACH DAY (MON[], TUE[], WED[], ETC.)
   const sortedShiftsToFill: IShift[][] = [[], [], [], [], [], [], []];
@@ -208,7 +217,7 @@ export const getEmployeeSchedule = catchAsync(async (req, res, next) => {
     .paginate();
 
   //2. SET DATA DEPENDING ON QUERIES
-  const doc = await features.query;
+  const doc: IScheduled[] = await features.query;
 
   //3. SEND DATA
   res.status(200).json({
@@ -220,10 +229,10 @@ export const getEmployeeSchedule = catchAsync(async (req, res, next) => {
 
 //CREATE SCHEDULED SHIFT WITH EMPLOYEE FROM SHIFT ID AND EMPLOYEE ID (ENTERED)
 export const createScheduled = catchAsync(async (req, res, next) => {
-  const shift = req.body.shift;
-  const employee = req.body.employee;
-  const scheduler = req.scheduler.id;
-  const date = req.body.date; //DATE MUST BE IN YYYY-MM-DD ORDER TO VALIDATE
+  const shift: string = req.body.shift;
+  const employee: string = req.body.employee;
+  const scheduler: string = req.scheduler.id;
+  const date: Date = req.body.date; //DATE MUST BE IN YYYY-MM-DD ORDER TO VALIDATE
 
   const doc = await Scheduled.create({ shift, employee, scheduler, date });
 

@@ -8,8 +8,8 @@ import AppError from "../../utils/appError";
 //TOOLS----------------------------------------------------------
 
 //FILTERED FIELDS FOR updateMe
-const filterObj = (obj: { [key: string]: any }, ...allowedFields: string[]) => {
-  const newObj: { [key: string]: any } = {};
+const filterObj = (obj: { [key: string]: string }, ...allowedFields: string[]) => {
+  const newObj: { [key: string]: string } = {};
 
   Object.keys(obj).forEach((el: string) => {
     if (allowedFields.includes(el)) newObj[el] = obj[el];

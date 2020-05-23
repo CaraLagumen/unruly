@@ -80,7 +80,7 @@ export const register = catchAsync(async (req, res, next) => {
 //LOGIN
 export const login = catchAsync(async (req, res, next) => {
   //1. GRAB EMAIL AND PASSWORD
-  const { email, password } = req.body;
+  const { email, password }: { email: string; password: string } = req.body;
 
   //2. ERROR IF EMAIL AND/OR PASSWORD DOES NOT EXIST
   if (!email || !password) {
@@ -130,7 +130,7 @@ export const restrictTo = (...roles: string[]) => {
 //STATE CHECK
 export const protect = catchAsync(async (req, res, next) => {
   //1. CHECK IF TOKEN EXISTS
-  let token;
+  let token: string | undefined;
 
   if (
     req.headers.authorization &&
@@ -249,15 +249,15 @@ export const resetPassword = catchAsync(async (req, res, next) => {
 //UPDATE PASSWORD
 export const updatePassword = catchAsync(async (req, res, next) => {
   //1. GET EMPLOYEE FROM COLLECTION
-  const employee: any = await Employee.findById(req.employee.id).select(
+  const employee = (await Employee.findById(req.employee.id).select(
     `+password`
-  );
+  )) as IEmployee;
 
   //2. CHECK IF POSTED CURRENT PASSWORD CORRECT
   if (
     !(await employee.correctPassword(
       req.body.passwordCurrent,
-      employee.password
+      employee.password as string
     ))
   ) {
     return next(new AppError(`The password entered is incorrect.`, 401));
@@ -320,7 +320,7 @@ export const displayEmployee = async (
 ) => {
   try {
     //1. CHECK IF TOKEN EXISTS
-    let token;
+    let token: string | undefined;
 
     if (
       req.headers.authorization &&

@@ -2,6 +2,7 @@ import moment from "moment";
 
 import Employee from "../../models/users/employeeModel";
 import Vacation from "../../models/shift/vacationModel";
+import IVacation from "../../types/shift/vacationInterface";
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import APIFeatures from "../../utils/apiFeatures";
@@ -82,8 +83,8 @@ export const validateVacation = catchAsync(async (req, res, next) => {
 
 //REQUEST VACATION FOR LOGGED IN EMPLOYEE FROM DATE (ENTERED)
 export const requestVacation = catchAsync(async (req, res, next) => {
-  const employee = req.employee.id;
-  const date = req.body.date; //DATE MUST BE IN YYYY-MM-DD
+  const employee: string = req.employee.id;
+  const date: Date = req.body.date; //DATE MUST BE IN YYYY-MM-DD
 
   const doc = await Vacation.create({ employee, date });
 
@@ -120,7 +121,7 @@ export const getAllMyVacations = catchAsync(async (req, res, next) => {
     .paginate();
 
   //2. SET DATA DEPENDING ON QUERIES
-  const doc = await features.query;
+  const doc: IVacation[] = await features.query;
 
   //3. SEND DATA
   res.status(200).json({
