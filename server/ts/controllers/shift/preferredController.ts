@@ -36,14 +36,14 @@ export const validatePreferred = catchAsync(async (req, res, next) => {
     (preferred) => preferred.rank === rank
   );
 
-  //4. THROW ERROR IF FOUND A MATCHED RANK
+  //4. ERROR IF FOUND A MATCHED RANK
   if (preferredRankMatch.length > 0) {
     return next(
       new AppError(`Rank is a duplicate. Please enter a different rank.`, 400)
     );
   }
 
-  //5. THROW ERROR IF PREFERRED FOR THE DAY EXCEEDED
+  //5. ERROR IF PREFERRED FOR THE DAY EXCEEDED
   if (allMyPreferredOfTheDay.length > 2) {
     return next(
       new AppError(

@@ -41,7 +41,7 @@ exports.validateWeeklyShift = catchAsync_1.default((req, res, next) => __awaiter
     //2. CREATE ARR WITH DAYS (MON, TUES, ETC...) TO FIND DUPLICATES
     const days = shifts.map((el) => el.day);
     const duplicates = days.filter((el, i) => days.indexOf(el) !== i);
-    //3. THROW ERROR IF DUPLICATE DAYS FOUND
+    //3. ERROR IF DUPLICATE DAYS FOUND
     if (duplicates.length !== 0) {
         return next(new appError_1.default(`Duplicate shift days found. Please enter unique shift days.`, 400));
     }
@@ -79,7 +79,7 @@ exports.validateWeeklyShift = catchAsync_1.default((req, res, next) => __awaiter
     //5. LOOP THROUGH ARRS TO FIND DIFFERENCE IN HOURS
     for (let i = 0; i < startHoursInGetTimeForm.length; i++) {
         const difference = startHoursInGetTimeForm[i] - endHoursInGetTimeForm[i];
-        //6. THROW ERROR IF DIFFERENCE LESS THAN 8
+        //6. ERROR IF DIFFERENCE LESS THAN 8
         if (difference < hoursInBetween) {
             return next(new appError_1.default(`Overtime found. Please enter shifts with no overtime.`, 400));
         }

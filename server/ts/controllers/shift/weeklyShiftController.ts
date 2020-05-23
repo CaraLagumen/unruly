@@ -26,7 +26,7 @@ export const validateWeeklyShift = catchAsync(async (req, res, next) => {
   const days = shifts.map((el: any) => el.day);
   const duplicates = days.filter((el: any, i) => days.indexOf(el) !== i);
 
-  //3. THROW ERROR IF DUPLICATE DAYS FOUND
+  //3. ERROR IF DUPLICATE DAYS FOUND
   if (duplicates.length !== 0) {
     return next(
       new AppError(
@@ -76,7 +76,7 @@ export const validateWeeklyShift = catchAsync(async (req, res, next) => {
   for (let i = 0; i < startHoursInGetTimeForm.length; i++) {
     const difference = startHoursInGetTimeForm[i] - endHoursInGetTimeForm[i];
 
-    //6. THROW ERROR IF DIFFERENCE LESS THAN 8
+    //6. ERROR IF DIFFERENCE LESS THAN 8
     if (difference < hoursInBetween) {
       return next(
         new AppError(

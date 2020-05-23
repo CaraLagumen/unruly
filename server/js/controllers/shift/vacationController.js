@@ -67,7 +67,7 @@ exports.validateVacation = catchAsync_1.default((req, res, next) => __awaiter(vo
             return -1;
         }
     };
-    //5. THROW ERROR IF NUMBER OF VACATION DAYS EXCEEDED
+    //5. ERROR IF NUMBER OF VACATION DAYS EXCEEDED
     if (allMyVacationsThisYear.length > myNumberOfVacationDays() ||
         myNumberOfVacationDays() === -1) {
         return next(new appError_1.default(`Number of vacation days ${myNumberOfVacationDays() + 1} exceeded. Unable to request vacation.`, 400));

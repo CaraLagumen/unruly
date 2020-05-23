@@ -8,6 +8,8 @@ import {
 } from "../../types/shift/scheduledInterface";
 import Shift from "../../models/shift/shiftModel";
 import IShift from "../../types/shift/shiftInterface";
+import Vacation from "../../models/shift/vacationModel";
+import IVacation from "ts/types/shift/vacationInterface";
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import APIFeatures from "../../utils/apiFeatures";
@@ -24,11 +26,11 @@ export const validateScheduled = catchAsync(async (req, res, next) => {
 
   //2. SETUP VARS FOR DAYS COMPARISON
   const today = moment();
-  const day = shift!.day;
+  const day: number = shift!.day;
   const date: Date = req.body.date;
   const dateDay = moment(date, "YYYY-MM-DD").weekday();
 
-  //3. THROW ERROR IF DATE IS IN THE PAST
+  //3. ERROR IF DATE IS IN THE PAST
   if (moment(date) <= today) {
     return next(
       new AppError(
@@ -38,7 +40,7 @@ export const validateScheduled = catchAsync(async (req, res, next) => {
     );
   }
 
-  //4. THROW ERROR IF DAYS DON'T MATCH
+  //4. ERROR IF DAYS DON'T MATCH
   if (day !== dateDay) {
     return next(
       new AppError(
@@ -48,7 +50,27 @@ export const validateScheduled = catchAsync(async (req, res, next) => {
     );
   }
 
-  //5. ALLOW WHEN ALL VALIDATED
+  //5. ERROR IF EMPLOYEE ON VACATION
+  const employeeVacations = await Vacation.find({
+    employee: req.body.employee,
+  });
+  const matchingDate: IVacation | undefined = employeeVacations.find(
+    (vacation) =>
+      moment(vacation.date).format("LL") === moment(date).format("LL")
+  );
+
+  if (matchingDate) {
+    if (matchingDate.approved === true) {
+      return next(
+        new AppError(
+          `Employee has an approved vacation day for this day. Please set another employee for this shift.`,
+          400
+        )
+      );
+    }
+  }
+
+  //6. ALLOW WHEN ALL VALIDATED
   next();
 });
 

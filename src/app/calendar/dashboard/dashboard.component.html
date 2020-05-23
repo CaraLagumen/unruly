@@ -134,7 +134,7 @@
         <option
           *ngFor="let employee of employees"
           [ngValue]="employee?.id"
-        >{{ employee?.id }}</option>
+        >{{ employee?.firstName }} {{ employee?.lastName }}</option>
       </select>
 
       <button

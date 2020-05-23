@@ -82,7 +82,7 @@ export const login = catchAsync(async (req, res, next) => {
   //1. GRAB EMAIL AND PASSWORD
   const { email, password } = req.body;
 
-  //2. THROW ERROR IF EMAIL AND/OR PASSWORD DOES NOT EXIST
+  //2. ERROR IF EMAIL AND/OR PASSWORD DOES NOT EXIST
   if (!email || !password) {
     return next(new AppError(`Please provide an email and/or password`, 400));
   }

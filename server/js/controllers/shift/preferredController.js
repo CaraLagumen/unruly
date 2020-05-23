@@ -45,11 +45,11 @@ exports.validatePreferred = catchAsync_1.default((req, res, next) => __awaiter(v
     const allMyPreferredOfTheDay = allMyPreferred.filter((preferred) => preferred.shift.day === shift.day);
     //3. FILTER RANK BY MATCHING PREFERRED RANK TO THE ENTERED RANK
     const preferredRankMatch = allMyPreferredOfTheDay.filter((preferred) => preferred.rank === rank);
-    //4. THROW ERROR IF FOUND A MATCHED RANK
+    //4. ERROR IF FOUND A MATCHED RANK
     if (preferredRankMatch.length > 0) {
         return next(new appError_1.default(`Rank is a duplicate. Please enter a different rank.`, 400));
     }
-    //5. THROW ERROR IF PREFERRED FOR THE DAY EXCEEDED
+    //5. ERROR IF PREFERRED FOR THE DAY EXCEEDED
     if (allMyPreferredOfTheDay.length > 2) {
         return next(new appError_1.default(`Number of preferred for this day exceeded. Only 3 allowed per day.`, 400));
     }

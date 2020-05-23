@@ -31,13 +31,7 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     //1. GRAB DATA
     this.employees$ = this.employeeService.getAllEmployees();
-    this.vacations$ = this.vacationService
-      .getRawAllVacations()
-      .pipe(
-        filter(
-          (vacations: Vacation[], i) => moment(vacations[i].date) > moment()
-        )
-      );
+    this.vacations$ = this.getVacations();
 
     //2. GRAB SCHEDULER ID
     this.schedulerSub = this.usersService
@@ -45,6 +39,16 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
       .subscribe((schedulerData: Scheduler) => {
         this.scheduler = schedulerData;
       });
+  }
+
+  getVacations() {
+    return this.vacationService
+      .getRawAllVacations()
+      .pipe(
+        filter(
+          (vacations: Vacation[], i) => moment(vacations[i].date) > moment()
+        )
+      );
   }
 
   onEditorVacationsControl(emittedData: [Vacation, string]) {
@@ -59,13 +63,7 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
   }
 
   updateData() {
-    return (this.vacations$ = this.vacationService
-      .getRawAllVacations()
-      .pipe(
-        filter(
-          (vacations: Vacation[], i) => moment(vacations[i].date) > moment()
-        )
-      ));
+    this.vacations$ = this.getVacations();
   }
 
   onAproveVacation(vacation: Vacation) {

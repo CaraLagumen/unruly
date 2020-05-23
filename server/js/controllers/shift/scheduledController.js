@@ -23,6 +23,7 @@ const moment_1 = __importDefault(require("moment"));
 const employeeModel_1 = __importDefault(require("../../models/users/employeeModel"));
 const scheduledModel_1 = __importDefault(require("../../models/shift/scheduledModel"));
 const shiftModel_1 = __importDefault(require("../../models/shift/shiftModel"));
+const vacationModel_1 = __importDefault(require("../../models/shift/vacationModel"));
 const factory = __importStar(require("../handlerFactory"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const apiFeatures_1 = __importDefault(require("../../utils/apiFeatures"));
@@ -38,15 +39,26 @@ exports.validateScheduled = catchAsync_1.default((req, res, next) => __awaiter(v
     const day = shift.day;
     const date = req.body.date;
     const dateDay = moment_1.default(date, "YYYY-MM-DD").weekday();
-    //3. THROW ERROR IF DATE IS IN THE PAST
+    //3. ERROR IF DATE IS IN THE PAST
     if (moment_1.default(date) <= today) {
         return next(new appError_1.default(`Scheduled date is in the past. Please enter a date in the future.`, 400));
     }
-    //4. THROW ERROR IF DAYS DON'T MATCH
+    //4. ERROR IF DAYS DON'T MATCH
     if (day !== dateDay) {
         return next(new appError_1.default(`Shift day and scheduled date day do not match. Please enter a date that matches the shift day.`, 400));
     }
-    //5. ALLOW WHEN ALL VALIDATED
+    //5. ERROR IF EMPLOYEE ON VACATION
+    const employeeVacations = yield vacationModel_1.default.find({
+        employee: req.body.employee,
+    });
+    const matchingDate = employeeVacations.find((vacation) => moment_1.default(vacation.date).format("LL") === moment_1.default(date).format("LL"));
+    console.log(matchingDate, date);
+    if (matchingDate) {
+        if (matchingDate.approved === true) {
+            return next(new appError_1.default(`Employee has an approved vacation day for this day. Please set another employee for this shift.`, 400));
+        }
+    }
+    //6. ALLOW WHEN ALL VALIDATED
     next();
 }));
 //MAIN----------------------------------------------------------

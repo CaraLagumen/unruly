@@ -59,7 +59,7 @@ export const validateVacation = catchAsync(async (req, res, next) => {
     }
   };
 
-  //5. THROW ERROR IF NUMBER OF VACATION DAYS EXCEEDED
+  //5. ERROR IF NUMBER OF VACATION DAYS EXCEEDED
   if (
     allMyVacationsThisYear.length > myNumberOfVacationDays() ||
     myNumberOfVacationDays() === -1

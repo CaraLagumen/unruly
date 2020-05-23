@@ -76,7 +76,7 @@ exports.register = catchAsync_1.default((req, res, next) => __awaiter(void 0, vo
 exports.login = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     //1. GRAB EMAIL AND PASSWORD
     const { email, password } = req.body;
-    //2. THROW ERROR IF EMAIL AND/OR PASSWORD DOES NOT EXIST
+    //2. ERROR IF EMAIL AND/OR PASSWORD DOES NOT EXIST
     if (!email || !password) {
         return next(new appError_1.default(`Please provide an email and/or password`, 400));
     }
