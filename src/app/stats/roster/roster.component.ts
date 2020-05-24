@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 
-import { Employee } from "../../shared/models/users/employee.model";
-import { Scheduler } from "../../shared/models/users/scheduler.model";
 import { EmployeeService } from "../../shared/services/users/employee.service";
 import { SchedulerService } from "../../shared/services/users/scheduler.service";
+import { Employee } from "../../shared/models/users/employee.model";
+import { Scheduler } from "../../shared/models/users/scheduler.model";
 
 @Component({
   selector: "app-roster",

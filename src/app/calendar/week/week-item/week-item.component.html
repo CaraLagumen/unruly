@@ -4,7 +4,7 @@
 >
 
   <div
-    *ngFor="let shift of shiftsOfTheDay;"
+    *ngFor="let shift of shiftsOfTheDay"
     (click)="onCalendarItemEmitter(shift); onEmployeeOptionsEmitter(shift);"
     [ngClass]="{ 'scheduled': isScheduledShift(shift),
     'preferred': isMyPreferredShift(shift) }"

@@ -3,7 +3,7 @@
 <h3>Weekly shifts</h3>
 <div *ngFor="let weeklyShift of (weeklyShifts$ | async)">
   {{ weeklyShift?.name }}
-  {{ weeklyShift?.position}}
+  {{ weeklyShift?.position }}
   {{ weeklyShift?.slot }}
   {{ weeklyShift?.location }}
   {{ weeklyShift?.shiftDay1.shiftStart[0] }}
@@ -15,7 +15,7 @@
 
 <h3>Shifts</h3>
 <div *ngFor="let shift of (shifts$ | async)">
-  {{ shift?.position}}
+  {{ shift?.position }}
   {{ shift?.slot }}
   {{ shift?.location }}
   {{ shift?.shiftStart[0] }}

@@ -1,16 +1,4 @@
-<app-dashboard
-  *ngIf="employeeIsAuth || schedulerIsAuth"
-  [employeeIsAuth]="employeeIsAuth"
-  [schedulerIsAuth]="schedulerIsAuth"
-  [calendarItemObs]="calendarItemSubject.asObservable()"
-  [employeeOptionsObs]="employeeOptionsSubject.asObservable()"
-  (employeeEmitter)="onEmployeeServiceControl($event)"
-  (schedulerEmitter)="onSchedulerServiceControl($event)"
-  (formSubmitEmitter)="onFormSubmitEmitter($event)"
-></app-dashboard>
-
 <div class="calendar">
-
   <div class="calendar__nav">
 
     <button (click)="onCurrentWeek()">Current week</button>
@@ -35,6 +23,21 @@
 
   <div class="calendar__main">
 
+    <div class="calendar__main--employees">
+
+      <h4 class="calendar__main--employees-heading">
+        Employee names
+      </h4>
+
+      <div
+        *ngFor="let employee of allEmployees"
+        class="calendar__main--employees-names"
+      >
+        {{ employee?.lastName }}, {{ employee?.firstName }}
+      </div>
+
+    </div>
+
     <div
       *ngFor="let day of daysArr"
       [ngClass]="{ 'today': isToday(day) }"
@@ -47,21 +50,16 @@
 
         <h4 [routerLink]="['/day', day.toISOString()]">{{ day?.date() }}</h4>
 
-        <app-week-item
+        <app-schedule-item
           *ngIf="isLoaded"
-          [allShifts]="allShifts"
+          [allEmployees]="allEmployees"
           [allScheduled]="allScheduled"
-          [allMyPreferred]="allMyPreferred"
-          [allMyVacations]="allMyVacations"
           [day]="day"
-          (employeeOptionsEmitter)="onEmployeeOptionsEmitControl($event)"
-          (calendarItemEmitter)="onCalendarItemEmitControl($event)"
-        ></app-week-item>
+        ></app-schedule-item>
 
       </div>
 
     </div>
 
   </div>
-
 </div>

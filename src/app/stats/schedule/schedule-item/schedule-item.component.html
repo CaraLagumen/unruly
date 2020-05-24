@@ -1,0 +1,18 @@
+<div
+  [ngStyle]="getRowStyle()"
+  class="container"
+>
+
+  <div
+    *ngFor="let scheduled of scheduledOfTheDay"
+    [ngStyle]="getScheduledStyle(scheduled?.employee.id)"
+    class="scheduled"
+  >
+    <div *ngIf="isLoaded">
+      {{ getFormattedHour(scheduled?.shift.shiftStart[0]) }}
+      {{ getFormattedHour(scheduled?.shift.shiftEnd[0]) }}
+      {{ scheduled?.shift.position }} {{ scheduled?.shift.location }}
+    </div>
+  </div>
+
+</div>

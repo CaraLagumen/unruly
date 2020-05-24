@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
+import * as moment from "moment";
 
 import { AuthService } from "../../auth/auth.service";
 import { UserType } from "../../shared/models/custom-types";
@@ -17,6 +18,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   employeeIsAuth = false;
   schedulerIsAuth = false;
+  today = moment(); //FOR USE WITH URL - DO NOT ALTER
 
   constructor(private authService: AuthService) {}
 

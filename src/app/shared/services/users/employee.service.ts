@@ -16,7 +16,7 @@ export class EmployeeService {
 
   getAllEmployees(): Observable<Employee[]> {
     return this.http
-      .get<Employee[]>(`${ROOT_URL}?sort=lastName`)
+      .get<Employee[]>(`${ROOT_URL}?sort=lastName,firstName`)
       .pipe(map((employee: any) => employee.doc));
   }
 

@@ -8,6 +8,7 @@
     <h2 routerLink="/stats">Statistics</h2>
     <button routerLink="/stats/roster">Roster</button>
     <button routerLink="/stats/shifts">Shifts</button>
+    <button [routerLink]="['/stats/schedule/', today.toISOString()]">Schedule</button>
   </div>
 
   <div *ngIf="schedulerIsAuth">

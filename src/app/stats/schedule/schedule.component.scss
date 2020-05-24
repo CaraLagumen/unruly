@@ -1,0 +1,62 @@
+.calendar {
+  display: grid;
+  grid-template-rows: 10% 90%;
+
+  border: solid darkgray 0.5rem;
+
+  &__nav {
+    grid-row: 1 / 2;
+
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+
+    padding-bottom: 0.5rem;
+
+    &--week {
+      width: 10rem;
+
+      text-align: center;
+    }
+  }
+
+  &__main {
+    grid-row: 2 / -1;
+
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: auto 1fr;
+    gap: 0.4rem;
+
+    background-color: darkgray;
+
+    &--employees {
+      &-names {
+        height: 8vh;
+        
+        border: solid 1px white;
+      }
+    }
+
+    &--days {
+      width: 100%;
+
+      background-color: lightgray;
+      border: solid white 0.1rem;
+
+      &-heading {
+        height: inherit;
+
+        background-color: darkgray;
+      }
+
+      &-info {
+        height: inherit;
+      }
+    }
+  }
+}
+
+.today {
+  background-color: white;
+}

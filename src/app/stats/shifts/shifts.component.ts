@@ -5,6 +5,7 @@ import { ShiftService } from "../../shared/services/shift/shift.service";
 import { WeeklyShiftService } from "../../shared/services/shift/weekly-shift.service";
 import { Shift } from "../../shared/models/shift/shift.model";
 import { WeeklyShift } from "../../shared/models/shift/weekly-shift.model";
+import { ShiftProperties } from "../../shared/tools/custom-classes";
 
 @Component({
   selector: "app-shifts",
@@ -15,15 +16,7 @@ export class ShiftsComponent implements OnInit {
   shifts$: Observable<Shift[]>;
   weeklyShifts$: Observable<WeeklyShift[]>;
 
-  days = [
-    `sunday`,
-    `monday`,
-    `tuesday`,
-    `wednesday`,
-    `thursday`,
-    `friday`,
-    `saturday`,
-  ];
+  days = ShiftProperties.daysInWords;
 
   constructor(
     private shiftService: ShiftService,
