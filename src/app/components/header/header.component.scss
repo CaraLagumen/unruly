@@ -1,4 +1,77 @@
-.container {
+.header {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 20vw 1.5fr repeat(3, auto);
+  align-items: center;
+  justify-items: end;
+  gap: 5rem;
+
+  padding: 1rem 5rem;
+
+  background-color: var(--color-blue);
+
+  color: white;
+
+  &__logo {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    align-self: end;
+    justify-self: start;
+  }
+
+  &__editor {
+    grid-column: 3 / 4;
+    grid-row: 1 / 2;
+
+    &--heading {
+      line-height: 1.6rem;
+      text-align: end;
+    }
+
+    &--btns {
+      display: flex;
+    }
+  }
+
+  &__stats {
+    grid-column: 4 / 5;
+    grid-row: 1 / 2;
+
+    &--heading {
+      line-height: 1.6rem;
+      text-align: end;
+    }
+
+    &--btns {
+      display: flex;
+    }
+  }
+
+  &__notauth {
+    grid-column: 5 / -1;
+    grid-row: 1 / 2;
+
+    display: flex;
+    gap: 4rem;
+
+    &--btns {
+      &-heading {
+        line-height: 1.6rem;
+        text-align: end;
+      }
+    }
+  }
+
+  &__auth {
+    grid-column: 5 / -1;
+    grid-row: 1 / 2;
+
+    &--heading {
+      line-height: 1.6rem;
+      text-align: end;
+    }
+
+    &--btns {
+      display: flex;
+    }
+  }
 }

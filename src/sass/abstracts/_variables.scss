@@ -9,3 +9,37 @@
 // #3DB4F4
 // #5E7793
 // #AABDCE
+// #F5A623
+// #11AC4A
+// #C70F30
+
+:root {
+  //COLORS----------------------------------------------------------
+
+  //PRIMARY
+  --color-blue: #0493e8;
+  --color-darkblue: #103262;
+  --color-lightblue: #3db4f4;
+
+  //SECONDARY
+  --color-dark: #0e193a;
+  --color-black: #080d1c;
+  --color-gray: #aabdce;
+
+  //TERTIARY
+  --color-yellow: #f5a623;
+  --color-green: #11ac4a;
+  --color-red: #c70f30;
+
+  //FONT----------------------------------------------------------
+
+  //STYLES
+  --font-primary: "Play", sans-serif;
+  --font-logo: "Forum", sans-serif;
+
+  //SIZES
+  --font-big: 3rem;
+  --font-medium: 2rem;
+  --font-small: 1.56rem;
+  --font-xsmall: 1.235rem;
+}

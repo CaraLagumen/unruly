@@ -1,51 +1,158 @@
-<div class="container">
+<div class="header">
 
-  <div>
-    <h1 routerLink="/">Unruly</h1> by Cara Lagumen
+  <!--LOGO------------------------------------------------------------>
+
+  <div class="header__logo">
+
+    <h1
+      routerLink="/"
+      class="header__logo--text"
+    >Unruly</h1>
+
   </div>
 
-  <div *ngIf="employeeIsAuth || schedulerIsAuth">
-    <h2 routerLink="/stats">Statistics</h2>
-    <button routerLink="/stats/roster">Roster</button>
-    <button routerLink="/stats/shifts">Shifts</button>
-    <button [routerLink]="['/stats/schedule/', today.toISOString()]">Schedule</button>
-  </div>
+  <!--EDITOR------------------------------------------------------------>
 
-  <div *ngIf="schedulerIsAuth">
-    <h2>Editor</h2>
-    <button routerLink="/editor/shifts">Shifts</button>
-    <button routerLink="/editor/scheduled">Scheduled</button>
-    <button routerLink="/editor/vacations">Vacations</button>
-  </div>
+  <div
+    *ngIf="schedulerIsAuth"
+    class="header__editor"
+  >
 
-  <div *ngIf="!employeeIsAuth && !schedulerIsAuth">
-    <div class="employee">
+    <h2 class="header__editor--heading">Editor</h2>
 
-      <h2>Employee</h2>
-      <button routerLink="/auth/employee/login">Login</button>
-      <button routerLink="/auth/employee/register">Register</button>
+    <div class="header__editor--btns">
+
+      <button
+        routerLink="/editor/shifts"
+        class="header__editor--btns-item btn-header"
+      >Shifts</button>
+      <button
+        routerLink="/editor/scheduled"
+        class="header__editor--btns-item btn-header"
+      >Scheduled</button>
+      <button
+        routerLink="/editor/vacations"
+        class="header__editor--btns-item btn-header"
+      >Vacations</button>
 
     </div>
 
-    <div class="scheduler">
+  </div>
 
-      <h2>Scheduler</h2>
-      <button routerLink="/auth/scheduler/login">Login</button>
-      <button routerLink="/auth/scheduler/register">Register</button>
+  <!--STATS------------------------------------------------------------>
+
+  <div
+    *ngIf="employeeIsAuth || schedulerIsAuth"
+    class="header__stats"
+  >
+
+    <h2
+      routerLink="/stats"
+      class="header__stats--heading"
+    >Statistics</h2>
+
+    <div class="header__stats--btns">
+      <button
+        routerLink="/stats/roster"
+        class="header__stats--btns-item btn-header"
+      >Roster</button>
+      <button
+        routerLink="/stats/shifts"
+        class="header__stats--btns-item btn-header"
+      >Shifts</button>
+      <button
+        [routerLink]="['/stats/schedule/', today.toISOString()]"
+        class="header__stats--btns-item btn-header"
+      >Schedule</button>
+    </div>
+
+  </div>
+
+  <!--!AUTH------------------------------------------------------------>
+
+  <div
+    *ngIf="!employeeIsAuth && !schedulerIsAuth"
+    class="header__notauth"
+  >
+
+    <div class="header__notauth--btns">
+
+      <h2 class="header__notauth--btns-heading">Employee</h2>
+
+      <button
+        routerLink="/auth/employee/login"
+        class="header__notauth--btns-item btn-header"
+      >Login</button>
+      <button
+        routerLink="/auth/employee/register"
+        class="header__notauth--btns-item btn-header"
+      >Register</button>
 
     </div>
+
+    <div class="header__notauth--btns">
+
+      <h2 class="header__notauth--btns-heading">Scheduler</h2>
+
+      <button
+        routerLink="/auth/scheduler/login"
+        class="header__notauth--btns-item btn-header"
+      >Login</button>
+      <button
+        routerLink="/auth/scheduler/register"
+        class="header__notauth--btns-item btn-header"
+      >Register</button>
+
+    </div>
+
   </div>
 
-  <div *ngIf="employeeIsAuth">
-    <h2>Employee</h2>
-    <button routerLink="/employee/profile">Profile</button>
-    <button (click)="onLogout()">Logout</button>
+  <!--AUTH-EMPLOYEE------------------------------------------------------------>
+
+  <div
+    *ngIf="employeeIsAuth"
+    class="header__auth"
+  >
+
+    <div class="header__auth--btns">
+
+      <h2 class="header__auth--btns-heading">Employee</h2>
+
+      <button
+        routerLink="/employee/profile"
+        class="header__auth--btns-item btn-header"
+      >Profile</button>
+      <button
+        (click)="onLogout()"
+        class="header__auth--btns-item btn-header"
+      >Logout</button>
+
+    </div>
+
   </div>
 
-  <div *ngIf="schedulerIsAuth">
-    <h2>Scheduler</h2>
-    <button routerLink="/scheduler/profile">Profile</button>
-    <button (click)="onLogout()">Logout</button>
+  <!--AUTH-SCHEDULER------------------------------------------------------------>
+
+  <div
+    *ngIf="schedulerIsAuth"
+    class="header__auth"
+  >
+
+    <h2 class="header__auth--heading">Scheduler</h2>
+
+    <div class="header__auth--btns">
+
+      <button
+        routerLink="/scheduler/profile"
+        class="header__auth--btns-item btn-header"
+      >Profile</button>
+      <button
+        (click)="onLogout()"
+        class="header__auth--btns-item btn-header"
+      >Logout</button>
+
+    </div>
+
   </div>
 
 </div>

@@ -42,6 +42,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   employeeIsAuth = false;
   schedulerIsAuth = false;
   date = moment();
+  today = moment(); //FOR USE WITH URL - DO NOT ALTER
   calendarItemSubject = new Subject();
   employeeOptionsSubject = new Subject();
   isLoaded = false;

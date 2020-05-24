@@ -1,0 +1,54 @@
+a {
+  &,
+  &:link,
+  &:visited {
+    text-decoration: none;
+    color: var(--color-lightblue);
+  }
+}
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-logo);
+  letter-spacing: 0.24rem;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: var(--font-big);
+}
+
+h2 {
+  font-size: var(--font-medium);
+}
+
+h3 {
+  font-size: var(--font-small);
+}
+
+h4 {
+  font-size: var(--font-xsmall);
+}
+
+button {
+  font-family: var(--font-primary);
+  text-transform: lowercase;
+}
+
+.btn-header {
+  margin-left: 0.1rem;
+  padding: 0.5rem 1rem;
+
+  background-color: var(--color-lightblue);
+
+  color: var(--color-dark);
+  font-size: var(--font-small);
+}
