@@ -69,7 +69,7 @@
           *ngIf="!calendarItem[1]"
           class="dashboard__options--details-scheduled-values"
         >
-          <span>No one scheduled</span>
+          <span>Not filled</span>
         </div>
 
       </div>
@@ -79,6 +79,7 @@
     <div class="dashboard__options--btns">
       <button
         (click)="onToggleUpdateShiftForm('open')"
+        [ngClass]="{ 'active': updateShiftFormToggle }"
         class="dashboard__options--btns-item btn-menu btn-green"
       >Update shift</button>
       <button
@@ -88,6 +89,7 @@
 
       <button
         (click)="onToggleCreateScheduledForm('open')"
+        [ngClass]="{ 'active': createScheduledFormToggle }"
         class="dashboard__options--btns-item btn-menu btn-green"
       >Create scheduled</button>
       <button
@@ -285,7 +287,7 @@
           *ngIf="!calendarItem[1]"
           class="dashboard__options--details-scheduled-values"
         >
-          <span>No one scheduled</span>
+          <span>Not filled</span>
         </div>
 
       </div>
@@ -295,6 +297,7 @@
     <div class="dashboard__options--btns">
       <button
         (click)="onToggleAddPreferredForm('open')"
+        [ngClass]="{ 'active': addPreferredFormToggle }"
         class="dashboard__options--btns-item btn-menu btn-green"
       >Add to preferred</button>
       <button

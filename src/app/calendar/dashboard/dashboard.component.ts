@@ -93,13 +93,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
         //2. OPEN CORRESPONDING MENU
         if (this.employeeIsAuth) this.onToggleEmployeeOptionsMenu(`open`);
         if (this.schedulerIsAuth) this.onToggleSchedulerOptionsMenu(`open`);
+
+        //3. UPDATE ANY FORMS
+        this.initUpdateShiftForm();
+        this.initCreateScheduledForm();
       }
     );
 
-    //3. GRAB EMPLOYEE OPTIONS IF EMPLOYEE IS AUTH
+    //4. GRAB EMPLOYEE OPTIONS IF EMPLOYEE IS AUTH AND UPDATE ANY FORM
     if (this.employeeIsAuth) {
       this.employeeOptionsSub = this.employeeOptionsObs.subscribe(
-        (emittedData: EmployeeOptions) => (this.employeeOptions = emittedData)
+        (emittedData: EmployeeOptions) => {
+          this.employeeOptions = emittedData;
+          this.initAddPreferredForm();
+        }
       );
     }
   }
@@ -139,9 +146,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   onToggleAddPreferredForm(type: `open` | `close`) {
-    type === `open`
-      ? this.initAddPreferredForm()
-      : (this.addPreferredFormToggle = false);
+    if (type === `open`) {
+      this.addPreferredFormToggle = true;
+    } else {
+      this.addPreferredFormToggle = false;
+    }
   }
 
   //----------------------FOR SCHEDULER USE
@@ -165,15 +174,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   onToggleUpdateShiftForm(type: `open` | `close`) {
-    type === `open`
-      ? this.initUpdateShiftForm()
-      : (this.updateShiftFormToggle = false);
+    if (type === `open`) {
+      this.updateShiftFormToggle = true;
+      this.createScheduledFormToggle = false;
+    } else {
+      this.updateShiftFormToggle = false;
+    }
   }
 
   onToggleCreateScheduledForm(type: `open` | `close`) {
-    type === `open`
-      ? this.initCreateScheduledForm()
-      : (this.createScheduledFormToggle = false);
+    if (type === `open`) {
+      this.createScheduledFormToggle = true;
+      this.updateShiftFormToggle = false;
+    } else {
+      this.createScheduledFormToggle = false;
+    }
   }
 
   //FORMS----------------------------------------------------------
@@ -193,9 +208,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.addPreferredForm.controls["rankControl"].setValue(
         this.employeeOptions[0].rank
       );
-
-    //3. DISPLAY FORM
-    this.addPreferredFormToggle = true;
   }
 
   onAddPreferred() {
@@ -251,9 +263,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.updateShiftForm.controls["shiftEndControl"].setValue(
       this.calendarItem[0].shiftEnd[0]
     );
-
-    //3. DISPLAY FORM
-    this.updateShiftFormToggle = true;
   }
 
   onUpdateShift() {
@@ -296,9 +305,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.createScheduledForm.controls["employeeControl"].setValue(
         this.calendarItem[1].employee.id
       );
-
-    //3. DISPLAY FORM
-    this.createScheduledFormToggle = true;
   }
 
   onCreateScheduled() {
