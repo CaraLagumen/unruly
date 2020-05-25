@@ -7,10 +7,14 @@ a {
   }
 }
 
-button {
+button,
+select {
   border: none;
   background: none;
   cursor: pointer;
+
+  font-family: var(--font-primary);
+  text-transform: lowercase;
 }
 
 h1,
@@ -32,14 +36,12 @@ h2 {
 
 h3 {
   font-size: var(--font-small);
+  font-weight: 300;
 }
 
 h4 {
   font-size: var(--font-xsmall);
-}
-
-button {
-  font-family: var(--font-primary);
+  font-weight: 300;
   text-transform: lowercase;
 }
 
@@ -47,8 +49,48 @@ button {
   margin-left: 0.1rem;
   padding: 0.5rem 1rem;
 
-  background-color: var(--color-lightblue);
+  background-color: var(--color-darkblue);
 
-  color: var(--color-dark);
+  color: var(--color-gray);
   font-size: var(--font-small);
+
+  &:hover {
+    background-color: var(--color-blue);
+
+    color: white;
+  }
+}
+
+.btn-menu {
+  margin-left: 0.1rem;
+  padding: 0.4rem 0.8rem;
+
+  background-color: var(--color-dark);
+
+  color: var(--color-blue);
+  font-size: var(--font-xsmall);
+
+  &:hover {
+    background-color: var(--color-blue);
+
+    color: white;
+  }
+}
+
+.btn-green {
+  border-right: solid var(--color-green) 0.2rem !important;
+  margin-right: 0.1rem;
+
+  &:hover {
+    background-color: var(--color-green);
+  }
+}
+
+.btn-red {
+  border-right: solid var(--color-red) 0.2rem !important;
+  margin-right: 0.1rem;
+
+  &:hover {
+    background-color: var(--color-red);
+  }
 }

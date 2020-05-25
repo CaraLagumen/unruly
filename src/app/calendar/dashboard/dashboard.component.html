@@ -1,232 +1,358 @@
+<!--SCHEDULER DASHBOARD------------------------------------------------------------>
+<!--SCHEDULER DASHBOARD------------------------------------------------------------>
+
 <div
   *ngIf="schedulerIsAuth"
-  class="scheduler"
+  class="dashboard"
 >
 
-  <!--MAIN DASHBOARD------------------------------------------------------------>
+  <!--AUTO POPULATE MENU------------------------------------------------------------>
 
-  <div>
-    <h3>Auto populate</h3>
+  <div class="dashboard__populate">
+    <h3 class="dashboard__populate--heading">Auto populate</h3>
 
-    <button (click)="onSchedulerEmitter('populateAllToScheduled')">Populate full-time</button>
-    <button (click)="onSchedulerEmitter('populateSteadyExtra')">Populate steady extra</button>
-    <button (click)="onSchedulerEmitter('deleteLastScheduled')">Delete last scheduled</button>
+    <div class="dashboard__populate--btns">
+      <button
+        (click)="onSchedulerEmitter('populateAllToScheduled')"
+        class="dashboard__populate--btns-item btn-menu btn-green"
+      >Populate full-time</button>
+      <button
+        (click)="onSchedulerEmitter('populateSteadyExtra')"
+        class="dashboard__populate--btns-item btn-menu btn-green"
+      >Populate steady extra</button>
+      <button
+        (click)="onSchedulerEmitter('deleteLastScheduled')"
+        class="dashboard__populate--btns-item btn-menu btn-red"
+      >Delete last scheduled</button>
+    </div>
 
   </div>
 
   <!--SCHEDULER OPTIONS MENU------------------------------------------------------------>
 
-  <div *ngIf="schedulerOptionsMenu">
+  <div
+    *ngIf="schedulerOptionsMenu"
+    class="dashboard__options"
+  >
 
-    <div>
+    <div class="dashboard__options--details">
 
-      <div>
-        Shift details
-        {{ calendarItem[0]?.day }}
-        {{ calendarItem[0]?.slot }}
-        {{ calendarItem[0]?.shiftStart }} {{ calendarItem[0]?.shiftEnd }}
-        {{ calendarItem[0]?.location }}
+      <div class="dashboard__options--details-shift">
+        <h4 class="dashboard__options--details-shift-heading">Shift</h4>
+
+        <div class="dashboard__options--details-shift-values">
+          <span>{{ calendarItemDay | date:'shortDate' }}</span>
+          <span>{{ daysInWords[calendarItem[0]?.day] }}</span>
+          <span>{{ calendarItem[0]?.slot }}</span>
+          <span>{{ getFormattedHour(calendarItem[0]?.shiftStart[0]) }}</span>
+          <span>{{ getFormattedHour(calendarItem[0]?.shiftEnd[0]) }}</span>
+          <span>{{ calendarItem[0]?.location }}</span>
+        </div>
+
       </div>
 
-      <div *ngIf="calendarItem[1]">
-        Scheduled details
-        {{ calendarItem[1]?.date }}
-        {{ calendarItem[1]?.employee.firstName }} {{ calendarItem[1]?.employee.lastName }}
-        {{ calendarItem[1]?.employee.position }}
-        {{ calendarItem[1]?.employee.status }}
-        {{ calendarItem[1]?.employee.seniority }}
-        {{ calendarItem[1]?.employee.hireDate }}
+      <div class="dashboard__options--details-scheduled">
+        <h4 class="dashboard__options--details-scheduled-heading">Scheduled</h4>
+
+        <div
+          *ngIf="calendarItem[1]"
+          class="dashboard__options--details-scheduled-values"
+        >
+          <span>{{ calendarItem[1]?.employee.lastName }}, {{ calendarItem[1]?.employee.firstName }}</span>
+          <span>{{ calendarItem[1]?.employee.position }}</span>
+          <span>{{ calendarItem[1]?.employee.status }}</span>
+          <span>Seniority: {{ calendarItem[1]?.employee.seniority }}</span>
+          <span>Hire date: {{ calendarItem[1]?.employee.hireDate | date:'shortDate' }}</span>
+        </div>
+
+        <div
+          *ngIf="!calendarItem[1]"
+          class="dashboard__options--details-scheduled-values"
+        >
+          <span>No one scheduled</span>
+        </div>
+
       </div>
 
     </div>
 
-    <div>
-      <button (click)="onToggleUpdateShiftForm('open')">Update shift</button>
-      <button (click)="onSchedulerEmitter('deleteShift')">Delete shift</button>
+    <div class="dashboard__options--btns">
+      <button
+        (click)="onToggleUpdateShiftForm('open')"
+        class="dashboard__options--btns-item btn-menu btn-green"
+      >Update shift</button>
+      <button
+        (click)="onSchedulerEmitter('deleteShift')"
+        class="dashboard__options--btns-item btn-menu btn-red"
+      >Delete shift</button>
 
-      <button (click)="onToggleCreateScheduledForm('open')">Create scheduled</button>
+      <button
+        (click)="onToggleCreateScheduledForm('open')"
+        class="dashboard__options--btns-item btn-menu btn-green"
+      >Create scheduled</button>
       <button
         *ngIf="calendarItem[1]"
         (click)="onSchedulerEmitter('deleteScheduled')"
+        class="dashboard__options--btns-item btn-menu btn-red"
       >Delete scheduled</button>
 
-      <button (click)="onToggleSchedulerOptionsMenu('close')">Close</button>
+      <button
+        (click)="onToggleSchedulerOptionsMenu('close')"
+        class="dashboard__options--btns-item btn-menu"
+      >×</button>
     </div>
 
   </div>
 
   <!--UPDATE SHIFT FORM------------------------------------------------------------>
 
-  <div *ngIf="updateShiftFormToggle">
+  <div
+    *ngIf="updateShiftFormToggle"
+    class="dashboard__update"
+  >
 
     <form
       (submit)="onUpdateShift()"
       [formGroup]="updateShiftForm"
+      class="dashboard__update--form"
     >
 
-      <span>Position</span>
-      <select formControlName="positionControl">
-        <option
-          *ngFor="let position of positions"
-          [ngValue]="position"
-        >{{ position }}</option>
-      </select>
+      <div class="dashboard__update--form-item">
+        <span>Position</span>
+        <select formControlName="positionControl">
+          <option
+            *ngFor="let position of positions"
+            [ngValue]="position"
+          >{{ position }}</option>
+        </select>
+      </div>
 
-      <span>Slot</span>
-      <select formControlName="slotControl">
-        <option
-          *ngFor="let slot of slots"
-          [ngValue]="slot"
-        >{{ slot }}</option>
-      </select>
+      <div class="dashboard__update--form-item">
+        <span>Slot</span>
+        <select formControlName="slotControl">
+          <option
+            *ngFor="let slot of slots"
+            [ngValue]="slot"
+          >{{ slot }}</option>
+        </select>
+      </div>
 
-      <span>Location</span>
-      <select formControlName="locationControl">
-        <option
-          *ngFor="let location of locations"
-          [ngValue]="location"
-        >{{ location }}</option>
-      </select>
+      <div class="dashboard__update--form-item">
+        <span>Location</span>
+        <select formControlName="locationControl">
+          <option
+            *ngFor="let location of locations"
+            [ngValue]="location"
+          >{{ location }}</option>
+        </select>
+      </div>
 
-      <span>Day</span>
-      <select formControlName="dayControl">
-        <option
-          *ngFor="let day of days"
-          [ngValue]="day"
-        >{{ day }}</option>
-      </select>
+      <div class="dashboard__update--form-item">
+        <span>Day</span>
+        <select formControlName="dayControl">
+          <option
+            *ngFor="let day of days"
+            [ngValue]="day"
+          >{{ day }}</option>
+        </select>
+      </div>
 
-      <span>Shift start and end</span>
-      <select formControlName="shiftStartControl">
-        <option
-          *ngFor="let shiftStart of shiftHours"
-          [ngValue]="shiftStart"
-        >{{ shiftStart }}</option>
-      </select>
-      <select formControlName="shiftEndControl">
-        <option
-          *ngFor="let shiftEnd of shiftHours"
-          [ngValue]="shiftEnd"
-        >{{ shiftEnd }}</option>
-      </select>
+      <div class="dashboard__update--form-item">
+        <span>Shift start and end</span>
+        <select formControlName="shiftStartControl">
+          <option
+            *ngFor="let shiftStart of shiftHours"
+            [ngValue]="shiftStart"
+          >{{ getFormattedHour(shiftStart).toLowerCase() }}</option>
+        </select>
+        <select formControlName="shiftEndControl">
+          <option
+            *ngFor="let shiftEnd of shiftHours"
+            [ngValue]="shiftEnd"
+          >{{ getFormattedHour(shiftEnd).toLowerCase() }}</option>
+        </select>
+      </div>
 
       <button
         [disabled]="!updateShiftForm.valid"
         type="submit"
+        class="dashboard__update--form-item btn-menu btn-green"
       >Update shift</button>
-    </form>
 
-    <button (click)="onToggleUpdateShiftForm('close')">Close</button>
+      <button
+        (click)="onToggleUpdateShiftForm('close')"
+        class="dashboard__update--form-item btn-menu"
+      >×</button>
+    </form>
 
   </div>
 
   <!--CREATE SCHEDULED FORM------------------------------------------------------------>
 
-  <div *ngIf="createScheduledFormToggle">
+  <div
+    *ngIf="createScheduledFormToggle"
+    class="dashboard__create"
+  >
 
     <form
       (submit)="onCreateScheduled()"
       [formGroup]="createScheduledForm"
+      class="dashboard__create--form"
     >
 
-      <span>Employee</span>
-      <select formControlName="employeeControl">
-        <option
-          *ngFor="let employee of employees"
-          [ngValue]="employee?.id"
-        >{{ employee?.firstName }} {{ employee?.lastName }}</option>
-      </select>
+      <div class="dashboard__create--form-item">
+        <span>Employee</span>
+        <select formControlName="employeeControl">
+          <option
+            *ngFor="let employee of employees"
+            [ngValue]="employee?.id"
+          >{{ employee?.lastName.toLowerCase() }}, {{ employee?.firstName.toLowerCase() }}</option>
+        </select>
+      </div>
+
 
       <button
         [disabled]="!createScheduledForm.valid"
         type="submit"
+        class="dashboard__create--form-item btn-menu btn-green"
       >Create scheduled</button>
-    </form>
 
-    <button (click)="onToggleCreateScheduledForm('close')">Close</button>
+      <button
+        (click)="onToggleCreateScheduledForm('close')"
+        class="dashboard__create--form-item btn-menu"
+      >×</button>
+    </form>
 
   </div>
 
 </div>
 
+<!--EMPLOYEE DASHBOARD------------------------------------------------------------>
+<!--EMPLOYEE DASHBOARD------------------------------------------------------------>
+
 <div
   *ngIf="employeeIsAuth"
-  class="employee"
+  class="dashboard"
 >
 
   <!--EMPLOYEE OPTIONS MENU------------------------------------------------------------>
 
-  <div *ngIf="employeeOptionsMenu">
+  <div
+    *ngIf="employeeOptionsMenu"
+    class="dashboard__options"
+  >
 
-    <div>
+    <div class="dashboard__options--details">
 
-      <div>
-        Shift details
-        {{ calendarItem[0]?.day }}
-        {{ calendarItem[0]?.slot }}
-        {{ calendarItem[0]?.shiftStart }} {{ calendarItem[0]?.shiftEnd }}
-        {{ calendarItem[0]?.location }}
+      <div
+        [ngClass]="{ 'preferred': employeeOptions[0] }"
+        class="dashboard__options--details-shift"
+      >
+        <h4
+          *ngIf="!employeeOptions[0]"
+          class="dashboard__options--details-shift-heading"
+        >Shift</h4>
+        <h4
+          *ngIf="employeeOptions[0]"
+          class="dashboard__options--details-shift-heading"
+        >Preferred shift</h4>
+
+        <div class="dashboard__options--details-shift-values">
+          <span>{{ calendarItemDay | date:'shortDate' }}</span>
+          <span>{{ daysInWords[calendarItem[0]?.day] }}</span>
+          <span>{{ calendarItem[0]?.slot }}</span>
+          <span>{{ getFormattedHour(calendarItem[0]?.shiftStart[0]) }}</span>
+          <span>{{ getFormattedHour(calendarItem[0]?.shiftEnd[0]) }}</span>
+          <span>{{ calendarItem[0]?.location }}</span>
+        </div>
       </div>
 
-      <div *ngIf="calendarItem[1]">
-        Scheduled details
-        {{ calendarItem[1]?.date }}
-        {{ calendarItem[1]?.employee.firstName }} {{ calendarItem[1]?.employee.lastName }}
-        {{ calendarItem[1]?.employee.position }}
-        {{ calendarItem[1]?.employee.status }}
-        {{ calendarItem[1]?.employee.seniority }}
-        {{ calendarItem[1]?.employee.hireDate }}
-      </div>
+      <div class="dashboard__options--details-scheduled">
+        <h4 class="dashboard__options--details-scheduled-heading">Scheduled</h4>
 
-      <div *ngIf="employeeOptions[0]">
-        My preferred details
-        {{ employeeOptions[0].shift.day }}
-        {{ employeeOptions[0].rank }}
-        {{ employeeOptions[0].shift.slot }}
-        {{ employeeOptions[0].shift.shiftStart }} {{ employeeOptions[0].shift.shiftEnd }}
-        {{ employeeOptions[0].shift.location }}
+        <div
+          *ngIf="calendarItem[1]"
+          class="dashboard__options--details-scheduled-values"
+        >
+          <span>{{ calendarItem[1]?.employee.lastName }}, {{ calendarItem[1]?.employee.firstName }}</span>
+          <span>{{ calendarItem[1]?.employee.position }}</span>
+          <span>{{ calendarItem[1]?.employee.status }}</span>
+          <span>Seniority: {{ calendarItem[1]?.employee.seniority }}</span>
+          <span>Hire date: {{ calendarItem[1]?.employee.hireDate | date:'shortDate' }}</span>
+        </div>
+
+        <div
+          *ngIf="!calendarItem[1]"
+          class="dashboard__options--details-scheduled-values"
+        >
+          <span>No one scheduled</span>
+        </div>
+
       </div>
 
     </div>
 
-    <div>
-      <h3>Options</h3>
+    <div class="dashboard__options--btns">
+      <button
+        (click)="onToggleAddPreferredForm('open')"
+        class="dashboard__options--btns-item btn-menu btn-green"
+      >Add to preferred</button>
+      <button
+        (click)="onEmployeeEmitter('deletePreferred')"
+        class="dashboard__options--btns-item btn-menu btn-red"
+      >Delete preferred</button>
 
-      <button (click)="onToggleAddPreferredForm('open')">Add to preferred</button>
-      <button (click)="onEmployeeEmitter('deletePreferred')">Delete preferred</button>
+      <button
+        (click)="onEmployeeEmitter('requestVacation')"
+        class="dashboard__options--btns-item btn-menu btn-green"
+      >Request vacation</button>
+      <button
+        (click)="onEmployeeEmitter('deleteVacation')"
+        class="dashboard__options--btns-item btn-menu btn-red"
+      >Delete vacation</button>
 
-      <button (click)="onEmployeeEmitter('requestVacation')">Request vacation</button>
-      <button (click)="onEmployeeEmitter('deleteVacation')">Delete vacation</button>
-
-      <button (click)="onToggleEmployeeOptionsMenu('close')">Close</button>
+      <button
+        (click)="onToggleEmployeeOptionsMenu('close')"
+        class="dashboard__options--btns-item btn-menu"
+      >×</button>
     </div>
 
   </div>
 
   <!--ADD PREFERRED FORM------------------------------------------------------------>
 
-  <div *ngIf="addPreferredFormToggle">
+  <div
+    *ngIf="addPreferredFormToggle"
+    class="dashboard__update"
+  >
 
     <form
       (submit)="onAddPreferred()"
       [formGroup]="addPreferredForm"
+      class="dashboard__update--form"
     >
 
-      <span>Rank</span>
-      <select formControlName="rankControl">
-        <option
-          *ngFor="let rank of ranks"
-          [ngValue]="rank"
-        >{{ rank }}</option>
-      </select>
+      <div class="dashboard__update--form-item">
+        <span>Rank</span>
+        <select formControlName="rankControl">
+          <option
+            *ngFor="let rank of ranks"
+            [ngValue]="rank"
+          >{{ rank }}</option>
+        </select>
+      </div>
 
       <button
         [disabled]="!addPreferredForm.valid"
         type="submit"
+        class="dashboard__update--form-item btn-menu btn-green"
       >Add to preferred</button>
-    </form>
 
-    <button (click)="onToggleAddPreferredForm('close')">Close</button>
+      <button
+        (click)="onToggleAddPreferredForm('close')"
+        class="dashboard__update--form-item btn-menu"
+      >×</button>
+    </form>
 
   </div>
 

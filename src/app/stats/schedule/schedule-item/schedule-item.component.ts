@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import * as moment from "moment";
 
+import { CalendarService } from "../../../calendar/calendar.service";
 import { Employee } from "../../../shared/models/users/employee.model";
 import { Scheduled } from "../../../shared/models/shift/scheduled.model";
 
@@ -18,7 +19,7 @@ export class ScheduleItemComponent implements OnInit {
 
   isLoaded = false;
 
-  constructor() {}
+  constructor(private calendarService: CalendarService) {}
 
   ngOnInit() {
     this.scheduledOfTheDay = this.allScheduled.filter(
@@ -49,6 +50,6 @@ export class ScheduleItemComponent implements OnInit {
   }
 
   getFormattedHour(hour: number) {
-    return moment().hour(hour).startOf("h").format("LT");
+    return this.calendarService.getFormattedHour(hour);
   }
 }

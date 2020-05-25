@@ -8,11 +8,13 @@ import {
 } from "@angular/core";
 import { Observable, Subscription } from "rxjs";
 import { FormGroup, FormControl } from "@angular/forms";
+import * as moment from "moment";
 
 import { EmployeeService } from "../../shared/services/users/employee.service";
 import { ShiftService } from "../../shared/services/shift/shift.service";
 import { ScheduledService } from "../../shared/services/shift/scheduled.service";
 import { PreferredService } from "../../shared/services/shift/preferred.service";
+import { CalendarService } from "../calendar.service";
 import { Employee } from "../../shared/models/users/employee.model";
 import { Shift } from "../../shared/models/shift/shift.model";
 import {
@@ -60,6 +62,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   addPreferredFormToggle = false;
   updateShiftFormToggle = false;
   createScheduledFormToggle = false;
+  daysInWords = ShiftProperties.daysInWords;
 
   //UPDATE SHIFT FORM
   positions = ShiftProperties.positions;
@@ -75,7 +78,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private employeeService: EmployeeService,
     private shiftService: ShiftService,
     private scheduledService: ScheduledService,
-    private preferredService: PreferredService
+    private preferredService: PreferredService,
+    private calendarService: CalendarService
   ) {}
 
   ngOnInit() {
@@ -106,6 +110,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.formSubmitEmitter.emit(type);
   }
 
+  getFormattedHour(hour: number) {
+    return this.calendarService.getFormattedHour(hour);
+  }
+
   //----------------------FOR EMPLOYEE USE
 
   onEmployeeEmitter(
@@ -122,9 +130,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   onToggleEmployeeOptionsMenu(type: `open` | `close`) {
-    type === `open`
-      ? (this.employeeOptionsMenu = true)
-      : (this.employeeOptionsMenu = false);
+    if (type === `open`) {
+      this.employeeOptionsMenu = true;
+    } else {
+      this.employeeOptionsMenu = false;
+      this.addPreferredFormToggle = false;
+    }
   }
 
   onToggleAddPreferredForm(type: `open` | `close`) {
@@ -144,9 +155,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   onToggleSchedulerOptionsMenu(type: `open` | `close`) {
-    type === `open`
-      ? (this.schedulerOptionsMenu = true)
-      : (this.schedulerOptionsMenu = false);
+    if (type === `open`) {
+      this.schedulerOptionsMenu = true;
+    } else {
+      this.schedulerOptionsMenu = false;
+      this.updateShiftFormToggle = false;
+      this.createScheduledFormToggle = false;
+    }
   }
 
   onToggleUpdateShiftForm(type: `open` | `close`) {

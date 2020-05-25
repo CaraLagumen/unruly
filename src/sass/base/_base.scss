@@ -9,6 +9,7 @@
 html {
   box-sizing: border-box;
   font-size: 62.5%;
+  background-color: var(--color-gray);
 
   @media only screen and (max-height: 45em) {
     //720
@@ -60,6 +61,6 @@ body {
 }
 
 ::selection {
-  color: var(--color-yellow);
-  background-color: var(--color-black);
+  color: var(--color-black);
+  background-color: var(--color-yellow);
 }

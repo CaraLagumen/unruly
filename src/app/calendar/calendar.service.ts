@@ -33,6 +33,10 @@ export class CalendarService {
 
   //TOOLS----------------------------------------------------------
 
+  getFormattedHour(hour: number) {
+    return moment().hour(hour).startOf("h").format("h a");
+  }
+
   addShiftsOfTheDay(day: moment.Moment, allShifts: Shift[]): Shift[] {
     //COMPARE DAYS (EX: 0 TO 0 OR SUNDAY TO SUNDAY)
     const comparableDay = day.weekday();

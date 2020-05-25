@@ -1,13 +1,13 @@
 .header {
   display: grid;
-  grid-template-columns: 20vw 1.5fr repeat(3, auto);
+  grid-template-columns: auto 1fr repeat(3, auto);
   align-items: center;
   justify-items: end;
-  gap: 5rem;
+  gap: 4rem;
 
   padding: 1rem 5rem;
 
-  background-color: var(--color-blue);
+  background-color: var(--color-dark);
 
   color: white;
 
@@ -16,6 +16,17 @@
     grid-row: 1 / 2;
     align-self: end;
     justify-self: start;
+
+    &--text {
+      border-right: solid white 0.2rem;
+      padding-right: 2rem;
+
+      cursor: pointer;
+
+      &:hover {
+        color: var(--color-yellow);
+      }
+    }
   }
 
   &__editor {
@@ -23,12 +34,13 @@
     grid-row: 1 / 2;
 
     &--heading {
-      line-height: 1.6rem;
+      line-height: 1.8rem;
       text-align: end;
     }
 
     &--btns {
       display: flex;
+      justify-content: flex-end;
     }
   }
 
@@ -37,12 +49,13 @@
     grid-row: 1 / 2;
 
     &--heading {
-      line-height: 1.6rem;
+      line-height: 1.8rem;
       text-align: end;
     }
 
     &--btns {
       display: flex;
+      justify-content: flex-end;
     }
   }
 
@@ -51,11 +64,12 @@
     grid-row: 1 / 2;
 
     display: flex;
+    justify-content: flex-end;
     gap: 4rem;
 
     &--btns {
       &-heading {
-        line-height: 1.6rem;
+        line-height: 1.8rem;
         text-align: end;
       }
     }
@@ -66,12 +80,13 @@
     grid-row: 1 / 2;
 
     &--heading {
-      line-height: 1.6rem;
+      line-height: 1.8rem;
       text-align: end;
     }
 
     &--btns {
       display: flex;
+      justify-content: flex-end;
     }
   }
 }
