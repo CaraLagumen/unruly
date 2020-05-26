@@ -34,7 +34,24 @@ export class CalendarService {
   //TOOLS----------------------------------------------------------
 
   getFormattedHour(hour: number) {
-    return moment().hour(hour).startOf("h").format("h a");
+    return moment().hour(hour).startOf("h").format("ha");
+  }
+
+  getFormattedLocation(location: string) {
+    switch (location) {
+      case `rotunda`:
+        return `RT`;
+      case `food court`:
+        return `FC`;
+      case `tower 1`:
+        return `T1`;
+      case `tower 2`:
+        return `T2`;
+      case `pool`:
+        return `PL`;
+      case `breaker`:
+        return `BK`;
+    }
   }
 
   addShiftsOfTheDay(day: moment.Moment, allShifts: Shift[]): Shift[] {

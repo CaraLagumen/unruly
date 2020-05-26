@@ -13,6 +13,7 @@ select {
   background: none;
   cursor: pointer;
 
+  color: white;
   font-family: var(--font-primary);
   text-transform: lowercase;
 }
@@ -32,6 +33,7 @@ h1 {
 
 h2 {
   font-size: var(--font-medium);
+  font-weight: 300;
 }
 
 h3 {
@@ -67,13 +69,29 @@ h4 {
 
   background-color: var(--color-dark);
 
-  color: var(--color-lightblue);
+  color: var(--color-gray);
   font-size: var(--font-xsmall);
 
   &:hover {
-    background-color: var(--color-lightblue);
+    background-color: var(--color-gray);
 
     color: white;
+  }
+}
+
+.btn-nav {
+  margin-left: 0.1rem;
+  padding: 0.4rem 0.8rem;
+
+  border: solid var(--color-dark) 0.2rem;
+
+  font-size: var(--font-xsmall);
+  text-transform: uppercase;
+
+  &:hover {
+    background-color: var(--color-dark);
+
+    color: var(--color-yellow);
   }
 }
 

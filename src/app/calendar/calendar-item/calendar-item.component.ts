@@ -34,6 +34,14 @@ export class CalendarItemComponent implements OnInit {
     this.addShiftsOfTheDay();
   }
 
+  getFormattedHour(hour: number) {
+    return this.calendarService.getFormattedHour(hour);
+  }
+
+  getFormattedLocation(location: string) {
+    return this.calendarService.getFormattedLocation(location);
+  }
+
   addShiftsOfTheDay() {
     this.shiftsOfTheDay = this.calendarService.addShiftsOfTheDay(
       this.day,

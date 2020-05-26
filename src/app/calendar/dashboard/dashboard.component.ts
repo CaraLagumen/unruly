@@ -109,6 +109,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
       );
     }
+
+    //5. GRAB EMPLOYEES FOR CREATE SCHEDULED FORM
+    this.getEmployees();
   }
 
   //TOOLS----------------------------------------------------------
@@ -292,8 +295,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   initCreateScheduledForm() {
-    this.getEmployees();
-
     //1. INITIALIZE SCHEDULED FORM
     this.createScheduledForm = new FormGroup({
       employeeControl: new FormControl(null),

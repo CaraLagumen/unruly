@@ -13,23 +13,29 @@
 
   <div class="calendar__nav">
 
-    <button (click)="onCurrentMonth()">Current month</button>
+    <button
+      (click)="onCurrentMonth()"
+      class="calendar__nav--btn btn-nav"
+    >Current month</button>
 
     <button
       (click)="onPreviousMonth()"
       class="calendar__nav--btn"
     >◄</button>
 
-    <h3 class="calendar__nav--month">
+    <h2 class="calendar__nav--month">
       {{ date?.format('MMMM') }} {{ date?.format('YYYY') }}
-    </h3>
+    </h2>
 
     <button
       (click)="onNextMonth()"
       class="calendar__nav--btn"
     >►</button>
 
-    <button [routerLink]="['/week', today.toISOString()]">Current week</button>
+    <button
+      [routerLink]="['/week', today.toISOString()]"
+      class="calendar__nav--btn btn-nav"
+    >Current week</button>
 
   </div>
 
@@ -53,7 +59,16 @@
       class="calendar__main--days"
     >
 
-      <h4 [routerLink]="['/day', day.toISOString()]">{{ day?.date() }}</h4>
+      <h3 class="calendar__main--days-heading">
+        <a
+          [routerLink]="['/week', day.toISOString()]"
+          class="calendar__main--days-heading-w"
+        >w</a>
+        <a
+          [routerLink]="['/day', day.toISOString()]"
+          class="calendar__main--days-heading-number"
+        >{{ day?.date() }}</a>
+      </h3>
 
       <app-calendar-item
         *ngIf="isLoaded"
@@ -64,9 +79,10 @@
         [day]="day"
         (employeeOptionsEmitter)="onEmployeeOptionsEmitControl($event)"
         (calendarItemEmitter)="onCalendarItemEmitControl($event)"
+        class="calendar__main--days-item"
       ></app-calendar-item>
 
-      <hr [routerLink]="['/week', day.toISOString()]">
+      <div></div>
 
     </div>
 

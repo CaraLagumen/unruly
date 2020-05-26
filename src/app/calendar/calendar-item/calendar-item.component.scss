@@ -1,29 +1,45 @@
-.container {
-  height: 80%;
-
+.calendar-item {
+  height: 70%;
   overflow-y: auto;
-}
 
-.shift-block {
-  display: inline-block;
+  padding: 0.1rem 0.4rem;
 
-  width: 2rem;
-  margin: 0.1rem;
+  &__main {
+    display: inline-block;
 
-  background-color: white;
-  border: solid darkgray 0.1rem;
+    width: 5rem;
+    padding: 0.1rem;
+    margin-bottom: 0.2rem;
 
-  font-size: 0.8rem;
+    border-right: solid var(--color-blue) 0.2rem;
+
+    color: var(--color-dark);
+    text-align: center;
+
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--color-blue);
+
+      color: white;
+    }
+
+    &--details {
+      font-weight: 700;
+    }
+  }
 }
 
 .scheduled {
-  background-color: royalblue;
+  background-color: var(--color-yellow);
+
+  color: var(--color-dark);
 }
 
 .preferred {
-  border-bottom: solid darkblue 0.2rem;
+  border-bottom: solid var(--color-lightblue) 0.2rem;
 }
 
 .vacation {
-  background-color: orange;
+  background-color: var(--color-green);
 }

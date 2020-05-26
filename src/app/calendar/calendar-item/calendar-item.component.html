@@ -1,18 +1,21 @@
 <div
   [ngClass]="{ 'vacation': isMyVacationDay() }"
-  class="container"
+  class="calendar-item"
 >
 
   <div
     *ngFor="let shift of shiftsOfTheDay"
     (click)="onCalendarItemEmitter(shift); onEmployeeOptionsEmitter(shift);"
-    class="shift-block"
+    class="calendar-item__main"
   >
 
-    <div [ngClass]="{ 'scheduled': isScheduledShift(shift),
-      'preferred': isMyPreferredShift(shift) }">
-      {{ shift?.location.substring(0, 3) }}
-      {{ shift?.shiftStart[0] }} {{ shift?.shiftEnd[0] }}
+    <div
+      [ngClass]="{ 'scheduled': isScheduledShift(shift),
+      'preferred': isMyPreferredShift(shift) }"
+      class="calendar-item__main--details"
+    >
+      <span>{{ getFormattedLocation(shift?.location) }}
+        {{ getFormattedHour(shift?.shiftStart[0]) }}</span>
     </div>
 
   </div>

@@ -1,4 +1,8 @@
 .dashboard {
+  height: 18rem;
+
+  background-color: var(--color-gray);
+
   .active {
     transform: translateY(1rem);
     border: none !important;
@@ -18,7 +22,6 @@
     padding: 0.5rem;
 
     background-color: var(--color-darkblue);
-    color: white;
 
     &--heading {
       border-right: solid white 0.15rem;
@@ -37,7 +40,6 @@
     padding: 0.5rem 6rem;
 
     background-color: var(--color-blue);
-    color: white;
 
     &--details {
       grid-row: 1 / 2;
@@ -173,7 +175,6 @@
 
   &__update {
     background-color: var(--color-lightblue);
-    color: white;
 
     span {
       border-right: solid white 0.15rem;
@@ -188,4 +189,16 @@
       border-right: solid var(--color-darkblue) 0.15rem;
     }
   }
+}
+
+.placeholder {
+  position: absolute;
+  top: 14.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+
+  color: var(--color-darkblue);
+  font-size: var(--font-xsmall);
+  font-weight: 600;
+  text-align: center;
 }
