@@ -1,21 +1,32 @@
-.calendar {
+.day {
   display: grid;
   grid-template-rows: 10% 90%;
 
-  border: solid darkgray 0.5rem;
+  padding: 0.5rem 2rem;
+
+  background-color: var(--color-darkgray);
 
   &__nav {
     grid-row: 1 / 2;
 
     display: flex;
+    align-items: center;
     justify-content: center;
     gap: 3rem;
 
+    height: 4rem;
     padding-bottom: 0.5rem;
 
-    &--week {
-      width: 10rem;
+    &--btn {
+      &:hover {
+        color: var(--color-yellow);
+      }
+    }
 
+    &--month {
+      width: 22rem;
+
+      font-weight: 800;
       text-align: center;
     }
   }
@@ -23,21 +34,58 @@
   &__main {
     grid-row: 2 / -1;
 
-    background-color: darkgray;
-
     &--heading {
-      height: inherit;
+      width: 100%;
+      margin-bottom: 0.8rem;
 
-      background-color: darkgray;
+      background-color: var(--color-dark);
+
+      color: var(--color-gray);
+      font-size: var(--font-xsmall);
+      font-weight: 700;
+      text-align: center;
+      text-transform: uppercase;
     }
 
     &--info {
       display: grid;
 
-      height: inherit;
+      background-color: var(--color-gray);
 
-      background-color: lightgray;
-      border: solid white 0.1rem;
+      &-heading {
+        padding: 0rem 0.5rem;
+
+        border-bottom: solid var(--color-blue) 0.4rem;
+
+        &:hover {
+          background-color: var(--color-dark);
+
+          a {
+            color: white;
+          }
+        }
+
+        &-w {
+          color: var(--color-darkblue);
+          text-align: left;
+          text-transform: lowercase;
+
+          &:hover {
+            color: var(--color-yellow) !important;
+          }
+        }
+
+        &-number {
+          float: right;
+
+          color: var(--color-darkblue);
+          font-weight: 700;
+
+          &:hover {
+            color: var(--color-yellow) !important;
+          }
+        }
+      }
     }
   }
 }

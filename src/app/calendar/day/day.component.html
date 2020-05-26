@@ -9,41 +9,59 @@
   (formSubmitEmitter)="onFormSubmitEmitter($event)"
 ></app-dashboard>
 
-<div class="calendar">
+<div class="day">
 
-  <div class="calendar__nav">
+  <div class="day__nav">
 
-    <button (click)="onCurrentDay()">Current day</button>
+    <button
+      (click)="onCurrentDay()"
+      class="day__nav--btn btn-nav"
+    >Current day</button>
 
     <button
       (click)="onPreviousDay()"
-      class="calendar__nav--btn"
+      class="day__nav--btn"
     >◄</button>
 
-    <h3 class="calendar__nav--week">
+    <h3 class="day__nav--month">
       {{ day?.format('MMMM') }} {{ day?.format('YYYY') }}
     </h3>
 
     <button
       (click)="onNextDay()"
-      class="calendar__nav--btn"
+      class="day__nav--btn"
     >►</button>
+
+    <button
+      [routerLink]="['/week', today.toISOString()]"
+      class="day__nav--btn btn-nav"
+    >Current week</button>
 
   </div>
 
-  <div class="calendar__main">
+  <div class="day__main">
 
-    <div class="calendar__main--heading">{{ day?.format('ddd').toUpperCase() }}</div>
+    <div class="day__main--heading">{{ day?.format('ddd').toUpperCase() }}</div>
 
     <div
       [ngClass]="{ 'today': isToday(day) }"
-      class="calendar__main--info"
+      class="day__main--info"
     >
 
-      <h4>{{ day?.date() }}</h4>
+      <h3 class="day__main--info-heading">
+        <a
+          [routerLink]="['/week', day.toISOString()]"
+          class="day__main--info-heading-w"
+        >w</a>
+        <a
+          [routerLink]="['/day', day.toISOString()]"
+          class="day__main--info-heading-number"
+        >{{ day?.date() }}</a>
+      </h3>
 
       <app-day-item
         *ngIf="isLoaded"
+        [employeeId]="employeeId"
         [allShifts]="allShifts"
         [allScheduled]="allScheduled"
         [allMyPreferred]="allMyPreferred"

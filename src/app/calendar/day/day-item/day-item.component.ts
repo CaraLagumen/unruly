@@ -17,6 +17,7 @@ import {
   styleUrls: ["./day-item.component.scss"],
 })
 export class DayItemComponent implements OnInit {
+  @Input() employeeId: string;
   @Input() allShifts: Shift[];
   @Input() allScheduled: Scheduled[];
   @Input() allMyPreferred: Preferred[];
@@ -29,11 +30,16 @@ export class DayItemComponent implements OnInit {
   scheduled: Scheduled;
 
   shiftsOfTheDay: Shift[] = [];
+  isMyScheduled = false;
 
   constructor(private calendarService: CalendarService) {}
 
   ngOnInit() {
     this.addShiftsOfTheDay();
+  }
+
+  getFormattedHour(hour: number) {
+    return this.calendarService.getFormattedHour(hour);
   }
 
   getLocationStyle(shift: Shift) {
@@ -45,9 +51,8 @@ export class DayItemComponent implements OnInit {
       case `tower 1`:
       case `tower 2`:
       case `breaker`:
-        return { "grid-column": "3 / 4" };
       case `pool`:
-        return { "grid-column": "4 / 5" };
+        return { "grid-column": "3 / 4" };
     }
   }
 
@@ -65,6 +70,14 @@ export class DayItemComponent implements OnInit {
       this.day
     );
     this.scheduled = data[1];
+
+    if (data[1]) {
+      if (data[1].employee.id === this.employeeId) {
+        this.isMyScheduled = true;
+      } else {
+        this.isMyScheduled = false;
+      }
+    }
 
     return data[0];
   }

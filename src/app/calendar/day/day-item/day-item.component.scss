@@ -1,25 +1,73 @@
-.container {
+.day-item {
   display: grid;
-}
+  gap: 0.5rem;
 
-.shift-block {
-  width: 100%;
-  margin: 0.1rem;
+  &__main {
+    display: grid;
+    align-content: center;
 
-  background-color: white;
-  border: solid darkgray 0.1rem;
+    height: 8rem;
 
-  font-size: 0.8rem;
+    border-bottom: solid var(--color-blue) 0.1rem;
+
+    color: var(--color-dark);
+
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--color-blue);
+
+      color: white;
+    }
+
+    &--details {
+      height: 7rem;
+
+      font-size: var(--font-xsmall);
+      text-align: center;
+      text-transform: uppercase;
+
+      &-shift {
+        font-weight: 700;
+      }
+
+      &-employee {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        align-items: center;
+        justify-content: center;
+        gap: 0.1rem;
+
+        overflow-x: auto;
+
+        span {
+          border: solid var(--color-dark) 0.1rem;
+          margin-left: 0.1rem;
+          padding: 0.2rem 0.6rem;
+
+          white-space: nowrap;
+        }
+      }
+    }
+  }
 }
 
 .scheduled {
-  background-color: royalblue;
+  background-color: var(--color-yellow);
+
+  color: var(--color-dark);
+}
+
+.my-scheduled {
+  background-color: var(--color-lightblue) !important;
+
+  color: white !important;
 }
 
 .preferred {
-  border-bottom: solid darkblue 0.2rem;
+  border-bottom: solid white 0.2rem;
 }
 
 .vacation {
-  background-color: orange;
+  background-color: var(--color-green);
 }

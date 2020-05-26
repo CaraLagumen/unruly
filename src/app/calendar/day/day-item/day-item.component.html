@@ -1,27 +1,41 @@
 <div
   [ngClass]="{ 'vacation': isMyVacationDay() }"
-  class="container"
+  class="day-item"
 >
 
   <div
     *ngFor="let shift of shiftsOfTheDay;"
     (click)="onCalendarItemEmitter(shift); onEmployeeOptionsEmitter(shift);"
-    [ngClass]="{ 'scheduled': isScheduledShift(shift),
-    'preferred': isMyPreferredShift(shift) }"
     [ngStyle]="getLocationStyle(shift)"
-    class="shift-block"
+    class="day-item__main"
   >
-    {{ shift?.shiftStart[0] }} {{ shift?.shiftEnd[0] }}
-    {{ shift?.position }} {{ shift?.location }}
 
-    <div *ngIf="isScheduledShift(shift)">
-      {{ scheduled?.employee.firstName }}
-      {{ scheduled?.employee.lastName }}
-      {{ scheduled?.employee.position }}
-      {{ scheduled?.employee.status }}
-      {{ scheduled?.employee.seniority }}
-      {{ scheduled?.employee.hireDate }}
+    <div
+      [ngClass]="{ 'scheduled': isScheduledShift(shift),
+      'preferred': isMyPreferredShift(shift),
+      'my-scheduled': isMyScheduled }"
+      class="day-item__main--details"
+    >
+      <span class="day-item__main--details-shift">
+        {{ shift?.location.toUpperCase() }}
+        {{ getFormattedHour(shift?.shiftStart[0]) }} to
+        {{ getFormattedHour(shift?.shiftEnd[0]) }}
+      </span>
+
+      <div
+        *ngIf="isScheduledShift(shift)"
+        class="day-item__main--details-employee"
+      >
+        <div>
+          <span>{{ scheduled?.employee.lastName }}, {{ scheduled?.employee.firstName }}</span>
+          <span>{{ scheduled?.employee.position }}</span></div>
+        <div>
+          <span>{{ scheduled?.employee.status }}</span>
+          <span>Seniority: {{ scheduled?.employee.seniority }}</span>
+          <span>Hire date: {{ scheduled?.employee.hireDate | date:'shortDate' }}</span></div>
+      </div>
     </div>
+
   </div>
 
 </div>

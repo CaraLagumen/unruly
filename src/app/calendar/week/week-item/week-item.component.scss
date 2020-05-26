@@ -26,9 +26,11 @@
 
       font-size: var(--font-xsmall);
 
+      overflow: hidden;
+
       &-shift {
         grid-row: 1 / 2;
-        
+
         font-weight: 700;
       }
 
