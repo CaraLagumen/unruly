@@ -1,29 +1,60 @@
-.container {
-  overflow-y: auto;
+.week-item {
+  padding: 0.2rem 0.5rem;
 
-  height: 80%;
-}
+  &__main {
+    height: 4.5rem;
 
-.shift-block {
-  display: inline-block;
+    border-bottom: solid var(--color-blue) 0.1rem;
 
-  width: 8rem;
-  margin: 0.1rem;
+    color: var(--color-dark);
+    text-align: center;
 
-  background-color: white;
-  border: solid darkgray 0.1rem;
+    cursor: pointer;
 
-  font-size: 0.8rem;
+    &:hover {
+      background-color: var(--color-blue);
+
+      color: white;
+    }
+
+    &--details {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+      align-items: center;
+
+      height: 4rem;
+
+      font-size: var(--font-xsmall);
+
+      &-shift {
+        grid-row: 1 / 2;
+        
+        font-weight: 700;
+      }
+
+      &-employee {
+        grid-row: 2 / -1;
+      }
+    }
+  }
 }
 
 .scheduled {
-  background-color: royalblue;
+  background-color: var(--color-yellow);
+
+  color: var(--color-dark);
+}
+
+.my-scheduled {
+  background-color: var(--color-lightblue) !important;
+
+  color: white !important;
 }
 
 .preferred {
-  border-bottom: solid darkblue 0.2rem;
+  border-bottom: solid white 0.2rem;
 }
 
 .vacation {
-  background-color: orange;
+  background-color: var(--color-green);
 }

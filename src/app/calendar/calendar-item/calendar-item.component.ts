@@ -29,7 +29,6 @@ export class CalendarItemComponent implements OnInit {
 
   shiftsOfTheDay: Shift[] = [];
   isMyScheduled = false;
-  isLoaded = false;
 
   constructor(private calendarService: CalendarService) {}
 

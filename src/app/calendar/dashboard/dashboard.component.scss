@@ -49,8 +49,8 @@
       gap: 1rem;
 
       .preferred span {
-        background-color: var(--color-green) !important;
-        color: white !important;
+        background-color: white !important;
+        color: var(--color-dark) !important;
       }
 
       &-shift {
@@ -151,6 +151,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      justify-items: center;
       gap: 1rem;
 
       span {
@@ -201,4 +202,20 @@
   font-size: var(--font-xsmall);
   font-weight: 600;
   text-align: center;
+}
+
+#scheduled {
+  color: var(--color-yellow);
+}
+
+#my-scheduled {
+  color: var(--color-lightblue);
+}
+
+#preferred {
+  color: white;
+}
+
+#vacation {
+  color: var(--color-green);
 }

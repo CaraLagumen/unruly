@@ -17,6 +17,7 @@ import {
   styleUrls: ["./week-item.component.scss"],
 })
 export class WeekItemComponent implements OnInit {
+  @Input() employeeId: string;
   @Input() allShifts: Shift[];
   @Input() allScheduled: Scheduled[];
   @Input() allMyPreferred: Preferred[];
@@ -29,11 +30,16 @@ export class WeekItemComponent implements OnInit {
   scheduled: Scheduled;
 
   shiftsOfTheDay: Shift[] = [];
+  isMyScheduled = false;
 
   constructor(private calendarService: CalendarService) {}
 
   ngOnInit() {
     this.addShiftsOfTheDay();
+  }
+
+  getFormattedHour(hour: number) {
+    return this.calendarService.getFormattedHour(hour);
   }
 
   addShiftsOfTheDay() {
@@ -50,6 +56,14 @@ export class WeekItemComponent implements OnInit {
       this.day
     );
     this.scheduled = data[1];
+
+    if (data[1]) {
+      if (data[1].employee.id === this.employeeId) {
+        this.isMyScheduled = true;
+      } else {
+        this.isMyScheduled = false;
+      }
+    }
 
     return data[0];
   }
