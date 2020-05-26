@@ -36,8 +36,14 @@
   color: var(--color-dark);
 }
 
+.my-scheduled {
+  background-color: var(--color-green) !important;
+
+  color: white !important;
+}
+
 .preferred {
-  border-bottom: solid var(--color-lightblue) 0.2rem;
+  border-bottom: solid var(--color-green) 0.2rem;
 }
 
 .vacation {

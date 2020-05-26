@@ -11,7 +11,8 @@
 
     <div
       [ngClass]="{ 'scheduled': isScheduledShift(shift),
-      'preferred': isMyPreferredShift(shift) }"
+      'preferred': isMyPreferredShift(shift),
+      'my-scheduled': isMyScheduled }"
       class="calendar-item__main--details"
     >
       <span>{{ getFormattedLocation(shift?.location) }}

@@ -41,6 +41,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   employeeIsAuth = false;
   schedulerIsAuth = false;
+  employeeId = ``;
   date = moment();
   today = moment(); //FOR USE WITH URL - DO NOT ALTER
   calendarItemSubject = new Subject();
@@ -196,6 +197,10 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.employeeAuthListenerSub = userAuthData.employeeAuthListenerSub;
     this.schedulerIsAuth = userAuthData.schedulerIsAuth;
     this.schedulerAuthListenerSub = userAuthData.schedulerAuthListenerSub;
+
+    if (this.employeeIsAuth) {
+      this.employeeId = localStorage.getItem("userId");
+    }
   }
 
   //DASHBOARD----------------------------------------------------------

@@ -17,6 +17,7 @@ import {
   styleUrls: ["./calendar-item.component.scss"],
 })
 export class CalendarItemComponent implements OnInit {
+  @Input() employeeId: string;
   @Input() allShifts: Shift[];
   @Input() allScheduled: Scheduled[];
   @Input() allMyPreferred: Preferred[];
@@ -27,6 +28,8 @@ export class CalendarItemComponent implements OnInit {
   @Output() employeeOptionsEmitter = new EventEmitter<EmployeeOptions>();
 
   shiftsOfTheDay: Shift[] = [];
+  isMyScheduled = false;
+  isLoaded = false;
 
   constructor(private calendarService: CalendarService) {}
 
@@ -55,6 +58,14 @@ export class CalendarItemComponent implements OnInit {
       this.allScheduled,
       this.day
     );
+
+    if (data[1]) {
+      if (data[1].employee.id === this.employeeId) {
+        this.isMyScheduled = true;
+      } else {
+        this.isMyScheduled = false;
+      }
+    }
 
     return data[0];
   }
