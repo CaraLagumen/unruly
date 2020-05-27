@@ -105,3 +105,17 @@
 .inactive {
   background-color: var(--color-darkgray);
 }
+
+.placeholder {
+  height: 18rem;
+
+  background-color: var(--color-gray);
+
+  color: var(--color-darkblue);
+  font-size: var(--font-xsmall);
+  font-weight: 600;
+  line-height: 18rem;
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: middle;
+}

@@ -1,34 +1,50 @@
-<h1>Scheduler</h1>
+<div class="scheduler-login">
 
-<form
-  (submit)="onLogin(loginForm)"
-  #loginForm="ngForm"
-  *ngIf="!isLoaded"
->
+  <h1 class="scheduler-login__title">Scheduler</h1>
 
-  <span>Email</span>
-  <input
-    type="email"
-    required
-    ngModel
-    name="email"
-    #emailInput="ngModel"
+  <form
+    (submit)="onLogin(loginForm)"
+    #loginForm="ngForm"
+    *ngIf="!isLoaded"
+    class="scheduler-login__form"
   >
 
-  <span>Password</span>
-  <input
-    type="password"
-    required
-    minlength="8"
-    ngModel
-    name="password"
-    #passwordInput="ngModel"
-  >
+    <h4 class="scheduler-login__form--heading">Email</h4>
+    <input
+      type="email"
+      required
+      ngModel
+      name="email"
+      #emailInput="ngModel"
+      class="scheduler-login__form--input"
+    >
 
-  <a routerLink="/auth/scheduler/forgot">Forgot password</a>
+    <h4 class="scheduler-login__form--heading">Password</h4>
+    <input
+      type="password"
+      required
+      minlength="8"
+      ngModel
+      name="password"
+      #passwordInput="ngModel"
+      class="scheduler-login__form--input"
+    >
 
-  <button [disabled]="!loginForm.valid">Login</button>
+    <a
+      routerLink="/auth/scheduler/forgot"
+      class="scheduler-login__form--forgot a-minor"
+    >Forgot password</a>
 
-</form>
+    <button
+      [disabled]="!loginForm.valid"
+      class="scheduler-login__form--submit btn-auth"
+    >Login</button>
 
-<span *ngIf="isLoaded">Loading...</span>
+  </form>
+
+  <h3
+    *ngIf="isLoaded"
+    class="scheduler-login__loading"
+  >Logging you in...</h3>
+
+</div>

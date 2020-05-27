@@ -1,34 +1,50 @@
-<h1>Employee</h1>
+<div class="employee-login">
 
-<form
-  (submit)="onLogin(loginForm)"
-  #loginForm="ngForm"
-  *ngIf="!isLoaded"
->
+  <h1 class="employee-login__title">Employee</h1>
 
-  <span>Email</span>
-  <input
-    type="email"
-    required
-    ngModel
-    name="email"
-    #emailInput="ngModel"
+  <form
+    (submit)="onLogin(loginForm)"
+    #loginForm="ngForm"
+    *ngIf="!isLoaded"
+    class="employee-login__form"
   >
 
-  <span>Password</span>
-  <input
-    type="password"
-    required
-    minlength="8"
-    ngModel
-    name="password"
-    #passwordInput="ngModel"
-  >
+    <h4 class="employee-login__form--heading">Email</h4>
+    <input
+      type="email"
+      required
+      ngModel
+      name="email"
+      #emailInput="ngModel"
+      class="employee-login__form--input"
+    >
 
-  <a routerLink="/auth/employee/forgot">Forgot password</a>
+    <h4 class="employee-login__form--heading">Password</h4>
+    <input
+      type="password"
+      required
+      minlength="8"
+      ngModel
+      name="password"
+      #passwordInput="ngModel"
+      class="employee-login__form--input"
+    >
 
-  <button [disabled]="!loginForm.valid">Login</button>
+    <a
+      routerLink="/auth/employee/forgot"
+      class="employee-login__form--forgot a-minor"
+    >Forgot password</a>
 
-</form>
+    <button
+      [disabled]="!loginForm.valid"
+      class="employee-login__form--submit btn-auth"
+    >Login</button>
 
-<span *ngIf="isLoaded">Loading...</span>
+  </form>
+
+  <h3
+    *ngIf="isLoaded"
+    class="employee-login__loading"
+  >Logging you in...</h3>
+
+</div>

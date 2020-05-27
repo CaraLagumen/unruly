@@ -1,58 +1,73 @@
-<h1>Employee</h1>
+<div class="employee-register">
 
-<form
-  (submit)="onRegister(registerForm)"
-  #registerForm="ngForm"
-  *ngIf="!isLoaded"
->
+  <h1 class="employee-register__title">Employee</h1>
 
-  <span>First name</span>
-  <input
-    required
-    ngModel
-    name="firstName"
-    #nameInput="ngModel"
+  <form
+    (submit)="onRegister(registerForm)"
+    #registerForm="ngForm"
+    *ngIf="!isLoaded"
+    class="employee-register__form"
   >
 
-  <span>Last name</span>
-  <input
-    required
-    ngModel
-    name="lastName"
-    #nameInput="ngModel"
-  >
+    <div class="employee-register__form--name">
+      <h4>First name</h4>
+      <input
+        required
+        ngModel
+        name="firstName"
+        #nameInput="ngModel"
+      >
 
-  <span>Email</span>
-  <input
-    type="email"
-    required
-    ngModel
-    name="email"
-    #emailInput="ngModel"
-  >
+      <h4>Last name</h4>
+      <input
+        required
+        ngModel
+        name="lastName"
+        #nameInput="ngModel"
+      >
+    </div>
 
-  <span>Password</span>
-  <input
-    type="password"
-    required
-    minlength="8"
-    ngModel
-    name="password"
-    #passwordInput="ngModel"
-  >
+    <div class="employee-register__form--auth">
+      <h4>Email</h4>
+      <input
+        type="email"
+        required
+        ngModel
+        name="email"
+        #emailInput="ngModel"
+      >
 
-  <span>Password confirm</span>
-  <input
-    type="password"
-    required
-    minlength="8"
-    ngModel
-    name="passwordConfirm"
-    #passwordConfirmInput="ngModel"
-  >
+      <h4>Password</h4>
+      <input
+        type="password"
+        required
+        minlength="8"
+        ngModel
+        name="password"
+        #passwordInput="ngModel"
+      >
 
-  <button [disabled]="!registerForm.valid">Register</button>
+      <h4>Password confirm</h4>
+      <input
+        type="password"
+        required
+        minlength="8"
+        ngModel
+        name="passwordConfirm"
+        #passwordConfirmInput="ngModel"
+      >
+    </div>
 
-</form>
+    <button
+      [disabled]="!registerForm.valid"
+      class="employee-register__form--submit btn-auth"
+    >Register</button>
 
-<span *ngIf="isLoaded">Loading...</span>
+  </form>
+
+  <span
+    *ngIf="isLoaded"
+    class="employee-register__loading"
+  >Registering...</span>
+
+</div>
