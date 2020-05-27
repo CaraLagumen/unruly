@@ -2,7 +2,7 @@
   padding: 0.2rem 0.5rem;
 
   &__main {
-    height: 4.5rem;
+    height: 6rem;
 
     border-bottom: solid var(--color-blue) 0.1rem;
 
@@ -22,15 +22,17 @@
       grid-template-rows: 1fr 1fr;
       align-items: center;
 
-      height: 4rem;
+      height: 5.5rem;
 
-      font-size: var(--font-xsmall);
+      text-transform: uppercase;
+      // white-space: nowrap;
 
       overflow: hidden;
 
       &-shift {
         grid-row: 1 / 2;
 
+        font-size: var(--font-xsmall);
         font-weight: 700;
       }
 

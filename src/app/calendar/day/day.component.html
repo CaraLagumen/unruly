@@ -23,9 +23,12 @@
       class="day__nav--btn"
     >◄</button>
 
-    <h3 class="day__nav--month">
+    <h2
+      [routerLink]="['/calendar', day.toISOString()]"
+      class="day__nav--month"
+    >
       {{ day?.format('MMMM') }} {{ day?.format('YYYY') }}
-    </h3>
+    </h2>
 
     <button
       (click)="onNextDay()"

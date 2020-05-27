@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Subscription, Observable, forkJoin, Subject } from "rxjs";
 import * as moment from "moment";
 
@@ -49,12 +50,22 @@ export class CalendarComponent implements OnInit, OnDestroy {
   isLoaded = false;
 
   constructor(
+    private route: ActivatedRoute,
+    private router: Router,
     private shiftService: ShiftService,
     private scheduledService: ScheduledService,
     private preferredService: PreferredService,
     private vacationService: VacationService,
     private calendarService: CalendarService
-  ) {}
+  ) {
+    this.route.params.subscribe((param) => {
+      if (param) {
+        return (this.date = moment(param["date"]));
+      }
+      
+      return this.date;
+    });
+  }
 
   ngOnInit() {
     //1. INTIALIZE CALENDAR
@@ -101,16 +112,22 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   onCurrentMonth() {
     this.date = moment();
+    const param = this.date.toISOString();
+    this.router.navigate(["/calendar", param]);
     this.daysArr = this.createCalendar(this.date);
   }
 
   onPreviousMonth() {
     this.date.subtract(1, "M");
+    const param = this.date.toISOString();
+    this.router.navigate(["/calendar", param]);
     this.daysArr = this.createCalendar(this.date);
   }
 
   onNextMonth() {
     this.date.add(1, "M");
+    const param = this.date.toISOString();
+    this.router.navigate(["/calendar", param]);
     this.daysArr = this.createCalendar(this.date);
   }
 
