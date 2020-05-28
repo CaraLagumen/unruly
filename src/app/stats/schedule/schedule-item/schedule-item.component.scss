@@ -1,9 +1,79 @@
-.container {
+.schedule-item {
+  position: relative;
   display: grid;
+  z-index: 1000;
+
+  height: inherit;
+  padding: 0.2rem 0.5rem;
+
+  &__main {
+    height: 6rem;
+
+    border-bottom: solid white 0.1rem;
+
+    background-color: var(--color-blue);
+
+    color: white;
+    text-align: center;
+
+    &:hover {
+      background-color: var(--color-yellow);
+
+      color: var(--color-dark);
+    }
+
+    &--details {
+      display: grid;
+      grid-template-rows: 1fr 1fr;
+
+      height: 5.5rem;
+
+      text-transform: uppercase;
+
+      overflow: hidden;
+
+      &-1 {
+        grid-row: 1 / 2;
+        align-self: flex-end;
+
+        font-size: var(--font-xsmall);
+        font-weight: 700;
+      }
+
+      &-2 {
+        grid-row: 2 / -1;
+        align-self: flex-start;
+      }
+    }
+  }
+
+  &__empty {
+    height: 6rem;
+  }
 }
 
 .scheduled {
-  height: 8vh;
+  background-color: var(--color-yellow);
 
-  border: solid 1px white;
+  color: var(--color-dark);
+}
+
+.my-scheduled {
+  background-color: var(--color-lightblue) !important;
+
+  color: white !important;
+}
+
+.preferred {
+  border-bottom: solid white 0.2rem;
+}
+
+.vacation {
+  background-color: var(--color-green);
+}
+
+.hovered {
+  background-color: var(--color-yellow);
+
+  color: var(--color-dark);
 }

@@ -1,52 +1,77 @@
-<div class="calendar">
-  <div class="calendar__nav">
+<div class="schedule">
 
-    <button (click)="onCurrentWeek()">Current week</button>
+  <div class="schedule__nav">
+
+    <h1 class="schedule__nav--title">
+      Schedule
+    </h1>
 
     <button
       (click)="onPreviousWeek()"
-      class="calendar__nav--btn"
+      class="schedule__nav--btn"
     >◄</button>
 
-    <h3 class="calendar__nav--week">
+    <h2
+      [routerLink]="['/calendar', date.toISOString()]"
+      class="schedule__nav--month"
+    >
       {{ date?.format('MMMM') }} {{ date?.format('YYYY') }}
-    </h3>
+    </h2>
 
     <button
       (click)="onNextWeek()"
-      class="calendar__nav--btn"
+      class="schedule__nav--btn"
     >►</button>
+
+    <button
+      (click)="onCurrentWeek()"
+      class="schedule__nav--btn btn-nav"
+    >Current week</button>
 
   </div>
 
-  <div class="calendar__main">
+  <div class="schedule__main">
 
-    <div class="calendar__main--employees">
+    <div class="schedule__main--employees">
 
-      <h4 class="calendar__main--employees-heading">
+      <h4 class="schedule__main--employees-heading">
         Employee names
       </h4>
 
       <div
         *ngFor="let employee of allEmployees"
-        class="calendar__main--employees-names"
+        class="schedule__main--employees-item"
       >
-        {{ employee?.lastName }}, {{ employee?.firstName }}
+
+        <div class="schedule__main--employees-item-name">
+          <span>{{ employee?.lastName }}, {{ employee?.firstName }}</span>
+          <span>{{ employee?.position }}</span>
+        </div>
+        <div class="schedule__main--employees-item-details">
+          <span>{{ employee?.status }}</span>
+          <span>Seniority: {{ employee?.seniority }}</span>
+          <span>Hire date: {{ employee?.hireDate | date:'shortDate' }}</span>
+        </div>
+
+        <div class="guide"></div>
+
       </div>
 
     </div>
 
     <div
       *ngFor="let day of daysArr"
-      [ngClass]="{ 'today': isToday(day) }"
-      class="calendar__main--days"
+      class="schedule__main--days"
     >
 
-      <h4 class="calendar__main--days-heading">{{ day?.format('ddd').toUpperCase() }}</h4>
+      <h4 class="schedule__main--days-heading">{{ day?.format('ddd').toUpperCase() }}</h4>
 
-      <div class="calendar__main--days-info">
+      <div
+        [ngClass]="{ 'today': isToday(day) }"
+        class="schedule__main--days-info"
+      >
 
-        <h4 [routerLink]="['/day', day.toISOString()]">{{ day?.date() }}</h4>
+        <h3 [routerLink]="['/day', day.toISOString()]">{{ day?.date() }}</h3>
 
         <app-schedule-item
           *ngIf="isLoaded"
@@ -60,4 +85,5 @@
     </div>
 
   </div>
+
 </div>

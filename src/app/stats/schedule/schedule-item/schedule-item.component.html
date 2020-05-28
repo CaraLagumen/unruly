@@ -1,18 +1,36 @@
 <div
   [ngStyle]="getRowStyle()"
-  class="container"
+  class="schedule-item"
 >
 
   <div
     *ngFor="let scheduled of scheduledOfTheDay"
     [ngStyle]="getScheduledStyle(scheduled?.employee.id)"
-    class="scheduled"
+    class="schedule-item__main"
   >
-    <div *ngIf="isLoaded">
-      {{ getFormattedHour(scheduled?.shift.shiftStart[0]) }}
-      {{ getFormattedHour(scheduled?.shift.shiftEnd[0]) }}
-      {{ scheduled?.shift.position }} {{ scheduled?.shift.location }}
+
+    <div
+      *ngIf="isLoaded"
+      class="schedule-item__main--details"
+    >
+      <span class="schedule-item__main--details-1">
+        {{ scheduled?.shift.location.toUpperCase() }}
+        {{ getFormattedHour(scheduled?.shift.shiftStart[0]) }} to
+        {{ getFormattedHour(scheduled?.shift.shiftEnd[0]) }}
+      </span>
+
+      <span class="schedule-item__main--details-2">
+        {{ scheduled?.shift.slot }}
+        {{ scheduled?.shift.position }}
+      </span>
     </div>
+
+  </div>
+
+  <div
+    *ngIf="scheduledOfTheDay.length === 0"
+    class="schedule-item__empty"
+  >
   </div>
 
 </div>

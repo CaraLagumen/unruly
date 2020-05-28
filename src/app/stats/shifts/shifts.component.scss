@@ -1,4 +1,91 @@
-span {
-  color: gray;
-  font-size: 0.4rem;
+.shifts {
+  display: grid;
+
+  padding: 0.5rem 2rem;
+
+  background-color: var(--color-gray);
+
+  &__title {
+    grid-column: 1 / -1;
+    grid-row: 1 / 2;
+
+    display: flex;
+    align-items: center;
+
+    height: 4rem;
+
+    color: var(--color-lightblue);
+  }
+
+  &__weekly {
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
+
+    display: grid;
+
+    &--heading {
+      grid-column: 1 / -1;
+      grid-row: 1 / 2;
+
+      padding-right: 2rem;
+      border-bottom: solid white 0.2rem;
+      margin-bottom: 1rem;
+
+      background-color: var(--color-darkblue);
+      text-align: right;
+    }
+
+    &--keys {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 0.6rem;
+
+      padding: 0.2rem 0.6rem;
+
+      span {
+        width: 100%;
+        margin-bottom: 0.8rem;
+
+        background-color: var(--color-dark);
+
+        color: var(--color-gray);
+        font-size: var(--font-xsmall);
+        font-weight: 700;
+        text-align: center;
+        text-transform: uppercase;
+      }
+    }
+
+    &--values {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 0.2rem;
+
+      padding: 0.2rem 0.6rem;
+
+      &-name {
+        background-color: var(--color-lightblue);
+
+        color: white !important;
+        font-weight: 600;
+      }
+
+      span {
+        width: 100%;
+        margin-bottom: 0.8rem;
+
+        border-bottom: solid var(--color-lightblue) 0.1rem;
+
+        color: var(--color-dark);
+        font-size: var(--font-xsmall);
+        text-align: center;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  &__individual {
+    grid-column: 1 / -1;
+    grid-row: 3 / 4;
+  }
 }

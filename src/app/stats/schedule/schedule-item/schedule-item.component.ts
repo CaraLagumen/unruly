@@ -28,7 +28,12 @@ export class ScheduleItemComponent implements OnInit {
     );
   }
 
+  getFormattedHour(hour: number) {
+    return this.calendarService.getFormattedHour(hour);
+  }
+
   getRowStyle() {
+    //CLARIFY NUMBER OF grid-row FROM NUMBER OF EMPLOYEES
     const rows = `repeat(${this.allEmployees.length}, 1fr)`;
 
     return {
@@ -37,6 +42,7 @@ export class ScheduleItemComponent implements OnInit {
   }
 
   getScheduledStyle(employeeId: string) {
+    //grid-row WILL BE BASED ON INDEX OF EMPLOYEE IN THE ARR
     const indexOfEmployee = this.allEmployees.findIndex(
       (employee: Employee) => employee.id === employeeId
     );
@@ -47,9 +53,5 @@ export class ScheduleItemComponent implements OnInit {
     return {
       "grid-row": gridRow,
     };
-  }
-
-  getFormattedHour(hour: number) {
-    return this.calendarService.getFormattedHour(hour);
   }
 }

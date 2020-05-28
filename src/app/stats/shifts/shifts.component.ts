@@ -3,6 +3,7 @@ import { Observable } from "rxjs";
 
 import { ShiftService } from "../../shared/services/shift/shift.service";
 import { WeeklyShiftService } from "../../shared/services/shift/weekly-shift.service";
+import { CalendarService } from "src/app/calendar/calendar.service";
 import { Shift } from "../../shared/models/shift/shift.model";
 import { WeeklyShift } from "../../shared/models/shift/weekly-shift.model";
 import { ShiftProperties } from "../../shared/tools/custom-classes";
@@ -20,11 +21,20 @@ export class ShiftsComponent implements OnInit {
 
   constructor(
     private shiftService: ShiftService,
-    private weeklyShiftService: WeeklyShiftService
+    private weeklyShiftService: WeeklyShiftService,
+    private calendarService: CalendarService
   ) {}
 
   ngOnInit() {
     this.shifts$ = this.shiftService.getRawAllShifts();
     this.weeklyShifts$ = this.weeklyShiftService.getAllWeeklyShifts();
+  }
+
+  getFormattedHour(hour: number) {
+    return this.calendarService.getFormattedHour(hour);
+  }
+
+  getFormattedLocation(location: string) {
+    return this.calendarService.getFormattedLocation(location);
   }
 }

@@ -1,24 +1,70 @@
-<h1>Shift statistics</h1>
+<div class="shifts">
 
-<h3>Weekly shifts</h3>
-<div *ngFor="let weeklyShift of (weeklyShifts$ | async)">
-  {{ weeklyShift?.name }}
-  {{ weeklyShift?.position }}
-  {{ weeklyShift?.slot }}
-  {{ weeklyShift?.location }}
-  {{ weeklyShift?.shiftDay1.shiftStart[0] }}
-  {{ weeklyShift?.shiftDay2.shiftStart[0] }}
-  {{ weeklyShift?.shiftDay3.shiftStart[0] }}
-  {{ weeklyShift?.shiftDay4.shiftStart[0] }}
-  {{ weeklyShift?.shiftDay5.shiftStart[0] }}
-</div>
+  <h1 class="shifts__title">Shifts</h1>
 
-<h3>Shifts</h3>
-<div *ngFor="let shift of (shifts$ | async)">
-  {{ shift?.position }}
-  {{ shift?.slot }}
-  {{ shift?.location }}
-  {{ shift?.shiftStart[0] }}
-  {{ days[shift?.day] }}
-  {{ shift?.shiftEnd[0] }}
+  <div class="shifts__weekly">
+
+    <h2 class="shifts__weekly--heading">Weekly shifts</h2>
+
+    <div class="shifts__weekly--keys">
+      <span>Name</span>
+      <span>Position</span>
+      <span>Slot</span>
+      <span>Location</span>
+      <span>Day 1</span>
+      <span>Day 2</span>
+      <span>Day 3</span>
+      <span>Day 4</span>
+      <span>Day 5</span>
+    </div>
+
+    <div
+      *ngFor="let weeklyShift of (weeklyShifts$ | async)"
+      class="shifts__weekly--values"
+    >
+      <span class="shifts__weekly--values-name">{{ weeklyShift?.name }}</span>
+      <span>{{ weeklyShift?.position }}</span>
+      <span>{{ weeklyShift?.slot }}</span>
+      <span>{{ weeklyShift?.location }}</span>
+      <span>{{ getFormattedLocation(weeklyShift?.shiftDay1.location) }}
+        {{ getFormattedHour(weeklyShift?.shiftDay1.shiftStart[0]) }}</span>
+      <span>{{ getFormattedLocation(weeklyShift?.shiftDay2.location) }}
+        {{ getFormattedHour(weeklyShift?.shiftDay2.shiftStart[0]) }}</span>
+      <span>{{ getFormattedLocation(weeklyShift?.shiftDay3.location) }}
+        {{ getFormattedHour(weeklyShift?.shiftDay3.shiftStart[0]) }}</span>
+      <span>{{ getFormattedLocation(weeklyShift?.shiftDay4.location) }}
+        {{ getFormattedHour(weeklyShift?.shiftDay4.shiftStart[0]) }}</span>
+      <span>{{ getFormattedLocation(weeklyShift?.shiftDay5.location) }}
+        {{ getFormattedHour(weeklyShift?.shiftDay5.shiftStart[0]) }}</span>
+    </div>
+
+  </div>
+
+  <div class="shifts__individual">
+
+    <h2 class="shifts__individual--heading">Shifts</h2>
+
+    <div class="shifts__individual--keys">
+      <span>Position</span>
+      <span>Slot</span>
+      <span>Location</span>
+      <span>Day</span>
+      <span>Shift start</span>
+      <span>Shift end</span>
+    </div>
+
+    <div
+      *ngFor="let shift of (shifts$ | async)"
+      class="shifts__individual--values"
+    >
+      <span>{{ shift?.position }}</span>
+      <span>{{ shift?.slot }}</span>
+      <span>{{ shift?.location }}</span>
+      <span>{{ days[shift?.day] }}</span>
+      <span>{{ shift?.shiftStart[0] }}</span>
+      <span>{{ shift?.shiftEnd[0] }}</span>
+    </div>
+
+  </div>
+
 </div>

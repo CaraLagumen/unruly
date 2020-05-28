@@ -265,8 +265,8 @@ export class AuthService {
     this.clearAuthData();
     clearTimeout(this.tokenTimer);
 
-    //3. REROUTE
-    this.router.navigate(["/"]);
+    //3. RELOAD
+    location.reload();
   }
 
   changePassword(

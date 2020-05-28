@@ -28,11 +28,13 @@
       >
         <div>
           <span>{{ scheduled?.employee.lastName }}, {{ scheduled?.employee.firstName }}</span>
-          <span>{{ scheduled?.employee.position }}</span></div>
+          <span>{{ scheduled?.employee.position }}</span>
+        </div>
         <div>
           <span>{{ scheduled?.employee.status }}</span>
           <span>Seniority: {{ scheduled?.employee.seniority }}</span>
-          <span>Hire date: {{ scheduled?.employee.hireDate | date:'shortDate' }}</span></div>
+          <span>Hire date: {{ scheduled?.employee.hireDate | date:'shortDate' }}</span>
+        </div>
       </div>
     </div>
 

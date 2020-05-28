@@ -16,6 +16,6 @@ export interface ScheduledData {
   shift: string;
   employee: string;
   scheduler?: string;
-  date: any;
+  date: any; //FLEXIBLITY FOR SUBMITTING FORMS
   createdAt?: Date;
 }

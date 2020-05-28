@@ -20,17 +20,16 @@
     &--details {
       display: grid;
       grid-template-rows: 1fr 1fr;
-      align-items: center;
 
       height: 5.5rem;
 
       text-transform: uppercase;
-      // white-space: nowrap;
 
       overflow: hidden;
 
       &-shift {
         grid-row: 1 / 2;
+        align-self: flex-end;
 
         font-size: var(--font-xsmall);
         font-weight: 700;
@@ -38,6 +37,7 @@
 
       &-employee {
         grid-row: 2 / -1;
+        align-self: flex-start;
       }
     }
   }
