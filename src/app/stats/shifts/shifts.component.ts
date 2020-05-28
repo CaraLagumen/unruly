@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 import { ShiftService } from "../../shared/services/shift/shift.service";
 import { WeeklyShiftService } from "../../shared/services/shift/weekly-shift.service";
@@ -14,7 +15,9 @@ import { ShiftProperties } from "../../shared/tools/custom-classes";
   styleUrls: ["./shifts.component.scss"],
 })
 export class ShiftsComponent implements OnInit {
-  shifts$: Observable<Shift[]>;
+  shiftsRT$: Observable<Shift[]>;
+  shiftsFC$: Observable<Shift[]>;
+  shiftsEtc$: Observable<Shift[]>;
   weeklyShifts$: Observable<WeeklyShift[]>;
 
   days = ShiftProperties.daysInWords;
@@ -26,8 +29,37 @@ export class ShiftsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.shifts$ = this.shiftService.getRawAllShifts();
     this.weeklyShifts$ = this.weeklyShiftService.getAllWeeklyShifts();
+
+    this.shiftsRT$ = this.shiftService
+      .getRawAllShifts()
+      .pipe(
+        map((shifts: Shift[]) =>
+          shifts.filter((shift: Shift) => shift.location === `rotunda`)
+        )
+      );
+
+    this.shiftsFC$ = this.shiftService
+      .getRawAllShifts()
+      .pipe(
+        map((shifts: Shift[]) =>
+          shifts.filter((shift: Shift) => shift.location === `food court`)
+        )
+      );
+
+    this.shiftsEtc$ = this.shiftService
+      .getRawAllShifts()
+      .pipe(
+        map((shifts: Shift[]) =>
+          shifts.filter(
+            (shift: Shift) =>
+              shift.location === `tower 1` ||
+              shift.location === `tower 2` ||
+              shift.location === `pool` ||
+              shift.location === `breaker`
+          )
+        )
+      );
   }
 
   getFormattedHour(hour: number) {

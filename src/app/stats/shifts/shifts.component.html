@@ -42,27 +42,78 @@
 
   <div class="shifts__individual">
 
-    <h2 class="shifts__individual--heading">Shifts</h2>
+    <div class="shifts__individual--section rotunda">
+      <h2 class="shifts__individual--section-heading">Rotunda barista</h2>
 
-    <div class="shifts__individual--keys">
-      <span>Position</span>
-      <span>Slot</span>
-      <span>Location</span>
-      <span>Day</span>
-      <span>Shift start</span>
-      <span>Shift end</span>
+      <div class="shifts__individual--section-keys">
+        <span>Slot</span>
+        <span>Day</span>
+        <span>Shift start</span>
+        <span>Shift end</span>
+      </div>
+
+      <div class="scroll-container">
+        <div
+          *ngFor="let shift of (shiftsRT$ | async)"
+          class="shifts__individual--section-values"
+        >
+          <span>{{ shift?.slot }}</span>
+          <span>{{ days[shift?.day] }}</span>
+          <span>{{ getFormattedHour(shift?.shiftStart[0]) }}</span>
+          <span>{{ getFormattedHour(shift?.shiftEnd[0]) }}</span>
+        </div>
+      </div>
     </div>
 
-    <div
-      *ngFor="let shift of (shifts$ | async)"
-      class="shifts__individual--values"
-    >
-      <span>{{ shift?.position }}</span>
-      <span>{{ shift?.slot }}</span>
-      <span>{{ shift?.location }}</span>
-      <span>{{ days[shift?.day] }}</span>
-      <span>{{ shift?.shiftStart[0] }}</span>
-      <span>{{ shift?.shiftEnd[0] }}</span>
+
+    <div class="shifts__individual--section food-court">
+      <h2 class="shifts__individual--section-heading">Food court barista</h2>
+
+      <div class="shifts__individual--section-keys">
+        <span>Slot</span>
+        <span>Day</span>
+        <span>Shift start</span>
+        <span>Shift end</span>
+      </div>
+
+      <div class="scroll-container">
+        <div
+          *ngFor="let shift of (shiftsFC$ | async)"
+          class="shifts__individual--section-values"
+        >
+          <span>{{ shift?.slot }}</span>
+          <span>{{ days[shift?.day] }}</span>
+          <span>{{ getFormattedHour(shift?.shiftStart[0]) }}</span>
+          <span>{{ getFormattedHour(shift?.shiftEnd[0]) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="shifts__individual--section etc">
+      <h2 class="shifts__individual--section-heading etc__location">Others</h2>
+
+      <div class="shifts__individual--section-keys etc__keys">
+        <span>Location</span>
+        <span>Position</span>
+        <span>Slot</span>
+        <span>Day</span>
+        <span>Shift start</span>
+        <span>Shift end</span>
+      </div>
+
+      <div class="scroll-container">
+        <div
+          *ngFor="let shift of (shiftsEtc$ | async)"
+          class="shifts__individual--section-values etc__values"
+        >
+          <span>{{ shift?.location }}</span>
+          <span>{{ shift?.position }}</span>
+          <span>{{ shift?.slot }}</span>
+          <span>{{ days[shift?.day] }}</span>
+          <span>{{ getFormattedHour(shift?.shiftStart[0]) }}</span>
+          <span>{{ getFormattedHour(shift?.shiftEnd[0]) }}</span>
+        </div>
+      </div>
     </div>
 
   </div>
