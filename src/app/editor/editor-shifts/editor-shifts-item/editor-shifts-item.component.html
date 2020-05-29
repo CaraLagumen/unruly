@@ -1,37 +1,73 @@
-<div class="options">
+<div class="editor-shifts-item">
 
-  <div>
-    <h3>Shifts</h3>
+  <div class="editor-shifts-item__weekly">
 
-    <div *ngFor="let shift of (shifts | async)">
-      <button (click)="onSelectShift(shift, selectedShiftDayNumber)">Select</button>
-      <button (click)="onDeleteShift(shift)">Delete</button>
-      {{ shift?.position}}
-      {{ shift?.slot }}
-      {{ shift?.location }}
-      {{ days[shift?.day] }}
-      {{ shift?.shiftStart[0] }}
-      {{ shift?.shiftEnd[0] }}
+    <h2 class="editor-shifts-item__weekly--heading">Weekly shifts</h2>
+
+    <div class="editor-shifts-item__weekly--keys">
+      <span>Select</span>
+      <span>Delete</span>
+      <span>Name</span>
+      <span>Position</span>
+      <span>Slot</span>
+      <span>Location</span>
+      <span>Day1</span>
+      <span>Day2</span>
+      <span>Day3</span>
+      <span>Day4</span>
+      <span>Day5</span>
+    </div>
+
+    <div class="scroll-container">
+      <div
+        *ngFor="let weeklyShift of (weeklyShifts$ | async)"
+        class="editor-shifts-item__weekly--values"
+      >
+        <button (click)="onSelectWeeklyShift(weeklyShift)">Select</button>
+        <button (click)="onDeleteWeeklyShift(weeklyShift)">Delete</button>
+        <span class="editor-shifts-item__weekly--values-name">{{ weeklyShift?.name }}</span>
+        <span>{{ weeklyShift?.position }}</span>
+        <span>{{ weeklyShift?.slot }}</span>
+        <span>{{ getFormattedLocation(weeklyShift?.location) }}</span>
+        <span>{{ getFormattedLocation(weeklyShift?.shiftDay1.location) }}{{ getFormattedHour(weeklyShift?.shiftDay1.shiftStart[0]) }}</span>
+        <span>{{ getFormattedLocation(weeklyShift?.shiftDay2.location) }}{{ getFormattedHour(weeklyShift?.shiftDay2.shiftStart[0]) }}</span>
+        <span>{{ getFormattedLocation(weeklyShift?.shiftDay3.location) }}{{ getFormattedHour(weeklyShift?.shiftDay3.shiftStart[0]) }}</span>
+        <span>{{ getFormattedLocation(weeklyShift?.shiftDay4.location) }}{{ getFormattedHour(weeklyShift?.shiftDay4.shiftStart[0]) }}</span>
+        <span>{{ getFormattedLocation(weeklyShift?.shiftDay5.location) }}{{ getFormattedHour(weeklyShift?.shiftDay5.shiftStart[0]) }}</span>
+      </div>
     </div>
 
   </div>
 
-  <div>
-    <h3>Weekly shifts</h3>
+  <div class="editor-shifts-item__individual">
 
-    <div *ngFor="let weeklyShift of (weeklyShifts | async)">
-      <button (click)="onSelectWeeklyShift(weeklyShift)">Select</button>
-      <button (click)="onDeleteWeeklyShift(weeklyShift)">Delete</button>
-      {{ weeklyShift?.name }}
-      {{ weeklyShift?.position}}
-      {{ weeklyShift?.slot }}
-      {{ weeklyShift?.location }}
-      {{ weeklyShift?.shiftDay1.shiftStart[0] }}
-      {{ weeklyShift?.shiftDay2.shiftStart[0] }}
-      {{ weeklyShift?.shiftDay3.shiftStart[0] }}
-      {{ weeklyShift?.shiftDay4.shiftStart[0] }}
-      {{ weeklyShift?.shiftDay5.shiftStart[0] }}
+    <h2 class="editor-shifts-item__individual--heading">Shifts</h2>
+
+    <div class="editor-shifts-item__individual--keys">
+      <span>Select</span>
+      <span>Delete</span>
+      <span>Slot</span>
+      <span>Location</span>
+      <span>Day</span>
+      <span>Start</span>
+      <span>End</span>
     </div>
+
+    <div class="scroll-container">
+      <div
+        *ngFor="let shift of (shifts$ | async)"
+        class="editor-shifts-item__individual--values"
+      >
+        <button (click)="onSelectShift(shift)">Select</button>
+        <button (click)="onDeleteShift(shift)">Delete</button>
+        <span>{{ shift?.slot }}</span>
+        <span>{{ getFormattedLocation(shift?.location) }}</span>
+        <span>{{ daysInWords[shift?.day] }}</span>
+        <span>{{ getFormattedHour(shift?.shiftStart[0]) }}</span>
+        <span>{{ getFormattedHour(shift?.shiftEnd[0]) }}</span>
+      </div>
+    </div>
+
   </div>
 
 </div>

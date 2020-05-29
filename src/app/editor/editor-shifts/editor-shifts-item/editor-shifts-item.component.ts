@@ -1,7 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 
+import { CalendarService } from '../../../calendar/calendar.service';
 import { Shift } from "../../../shared/models/shift/shift.model";
 import { WeeklyShift } from "../../../shared/models/shift/weekly-shift.model";
+import { ShiftProperties } from '../../../shared/tools/custom-classes';
 
 @Component({
   selector: "app-editor-shifts-item",
@@ -9,8 +11,8 @@ import { WeeklyShift } from "../../../shared/models/shift/weekly-shift.model";
   styleUrls: ["./editor-shifts-item.component.scss"],
 })
 export class EditorShiftsItemComponent implements OnInit {
-  @Input() shifts: Shift[];
-  @Input() weeklyShifts: WeeklyShift[];
+  @Input() shifts$: Shift[];
+  @Input() weeklyShifts$: WeeklyShift[];
   @Input() days: number[];
   @Input() selectedShiftDayNumber: 1 | 2 | 3 | 4 | 5;
 
@@ -18,9 +20,19 @@ export class EditorShiftsItemComponent implements OnInit {
     [Shift | WeeklyShift, string]
   >();
 
-  constructor() {}
+  daysInWords = ShiftProperties.daysInWords;
+
+  constructor(private calendarService: CalendarService) {}
 
   ngOnInit() {}
+
+  getFormattedHour(hour: number) {
+    return this.calendarService.getFormattedHour(hour);
+  }
+
+  getFormattedLocation(location: string) {
+    return this.calendarService.getFormattedLocation(location);
+  }
 
   onSelectShift(shift: Shift) {
     this.editorShiftsEmitter.emit([shift, `onSelectShift`]);

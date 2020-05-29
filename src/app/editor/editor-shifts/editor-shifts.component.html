@@ -170,8 +170,8 @@
   </div>
 
   <app-editor-shifts-item
-    [shifts]="shifts$"
-    [weeklyShifts]="weeklyShifts$"
+    [shifts$]="shifts$"
+    [weeklyShifts$]="weeklyShifts$"
     [days]="days"
     [selectedShiftDayNumber]="selectedShiftDayNumber"
     (editorShiftsEmitter)="onEditorShiftsControl($event)"

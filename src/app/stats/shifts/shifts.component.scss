@@ -118,13 +118,6 @@
       display: grid;
       align-self: start;
 
-      .scroll-container {
-        height: 50vh;
-        margin-right: -1.6rem;
-
-        overflow-x: auto;
-      }
-
       &-heading {
         grid-column: 1 / -1;
         grid-row: 1 / 2;

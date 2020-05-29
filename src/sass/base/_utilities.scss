@@ -1,0 +1,12 @@
+.loading {
+  background-color: var(--color-gray);
+
+  text-align: center;
+}
+
+.scroll-container {
+  height: 50vh;
+  margin-right: -1.6rem;
+
+  overflow-x: auto;
+}
