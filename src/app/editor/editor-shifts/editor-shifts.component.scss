@@ -1,0 +1,173 @@
+.editor-shifts {
+  display: grid;
+  gap: 2rem;
+
+  padding: 0.5rem 2rem;
+
+  background-color: var(--color-darkgray);
+
+  &__title {
+    grid-column: 1 / -1;
+    grid-row: 1 / 2;
+
+    display: flex;
+    align-items: center;
+
+    height: 4rem;
+    padding-left: 1rem;
+
+    background-color: var(--color-black);
+
+    color: var(--color-darkgray);
+  }
+
+  &__weekly {
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
+
+    display: grid;
+
+    &--heading {
+      grid-column: 1 / -1;
+      grid-row: 1 / 2;
+
+      padding-right: 2rem;
+      border-bottom: solid white 0.2rem;
+      margin-bottom: 1rem;
+
+      background-color: var(--color-dark);
+      text-align: right;
+    }
+
+    &--form {
+      display: grid;
+      align-content: center;
+      align-items: center;
+      gap: 1rem;
+
+      padding: 1.5rem 3rem;
+
+      background-color: var(--color-gray);
+
+      &-row1 {
+        grid-row: 1 / 2;
+
+        display: grid;
+        grid-template-columns: repeat(8, auto);
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+      }
+
+      &-row2 {
+        grid-row: 2 / 3;
+
+        display: grid;
+        grid-template-columns: repeat(6, auto);
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+      }
+
+      &-row3 {
+        grid-row: 3 / 4;
+
+        display: grid;
+        grid-template-columns: repeat(4, auto);
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+      }
+
+      h4 {
+        border-right: solid var(--color-dark) 0.18rem;
+        padding-right: 0.5rem;
+        margin-right: -0.5rem;
+
+        color: var(--color-dark);
+        font-weight: 700;
+        text-align: right;
+      }
+
+      input,
+      select {
+        color: var(--color-darkblue);
+        font-size: var(--font-xsmall);
+
+        background-color: white;
+
+        padding: 0.4rem 0.8rem;
+      }
+    }
+  }
+
+  &__individual {
+    grid-column: 1 / -1;
+    grid-row: 3 / 4;
+
+    display: grid;
+
+    &--heading {
+      grid-column: 1 / -1;
+      grid-row: 1 / 2;
+
+      padding-right: 2rem;
+      border-bottom: solid white 0.2rem;
+      margin-bottom: 1rem;
+
+      background-color: var(--color-dark);
+      text-align: right;
+    }
+
+    &--form {
+      display: grid;
+      align-content: center;
+      align-items: center;
+      gap: 1rem;
+
+      padding: 1.5rem 3rem;
+
+      background-color: var(--color-gray);
+
+      &-row1 {
+        grid-row: 1 / 2;
+
+        display: grid;
+        grid-template-columns: repeat(6, auto);
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+      }
+
+      &-row2 {
+        grid-row: 2 / 3;
+
+        display: grid;
+        grid-template-columns: repeat(5, auto);
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+      }
+
+      h4 {
+        border-right: solid var(--color-dark) 0.18rem;
+        padding-right: 0.5rem;
+        margin-right: -0.5rem;
+
+        color: var(--color-dark);
+        font-weight: 700;
+        text-align: right;
+      }
+
+      input,
+      select {
+        color: var(--color-darkblue);
+        font-size: var(--font-xsmall);
+
+        background-color: white;
+
+        padding: 0.4rem 0.8rem;
+      }
+    }
+  }
+}

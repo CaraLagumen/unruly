@@ -21,8 +21,14 @@
       class="roster__employees--values"
     >
       <div class="roster__employees--values-name">
-        <div class="text">{{ employee?.lastName }}, {{ employee?.firstName }}</div>
-        <div class="guide"></div>
+        <div
+          [ngStyle]="getEmployeeLoggedInStyle(employee.id, 'item')"
+          class="text"
+        >{{ employee?.lastName }}, {{ employee?.firstName }}</div>
+        <div
+          [ngStyle]="getEmployeeLoggedInStyle(employee.id, 'guide')"
+          class="guide"
+        ></div>
       </div>
       <span class="roster__employees--values-item">{{ employee?.position }}</span>
       <span class="roster__employees--values-item">{{ employee?.status }}</span>

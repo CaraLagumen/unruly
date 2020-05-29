@@ -1,68 +1,92 @@
-<div>
+<div class="editor-scheduled">
 
-  <h2>Create schedule</h2>
+  <h1 class="editor-scheduled__title">Schedule editor</h1>
 
-  <form
-    (submit)="onCreateScheduled()"
-    [formGroup]="createScheduledForm"
-  >
+  <div class="editor-scheduled__weekly">
 
-    <span>Shift</span>
-    <input
-      formControlName="shiftControl"
-      type="text"
+    <h2 class="editor-scheduled__weekly--heading">Create weekly scheduled</h2>
+
+    <form
+      (submit)="onCreateWeeklyScheduled()"
+      [formGroup]="createWeeklyScheduledForm"
+      class="editor-scheduled__weekly--form"
     >
 
-    <span>Employee</span>
-    <input
-      (click)="onSelectFormForEmployee('scheduled')"
-      formControlName="employeeControl"
-      type="text"
+      <div class="editor-scheduled__weekly--form-row">
+
+        <h4>Weekly shift</h4>
+        <input
+          formControlName="weeklyShiftControl"
+          type="text"
+        >
+
+        <h4>Employee</h4>
+        <input
+          (click)="onSelectFormForEmployee('weeklyScheduled')"
+          formControlName="employeeControl"
+          type="text"
+        >
+
+        <h4>Start date</h4>
+        <input
+          formControlName="startDateControl"
+          type="date"
+        >
+
+      </div>
+
+      <button
+        [disabled]="!createWeeklyScheduledForm.valid"
+        type="submit"
+        class="editor-scheduled__weekly--form-submit btn-form"
+      >Create weekly scheduled</button>
+
+    </form>
+
+  </div>
+
+  <div class="editor-scheduled__individual">
+
+    <h2 class="editor-scheduled__individual--heading">Create scheduled</h2>
+
+
+    <form
+      (submit)="onCreateScheduled()"
+      [formGroup]="createScheduledForm"
+      class="editor-scheduled__individual--form"
     >
 
-    <span>Date</span>
-    <input
-      formControlName="dateControl"
-      type="date"
-    >
+      <div class="editor-scheduled__individual--form-row">
+        <h4>Shift</h4>
+        <input
+          formControlName="shiftControl"
+          type="text"
+        >
 
-    <button
-      [disabled]="!createScheduledForm.valid"
-      type="submit"
-    >Create scheduled</button>
-  </form>
+        <h4>Employee</h4>
+        <input
+          (click)="onSelectFormForEmployee('scheduled')"
+          formControlName="employeeControl"
+          type="text"
+        >
 
-  <h2>Create weekly schedule</h2>
+        <h4>Date</h4>
+        <input
+          formControlName="dateControl"
+          type="date"
+        >
 
-  <form
-    (submit)="onCreateWeeklyScheduled()"
-    [formGroup]="createWeeklyScheduledForm"
-  >
+      </div>
 
-    <span>Weekly shift</span>
-    <input
-      formControlName="weeklyShiftControl"
-      type="text"
-    >
+      <button
+        [disabled]="!createScheduledForm.valid"
+        type="submit"
+        class="editor-scheduled__individual--form-submit btn-form"
+      >Create scheduled</button>
 
-    <span>Employee</span>
-    <input
-      (click)="onSelectFormForEmployee('weeklyScheduled')"
-      formControlName="employeeControl"
-      type="text"
-    >
+    </form>
 
-    <span>Start date</span>
-    <input
-      formControlName="startDateControl"
-      type="date"
-    >
-
-    <button
-      [disabled]="!createWeeklyScheduledForm.valid"
-      type="submit"
-    >Create weekly scheduled</button>
-  </form>
+  </div>
 
   <app-editor-scheduled-item
     [employees]="employees$"

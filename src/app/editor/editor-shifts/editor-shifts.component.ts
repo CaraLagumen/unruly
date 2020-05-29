@@ -5,6 +5,7 @@ import { FormGroup, FormControl } from "@angular/forms";
 import { UsersService } from "../../users/users.service";
 import { ShiftService } from "../../shared/services/shift/shift.service";
 import { WeeklyShiftService } from "../../shared/services/shift/weekly-shift.service";
+import { CalendarService } from '../../calendar/calendar.service';
 import { Scheduler } from "../../shared/models/users/scheduler.model";
 import { Shift } from "../../shared/models/shift/shift.model";
 import {
@@ -31,6 +32,7 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
   slots = ShiftProperties.slots;
   locations = ShiftProperties.locations;
   days = ShiftProperties.days;
+  daysInWords = ShiftProperties.daysInWords;
   shiftHours = ShiftProperties.shiftHours;
 
   selectedShiftDayNumber: 1 | 2 | 3 | 4 | 5 = 1;
@@ -38,7 +40,8 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
   constructor(
     private usersService: UsersService,
     private shiftService: ShiftService,
-    private weeklyShiftService: WeeklyShiftService
+    private weeklyShiftService: WeeklyShiftService,
+    private calendarService: CalendarService
   ) {}
 
   ngOnInit() {
@@ -59,6 +62,10 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
   }
 
   //TOOLS----------------------------------------------------------
+
+  getFormattedHour(hour: number) {
+    return this.calendarService.getFormattedHour(hour);
+  }
 
   onEditorShiftsControl(emittedData: [Shift | WeeklyShift, string]) {
     switch (emittedData[1]) {

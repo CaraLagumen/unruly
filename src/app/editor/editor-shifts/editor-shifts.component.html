@@ -1,141 +1,173 @@
-<div>
+<div class="editor-shifts">
 
-  <h2>Create shifts</h2>
+  <h1 class="editor-shifts__title">Shift editor</h1>
 
-  <form
-    (submit)="onCreateShift()"
-    [formGroup]="createShiftForm"
-  >
+  <div class="editor-shifts__weekly">
 
-    <span>Position</span>
-    <select formControlName="positionControl">
-      <option
-        *ngFor="let position of positions"
-        [ngValue]="position"
-      >{{ position }}</option>
-    </select>
+    <h2 class="editor-shifts__weekly--heading">Create weekly shift</h2>
 
-    <span>Slot</span>
-    <select formControlName="slotControl">
-      <option
-        *ngFor="let slot of slots"
-        [ngValue]="slot"
-      >{{ slot }}</option>
-    </select>
-
-    <span>Location</span>
-    <select formControlName="locationControl">
-      <option
-        *ngFor="let location of locations"
-        [ngValue]="location"
-      >{{ location }}</option>
-    </select>
-
-    <span>Day</span>
-    <select formControlName="dayControl">
-      <option
-        *ngFor="let day of days"
-        [ngValue]="day"
-      >{{ day }}</option>
-    </select>
-
-    <span>Shift start and end</span>
-    <select formControlName="shiftStartControl">
-      <option
-        *ngFor="let shiftStart of shiftHours"
-        [ngValue]="shiftStart"
-      >{{ shiftStart }}</option>
-    </select>
-    <select formControlName="shiftEndControl">
-      <option
-        *ngFor="let shiftEnd of shiftHours"
-        [ngValue]="shiftEnd"
-      >{{ shiftEnd }}</option>
-    </select>
-
-    <button
-      [disabled]="!createShiftForm.valid"
-      type="submit"
-    >Create shift</button>
-  </form>
-
-  <h2>Create weekly shift</h2>
-
-  <form
-    (submit)="onCreateWeeklyShift()"
-    [formGroup]="createWeeklyShiftForm"
-  >
-
-    <span>Name</span>
-    <input
-      formControlName="nameControl"
-      type="text"
+    <form
+      (submit)="onCreateWeeklyShift()"
+      [formGroup]="createWeeklyShiftForm"
+      class="editor-shifts__weekly--form"
     >
 
-    <span>Position</span>
-    <select formControlName="positionControl">
-      <option
-        *ngFor="let position of positions"
-        [ngValue]="position"
-      >{{ position }}</option>
-    </select>
+      <div class="editor-shifts__weekly--form-row1">
 
-    <span>Slot</span>
-    <select formControlName="slotControl">
-      <option
-        *ngFor="let slot of slots"
-        [ngValue]="slot"
-      >{{ slot }}</option>
-    </select>
+        <h4>Name</h4>
+        <input
+          formControlName="nameControl"
+          type="text"
+        >
 
-    <span>Location</span>
-    <select formControlName="locationControl">
-      <option
-        *ngFor="let location of locations"
-        [ngValue]="location"
-      >{{ location }}</option>
-    </select>
+        <h4>Position</h4>
+        <select formControlName="positionControl">
+          <option
+            *ngFor="let position of positions"
+            [ngValue]="position"
+          >{{ position }}</option>
+        </select>
 
-    <span>Shift day 1</span>
-    <input
-      (click)="onSelectShiftDayNumber(1)"
-      formControlName="shift1Control"
-      type="text"
+        <h4>Slot</h4>
+        <select formControlName="slotControl">
+          <option
+            *ngFor="let slot of slots"
+            [ngValue]="slot"
+          >{{ slot }}</option>
+        </select>
+
+        <h4>Location</h4>
+        <select formControlName="locationControl">
+          <option
+            *ngFor="let location of locations"
+            [ngValue]="location"
+          >{{ location }}</option>
+        </select>
+
+      </div>
+
+      <div class="editor-shifts__weekly--form-row2">
+
+
+        <h4>Shift day 1</h4>
+        <input
+          (click)="onSelectShiftDayNumber(1)"
+          formControlName="shift1Control"
+          type="text"
+        >
+
+        <h4>Shift day 2</h4>
+        <input
+          (click)="onSelectShiftDayNumber(2)"
+          formControlName="shift2Control"
+          type="text"
+        >
+
+        <h4>Shift day 3</h4>
+        <input
+          (click)="onSelectShiftDayNumber(3)"
+          formControlName="shift3Control"
+          type="text"
+        >
+
+      </div>
+
+      <div class="editor-shifts__weekly--form-row3">
+
+        <h4>Shift day 4</h4>
+        <input
+          (click)="onSelectShiftDayNumber(4)"
+          formControlName="shift4Control"
+          type="text"
+        >
+
+        <h4>Shift day 5</h4>
+        <input
+          (click)="onSelectShiftDayNumber(5)"
+          formControlName="shift5Control"
+          type="text"
+        >
+
+      </div>
+
+      <button
+        [disabled]="!createWeeklyShiftForm.valid"
+        type="submit"
+        class="editor-shifts__weekly--form-submit btn-form"
+      >Create weekly shift</button>
+
+    </form>
+
+  </div>
+
+  <div class="editor-shifts__individual">
+
+    <h2 class="editor-shifts__individual--heading">Create shift</h2>
+
+    <form
+      (submit)="onCreateShift()"
+      [formGroup]="createShiftForm"
+      class="editor-shifts__individual--form"
     >
 
-    <span>Shift day 2</span>
-    <input
-      (click)="onSelectShiftDayNumber(2)"
-      formControlName="shift2Control"
-      type="text"
-    >
+      <div class="editor-shifts__individual--form-row1">
+        <h4>Position</h4>
+        <select formControlName="positionControl">
+          <option
+            *ngFor="let position of positions"
+            [ngValue]="position"
+          >{{ position }}</option>
+        </select>
 
-    <span>Shift day 3</span>
-    <input
-      (click)="onSelectShiftDayNumber(3)"
-      formControlName="shift3Control"
-      type="text"
-    >
+        <h4>Slot</h4>
+        <select formControlName="slotControl">
+          <option
+            *ngFor="let slot of slots"
+            [ngValue]="slot"
+          >{{ slot }}</option>
+        </select>
 
-    <span>Shift day 4</span>
-    <input
-      (click)="onSelectShiftDayNumber(4)"
-      formControlName="shift4Control"
-      type="text"
-    >
+        <h4>Location</h4>
+        <select formControlName="locationControl">
+          <option
+            *ngFor="let location of locations"
+            [ngValue]="location"
+          >{{ location }}</option>
+        </select>
+      </div>
 
-    <span>Shift day 5</span>
-    <input
-      (click)="onSelectShiftDayNumber(5)"
-      formControlName="shift5Control"
-      type="text"
-    >
+      <div class="editor-shifts__individual--form-row2">
+        <h4>Day</h4>
+        <select formControlName="dayControl">
+          <option
+            *ngFor="let day of days"
+            [ngValue]="day"
+          >{{ daysInWords[day] }}</option>
+        </select>
 
-    <button
-      [disabled]="!createWeeklyShiftForm.valid"
-      type="submit"
-    >Create weekly shift</button>
-  </form>
+        <h4>Shift start and end</h4>
+        <select formControlName="shiftStartControl">
+          <option
+            *ngFor="let shiftStart of shiftHours"
+            [ngValue]="shiftStart"
+          >{{ getFormattedHour(shiftStart) }}</option>
+        </select>
+        <select formControlName="shiftEndControl">
+          <option
+            *ngFor="let shiftEnd of shiftHours"
+            [ngValue]="shiftEnd"
+          >{{ getFormattedHour(shiftEnd) }}</option>
+        </select>
+      </div>
+
+      <button
+        [disabled]="!createShiftForm.valid"
+        type="submit"
+        class="editor-shifts__individual--form-submit btn-form"
+      >Create shift</button>
+    </form>
+
+  </div>
 
   <app-editor-shifts-item
     [shifts]="shifts$"
@@ -144,4 +176,5 @@
     [selectedShiftDayNumber]="selectedShiftDayNumber"
     (editorShiftsEmitter)="onEditorShiftsControl($event)"
   ></app-editor-shifts-item>
+
 </div>

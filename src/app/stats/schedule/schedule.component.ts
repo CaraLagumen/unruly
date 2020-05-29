@@ -44,6 +44,7 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnInit() {
+    //1. GRAB DATA
     this.daysArr = this.createCalendarWeek(this.date);
 
     this.forkAllEmployees = this.employeeService.getAllEmployees();
@@ -57,6 +58,7 @@ export class ScheduleComponent implements OnInit {
       }
     );
 
+    //2. SETUP HIGHLIGHTED EMPLOYEE IF LOGGED IN
     if (localStorage.getItem(`userType`) === `employee`)
       this.employeeId = localStorage.getItem(`userId`);
   }
