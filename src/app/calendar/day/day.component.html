@@ -74,6 +74,12 @@
         (calendarItemEmitter)="onCalendarItemEmitControl($event)"
       ></app-day-item>
 
+      <h2
+        *ngIf="!isLoaded"
+        class="loading"
+      >
+        ...
+      </h2>
     </div>
 
   </div>

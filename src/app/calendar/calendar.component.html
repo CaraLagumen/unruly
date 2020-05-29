@@ -90,6 +90,13 @@
         class="calendar__main--days-item"
       ></app-calendar-item>
 
+      <h3
+        *ngIf="!isLoaded"
+        class="loading"
+      >
+        ...
+      </h3>
+
       <div></div>
 
     </div>

@@ -40,6 +40,7 @@
 
       <div
         *ngFor="let employee of allEmployees"
+        [ngStyle]="getEmployeeLoggedInStyle(employee.id, 'item')"
         class="schedule__main--employees-item"
       >
 
@@ -53,7 +54,10 @@
           <span>Hire date: {{ employee?.hireDate | date:'shortDate' }}</span>
         </div>
 
-        <div class="guide"></div>
+        <div
+          [ngStyle]="getEmployeeLoggedInStyle(employee.id, 'guide')"
+          class="guide"
+        ></div>
 
       </div>
 
@@ -79,6 +83,13 @@
           [allScheduled]="allScheduled"
           [day]="day"
         ></app-schedule-item>
+
+        <h2
+          *ngIf="!isLoaded"
+          class="loading"
+        >
+          ...
+        </h2>
 
       </div>
 

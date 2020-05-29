@@ -24,6 +24,7 @@ export class ScheduleComponent implements OnInit {
 
   date = moment();
   today = moment(); //FOR USE WITH URL - DO NOT ALTER
+  employeeId = ``;
   isLoaded = false;
 
   constructor(
@@ -43,7 +44,6 @@ export class ScheduleComponent implements OnInit {
   }
 
   ngOnInit() {
-    //1. INITIALIZE WEEK
     this.daysArr = this.createCalendarWeek(this.date);
 
     this.forkAllEmployees = this.employeeService.getAllEmployees();
@@ -56,9 +56,28 @@ export class ScheduleComponent implements OnInit {
         this.isLoaded = true;
       }
     );
+
+    if (localStorage.getItem(`userType`) === `employee`)
+      this.employeeId = localStorage.getItem(`userId`);
   }
 
   //TOOLS----------------------------------------------------------
+
+  getEmployeeLoggedInStyle(employeeId: string, type: `item` | `guide`) {
+    if (this.employeeId === employeeId && type === `item`)
+      return {
+        "background-color": "var(--color-yellow)",
+      };
+
+    if (this.employeeId === employeeId && type === `guide`)
+      return {
+        position: "absolute",
+        left: 0,
+        height: "6rem",
+        width: "100%",
+        "background-color": "var(--color-lightblue)",
+      };
+  }
 
   onCurrentWeek() {
     this.date = moment();
