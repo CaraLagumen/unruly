@@ -5,6 +5,7 @@ import { EmployeeService } from "../../shared/services/users/employee.service";
 import { SchedulerService } from "../../shared/services/users/scheduler.service";
 import { Employee } from "../../shared/models/users/employee.model";
 import { Scheduler } from "../../shared/models/users/scheduler.model";
+import { ShiftProperties } from '../../shared/tools/custom-classes';
 
 @Component({
   selector: "app-roster",
@@ -15,6 +16,8 @@ export class RosterComponent implements OnInit {
   employees$: Observable<Employee[]>;
   schedulers$: Observable<Scheduler[]>;
 
+  days = ShiftProperties.daysInWords;
+  
   constructor(
     private employeeService: EmployeeService,
     private schedulerService: SchedulerService

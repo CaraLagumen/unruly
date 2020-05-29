@@ -1,17 +1,58 @@
-<h2>Roster</h2>
+<div class="roster">
 
-<h3>Employee</h3>
-<div *ngFor="let employee of (employees$ | async)">
-  {{ employee?.lastName }}, {{ employee?.firstName }}
-  {{ employee?.position }}
-  {{ employee?.status }}
-  {{ employee?.seniority }}
-  {{ employee?.hireDate | date: 'MMM d y' }}
-  {{ employee?.preferredShiftSlots }}
-  {{ employee?.preferredDaysOff }}
-</div>
+  <h1 class="roster__title">Roster</h1>
 
-<h3>Scheduler</h3>
-<div *ngFor="let scheduler of (schedulers$ | async)">
-  {{ scheduler?.lastName }}, {{ scheduler?.firstName }}
+  <div class="roster__employees">
+
+    <h2 class="roster__employees--heading">Employees</h2>
+
+    <div class="roster__employees--keys">
+      <span>Name</span>
+      <span>Position</span>
+      <span>Status</span>
+      <span>Seniority</span>
+      <span>Hire date</span>
+      <span>Preferred shift slots</span>
+      <span>Preferred days off</span>
+    </div>
+
+    <div
+      *ngFor="let employee of (employees$ | async)"
+      class="roster__employees--values"
+    >
+      <div class="roster__employees--values-name">
+        <div class="text">{{ employee?.lastName }}, {{ employee?.firstName }}</div>
+        <div class="guide"></div>
+      </div>
+      <span class="roster__employees--values-item">{{ employee?.position }}</span>
+      <span class="roster__employees--values-item">{{ employee?.status }}</span>
+      <span class="roster__employees--values-item">{{ employee?.seniority }}</span>
+      <span class="roster__employees--values-item">{{ employee?.hireDate | date:'shortDate' }}</span>
+      <div class="roster__employees--values-item">
+        <span *ngFor="let preferred of employee?.preferredShiftSlots">{{ preferred }} </span>
+      </div>
+      <div class="roster__employees--values-item">
+        <span *ngFor="let dayOff of employee?.preferredDaysOff">{{ days[dayOff] }} </span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="roster__schedulers">
+
+    <h2 class="roster__schedulers--heading">Schedulers</h2>
+
+    <div class="roster__schedulers--keys">
+      <span>Name</span>
+    </div>
+
+    <div
+      *ngFor="let scheduler of (schedulers$ | async)"
+      class="roster__schedulers--values"
+    >
+      <span>{{ scheduler?.lastName }}, {{ scheduler?.firstName }}</span>
+    </div>
+
+  </div>
+
 </div>
