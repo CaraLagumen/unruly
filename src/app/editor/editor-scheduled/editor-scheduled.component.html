@@ -89,10 +89,10 @@
   </div>
 
   <app-editor-scheduled-item
-    [employees]="employees$"
-    [shifts]="shifts$"
-    [weeklyShifts]="weeklyShifts$"
-    [weeklyScheduled]="weeklyScheduled$"
+    [employees$]="employees$"
+    [shifts$]="shifts$"
+    [weeklyShifts$]="weeklyShifts$"
+    [weeklyScheduled$]="weeklyScheduled$"
     [days]="days"
     (editorScheduledEmitter)="onEditorScheduledControl($event)"
   ></app-editor-scheduled-item>

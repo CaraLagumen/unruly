@@ -1,64 +1,140 @@
-<div class="options">
+<div class="editor-scheduled-item">
 
-  <div class="shifts">
-    <h3>Shifts</h3>
+  <div class="editor-scheduled-item__weekly">
 
-    <div *ngFor="let shift of (shifts | async)">
-      <button (click)="onSelectShift(shift)">Select</button>
-      {{ shift?.position}}
-      {{ shift?.slot }}
-      {{ shift?.location }}
-      {{ shift?.shiftStart[0] }}
-      {{ days[shift?.day] }}
-      {{ shift?.shiftEnd[0] }}
+    <h2 class="editor-scheduled-item__weekly--heading">Weekly shifts</h2>
+
+    <div class="editor-scheduled-item__weekly--keys">
+      <span>Select</span>
+      <span>Name</span>
+      <span>Position</span>
+      <span>Slot</span>
+      <span>Location</span>
+      <span>Day1</span>
+      <span>Day2</span>
+      <span>Day3</span>
+      <span>Day4</span>
+      <span>Day5</span>
     </div>
+
+    <div class="scroll-container-small">
+      <div
+        *ngFor="let weeklyShift of (weeklyShifts$ | async)"
+        class="editor-scheduled-item__weekly--values"
+      >
+        <button (click)="onSelectWeeklyShift(weeklyShift)">Select</button>
+        <span class="editor-scheduled-item__weekly--values-name">{{ weeklyShift?.name }}</span>
+        <span>{{ weeklyShift?.position }}</span>
+        <span>{{ weeklyShift?.slot }}</span>
+        <span>{{ getFormattedLocation(weeklyShift?.location) }}</span>
+        <span>{{ getFormattedLocation(weeklyShift?.shiftDay1.location) }}{{ getFormattedHour(weeklyShift?.shiftDay1.shiftStart[0]) }}</span>
+        <span>{{ getFormattedLocation(weeklyShift?.shiftDay2.location) }}{{ getFormattedHour(weeklyShift?.shiftDay2.shiftStart[0]) }}</span>
+        <span>{{ getFormattedLocation(weeklyShift?.shiftDay3.location) }}{{ getFormattedHour(weeklyShift?.shiftDay3.shiftStart[0]) }}</span>
+        <span>{{ getFormattedLocation(weeklyShift?.shiftDay4.location) }}{{ getFormattedHour(weeklyShift?.shiftDay4.shiftStart[0]) }}</span>
+        <span>{{ getFormattedLocation(weeklyShift?.shiftDay5.location) }}{{ getFormattedHour(weeklyShift?.shiftDay5.shiftStart[0]) }}</span>
+      </div>
+    </div>
+
   </div>
 
-  <div>
-    <h3>Weekly shifts</h3>
+  <div class="editor-scheduled-item__individual">
 
-    <div *ngFor="let weeklyShift of (weeklyShifts | async)">
-      <button (click)="onSelectWeeklyShift(weeklyShift)">Select</button>
-      {{ weeklyShift?.name }}
-      {{ weeklyShift?.position }}
-      {{ weeklyShift?.slot }}
-      {{ weeklyShift?.location }}
-      {{ weeklyShift?.shiftDay1.shiftStart[0] }}
-      {{ weeklyShift?.shiftDay2.shiftStart[0] }}
-      {{ weeklyShift?.shiftDay3.shiftStart[0] }}
-      {{ weeklyShift?.shiftDay4.shiftStart[0] }}
-      {{ weeklyShift?.shiftDay5.shiftStart[0] }}
+    <h2 class="editor-scheduled-item__individual--heading">Shifts</h2>
+
+    <div class="editor-scheduled-item__individual--keys">
+      <span>Select</span>
+      <span>Slot</span>
+      <span>Location</span>
+      <span>Day</span>
+      <span>Start</span>
+      <span>End</span>
     </div>
+
+    <div class="scroll-container-small">
+      <div
+        *ngFor="let shift of (shifts$ | async)"
+        class="editor-scheduled-item__individual--values"
+      >
+        <button (click)="onSelectShift(shift)">Select</button>
+        <span>{{ shift?.slot }}</span>
+        <span>{{ getFormattedLocation(shift?.location) }}</span>
+        <span>{{ daysInWords[shift?.day] }}</span>
+        <span>{{ getFormattedHour(shift?.shiftStart[0]) }}</span>
+        <span>{{ getFormattedHour(shift?.shiftEnd[0]) }}</span>
+      </div>
+    </div>
+
   </div>
 
+  <div class="editor-scheduled-item__scheduled">
 
-  <div>
-    <h3>Weekly scheduled</h3>
+    <h2 class="editor-scheduled-item__scheduled--heading">Weekly scheduled</h2>
 
-    <div *ngFor="let weeklyScheduled of (weeklyScheduled | async)">
-      <button (click)="onSelectWeeklyScheduled(weeklyScheduled)">Select</button>
-      <button (click)="onDeleteWeeklyScheduled(weeklyScheduled)">Delete</button>
-      {{ weeklyScheduled?.employee.lastName }}
-      {{ weeklyScheduled?.scheduler.lastName }}
-      {{ weeklyScheduled?.weeklyShift.location }}
-      {{ weeklyScheduled?.weeklyShift.shiftDay1.shiftStart[0] }}
-      {{ weeklyScheduled?.startDate }}
+    <div class="editor-scheduled-item__scheduled--keys">
+      <span>Select</span>
+      <span>Delete</span>
+      <span>Employee</span>
+      <span>Scheduler</span>
+      <span>Location</span>
+      <span>Day 1</span>
+      <span>Start date</span>
     </div>
+
+    <div class="scroll-container-small">
+      <div
+        *ngFor="let weeklyScheduled of (weeklyScheduled$ | async)"
+        class="editor-scheduled-item__scheduled--values"
+      >
+        <button (click)="onSelectWeeklyScheduled(weeklyScheduled)">Select</button>
+        <button (click)="onDeleteWeeklyScheduled(weeklyScheduled)">Delete</button>
+        <span>{{ weeklyScheduled?.employee.lastName }}, {{ weeklyScheduled?.employee.firstName }}</span>
+        <span>{{ weeklyScheduled?.scheduler.lastName }}, {{ weeklyScheduled?.scheduler.firstName }}</span>
+        <span>{{ getFormattedLocation(weeklyScheduled?.weeklyShift.location) }}</span>
+        <span>{{ getFormattedHour(weeklyScheduled?.weeklyShift.shiftDay1.shiftStart[0]) }}</span>
+        <span>{{ weeklyScheduled?.startDate | date: 'shortDate' }}</span>
+      </div>
+    </div>
+
   </div>
 
-  <div>
-    <h3>Employee</h3>
+  <div class="editor-scheduled-item__employees">
 
-    <div *ngFor="let employee of (employees | async)">
-      <button (click)="onSelectEmployee(employee)">Select</button>
-      {{ employee?.lastName }}, {{ employee?.firstName }}
-      {{ employee?.position }}
-      {{ employee?.status }}
-      {{ employee?.seniority }}
-      {{ employee?.hireDate | date: 'MMM d y' }}
-      {{ employee?.preferredShiftSlots }}
-      {{ employee?.preferredDaysOff }}
+    <h2 class="editor-scheduled-item__employees--heading">Employee</h2>
+
+    <div class="editor-scheduled-item__employees--keys">
+      <span>Select</span>
+      <span>Name</span>
+      <span>Position</span>
+      <span>Status</span>
+      <span>Seniority</span>
+      <span>Hire date</span>
+      <span>Preferred shift slots</span>
+      <span>Preferred days off</span>
     </div>
+
+    <div class="scroll-container-small">
+      <div
+        *ngFor="let employee of (employees$ | async)"
+        class="editor-scheduled-item__employees--values"
+      >
+        <button (click)="onSelectEmployee(employee)">Select</button>
+        <span class="editor-scheduled-item__employees--values-name">
+          {{ employee?.lastName }}, {{ employee?.firstName }}
+        </span>
+        <span class="editor-scheduled-item__employees--values-item">{{ employee?.position }}</span>
+        <span class="editor-scheduled-item__employees--values-item">{{ employee?.status }}</span>
+        <span class="editor-scheduled-item__employees--values-item">{{ employee?.seniority }}</span>
+        <span class="editor-scheduled-item__employees--values-item">{{ employee?.hireDate | date:'shortDate' }}</span>
+        <div class="editor-scheduled-item__employees--values-item">
+          <span *ngFor="let preferred of employee?.preferredShiftSlots">{{ preferred }} </span>
+        </div>
+        <div class="editor-scheduled-item__employees--values-item">
+          <span *ngFor="let dayOff of employee?.preferredDaysOff">{{ daysInWords[dayOff] }} </span>
+        </div>
+      </div>
+
+    </div>
+
   </div>
 
 </div>
