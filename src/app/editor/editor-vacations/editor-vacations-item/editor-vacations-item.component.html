@@ -1,27 +1,19 @@
-<div class="container">
+<div class="editor-vacations-item">
 
   <div
-    *ngFor="let vacation of (vacations | async)"
-    [ngStyle]="getDayStyle(vacation)"
+    *ngFor="let vacation of vacationsOfTheDay"
+    class="editor-vacations-item__vacation"
   >
-    <button (click)="onAproveVacation(vacation)">Approve</button>
-    <button (click)="onDenyVacation(vacation)">Deny</button>
-    {{ vacation?.date | date:'fullDate' }}
-    {{ vacation?.employee.firstName }}
-    {{ vacation?.approved }}
-    <span *ngIf="vacation.scheduler">{{ vacation?.scheduler.firstName }}</span>
-  </div>
 
-  <div
-    *ngFor="let vacation of (vacations | async)"
-    [ngStyle]="getDayStyle(vacation)"
-  >
-    <button (click)="onAproveVacation(vacation)">Approve</button>
-    <button (click)="onDenyVacation(vacation)">Deny</button>
-    {{ vacation?.date | date:'fullDate' }}
-    {{ vacation?.employee.firstName }}
-    {{ vacation?.approved }}
-    <span *ngIf="vacation.scheduler">{{ vacation?.scheduler.firstName }}</span>
+    <div
+      (click)="onSelectVacation(vacation)"
+      [ngClass]="{ 'approved': isVacationApproved(vacation),
+      'denied': isVacationDenied(vacation) }"
+      class="editor-vacations-item__vacation--item"
+    >
+      <span>{{ vacation?.employee.lastName }}</span>
+    </div>
+
   </div>
 
 </div>

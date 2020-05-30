@@ -106,33 +106,6 @@
           }
         }
       }
-
-      &-shift {
-        grid-row: 1 / 2;
-
-        display: flex;
-        align-items: center;
-        justify-content: center;
-
-        &-heading {
-          border-right: solid white 0.15rem;
-          padding-right: 0.5rem;
-          margin-right: 0.5rem;
-        }
-
-        &-values {
-          color: var(--color-darkblue);
-          font-size: var(--font-xsmall);
-          text-transform: uppercase;
-
-          span {
-            background-color: var(--color-gray);
-
-            margin-left: 0.1rem;
-            padding: 0.4rem 0.8rem;
-          }
-        }
-      }
     }
 
     &--btns {

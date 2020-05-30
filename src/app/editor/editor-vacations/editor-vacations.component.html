@@ -1,6 +1,118 @@
-<h3>Vacations</h3>
-<app-editor-vacations-item
-  [employees]="employees$"
-  [vacations]="vacations$"
-  (editorVacationsEmitter)="onEditorVacationsControl($event)"
-></app-editor-vacations-item>
+<div class="editor-vacations">
+
+  <h1 class="editor-vacations__title">Vacations</h1>
+
+  <div
+    *ngIf="selectedVacation"
+    class="editor-vacations__dashboard"
+  >
+
+    <div class="editor-vacations__dashboard--details">
+
+      <h4 class="editor-vacations__dashboard--details-heading">Requested vacation</h4>
+
+      <div class="editor-vacations__dashboard--details-values">
+        <span>On {{ selectedVacation.date | date:'shortDate' }} by {{ selectedVacation.employee.lastName }},
+          {{ selectedVacation.employee.firstName }}</span>
+
+        <span
+          *ngIf="selectedVacationApproved"
+          [ngClass]="{ 'approved': selectedVacationApproved }"
+        >Approved by {{ selectedVacation.scheduler.lastName }},
+          {{ selectedVacation.scheduler.firstName }}</span>
+
+        <span
+          *ngIf="!selectedVacationApproved && selectedVacationScheduler"
+          [ngClass]="{ 'denied': !selectedVacationApproved && selectedVacationScheduler }"
+        >
+          Denied by {{ selectedVacation.scheduler.lastName }},
+          {{ selectedVacation.scheduler.firstName }}
+        </span>
+
+        <span *ngIf="!selectedVacationScheduler">Not altered</span>
+      </div>
+    </div>
+
+    <div class="editor-vacations__dashboard--btns">
+      <button
+        (click)="onAproveVacation(selectedVacation)"
+        class="editor-vacations__dashboard--btns-item btn-menu btn-green"
+      >Approve</button>
+      <button
+        (click)="onDenyVacation(selectedVacation)"
+        class="editor-vacations__dashboard--btns-item btn-menu btn-red"
+      >Deny</button>
+    </div>
+
+  </div>
+
+  <div
+    *ngIf="!selectedVacation"
+    class="placeholder"
+  >
+    Click on a vacation item to get started
+  </div>
+
+
+  <div class="editor-vacations__nav">
+
+    <button
+      (click)="onPreviousMonth()"
+      class="editor-vacations__nav--btn"
+    >◄</button>
+
+    <h2 class="editor-vacations__nav--month">
+      {{ date?.format('MMMM') }} {{ date?.format('YYYY') }}
+    </h2>
+
+    <button
+      (click)="onNextMonth()"
+      class="editor-vacations__nav--btn"
+    >►</button>
+
+  </div>
+
+  <div class="editor-vacations__heading">
+
+    <div class="editor-vacations__heading--days">SUN</div>
+    <div class="editor-vacations__heading--days">MON</div>
+    <div class="editor-vacations__heading--days">TUE</div>
+    <div class="editor-vacations__heading--days">WED</div>
+    <div class="editor-vacations__heading--days">THU</div>
+    <div class="editor-vacations__heading--days">FRI</div>
+    <div class="editor-vacations__heading--days">SAT</div>
+
+  </div>
+
+  <div class="editor-vacations__main">
+
+    <div
+      *ngFor="let day of daysArr"
+      [ngClass]="{ 'inactive': isNotThisMonth(day), 'today': isToday(day) }"
+      class="editor-vacations__main--days"
+    >
+
+      <h3 class="editor-vacations__main--days-heading">{{ day?.date() }}</h3>
+
+      <app-editor-vacations-item
+        *ngIf="isLoaded"
+        [vacations]="vacations"
+        [selectedVacation]="selectedVacation"
+        [selectedVacationApproved]="selectedVacationApproved"
+        [selectedVacationScheduler]="selectedVacationScheduler"
+        [day]="day"
+        (editorVacationsEmitter)="onEditorVacationsControl($event)"
+      ></app-editor-vacations-item>
+
+      <h3
+        *ngIf="!isLoaded"
+        class="loading"
+      >
+        ...
+      </h3>
+
+    </div>
+
+  </div>
+
+</div>

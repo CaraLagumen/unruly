@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
 import * as moment from "moment";
 
-import { Employee } from "../../../shared/models/users/employee.model";
 import { Vacation } from "../../../shared/models/shift/vacation.model";
+import { Scheduler } from "../../../shared/models/users/scheduler.model";
 
 @Component({
   selector: "app-editor-vacations-item",
@@ -10,41 +10,50 @@ import { Vacation } from "../../../shared/models/shift/vacation.model";
   styleUrls: ["./editor-vacations-item.component.scss"],
 })
 export class EditorVacationsItemComponent implements OnInit {
-  @Input() employees: Employee[];
   @Input() vacations: Vacation[];
+  @Input() selectedVacation: Vacation;
+  @Input() selectedVacationApproved: boolean;
+  @Input() selectedVacationScheduler: Scheduler;
+  @Input() day: moment.Moment;
 
-  @Output() editorVacationsEmitter = new EventEmitter<[Vacation, string]>();
+  @Output() editorVacationsEmitter = new EventEmitter<Vacation>();
+
+  vacationsOfTheDay: Vacation[];
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.getVacationsOfTheDay();
+  }
 
-  getDayStyle(vacation: Vacation) {
-    const parsedDay = moment(vacation.date).day();
+  getVacationsOfTheDay() {
+    this.vacationsOfTheDay = this.vacations.filter(
+      (vacation: Vacation) =>
+        moment(vacation.date).format("LL") === this.day.format("LL")
+    );
+  }
 
-    switch (parsedDay) {
-      case 0:
-        return { "grid-column": "1 / 2" };
-      case 1:
-        return { "grid-column": "2 / 3" };
-      case 2:
-        return { "grid-column": "3 / 4" };
-      case 3:
-        return { "grid-column": "4 / 5" };
-      case 4:
-        return { "grid-column": "6 / 7" };
-      case 5:
-        return { "grid-column": "7 / 8" };
-      case 6:
-        return { "grid-column": "8 / 9" };
+  onSelectVacation(vacation: Vacation) {
+    this.editorVacationsEmitter.emit(vacation);
+  }
+
+  isVacationApproved(vacation: Vacation) {
+    if (this.selectedVacation) {
+      if (vacation.id === this.selectedVacation.id) {
+        return this.selectedVacationApproved;
+      }
     }
+
+    return vacation.approved;
   }
 
-  onAproveVacation(vacation: Vacation) {
-    this.editorVacationsEmitter.emit([vacation, `onAproveVacation`]);
-  }
+  isVacationDenied(vacation: Vacation) {
+    if (this.selectedVacation) {
+      if (vacation.id === this.selectedVacation.id) {
+        return !this.selectedVacationApproved && this.selectedVacationScheduler;
+      }
+    }
 
-  onDenyVacation(vacation: Vacation) {
-    this.editorVacationsEmitter.emit([vacation, `onDenyVacation`]);
+    return !vacation.approved && vacation.scheduler;
   }
 }

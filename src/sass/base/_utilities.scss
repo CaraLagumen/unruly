@@ -19,3 +19,15 @@
   overflow-x: hidden;
   overflow-y: auto;
 }
+
+.approved {
+  background-color: var(--color-green) !important;
+
+  color: white;
+}
+
+.denied {
+  background-color: var(--color-red) !important;
+
+  color: white;
+}

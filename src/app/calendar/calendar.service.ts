@@ -59,7 +59,7 @@ export class CalendarService {
     const comparableDay = day.weekday();
 
     const shiftsOfTheDay = allShifts.filter(
-      (el: any) => comparableDay === el.day
+      (el: Shift) => comparableDay === el.day
     );
 
     return shiftsOfTheDay;

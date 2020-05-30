@@ -1,16 +1,152 @@
-.main {
+.editor-vacations {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(auto, 1fr);
-  gap: 0.4rem;
+  gap: 1rem;
 
-  background-color: darkgray;
+  padding: 0.5rem 2rem;
 
-  &--days {
-    height: 8rem;
-    width: 100%;
+  background-color: var(--color-darkgray);
 
-    background-color: lightgray;
-    border: solid white 0.1rem;
+  &__title {
+    display: flex;
+    align-items: center;
+
+    height: 4rem;
+    padding-left: 1rem;
+
+    background-color: var(--color-black);
+
+    color: var(--color-gray);
   }
+
+  &__dashboard {
+    display: grid;
+    grid-template-rows: 2fr 1fr;
+    align-items: center;
+    justify-items: center;
+
+    height: 10rem;
+    padding: 0.5rem 6rem;
+
+    background-color: var(--color-blue);
+
+    &--details {
+      grid-row: 1 / 2;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+
+      &-heading {
+        border-right: solid white 0.15rem;
+        padding-right: 0.5rem;
+        margin-right: 0.5rem;
+      }
+
+      &-values {
+        color: var(--color-darkblue);
+        font-size: var(--font-xsmall);
+        text-transform: uppercase;
+
+        span {
+          background-color: var(--color-gray);
+
+          margin-left: 0.1rem;
+          padding: 0.4rem 0.8rem;
+        }
+      }
+    }
+
+    &--btns {
+      grid-row: 2 / -1;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+
+    height: 4rem;
+    padding-bottom: 0.5rem;
+
+    &--btn {
+      &:hover {
+        color: var(--color-yellow);
+      }
+    }
+
+    &--month {
+      width: 22rem;
+
+      font-weight: 800;
+      text-align: center;
+    }
+  }
+
+  &__heading {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.8rem;
+
+    &--days {
+      grid-row: 1 / 2;
+
+      width: 100%;
+
+      background-color: var(--color-dark);
+
+      color: var(--color-gray);
+      font-size: var(--font-xsmall);
+      font-weight: 700;
+      text-align: center;
+    }
+  }
+
+  &__main {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(auto, 1fr);
+    gap: 0.8rem;
+
+    &--days {
+      height: 10rem;
+      width: 100%;
+
+      background-color: var(--color-gray);
+
+      &-heading {
+        padding: 0rem 0.5rem;
+
+        border-bottom: solid var(--color-blue) 0.2rem;
+
+        color: var(--color-darkblue);
+        font-weight: 700;
+        text-align: right;
+      }
+    }
+  }
+}
+
+.today {
+  background-color: white;
+}
+
+.inactive {
+  background-color: var(--color-darkgray);
+}
+
+.placeholder {
+  height: 10rem;
+
+  background-color: var(--color-gray);
+
+  color: var(--color-darkblue);
+  font-size: var(--font-xsmall);
+  font-weight: 600;
+  line-height: 10rem;
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: middle;
 }

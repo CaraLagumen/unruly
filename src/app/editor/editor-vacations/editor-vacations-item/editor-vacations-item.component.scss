@@ -1,3 +1,50 @@
-.container {
+.editor-vacations-item {
   display: grid;
+
+  &__heading {
+    grid-row: 1 / 2;
+
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0.8rem;
+
+    padding-bottom: 0.8rem;
+
+    &--days {
+      grid-row: 1 / 2;
+
+      width: 100%;
+
+      background-color: var(--color-dark);
+
+      color: var(--color-gray);
+      font-size: var(--font-xsmall);
+      font-weight: 700;
+      text-align: center;
+    }
+  }
+
+  &__vacation {
+    grid-row: 2 / 3;
+
+    display: inline-block;
+
+    padding: 0.1rem;
+    margin-bottom: 0.2rem;
+
+    border-right: solid var(--color-blue) 0.2rem;
+
+    color: var(--color-dark);
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--color-blue);
+
+      color: white;
+    }
+  }
 }
