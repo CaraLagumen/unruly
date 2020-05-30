@@ -6,7 +6,7 @@ export interface Vacation {
   employee?: Employee;
   scheduler?: Scheduler; //ADDED ONCE VAC APPROVED
   date: Date;
-  approved?: Boolean;
+  approved?: boolean;
   createdAt?: Date;
 }
 
@@ -15,6 +15,6 @@ export interface VacationData {
   employee?: string;
   scheduler?: string; //ADDED ONCE VAC APPROVED
   date?: Date;
-  approved?: Boolean;
+  approved?: boolean;
   createdAt?: Date;
 }

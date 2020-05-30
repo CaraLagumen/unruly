@@ -12,24 +12,23 @@
       <h4 class="editor-vacations__dashboard--details-heading">Requested vacation</h4>
 
       <div class="editor-vacations__dashboard--details-values">
-        <span>On {{ selectedVacation.date | date:'shortDate' }} by {{ selectedVacation.employee.lastName }},
-          {{ selectedVacation.employee.firstName }}</span>
+        <span>On {{ selectedVacation?.date | date:'shortDate' }} by {{ selectedVacation?.employee.lastName }},
+          {{ selectedVacation?.employee.firstName }}</span>
 
         <span
           *ngIf="selectedVacationApproved"
           [ngClass]="{ 'approved': selectedVacationApproved }"
-        >Approved by {{ selectedVacation.scheduler.lastName }},
-          {{ selectedVacation.scheduler.firstName }}</span>
+        >Approved by {{ selectedVacation?.scheduler.lastName }},
+          {{ selectedVacation?.scheduler.firstName }}</span>
 
         <span
           *ngIf="!selectedVacationApproved && selectedVacationScheduler"
           [ngClass]="{ 'denied': !selectedVacationApproved && selectedVacationScheduler }"
         >
-          Denied by {{ selectedVacation.scheduler.lastName }},
-          {{ selectedVacation.scheduler.firstName }}
-        </span>
+          Denied by {{ selectedVacation?.scheduler.lastName }},
+          {{ selectedVacation?.scheduler.firstName }}</span>
 
-        <span *ngIf="!selectedVacationScheduler">Not altered</span>
+        <span *ngIf="!selectedVacationApproved && !selectedVacationScheduler">Not altered</span>
       </div>
     </div>
 
@@ -97,6 +96,7 @@
       <app-editor-vacations-item
         *ngIf="isLoaded"
         [vacations]="vacations"
+        [scheduler]="scheduler"
         [selectedVacation]="selectedVacation"
         [selectedVacationApproved]="selectedVacationApproved"
         [selectedVacationScheduler]="selectedVacationScheduler"

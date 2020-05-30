@@ -51,7 +51,7 @@ export class CalendarItemComponent implements OnInit {
     );
   }
 
-  isScheduledShift(shift: Shift): boolean {
+  isScheduledShift(shift: Shift) {
     const data = this.calendarService.isScheduledShift(
       shift,
       this.allScheduled,
@@ -64,12 +64,14 @@ export class CalendarItemComponent implements OnInit {
       } else {
         this.isMyScheduled = false;
       }
+    } else {
+      this.isMyScheduled = false;
     }
 
     return data[0];
   }
 
-  isMyPreferredShift(shift: Shift): boolean {
+  isMyPreferredShift(shift: Shift) {
     const data = this.calendarService.isMyPreferredShift(
       shift,
       this.allMyPreferred

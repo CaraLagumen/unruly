@@ -11,6 +11,7 @@ import { Scheduler } from "../../../shared/models/users/scheduler.model";
 })
 export class EditorVacationsItemComponent implements OnInit {
   @Input() vacations: Vacation[];
+  @Input() scheduler: Scheduler;
   @Input() selectedVacation: Vacation;
   @Input() selectedVacationApproved: boolean;
   @Input() selectedVacationScheduler: Scheduler;
@@ -40,7 +41,8 @@ export class EditorVacationsItemComponent implements OnInit {
   isVacationApproved(vacation: Vacation) {
     if (this.selectedVacation) {
       if (vacation.id === this.selectedVacation.id) {
-        return this.selectedVacationApproved;
+        vacation.approved = this.selectedVacationApproved;
+        return vacation.approved;
       }
     }
 
@@ -50,7 +52,9 @@ export class EditorVacationsItemComponent implements OnInit {
   isVacationDenied(vacation: Vacation) {
     if (this.selectedVacation) {
       if (vacation.id === this.selectedVacation.id) {
-        return !this.selectedVacationApproved && this.selectedVacationScheduler;
+        vacation.approved = this.selectedVacationApproved;
+        vacation.scheduler = this.selectedVacationScheduler;
+        return !vacation.approved && vacation.scheduler;
       }
     }
 

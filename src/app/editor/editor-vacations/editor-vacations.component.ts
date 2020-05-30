@@ -87,8 +87,14 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
 
   onEditorVacationsControl(emittedData: Vacation) {
     this.selectedVacation = emittedData;
-    this.selectedVacationApproved = emittedData.approved as boolean;
-    this.selectedVacationScheduler = emittedData.scheduler;
+    this.selectedVacationApproved = emittedData.approved;
+    if (emittedData.scheduler) {
+      this.selectedVacation.scheduler = emittedData.scheduler;
+      this.selectedVacationScheduler = emittedData.scheduler;
+    } else {
+      this.selectedVacation.scheduler = null;
+      this.selectedVacationScheduler = null;
+    }
   }
 
   onAproveVacation(vacation: Vacation) {
@@ -98,7 +104,10 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
         approved: true,
       })
       .subscribe(() => {
+        this.selectedVacation = vacation;
+        this.selectedVacation.scheduler = this.scheduler;
         this.selectedVacationApproved = true;
+        this.selectedVacationScheduler = this.scheduler;
         this.updateData();
         this.cd.markForCheck();
       });
@@ -111,7 +120,10 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
         approved: false,
       })
       .subscribe(() => {
+        this.selectedVacation = vacation;
+        this.selectedVacation.scheduler = this.scheduler;
         this.selectedVacationApproved = false;
+        this.selectedVacationScheduler = this.scheduler;
         this.updateData();
         this.cd.markForCheck();
       });
