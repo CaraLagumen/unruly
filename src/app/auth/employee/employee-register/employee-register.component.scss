@@ -1,5 +1,5 @@
 .employee-register {
-  position: fixed;
+  position: absolute;
   top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -60,13 +60,13 @@
     }
 
     input {
-      color: var(--color-darkblue);
-      font-size: var(--font-xsmall);
+      margin-left: 0.1rem;
+      padding: 0.4rem 0.8rem;
 
       background-color: white;
 
-      margin-left: 0.1rem;
-      padding: 0.4rem 0.8rem;
+      color: var(--color-darkblue);
+      font-size: var(--font-xsmall);
     }
 
     &--forgot {

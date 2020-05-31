@@ -67,6 +67,11 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
 
   //TOOLS----------------------------------------------------------
 
+  onCurrentMonth() {
+    this.date = moment();
+    this.daysArr = this.createCalendar(this.date);
+  }
+
   onPreviousMonth() {
     this.date.subtract(1, "M");
     this.daysArr = this.createCalendar(this.date);

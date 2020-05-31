@@ -1,61 +1,75 @@
-<h3>Profile</h3>
+<div class="scheduler">
 
-{{ scheduler?.firstName }}
-{{ scheduler?.lastName }}
+  <h1 class="scheduler__title">Profile</h1>
 
-<form
-  (submit)="onUpdateScheduler()"
-  [formGroup]="updateSchedulerForm"
->
-
-  <span>Email</span>
-  <input
-    type="email"
-    formControlName="email"
-    placeholder="{{ scheduler?.email }}"
+  <form
+    (submit)="onUpdateScheduler()"
+    [formGroup]="updateSchedulerForm"
+    class="scheduler__form"
   >
 
-  <button
-    [disabled]="!updateSchedulerForm.valid"
-    type="submit"
-  >Update info</button>
-</form>
+    <div class="scheduler__form--item">
+      <h4>Name</h4>
+      <span>{{ scheduler?.firstName }} {{ scheduler?.lastName }}</span>
 
-<form
-  (submit)="onChangePassword(changePasswordForm)"
-  #changePasswordForm="ngForm"
->
+      <h4>Email</h4>
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="{{ scheduler?.email }}"
+      >
+    </div>
 
-  <span>Current password</span>
-  <input
-    type="password"
-    required
-    minlength="8"
-    ngModel
-    name="passwordCurrent"
-    #passwordCurrentInput="ngModel"
+    <button
+      [disabled]="!updateSchedulerForm.valid"
+      type="submit"
+      class="scheduler__form--submit btn-auth"
+    >Update email</button>
+  </form>
+
+  <form
+    (submit)="onChangePassword(changePasswordForm)"
+    #changePasswordForm="ngForm"
+    class="scheduler__form"
   >
 
-  <span>New password</span>
-  <input
-    type="password"
-    required
-    minlength="8"
-    ngModel
-    name="password"
-    #passwordInput="ngModel"
-  >
+    <div class="scheduler__form--item">
+      <h4>Current password</h4>
+      <input
+        type="password"
+        required
+        minlength="8"
+        ngModel
+        name="passwordCurrent"
+        #passwordCurrentInput="ngModel"
+      >
 
-  <span>New password confirm</span>
-  <input
-    type="password"
-    required
-    minlength="8"
-    ngModel
-    name="passwordConfirm"
-    #passwordConfirmInput="ngModel"
-  >
+      <h4>New password</h4>
+      <input
+        type="password"
+        required
+        minlength="8"
+        ngModel
+        name="password"
+        #passwordInput="ngModel"
+      >
 
-  <button [disabled]="!changePasswordForm.valid">Update Password</button>
+      <h4>New password confirm</h4>
+      <input
+        type="password"
+        required
+        minlength="8"
+        ngModel
+        name="passwordConfirm"
+        #passwordConfirmInput="ngModel"
+      >
+    </div>
 
-</form>
+    <button
+      [disabled]="!changePasswordForm.valid"
+      class="scheduler__form--submit btn-auth"
+    >Update Password</button>
+
+  </form>
+
+</div>

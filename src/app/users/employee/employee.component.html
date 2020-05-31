@@ -1,100 +1,118 @@
-<h3>Profile</h3>
+<div class="employee">
 
-{{ employee?.firstName }}
-{{ employee?.lastName }}
+  <h1 class="employee__title">Profile</h1>
 
-<form
-  (submit)="onUpdateEmployee()"
-  [formGroup]="updateEmployeeForm"
->
-
-  <span>Email</span>
-  <input
-    type="email"
-    formControlName="email"
-    placeholder="{{ employee?.email }}"
+  <form
+    (submit)="onUpdateEmployee()"
+    [formGroup]="updateEmployeeForm"
+    class="employee__form"
   >
 
-  {{ employee?.position }}
-  {{ employee?.status }}
-  {{ employee?.seniority }}
-  {{ employee?.hireDate }}
+    <div class="employee__form--item">
+      <h4>Name</h4>
+      <span>{{ employee?.firstName }} {{ employee?.lastName }}</span>
 
-  <span>Preferred Shift Slots</span>
-  <select formControlName="preferredShiftSlots1">
-    <option
-      *ngFor="let shiftSlot of shiftSlots"
-      [ngValue]="shiftSlot"
-    >{{ shiftSlot }}</option>
-  </select>
-  <select formControlName="preferredShiftSlots2">
-    <option
-      *ngFor="let shiftSlot of shiftSlots"
-      [ngValue]="shiftSlot"
-    >{{ shiftSlot }}</option>
-  </select>
-  <select formControlName="preferredShiftSlots3">
-    <option
-      *ngFor="let shiftSlot of shiftSlots"
-      [ngValue]="shiftSlot"
-    >{{ shiftSlot }}</option>
-  </select>
+      <h4>Email</h4>
+      <input
+        type="email"
+        formControlName="email"
+        placeholder="{{ employee?.email }}"
+      >
+    </div>
 
-  <span>Preferred Days Off</span>
-  <select formControlName="preferredDaysOff1">
-    <option
-      *ngFor="let dayOff of daysOff"
-      [ngValue]="dayOff"
-    >{{ dayOff }}</option>
-  </select>
-  <select formControlName="preferredDaysOff2">
-    <option
-      *ngFor="let dayOff of daysOff"
-      [ngValue]="dayOff"
-    >{{ dayOff }}</option>
-  </select>
+    <div class="employee__form--item">
+      <h4>Position</h4><span>{{ employee?.position }}</span>
+      <h4>Status</h4><span>{{ employee?.status }}</span>
+      <h4>Seniority</h4><span>{{ employee?.seniority }}</span>
+      <h4>Hire date</h4><span>{{ employee?.hireDate | date: 'shortDate' }}</span>
+    </div>
 
-  <button
-    [disabled]="!updateEmployeeForm.valid"
-    type="submit"
-  >Update info</button>
-</form>
+    <div class="employee__form--item">
+      <h4>Preferred Shift Slots</h4>
+      <select formControlName="preferredShiftSlots1">
+        <option
+          *ngFor="let shiftSlot of shiftSlots"
+          [ngValue]="shiftSlot"
+        >{{ shiftSlot }}</option>
+      </select>
+      <select formControlName="preferredShiftSlots2">
+        <option
+          *ngFor="let shiftSlot of shiftSlots"
+          [ngValue]="shiftSlot"
+        >{{ shiftSlot }}</option>
+      </select>
+      <select formControlName="preferredShiftSlots3">
+        <option
+          *ngFor="let shiftSlot of shiftSlots"
+          [ngValue]="shiftSlot"
+        >{{ shiftSlot }}</option>
+      </select>
 
-<form
-  (submit)="onChangePassword(changePasswordForm)"
-  #changePasswordForm="ngForm"
->
+      <h4>Preferred Days Off</h4>
+      <select formControlName="preferredDaysOff1">
+        <option
+          *ngFor="let dayOff of daysOff"
+          [ngValue]="dayOff"
+        >{{ dayOff }}</option>
+      </select>
+      <select formControlName="preferredDaysOff2">
+        <option
+          *ngFor="let dayOff of daysOff"
+          [ngValue]="dayOff"
+        >{{ dayOff }}</option>
+      </select>
+    </div>
 
-  <span>Current password</span>
-  <input
-    type="password"
-    required
-    minlength="8"
-    ngModel
-    name="passwordCurrent"
-    #passwordCurrentInput="ngModel"
+    <button
+      [disabled]="!updateEmployeeForm.valid"
+      type="submit"
+      class="employee__form--submit btn-auth"
+    >Update info</button>
+  </form>
+
+  <form
+    (submit)="onChangePassword(changePasswordForm)"
+    #changePasswordForm="ngForm"
+    class="employee__form"
   >
 
-  <span>New password</span>
-  <input
-    type="password"
-    required
-    minlength="8"
-    ngModel
-    name="password"
-    #passwordInput="ngModel"
-  >
+    <div class="employee__form--item">
+      <h4>Current password</h4>
+      <input
+        type="password"
+        required
+        minlength="8"
+        ngModel
+        name="passwordCurrent"
+        #passwordCurrentInput="ngModel"
+      >
 
-  <span>New password confirm</span>
-  <input
-    type="password"
-    required
-    minlength="8"
-    ngModel
-    name="passwordConfirm"
-    #passwordConfirmInput="ngModel"
-  >
+      <h4>New password</h4>
+      <input
+        type="password"
+        required
+        minlength="8"
+        ngModel
+        name="password"
+        #passwordInput="ngModel"
+      >
 
-  <button [disabled]="!changePasswordForm.valid">Update Password</button>
+      <h4>New password confirm</h4>
+      <input
+        type="password"
+        required
+        minlength="8"
+        ngModel
+        name="passwordConfirm"
+        #passwordConfirmInput="ngModel"
+      >
+    </div>
 
-</form>
+    <button
+      [disabled]="!changePasswordForm.valid"
+      class="employee__form--submit btn-auth"
+    >Update Password</button>
+
+  </form>
+
+</div>

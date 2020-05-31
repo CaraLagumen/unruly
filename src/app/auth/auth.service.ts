@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
+import * as moment from "moment";
 
 import { environment } from "../../environments/environment";
 import { AuthData, AuthUpdateData, AuthResetData } from "./auth.model";
@@ -266,7 +267,8 @@ export class AuthService {
     clearTimeout(this.tokenTimer);
 
     //3. RELOAD
-    location.reload();
+    const today = moment().toISOString();
+    this.router.navigate([`/calendar/${today}`]);
   }
 
   changePassword(

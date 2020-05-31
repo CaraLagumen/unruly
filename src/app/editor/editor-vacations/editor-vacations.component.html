@@ -56,6 +56,11 @@
   <div class="editor-vacations__nav">
 
     <button
+      (click)="onCurrentMonth()"
+      class="editor-vacations__nav--btn btn-nav"
+    >Current month</button>
+
+    <button
       (click)="onPreviousMonth()"
       class="editor-vacations__nav--btn"
     >◄</button>

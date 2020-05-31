@@ -1,5 +1,5 @@
 .employee-login {
-  position: fixed;
+  position: absolute;
   top: 30%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -43,13 +43,13 @@
     &--input {
       grid-row: 1 / 2;
 
-      color: var(--color-darkblue);
-      font-size: var(--font-xsmall);
-
-      background-color: white;
-
       margin-left: 0.1rem;
       padding: 0.4rem 0.8rem;
+
+      background-color: white;
+      
+      color: var(--color-darkblue);
+      font-size: var(--font-xsmall);
     }
 
     &--forgot {
