@@ -130,9 +130,14 @@ exports.protect = catchAsync_1.default((req, res, next) => __awaiter(void 0, voi
         return next(new appError_1.default(`This token is invalid.`, 401));
     }
     //4. CHECK IF SCHEDULER CHANGED PASSWORD AFTER JWT ISSUED
-    if (currentScheduler.changedPasswordAfter(decoded.iat)) {
-        return next(new appError_1.default(`Scheduler recently changed password. Please log in again.`, 401));
-    }
+    // if (currentScheduler.changedPasswordAfter(decoded.iat)) {
+    //   return next(
+    //     new AppError(
+    //       `Scheduler recently changed password. Please log in again.`,
+    //       401
+    //     )
+    //   );
+    // }
     //5. GRANT ACCESS
     req.scheduler = currentScheduler;
     res.locals.scheduler = currentScheduler;
@@ -150,7 +155,7 @@ exports.forgotPassword = catchAsync_1.default((req, res, next) => __awaiter(void
     yield scheduler.save({ validateBeforeSave: false });
     try {
         //3. SEND TO SCHEDULER'S EMAIL
-        const resetURL = `${req.protocol}://${req.get(`host`)}/#/auth/reset/${resetToken}`;
+        const resetURL = `${req.protocol}://${req.get(`host`)}/#/auth/scheduler/reset/${resetToken}`;
         yield new email_1.default(scheduler, resetURL).sendPasswordReset();
         res.status(200).json({
             status: `success`,
@@ -257,9 +262,14 @@ exports.displayScheduler = (req, res, next) => __awaiter(void 0, void 0, void 0,
             return next(new appError_1.default(`This token is invalid.`, 401));
         }
         //4. CHECK IF SCHEDULER CHANGED PASSWORD AFTER JWT ISSUED
-        if (currentScheduler.changedPasswordAfter(decoded.iat)) {
-            return next(new appError_1.default(`Scheduler recently changed password. Please log in again.`, 401));
-        }
+        // if (currentScheduler.changedPasswordAfter(decoded.iat)) {
+        //   return next(
+        //     new AppError(
+        //       `Scheduler recently changed password. Please log in again.`,
+        //       401
+        //     )
+        //   );
+        // }
         //5. GRANT ACCESS
         req.scheduler = currentScheduler;
         res.locals.scheduler = currentScheduler;

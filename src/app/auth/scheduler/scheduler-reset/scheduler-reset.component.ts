@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from "rxjs";
 import { NgForm } from "@angular/forms";
 
@@ -14,14 +15,15 @@ export class SchedulerResetComponent implements OnInit, OnDestroy {
 
   token: string;
 
-  isLoaded = false;
-
-  constructor(public authService: AuthService) {}
+  constructor(private route: ActivatedRoute, public authService: AuthService) {
+    //FETCH TOKEN FROM ROUTE
+    this.route.params.subscribe((param) => (this.token = param["token"]));
+  }
 
   ngOnInit() {
     this.authStatusSub = this.authService
       .getSchedulerAuthStatusListener()
-      .subscribe((authStatus) => (this.isLoaded = false));
+      .subscribe();
   }
 
   onReset(form: NgForm) {
@@ -29,7 +31,6 @@ export class SchedulerResetComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.isLoaded = true;
     this.authService.resetPassword(
       `scheduler`,
       this.token,

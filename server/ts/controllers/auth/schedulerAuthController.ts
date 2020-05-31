@@ -158,14 +158,14 @@ export const protect = catchAsync(async (req, res, next) => {
   }
 
   //4. CHECK IF SCHEDULER CHANGED PASSWORD AFTER JWT ISSUED
-  if (currentScheduler.changedPasswordAfter(decoded.iat)) {
-    return next(
-      new AppError(
-        `Scheduler recently changed password. Please log in again.`,
-        401
-      )
-    );
-  }
+  // if (currentScheduler.changedPasswordAfter(decoded.iat)) {
+  //   return next(
+  //     new AppError(
+  //       `Scheduler recently changed password. Please log in again.`,
+  //       401
+  //     )
+  //   );
+  // }
 
   //5. GRANT ACCESS
   req.scheduler = currentScheduler;
@@ -191,7 +191,7 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
     //3. SEND TO SCHEDULER'S EMAIL
     const resetURL = `${req.protocol}://${req.get(
       `host`
-    )}/#/auth/reset/${resetToken}`;
+    )}/#/auth/scheduler/reset/${resetToken}`;
 
     await new Email(scheduler, resetURL).sendPasswordReset();
 
@@ -350,14 +350,14 @@ export const displayScheduler = async (
     }
 
     //4. CHECK IF SCHEDULER CHANGED PASSWORD AFTER JWT ISSUED
-    if (currentScheduler.changedPasswordAfter(decoded.iat)) {
-      return next(
-        new AppError(
-          `Scheduler recently changed password. Please log in again.`,
-          401
-        )
-      );
-    }
+    // if (currentScheduler.changedPasswordAfter(decoded.iat)) {
+    //   return next(
+    //     new AppError(
+    //       `Scheduler recently changed password. Please log in again.`,
+    //       401
+    //     )
+    //   );
+    // }
 
     //5. GRANT ACCESS
     req.scheduler = currentScheduler;

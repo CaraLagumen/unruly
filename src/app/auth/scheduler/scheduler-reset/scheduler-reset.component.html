@@ -1,0 +1,40 @@
+<div class="scheduler-reset">
+
+  <h1 class="scheduler-reset__title">Reset password</h1>
+
+  <form
+    (submit)="onReset(resetForm)"
+    #resetForm="ngForm"
+    class="scheduler-reset__form"
+  >
+
+    <div class="scheduler-reset__form--auth">
+      <h4>New password</h4>
+      <input
+        type="password"
+        required
+        minlength="8"
+        ngModel
+        name="password"
+        #passwordInput="ngModel"
+      >
+
+      <h4>New password confirm</h4>
+      <input
+        type="password"
+        required
+        minlength="8"
+        ngModel
+        name="passwordConfirm"
+        #passwordConfirmInput="ngModel"
+      >
+    </div>
+
+    <button
+      [disabled]="!resetForm.valid"
+      class="scheduler-reset__form--submit btn-auth"
+    >Reset password</button>
+
+  </form>
+
+</div>

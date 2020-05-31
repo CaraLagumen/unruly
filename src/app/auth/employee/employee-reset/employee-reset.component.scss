@@ -1,0 +1,67 @@
+.employee-reset {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: grid;
+  align-content: center;
+  justify-content: center;
+
+  padding: 5rem 8rem;
+
+  background-color: var(--color-darkblue);
+
+  &__title {
+    grid-column: 1 / -1;
+    grid-row: 1 / 2;
+
+    align-self: flex-start;
+
+    color: var(--color-yellow);
+  }
+
+  &__form {
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
+
+    display: grid;
+    align-content: center;
+    gap: 1rem;
+
+    &--auth {
+      grid-column: 1 / -1;
+      grid-row: 2 / 3;
+
+      display: flex;
+      align-items: center;
+      justify-self: center;
+      gap: 1rem;
+    }
+
+    h4 {
+      border-right: solid white 0.15rem;
+      padding-right: 0.5rem;
+      margin-right: 0.5rem;
+
+      color: white;
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    input {
+      margin-left: 0.1rem;
+      padding: 0.4rem 0.8rem;
+
+      background-color: white;
+
+      color: var(--color-darkblue);
+      font-size: var(--font-xsmall);
+    }
+
+    &--submit {
+      grid-row: 3 / 4;
+      justify-self: flex-end;
+    }
+  }
+}

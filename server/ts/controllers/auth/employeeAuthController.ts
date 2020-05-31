@@ -159,14 +159,14 @@ export const protect = catchAsync(async (req, res, next) => {
   }
 
   //4. CHECK IF EMPLOYEE CHANGED PASSWORD AFTER JWT ISSUED
-  if (currentEmployee.changedPasswordAfter(decoded.iat)) {
-    return next(
-      new AppError(
-        `Employee recently changed password. Please log in again.`,
-        401
-      )
-    );
-  }
+  // if (currentEmployee.changedPasswordAfter(decoded.iat)) {
+  //   return next(
+  //     new AppError(
+  //       `Employee recently changed password. Please log in again.`,
+  //       401
+  //     )
+  //   );
+  // }
 
   //5. GRANT ACCESS
   req.employee = currentEmployee;
@@ -192,7 +192,7 @@ export const forgotPassword = catchAsync(async (req, res, next) => {
     //3. SEND TO EMPLOYEE'S EMAIL
     const resetURL = `${req.protocol}://${req.get(
       `host`
-    )}/#/auth/reset/${resetToken}`;
+    )}/#/auth/employee/reset/${resetToken}`;
 
     await new Email(employee, resetURL).sendPasswordReset();
 
@@ -351,14 +351,14 @@ export const displayEmployee = async (
     }
 
     //4. CHECK IF EMPLOYEE CHANGED PASSWORD AFTER JWT ISSUED
-    if (currentEmployee.changedPasswordAfter(decoded.iat)) {
-      return next(
-        new AppError(
-          `Employee recently changed password. Please log in again.`,
-          401
-        )
-      );
-    }
+    // if (currentEmployee.changedPasswordAfter(decoded.iat)) {
+    //   return next(
+    //     new AppError(
+    //       `Employee recently changed password. Please log in again.`,
+    //       401
+    //     )
+    //   );
+    // }
 
     //5. GRANT ACCESS
     req.employee = currentEmployee;
