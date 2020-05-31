@@ -1,0 +1,52 @@
+<div class="alert-container">
+
+  <div
+    *ngFor="let alert of alerts"
+    class="{{ styleClass(alert) }}"
+  >
+    <span
+      [innerHTML]="alert.message"
+      class="alert__message"
+    ></span>
+
+    <span
+      (click)="removeAlert(alert)"
+      class="alert__close"
+    >&times;</span>
+
+  </div>
+
+</div>
+
+
+<!-- UNCOMMENT FOR EASY STYLING -->
+<!-- <div class="alert-container">
+  <div class="alert alert__success">
+    <span class="alert__message">You've logged in successfully.</span>
+    <span
+      href="#"
+      class="alert__close"
+    >&times;</span>
+  </div>
+  <div class="alert alert__info">
+    <span class="alert__message">You currently have no stars.</span>
+    <span
+      href="#"
+      class="alert__close"
+    >&times;</span>
+  </div>
+  <div class="alert alert__warning">
+    <span class="alert__message">You are reaching the starred limit.</span>
+    <span
+      href="#"
+      class="alert__close"
+    >&times;</span>
+  </div>
+  <div class="alert alert__danger">
+    <span class="alert__message">Your email or password was incorrect, please try again.</span>
+    <span
+      href="#"
+      class="alert__close"
+    >&times;</span>
+  </div>
+</div> -->

@@ -15,6 +15,7 @@ import { ShiftService } from "../../shared/services/shift/shift.service";
 import { ScheduledService } from "../../shared/services/shift/scheduled.service";
 import { PreferredService } from "../../shared/services/shift/preferred.service";
 import { CalendarService } from "../calendar.service";
+import { AlertService } from "../../components/alert/alert.service";
 import { Employee } from "../../shared/models/users/employee.model";
 import { Shift } from "../../shared/models/shift/shift.model";
 import {
@@ -79,7 +80,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     private shiftService: ShiftService,
     private scheduledService: ScheduledService,
     private preferredService: PreferredService,
-    private calendarService: CalendarService
+    private calendarService: CalendarService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -226,9 +228,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
         .updateMyPreferred(this.employeeOptions[0].id, preferred)
         .subscribe(() => this.onFormSubmitEmitter(`preferred`));
     } else {
-      this.preferredService
-        .saveMyPreferred(preferred)
-        .subscribe(() => this.onFormSubmitEmitter(`preferred`));
+      this.preferredService.saveMyPreferred(preferred).subscribe(
+        () => {
+          this.alertService.success(`Successful save preferred`, {
+            autoClose: true,
+            keepAfterRouteChange: true,
+          });
+
+          this.onFormSubmitEmitter(`preferred`);
+        },
+        (err) => {
+          this.alertService.error(err.error, {
+            autoClose: true,
+            keepAfterRouteChange: true,
+            parseError: true,
+          });
+        }
+      );
     }
   }
 
@@ -280,9 +296,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
       shiftEnd: [this.updateShiftForm.value.shiftEndControl, 0],
     };
 
-    this.shiftService
-      .updateShift(this.calendarItemId, shiftData)
-      .subscribe(() => this.onFormSubmitEmitter(`shift`));
+    this.shiftService.updateShift(this.calendarItemId, shiftData).subscribe(
+      () => {
+        this.alertService.success(`Successful update shift`, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+        });
+
+        this.onFormSubmitEmitter(`shift`);
+      },
+      (err) => {
+        this.alertService.error(err.error, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+          parseError: true,
+        });
+      }
+    );
   }
 
   //----------------------FOR SCHEDULER USE
@@ -319,9 +349,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
       date: parsedDate,
     };
 
-    this.scheduledService
-      .createScheduled(scheduledData)
-      .subscribe(() => this.onFormSubmitEmitter(`scheduled`));
+    this.scheduledService.createScheduled(scheduledData).subscribe(
+      () => {
+        this.alertService.success(`Successful create scheduled`, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+        });
+
+        this.onFormSubmitEmitter(`scheduled`);
+      },
+      (err) => {
+        this.alertService.error(err.error, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+          parseError: true,
+        });
+      }
+    );
   }
 
   ngOnDestroy() {

@@ -8,6 +8,7 @@ import { ScheduledService } from "../../shared/services/shift/scheduled.service"
 import { PreferredService } from "../../shared/services/shift/preferred.service";
 import { VacationService } from "../../shared/services/shift/vacation.service";
 import { CalendarService } from "../calendar.service";
+import { AlertService } from "../../components/alert/alert.service";
 import {
   UserType,
   CalendarItem,
@@ -56,7 +57,8 @@ export class WeekComponent implements OnInit, OnDestroy {
     private scheduledService: ScheduledService,
     private preferredService: PreferredService,
     private vacationService: VacationService,
-    private calendarService: CalendarService
+    private calendarService: CalendarService,
+    private alertService: AlertService
   ) {
     this.route.params.subscribe((param) => {
       if (param) {
@@ -210,15 +212,30 @@ export class WeekComponent implements OnInit, OnDestroy {
   onEmployeeServiceControl(
     emittedData: [string, [CalendarItem, EmployeeOptions]]
   ) {
-    this.calendarService.employeeServiceControl(emittedData).subscribe(() => {
-      switch (emittedData[0]) {
-        case `deletePreferred`:
-          return this.updateData(`preferred`);
-        case `requestVacation`:
-        case `deleteVacation`:
-          return this.updateData(`vacation`);
+    this.calendarService.employeeServiceControl(emittedData).subscribe(
+      () => {
+        this.alertService.success(`Successful ${emittedData[0]}`, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+          parseService: true,
+        });
+
+        switch (emittedData[0]) {
+          case `deletePreferred`:
+            return this.updateData(`preferred`);
+          case `requestVacation`:
+          case `deleteVacation`:
+            return this.updateData(`vacation`);
+        }
+      },
+      (err) => {
+        this.alertService.error(err.error, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+          parseError: true,
+        });
       }
-    });
+    );
   }
 
   //----------------------FOR EMPLOYEE USE
@@ -230,17 +247,32 @@ export class WeekComponent implements OnInit, OnDestroy {
   //----------------------FOR SCHEDULER USE
   //FROM dashboard TO calendar-service
   onSchedulerServiceControl(emittedData: [string, CalendarItem]) {
-    this.calendarService.schedulerServiceControl(emittedData).subscribe(() => {
-      switch (emittedData[0]) {
-        case `populateAllToScheduled`:
-        case `populateSteadyExtra`:
-        case `deleteLastScheduled`:
-        case `deleteScheduled`:
-          return this.updateData(`scheduled`);
-        case `deleteShift`:
-          return this.updateData(`shift`);
+    this.calendarService.schedulerServiceControl(emittedData).subscribe(
+      (res) => {
+        this.alertService.success(`Successful ${emittedData[0]}`, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+          parseService: true,
+        });
+
+        switch (emittedData[0]) {
+          case `populateAllToScheduled`:
+          case `populateSteadyExtra`:
+          case `deleteLastScheduled`:
+          case `deleteScheduled`:
+            return this.updateData(`scheduled`);
+          case `deleteShift`:
+            return this.updateData(`shift`);
+        }
+      },
+      (err) => {
+        this.alertService.error(err.error, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+          parseError: true,
+        });
       }
-    });
+    );
   }
 
   //----------------------FOR SCHEDULER USE

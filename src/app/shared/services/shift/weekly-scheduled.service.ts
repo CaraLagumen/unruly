@@ -4,7 +4,10 @@ import { Observable } from "rxjs";
 import { map } from "rxjs/operators";
 
 import { environment } from "../../../../environments/environment";
-import { WeeklyScheduled, WeeklyScheduledData } from "../../models/shift/weekly-scheduled.model";
+import {
+  WeeklyScheduled,
+  WeeklyScheduledData,
+} from "../../models/shift/weekly-scheduled.model";
 
 const ROOT_URL = `${environment.apiUrl}/weeklyScheduled`;
 

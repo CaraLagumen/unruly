@@ -7,7 +7,7 @@ import * as moment from "moment";
 import { environment } from "../../environments/environment";
 import { AuthData, AuthUpdateData, AuthResetData } from "./auth.model";
 import { UserType } from "../shared/models/custom-types";
-// import { AlertService } from "../components/alert/alert.service";
+import { AlertService } from "../components/alert/alert.service";
 
 const ROOT_URL = `${environment.apiUrl}`;
 
@@ -27,7 +27,8 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router //, private alertService: AlertService
+    private router: Router,
+    private alertService: AlertService
   ) {}
 
   //GETTERS----------------------------------------------------------
@@ -115,19 +116,19 @@ export class AuthService {
     this.http.post(`${ROOT_URL}/${userType}/register`, newAuthData).subscribe(
       () => {
         //3. ALERT AND LOGIN AUTOMATICALLY IF SUCCESSFUL
-        // this.alertService.success("Welcome, you registered successfully.", {
-        //   autoClose: true,
-        //   keepAfterRouteChange: true,
-        // });
+        this.alertService.success("Welcome, you registered successfully", {
+          autoClose: true,
+          keepAfterRouteChange: true,
+        });
 
         this.login(userType, authData.email, authData.password);
       },
       (err) => {
         //4. ALERT AND ENSURE LISTENERS OFF IF ERR
-        // this.alertService.error("Unable to sign you up, please try again.", {
-        //   autoClose: true,
-        //   keepAfterRouteChange: true,
-        // });
+        this.alertService.error("Unable to sign you up, please try again", {
+          autoClose: true,
+          keepAfterRouteChange: true,
+        });
 
         if (userType === `employee`) {
           this.employeeAuthStatusListener.next(false);
@@ -151,10 +152,10 @@ export class AuthService {
 
     //3. VERIFY AUTH DATA NOT EXPIRED THEN ALERT AND LOGIN
     if (expiresIn > 0) {
-      // this.alertService.info("You've been logged in automatically.", {
-      //   autoClose: true,
-      //   keepAfterRouteChange: true,
-      // });
+      this.alertService.info("You've been logged in automatically", {
+        autoClose: true,
+        keepAfterRouteChange: true,
+      });
 
       this.token = authData.token;
       this.userId = authData.userId;
@@ -207,10 +208,10 @@ export class AuthService {
             this.setAuthTimer(expiresInDuration);
             this.saveAuthData(token, this.userId, userType, expirationDate);
 
-            // this.alertService.success("You logged in successfully.", {
-            //   autoClose: true,
-            //   keepAfterRouteChange: true,
-            // });
+            this.alertService.success("You logged in successfully", {
+              autoClose: true,
+              keepAfterRouteChange: true,
+            });
 
             //5. DISPLAY IN UI USER IS LOGGED
             if (userType === `employee`) {
@@ -232,13 +233,13 @@ export class AuthService {
 
         (err) => {
           //7. ALERT AND ENSURE LISTENERS OFF IF ERR
-          // this.alertService.error(
-          //   "Your email or password is incorrect, please try again.",
-          //   {
-          //     autoClose: true,
-          //     keepAfterRouteChange: true,
-          //   }
-          // );
+          this.alertService.error(
+            "Your email or password is incorrect, please try again",
+            {
+              autoClose: true,
+              keepAfterRouteChange: true,
+            }
+          );
 
           if (userType === `employee`) {
             this.employeeAuthStatusListener.next(false);
@@ -251,10 +252,10 @@ export class AuthService {
 
   logout() {
     //1. ALERT
-    // this.alertService.warn("You logged out successfully.", {
-    //   autoClose: true,
-    //   keepAfterRouteChange: true,
-    // });
+    this.alertService.warn("You logged out successfully", {
+      autoClose: true,
+      keepAfterRouteChange: true,
+    });
 
     //2. RESET ALL
     this.token = null;
@@ -310,13 +311,13 @@ export class AuthService {
             this.setAuthTimer(expiresInDuration);
             this.saveAuthData(token, this.userId, userType, expirationDate);
 
-            // this.alertService.success(
-            //   "You successfully changed your password. Your page will reload in 8 seconds.",
-            //   {
-            //     autoClose: true,
-            //     keepAfterRouteChange: true,
-            //   }
-            // );
+            this.alertService.success(
+              "You successfully changed your password. Your page will reload in 8 seconds",
+              {
+                autoClose: true,
+                keepAfterRouteChange: true,
+              }
+            );
 
             //6. DISPLAY IN UI USER IS LOGGED
             if (userType === `employee`) {
@@ -340,10 +341,10 @@ export class AuthService {
 
         (err) => {
           // 7. ALERT AND ENSURE LISTENERS OFF IF ERR
-          // this.alertService.error("Your passwords don't match.", {
-          //   autoClose: true,
-          //   keepAfterRouteChange: true,
-          // });
+          this.alertService.error("Your passwords don't match", {
+            autoClose: true,
+            keepAfterRouteChange: true,
+          });
 
           if (userType === `employee`) {
             this.employeeAuthStatusListener.next(false);
@@ -361,17 +362,17 @@ export class AuthService {
       .subscribe(
         () => {
           //2. ALERT EMAIL SUCCESS
-          // this.alertService.success("Your email has been sent.", {
-          //   autoClose: true,
-          //   keepAfterRouteChange: true,
-          // });
+          this.alertService.success("Your email has been sent", {
+            autoClose: true,
+            keepAfterRouteChange: true,
+          });
         },
         (err) => {
           //3. ALERT AND ENSURE LISTENERS OFF IF ERR
-          // this.alertService.error("That email does not exist in our server.", {
-          //   autoClose: true,
-          //   keepAfterRouteChange: true,
-          // });
+          this.alertService.error("That email does not exist in our server", {
+            autoClose: true,
+            keepAfterRouteChange: true,
+          });
 
           if (userType === `employee`) {
             this.employeeAuthStatusListener.next(false);
@@ -420,10 +421,10 @@ export class AuthService {
             this.setAuthTimer(expiresInDuration);
             this.saveAuthData(token, this.userId, userType, expirationDate);
 
-            // this.alertService.success("You successfully reset your password.", {
-            //   autoClose: true,
-            //   keepAfterRouteChange: true,
-            // });
+            this.alertService.success("You successfully reset your password", {
+              autoClose: true,
+              keepAfterRouteChange: true,
+            });
 
             //6. DISPLAY IN UI USER IS LOGGED
             if (userType === `employee`) {
@@ -444,10 +445,10 @@ export class AuthService {
         },
         (err) => {
           // 8. ALERT AND ENSURE LISTENERS OFF IF ERR
-          // this.alertService.error("Your passwords don't match.", {
-          //   autoClose: true,
-          //   keepAfterRouteChange: true,
-          // });
+          this.alertService.error("Your passwords don't match", {
+            autoClose: true,
+            keepAfterRouteChange: true,
+          });
 
           if (userType === `employee`) {
             this.employeeAuthStatusListener.next(false);
