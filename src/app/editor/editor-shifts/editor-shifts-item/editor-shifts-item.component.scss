@@ -50,6 +50,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr repeat(3, 2fr) repeat(6, 1fr);
       align-items: center;
+      justify-items: center;
       gap: 0.6rem;
 
       padding: 0.2rem 0.6rem;
@@ -65,7 +66,8 @@
 
       span {
         width: 100%;
-        margin-bottom: 0.8rem;
+        margin-top: 0.4rem;
+        margin-bottom: 0.4rem;
 
         border-bottom: solid var(--color-lightblue) 0.1rem;
 
@@ -122,13 +124,15 @@
       display: grid;
       grid-template-columns: 1fr 1fr 2fr 1fr 2fr 1fr 1fr;
       align-items: center;
+      justify-items: center;
       gap: 0.6rem;
 
       padding: 0.2rem 0.6rem;
 
       span {
         width: 100%;
-        margin-bottom: 0.8rem;
+        margin-top: 0.4rem;
+        margin-bottom: 0.4rem;
 
         border-bottom: solid var(--color-lightblue) 0.1rem;
 
@@ -137,5 +141,55 @@
         text-transform: uppercase;
       }
     }
+  }
+}
+
+.shift-day-1 {
+  background-color: var(--color-darkgray) !important;
+
+  span {
+    border: none;
+
+    color: white !important;
+  }
+}
+
+.shift-day-2 {
+  background-color: var(--color-lightblue) !important;
+
+  span {
+    border: none;
+
+    color: white !important;
+  }
+}
+
+.shift-day-3 {
+  background-color: var(--color-blue) !important;
+
+  span {
+    border: none;
+
+    color: white !important;
+  }
+}
+
+.shift-day-4 {
+  background-color: var(--color-darkblue) !important;
+
+  span {
+    border: none;
+
+    color: white !important;
+  }
+}
+
+.shift-day-5 {
+  background-color: var(--color-dark) !important;
+
+  span {
+    border: none;
+
+    color: white !important;
   }
 }

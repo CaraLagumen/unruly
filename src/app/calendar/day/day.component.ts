@@ -243,7 +243,7 @@ export class DayComponent implements OnInit, OnDestroy {
   //FROM dashboard TO calendar-service
   onSchedulerServiceControl(emittedData: [string, CalendarItem]) {
     this.calendarService.schedulerServiceControl(emittedData).subscribe(
-      (res) => {
+      () => {
         this.alertService.success(`Successful ${emittedData[0]}`, {
           autoClose: true,
           keepAfterRouteChange: true,

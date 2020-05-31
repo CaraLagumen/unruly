@@ -23,8 +23,14 @@
         *ngFor="let weeklyShift of (weeklyShifts$ | async)"
         class="editor-shifts-item__weekly--values"
       >
-        <button (click)="onSelectWeeklyShift(weeklyShift)">Select</button>
-        <button (click)="onDeleteWeeklyShift(weeklyShift)">Delete</button>
+        <button
+          (click)="onSelectWeeklyShift(weeklyShift)"
+          class="btn-select"
+        >✔</button>
+        <button
+          (click)="onDeleteWeeklyShift(weeklyShift)"
+          class="btn-delete"
+        >✘</button>
         <span class="editor-shifts-item__weekly--values-name">{{ weeklyShift?.name }}</span>
         <span>{{ weeklyShift?.position }}</span>
         <span>{{ weeklyShift?.slot }}</span>
@@ -56,10 +62,17 @@
     <div class="scroll-container-medium">
       <div
         *ngFor="let shift of (shifts$ | async)"
+        [ngClass]="getShiftDayClass(shift.id)"
         class="editor-shifts-item__individual--values"
       >
-        <button (click)="onSelectShift(shift)">Select</button>
-        <button (click)="onDeleteShift(shift)">Delete</button>
+        <button
+          (click)="onSelectShift(shift)"
+          class="btn-select"
+        >✔</button>
+        <button
+          (click)="onDeleteShift(shift)"
+          class="btn-delete"
+        >✘</button>
         <span>{{ shift?.slot }}</span>
         <span>{{ getFormattedLocation(shift?.location) }}</span>
         <span>{{ daysInWords[shift?.day] }}</span>

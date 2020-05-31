@@ -226,7 +226,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.employeeOptions[0]) {
       this.preferredService
         .updateMyPreferred(this.employeeOptions[0].id, preferred)
-        .subscribe(() => this.onFormSubmitEmitter(`preferred`));
+        .subscribe(
+          () => {
+            this.alertService.success(`Successful save preferred`, {
+              autoClose: true,
+              keepAfterRouteChange: true,
+            });
+
+            this.onFormSubmitEmitter(`preferred`);
+          },
+          (err) => {
+            this.alertService.error(err.error, {
+              autoClose: true,
+              keepAfterRouteChange: true,
+              parseError: true,
+            });
+          }
+        );
     } else {
       this.preferredService.saveMyPreferred(preferred).subscribe(
         () => {

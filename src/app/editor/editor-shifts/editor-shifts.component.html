@@ -54,6 +54,7 @@
           (click)="onSelectShiftDayNumber(1)"
           formControlName="shift1Control"
           type="text"
+          id="shift-day-1"
         >
 
         <h4>Shift day 2</h4>
@@ -61,6 +62,7 @@
           (click)="onSelectShiftDayNumber(2)"
           formControlName="shift2Control"
           type="text"
+          id="shift-day-2"
         >
 
         <h4>Shift day 3</h4>
@@ -68,6 +70,7 @@
           (click)="onSelectShiftDayNumber(3)"
           formControlName="shift3Control"
           type="text"
+          id="shift-day-3"
         >
 
       </div>
@@ -79,6 +82,7 @@
           (click)="onSelectShiftDayNumber(4)"
           formControlName="shift4Control"
           type="text"
+          id="shift-day-4"
         >
 
         <h4>Shift day 5</h4>
@@ -86,6 +90,7 @@
           (click)="onSelectShiftDayNumber(5)"
           formControlName="shift5Control"
           type="text"
+          id="shift-day-5"
         >
 
       </div>
@@ -95,6 +100,12 @@
         type="submit"
         class="editor-shifts__weekly--form-submit btn-form"
       >Create weekly shift</button>
+
+      <button
+        (click)="onClearForm('weeklyShift')"
+        type="button"
+        class="editor-shifts__individual--form-clear btn-clear"
+      >Clear form</button>
 
     </form>
 
@@ -165,6 +176,12 @@
         type="submit"
         class="editor-shifts__individual--form-submit btn-form"
       >Create shift</button>
+
+      <button
+        (click)="onClearForm('shift')"
+        type="button"
+        class="editor-shifts__individual--form-clear btn-clear"
+      >Clear form</button>
     </form>
 
   </div>
@@ -173,6 +190,7 @@
     [shifts$]="shifts$"
     [weeklyShifts$]="weeklyShifts$"
     [days]="days"
+    [selectedShiftDaysArr]="selectedShiftDaysArr"
     [selectedShiftDayNumber]="selectedShiftDayNumber"
     (editorShiftsEmitter)="onEditorShiftsControl($event)"
   ></app-editor-shifts-item>

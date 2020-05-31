@@ -5,7 +5,8 @@ import { FormGroup, FormControl } from "@angular/forms";
 import { UsersService } from "../../users/users.service";
 import { ShiftService } from "../../shared/services/shift/shift.service";
 import { WeeklyShiftService } from "../../shared/services/shift/weekly-shift.service";
-import { CalendarService } from '../../calendar/calendar.service';
+import { CalendarService } from "../../calendar/calendar.service";
+import { AlertService } from "../../components/alert/alert.service";
 import { Scheduler } from "../../shared/models/users/scheduler.model";
 import { Shift } from "../../shared/models/shift/shift.model";
 import {
@@ -36,12 +37,14 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
   shiftHours = ShiftProperties.shiftHours;
 
   selectedShiftDayNumber: 1 | 2 | 3 | 4 | 5 = 1;
+  selectedShiftDaysArr: string[] = [];
 
   constructor(
     private usersService: UsersService,
     private shiftService: ShiftService,
     private weeklyShiftService: WeeklyShiftService,
-    private calendarService: CalendarService
+    private calendarService: CalendarService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -93,10 +96,34 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
     }
   }
 
+  onClearForm(type: `shift` | `weeklyShift`) {
+    type === `shift`
+      ? this.createShiftForm.reset()
+      : this.createWeeklyShiftForm.reset();
+  }
+
   onSelectShift(shift: Shift) {
     this.createWeeklyShiftForm.controls[
       `shift${this.selectedShiftDayNumber}Control`
     ].setValue(shift.id);
+
+    this.selectedShiftDaysArr[this.selectedShiftDayNumber - 1] = shift.id;
+
+    if (this.selectedShiftDayNumber < 5) {
+      //MOVE TO NEXT SHIIFT NUMBER FOR SELECTION
+      this.selectedShiftDayNumber++;
+    }
+
+    this.createShiftForm.controls["positionControl"].setValue(shift.position);
+    this.createShiftForm.controls["slotControl"].setValue(shift.slot);
+    this.createShiftForm.controls["locationControl"].setValue(shift.location);
+    this.createShiftForm.controls["dayControl"].setValue(shift.day);
+    this.createShiftForm.controls["shiftStartControl"].setValue(
+      shift.shiftStart[0]
+    );
+    this.createShiftForm.controls["shiftEndControl"].setValue(
+      shift.shiftEnd[0]
+    );
   }
 
   onSelectWeeklyShift(weeklyShift: WeeklyShift) {
@@ -130,15 +157,43 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
   }
 
   onDeleteShift(shift: Shift) {
-    this.shiftService
-      .deleteShift(shift.id)
-      .subscribe(() => this.updateData(`shift`));
+    this.shiftService.deleteShift(shift.id).subscribe(
+      () => {
+        this.alertService.success(`Successful delete shift`, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+        });
+
+        this.updateData(`shift`);
+      },
+      (err) => {
+        this.alertService.error(err.error, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+          parseError: true,
+        });
+      }
+    );
   }
 
   onDeleteWeeklyShift(weeklyShift: WeeklyShift) {
-    this.weeklyShiftService
-      .deleteWeeklyShift(weeklyShift.id)
-      .subscribe(() => this.updateData(`weeklyShift`));
+    this.weeklyShiftService.deleteWeeklyShift(weeklyShift.id).subscribe(
+      () => {
+        this.alertService.success(`Successful delete weekly shift`, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+        });
+
+        this.updateData(`weeklyShift`);
+      },
+      (err) => {
+        this.alertService.error(err.error, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+          parseError: true,
+        });
+      }
+    );
   }
 
   //FOR USE WITH WEEKLY SHIFT FORM
@@ -171,10 +226,24 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
       shiftEnd: [this.createShiftForm.value.shiftEndControl, 0],
     };
 
-    this.shiftService.createShift(shiftData).subscribe(() => {
-      this.createShiftForm.reset();
-      this.updateData(`shift`);
-    });
+    this.shiftService.createShift(shiftData).subscribe(
+      () => {
+        this.alertService.success(`Successful create shift`, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+        });
+
+        this.createShiftForm.reset();
+        this.updateData(`shift`);
+      },
+      (err) => {
+        this.alertService.error(err.error, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+          parseError: true,
+        });
+      }
+    );
   }
 
   //WEEKLY SHIFT FORM----------------------------------------------------------
@@ -208,10 +277,24 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
       shiftDay5: this.createWeeklyShiftForm.value.shift5Control,
     };
 
-    this.weeklyShiftService.createWeeklyShift(weeklyShiftData).subscribe(() => {
-      this.createWeeklyShiftForm.reset();
-      this.updateData(`weeklyShift`);
-    });
+    this.weeklyShiftService.createWeeklyShift(weeklyShiftData).subscribe(
+      () => {
+        this.alertService.success(`Successful create weekly shift`, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+        });
+
+        this.createWeeklyShiftForm.reset();
+        this.updateData(`weeklyShift`);
+      },
+      (err) => {
+        this.alertService.error(err.error, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+          parseError: true,
+        });
+      }
+    );
   }
 
   ngOnDestroy() {

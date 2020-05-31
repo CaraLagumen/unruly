@@ -40,6 +40,7 @@
 
     &--form {
       display: grid;
+      grid-template-columns: 1fr 1fr;
       align-content: center;
       align-items: center;
       gap: 1rem;
@@ -49,6 +50,7 @@
       background-color: var(--color-gray);
 
       &-row1 {
+        grid-column: 1 / 3;
         grid-row: 1 / 2;
 
         display: grid;
@@ -59,6 +61,7 @@
       }
 
       &-row2 {
+        grid-column: 1 / 3;
         grid-row: 2 / 3;
 
         display: grid;
@@ -69,6 +72,7 @@
       }
 
       &-row3 {
+        grid-column: 1 / 3;
         grid-row: 3 / 4;
 
         display: grid;
@@ -97,6 +101,10 @@
 
         padding: 0.4rem 0.8rem;
       }
+
+      button {
+        grid-row: 4 / 5;
+      }
     }
   }
 
@@ -119,6 +127,7 @@
 
     &--form {
       display: grid;
+      grid-template-columns: 1fr 1fr;
       align-content: center;
       align-items: center;
       gap: 1rem;
@@ -128,6 +137,7 @@
       background-color: var(--color-gray);
 
       &-row1 {
+        grid-column: 1 / 3;
         grid-row: 1 / 2;
 
         display: grid;
@@ -138,6 +148,7 @@
       }
 
       &-row2 {
+        grid-column: 1 / 3;
         grid-row: 2 / 3;
 
         display: grid;
@@ -166,6 +177,40 @@
 
         padding: 0.4rem 0.8rem;
       }
+
+      button {
+        grid-row: 3 / 4;
+      }
     }
   }
+}
+
+#shift-day-1 {
+  background-color: var(--color-darkgray);
+
+  color: white;
+}
+
+#shift-day-2 {
+  background-color: var(--color-lightblue);
+
+  color: white;
+}
+
+#shift-day-3 {
+  background-color: var(--color-blue);
+
+  color: white;
+}
+
+#shift-day-4 {
+  background-color: var(--color-darkblue);
+
+  color: white;
+}
+
+#shift-day-5 {
+  background-color: var(--color-dark);
+
+  color: white;
 }

@@ -113,6 +113,24 @@ h4 {
   }
 }
 
+.btn-clear {
+  padding: 0.4rem 0.8rem;
+
+  background-color: var(--color-black);
+  border-right: solid var(--color-red) 0.5rem;
+
+  color: var(--color-darkgray);
+  font-size: var(--font-small);
+  font-weight: 600;
+  text-transform: uppercase;
+
+  &:hover {
+    background-color: var(--color-red);
+
+    color: white;
+  }
+}
+
 .btn-nav {
   margin-left: 0.1rem;
   padding: 0.4rem 0.8rem;
@@ -145,6 +163,22 @@ h4 {
   &:hover {
     background-color: var(--color-red);
   }
+}
+
+.btn-select {
+  width: 2rem;
+
+  background-color: var(--color-green);
+
+  color: white;
+}
+
+.btn-delete {
+  width: 2rem;
+
+  background-color: var(--color-red);
+
+  color: white;
 }
 
 .a-minor {
