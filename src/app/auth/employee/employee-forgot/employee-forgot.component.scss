@@ -1,0 +1,87 @@
+.employee-forgot {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: grid;
+  align-content: center;
+  justify-content: center;
+  gap: 1rem;
+
+  padding: 5rem 8rem;
+
+  background-color: var(--color-blue);
+
+  &__title {
+    grid-column: 1 / -1;
+    grid-row: 1 / 2;
+
+    align-self: flex-start;
+
+    color: white;
+  }
+
+  &__msg {
+    font-size: var(--font-small);
+    font-weight: 600;
+  }
+
+  &__form {
+    grid-column: 1 / -1;
+
+    display: grid;
+    align-content: center;
+    justify-content: center;
+
+    margin-top: 1rem;
+
+    &--item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+
+      margin-bottom: 1rem;
+
+      h4 {
+        border-right: solid white 0.15rem;
+        padding-right: 0.5rem;
+        margin-right: 0.5rem;
+
+        color: white;
+        text-align: right;
+        white-space: nowrap;
+      }
+
+      span {
+        margin-left: 0.1rem;
+        padding: 0.4rem 0.8rem;
+
+        background-color: var(--color-dark);
+
+        font-size: var(--font-small);
+        font-weight: 700;
+        text-transform: uppercase;
+      }
+
+      input {
+        margin-left: 0.1rem;
+        padding: 0.4rem 0.8rem;
+
+        background-color: white;
+
+        color: var(--color-darkblue);
+        font-size: var(--font-xsmall);
+      }
+    }
+
+    &--submit {
+      justify-self: flex-end;
+
+      margin-left: 1rem;
+
+      white-space: nowrap;
+    }
+  }
+}

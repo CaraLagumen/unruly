@@ -1,0 +1,37 @@
+<div class="scheduler-forgot">
+
+  <h1 class="scheduler-forgot__title">
+    Forgot password
+  </h1>
+
+  <p class="scheduler-forgot__msg">
+    Please enter your account's email address to receive an email with a unique link
+    for a password reset.
+  </p>
+
+  <form
+    (submit)="onForgot(forgotForm)"
+    #forgotForm="ngForm"
+    class="scheduler-forgot__form"
+  >
+
+    <div class="scheduler-forgot__form--item">
+      <h4>Email</h4>
+      <input
+        type="email"
+        required
+        ngModel
+        name="email"
+        #emailInput="ngModel"
+        class="scheduler-forgot__form--input"
+      >
+    </div>
+
+    <button
+      [disabled]="!forgotForm.valid"
+      class="scheduler-forgot__form--submit btn-auth"
+    >Send</button>
+
+  </form>
+
+</div>
