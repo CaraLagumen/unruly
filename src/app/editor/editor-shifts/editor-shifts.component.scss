@@ -2,7 +2,8 @@
   display: grid;
   gap: 2rem;
 
-  padding: 0.5rem 2rem;
+  margin-top: 2rem;
+  padding: 2rem;
 
   background-color: var(--color-darkgray);
 
@@ -32,7 +33,7 @@
       grid-row: 1 / 2;
 
       padding-right: 2rem;
-      border-bottom: solid white 0.2rem;
+      border-bottom: solid var(--color-white) 0.2rem;
 
       background-color: var(--color-dark);
       text-align: right;
@@ -97,7 +98,7 @@
         color: var(--color-darkblue);
         font-size: var(--font-xsmall);
 
-        background-color: white;
+        background-color: var(--color-white);
 
         padding: 0.4rem 0.8rem;
       }
@@ -127,7 +128,7 @@
       grid-row: 1 / 2;
 
       padding-right: 2rem;
-      border-bottom: solid white 0.2rem;
+      border-bottom: solid var(--color-white) 0.2rem;
 
       background-color: var(--color-dark);
       text-align: right;
@@ -181,7 +182,7 @@
         color: var(--color-darkblue);
         font-size: var(--font-xsmall);
 
-        background-color: white;
+        background-color: var(--color-white);
 
         padding: 0.4rem 0.8rem;
       }
@@ -204,29 +205,29 @@
 #shift-day-1 {
   background-color: var(--color-darkgray);
 
-  color: white;
+  color: var(--color-white);
 }
 
 #shift-day-2 {
   background-color: var(--color-lightblue);
 
-  color: white;
+  color: var(--color-white);
 }
 
 #shift-day-3 {
   background-color: var(--color-blue);
 
-  color: white;
+  color: var(--color-white);
 }
 
 #shift-day-4 {
   background-color: var(--color-darkblue);
 
-  color: white;
+  color: var(--color-white);
 }
 
 #shift-day-5 {
   background-color: var(--color-dark);
 
-  color: white;
+  color: var(--color-white);
 }

@@ -39,7 +39,7 @@ export class RosterComponent implements OnInit {
       return {
         position: "relative",
         "z-index": 1000,
-        "background-color": "white",
+        "background-color": "var(--color-white)",
         color: "var(--color-blue)",
       };
 
@@ -50,7 +50,7 @@ export class RosterComponent implements OnInit {
         transform: "translateY(-2rem)",
         height: "2rem",
         width: "100%",
-        "background-color": "white",
+        "background-color": "var(--color-white)",
       };
   }
 }

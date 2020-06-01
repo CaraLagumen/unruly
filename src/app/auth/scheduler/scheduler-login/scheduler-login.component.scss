@@ -32,11 +32,11 @@
     &--heading {
       grid-row: 1 / 2;
 
-      border-right: solid white 0.15rem;
+      border-right: solid var(--color-white) 0.15rem;
       padding-right: 0.5rem;
       margin-right: 0.5rem;
 
-      color: white;
+      color: var(--color-white);
       text-align: right;
     }
 
@@ -46,7 +46,7 @@
       margin-left: 0.1rem;
       padding: 0.4rem 0.8rem;
 
-      background-color: white;
+      background-color: var(--color-white);
 
       color: var(--color-darkblue);
       font-size: var(--font-xsmall);

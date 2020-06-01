@@ -1,0 +1,38 @@
+.footer {
+  bottom: 0;
+
+  display: grid;
+  align-content: center;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  margin-top: 5rem;
+  padding: 1rem 3rem;
+
+  background-color: var(--color-dark);
+
+  color: var(--color-white);
+  font-size: var(--font-xsmall);
+  text-transform: uppercase;
+
+  &__carapace {
+    grid-row: 1 / -1;
+    align-self: center;
+
+    margin-top: 0.5rem;
+  }
+
+  &__copyright {
+    grid-row: 1 / -1;
+
+    text-align: center;
+
+    img {
+      height: 2rem;
+      margin-left: 1rem;
+
+      vertical-align: middle;
+    }
+  }
+}

@@ -12,7 +12,7 @@ select {
   background: none;
   cursor: pointer;
 
-  color: white;
+  color: var(--color-white);
   font-family: var(--font-primary);
   text-transform: lowercase;
 }
@@ -58,7 +58,7 @@ h4 {
   &:hover {
     background-color: var(--color-blue);
 
-    color: white;
+    color: var(--color-white);
   }
 }
 
@@ -75,7 +75,7 @@ h4 {
   &:hover {
     background-color: var(--color-green);
 
-    color: white;
+    color: var(--color-white);
   }
 }
 
@@ -91,7 +91,7 @@ h4 {
   &:hover {
     background-color: var(--color-gray);
 
-    color: white;
+    color: var(--color-white);
   }
 }
 
@@ -109,7 +109,7 @@ h4 {
   &:hover {
     background-color: var(--color-green);
 
-    color: white;
+    color: var(--color-white);
   }
 }
 
@@ -127,7 +127,7 @@ h4 {
   &:hover {
     background-color: var(--color-red);
 
-    color: white;
+    color: var(--color-white);
   }
 }
 
@@ -170,7 +170,7 @@ h4 {
 
   background-color: var(--color-green);
 
-  color: white;
+  color: var(--color-white);
 }
 
 .btn-delete {
@@ -178,7 +178,7 @@ h4 {
 
   background-color: var(--color-red);
 
-  color: white;
+  color: var(--color-white);
 }
 
 .a-minor {

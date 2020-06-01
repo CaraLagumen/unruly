@@ -2,7 +2,7 @@
   display: grid;
   gap: 2rem;
 
-  padding: 0.5rem 2rem;
+  padding: 2rem;
 
   background-color: var(--color-gray);
 
@@ -29,7 +29,7 @@
       grid-row: 1 / 2;
 
       padding-right: 2rem;
-      border-bottom: solid white 0.2rem;
+      border-bottom: solid var(--color-white) 0.2rem;
       margin-bottom: 1rem;
 
       background-color: var(--color-darkblue);
@@ -67,7 +67,7 @@
       &-name {
         background-color: var(--color-lightblue);
 
-        color: white !important;
+        color: var(--color-white) !important;
         font-weight: 600;
         text-transform: uppercase;
       }
@@ -123,7 +123,7 @@
         grid-row: 1 / 2;
 
         padding-right: 2rem;
-        border-bottom: solid white 0.2rem;
+        border-bottom: solid var(--color-white) 0.2rem;
         margin-bottom: 1rem;
 
         background-color: var(--color-darkblue);
@@ -161,7 +161,7 @@
         &-name {
           background-color: var(--color-lightblue);
 
-          color: white !important;
+          color: var(--color-white) !important;
           font-weight: 600;
         }
 

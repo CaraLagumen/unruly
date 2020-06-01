@@ -14,7 +14,7 @@
     &:hover {
       background-color: var(--color-blue);
 
-      color: white;
+      color: var(--color-white);
     }
 
     &--details {
@@ -52,11 +52,11 @@
 .my-scheduled {
   background-color: var(--color-lightblue) !important;
 
-  color: white !important;
+  color: var(--color-white) !important;
 }
 
 .preferred {
-  border-bottom: solid white 0.2rem;
+  border-bottom: solid var(--color-white) 0.2rem;
 }
 
 .vacation {

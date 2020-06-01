@@ -18,7 +18,7 @@
       grid-row: 1 / 2;
 
       padding-right: 2rem;
-      border-bottom: solid white 0.2rem;
+      border-bottom: solid var(--color-white) 0.2rem;
       margin-bottom: 1rem;
 
       background-color: var(--color-darkblue);
@@ -58,7 +58,7 @@
       &-name {
         background-color: var(--color-lightblue);
 
-        color: white !important;
+        color: var(--color-white) !important;
         font-weight: 600;
         text-transform: uppercase;
         white-space: nowrap;
@@ -92,7 +92,7 @@
       grid-row: 1 / 2;
 
       padding-right: 2rem;
-      border-bottom: solid white 0.2rem;
+      border-bottom: solid var(--color-white) 0.2rem;
       margin-bottom: 1rem;
 
       background-color: var(--color-darkblue);
@@ -157,7 +157,7 @@
       grid-row: 1 / 2;
 
       padding-right: 2rem;
-      border-bottom: solid white 0.2rem;
+      border-bottom: solid var(--color-white) 0.2rem;
       margin-bottom: 1rem;
 
       background-color: var(--color-darkblue);
@@ -221,7 +221,7 @@
       grid-row: 1 / 2;
 
       padding-right: 2rem;
-      border-bottom: solid white 0.2rem;
+      border-bottom: solid var(--color-white) 0.2rem;
       margin-bottom: 1rem;
 
       background-color: var(--color-darkblue);
@@ -264,7 +264,7 @@
 
         background-color: var(--color-blue);
 
-        color: white;
+        color: var(--color-white);
         white-space: nowrap;
       }
 
@@ -276,7 +276,7 @@
         background-color: var(--color-blue);
         border-bottom: solid var(--color-blue) 0.1rem;
 
-        color: white;
+        color: var(--color-white);
         font-weight: 600;
         text-align: center;
         text-transform: uppercase;
@@ -306,7 +306,7 @@
   div {
     border: none;
 
-    color: white !important;
+    color: var(--color-white) !important;
   }
 }
 
@@ -317,7 +317,7 @@
   div {
     border: none;
 
-    color: white !important;
+    color: var(--color-white) !important;
   }
 }
 
@@ -328,7 +328,7 @@
   div {
     border: none;
 
-    color: white !important;
+    color: var(--color-white) !important;
   }
 }
 
@@ -339,6 +339,6 @@
   div {
     border: none;
 
-    color: white !important;
+    color: var(--color-white) !important;
   }
 }

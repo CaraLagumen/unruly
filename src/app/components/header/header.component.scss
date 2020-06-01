@@ -9,7 +9,7 @@
 
   background-color: var(--color-dark);
 
-  color: white;
+  color: var(--color-white);
 
   &__logo {
     grid-column: 1 / 2;
@@ -18,7 +18,7 @@
     justify-self: start;
 
     &--text {
-      border-right: solid white 0.2rem;
+      border-right: solid var(--color-white) 0.2rem;
       padding-right: 2rem;
 
       cursor: pointer;

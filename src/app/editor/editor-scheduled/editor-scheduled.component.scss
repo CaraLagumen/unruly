@@ -2,7 +2,8 @@
   display: grid;
   gap: 2rem;
 
-  padding: 0.5rem 2rem;
+  margin-top: 2rem;
+  padding: 2rem;
 
   background-color: var(--color-darkgray);
 
@@ -40,11 +41,11 @@
       grid-row: 1 / 2;
 
       padding-right: 2rem;
-      border-bottom: solid white 0.2rem;
+      border-bottom: solid var(--color-white) 0.2rem;
 
       background-color: var(--color-dark);
 
-      color: white;
+      color: var(--color-white);
       text-align: right;
     }
 
@@ -85,7 +86,7 @@
         color: var(--color-darkblue);
         font-size: var(--font-xsmall);
 
-        background-color: white;
+        background-color: var(--color-white);
 
         padding: 0.4rem 0.8rem;
       }
@@ -100,7 +101,7 @@
         color: var(--color-yellow);
 
         &:hover {
-          color: white;
+          color: var(--color-white);
         }
       }
 
@@ -114,23 +115,23 @@
 #shift {
   background-color: var(--color-lightblue) !important;
 
-  color: white !important;
+  color: var(--color-white) !important;
 }
 
 #weekly-shift {
   background-color: var(--color-blue) !important;
 
-  color: white !important;
+  color: var(--color-white) !important;
 }
 
 #weekly-scheduled {
   background-color: var(--color-darkblue) !important;
 
-  color: white !important;
+  color: var(--color-white) !important;
 }
 
 #employee {
   background-color: var(--color-dark) !important;
 
-  color: white !important;
+  color: var(--color-white) !important;
 }

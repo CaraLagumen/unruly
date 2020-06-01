@@ -100,8 +100,9 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
     if (type === `shift`) {
       this.createShiftForm.reset();
     } else {
-      this.selectedShiftDaysArr = [];
       this.createWeeklyShiftForm.reset();
+      this.selectedShiftDayNumber = 1;
+      this.selectedShiftDaysArr = [];
     }
   }
 

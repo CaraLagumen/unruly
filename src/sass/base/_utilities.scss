@@ -4,7 +4,7 @@
 }
 
 .scroll-container-medium {
-  height: 50vh;
+  height: 35vh;
   margin-right: -1.6rem;
 
   overflow-x: hidden;
@@ -22,11 +22,11 @@
 .approved {
   background-color: var(--color-green) !important;
 
-  color: white;
+  color: var(--color-white);
 }
 
 .denied {
   background-color: var(--color-red) !important;
 
-  color: white;
+  color: var(--color-white);
 }

@@ -4,6 +4,8 @@
   margin: 0;
   padding: 0;
   box-sizing: inherit;
+
+  transition: all 0.2s cubic-bezier(0.7, 0.02, 0.08, 1.52);
 }
 
 html {
@@ -11,44 +13,57 @@ html {
   font-size: 62.5%;
   background-color: var(--color-gray);
 
+  //BY HEIGHTS - MAX
   @media only screen and (max-height: 45em) {
-    //720
+    //720H
     font-size: 52%;
   }
 
   @media only screen and (max-height: 24em) {
-    //375 LANDSCAPE
+    //375H
     font-size: 42%;
   }
 
-  @media only screen and (max-width: 21em) {
-    //375
-    font-size: 42%;
-  }
-
+  //BY HEIGHTS - MIN
   @media only screen and (min-height: 45em) {
-    //720
+    //720H
     font-size: 52%;
   }
 
   @media only screen and (min-height: 56em) {
-    //900
+    //900H
     font-size: 62.5%;
   }
 
   @media only screen and (min-height: 67em) {
-    //1080
+    //1080H
     font-size: 80%;
   }
 
   @media only screen and (min-height: 90em) {
-    //1440
+    //1440H
     font-size: 120%;
   }
 
   @media only screen and (min-height: 135em) {
-    //2160
+    //2160H
     font-size: 150%;
+  }
+
+  //BY WIDTHS - MAX (PRIORITY)
+  @media only screen and (max-width: 47em) {
+    //750W
+    font-size: 60%;
+  }
+
+  @media only screen and (max-width: 40em) {
+    //650W
+    font-size: 50%;
+  }
+
+  @media only screen and (max-width: 34em) {
+    //550W
+    font-size: 40%;
   }
 }
 

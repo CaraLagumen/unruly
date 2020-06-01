@@ -69,7 +69,7 @@
           background-color: var(--color-dark);
 
           a {
-            color: white;
+            color: var(--color-white);
           }
         }
 
@@ -99,7 +99,7 @@
 }
 
 .today {
-  background-color: white;
+  background-color: var(--color-white);
 }
 
 .inactive {

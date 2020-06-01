@@ -24,13 +24,13 @@
   &__success {
     background-color: var(--color-green);
 
-    color: white;
+    color: var(--color-white);
   }
 
   &__info {
     background-color: var(--color-lightblue);
 
-    color: white;
+    color: var(--color-white);
   }
 
   &__warning {
@@ -42,7 +42,7 @@
   &__danger {
     background-color: var(--color-red);
 
-    color: white;
+    color: var(--color-white);
   }
 
   &__close {
