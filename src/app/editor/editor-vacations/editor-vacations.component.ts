@@ -11,6 +11,7 @@ import * as moment from "moment";
 import { UsersService } from "../../users/users.service";
 import { VacationService } from "../../shared/services/shift/vacation.service";
 import { CalendarService } from "../../calendar/calendar.service";
+import { AlertService } from "../../components/alert/alert.service";
 import { Scheduler } from "../../shared/models/users/scheduler.model";
 import { Vacation } from "../../shared/models/shift/vacation.model";
 
@@ -39,7 +40,8 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private usersService: UsersService,
     private vacationService: VacationService,
-    private calendarService: CalendarService
+    private calendarService: CalendarService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -108,14 +110,28 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
         scheduler: this.scheduler.id,
         approved: true,
       })
-      .subscribe(() => {
-        this.selectedVacation = vacation;
-        this.selectedVacation.scheduler = this.scheduler;
-        this.selectedVacationApproved = true;
-        this.selectedVacationScheduler = this.scheduler;
-        this.updateData();
-        this.cd.markForCheck();
-      });
+      .subscribe(
+        () => {
+          this.alertService.success(`Successful approve vacation`, {
+            autoClose: true,
+            keepAfterRouteChange: true,
+          });
+
+          this.selectedVacation = vacation;
+          this.selectedVacation.scheduler = this.scheduler;
+          this.selectedVacationApproved = true;
+          this.selectedVacationScheduler = this.scheduler;
+          this.updateData();
+          this.cd.markForCheck();
+        },
+        (err) => {
+          this.alertService.error(err.error, {
+            autoClose: true,
+            keepAfterRouteChange: true,
+            parseError: true,
+          });
+        }
+      );
   }
 
   onDenyVacation(vacation: Vacation) {
@@ -124,14 +140,28 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
         scheduler: this.scheduler.id,
         approved: false,
       })
-      .subscribe(() => {
-        this.selectedVacation = vacation;
-        this.selectedVacation.scheduler = this.scheduler;
-        this.selectedVacationApproved = false;
-        this.selectedVacationScheduler = this.scheduler;
-        this.updateData();
-        this.cd.markForCheck();
-      });
+      .subscribe(
+        () => {
+          this.alertService.success(`Successful deny vacation`, {
+            autoClose: true,
+            keepAfterRouteChange: true,
+          });
+
+          this.selectedVacation = vacation;
+          this.selectedVacation.scheduler = this.scheduler;
+          this.selectedVacationApproved = false;
+          this.selectedVacationScheduler = this.scheduler;
+          this.updateData();
+          this.cd.markForCheck();
+        },
+        (err) => {
+          this.alertService.error(err.error, {
+            autoClose: true,
+            keepAfterRouteChange: true,
+            parseError: true,
+          });
+        }
+      );
   }
 
   updateData() {

@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators, NgForm } from "@angular/forms";
 
 import { UsersService } from "../users.service";
 import { AuthService } from "../../auth/auth.service";
+import { AlertService } from "../../components/alert/alert.service";
 import { SchedulerData } from "../users-data.model";
 import { Scheduler } from "../../shared/models/users/scheduler.model";
 
@@ -20,7 +21,8 @@ export class SchedulerComponent implements OnInit, OnDestroy {
 
   constructor(
     private usersService: UsersService,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -51,9 +53,23 @@ export class SchedulerComponent implements OnInit, OnDestroy {
       email: this.updateSchedulerForm.value.email,
     };
 
-    this.usersService
-      .updateUser(`scheduler`, schedulerData)
-      .subscribe(() => this.updateSchedulerForm.reset());
+    this.usersService.updateUser(`scheduler`, schedulerData).subscribe(
+      () => {
+        this.alertService.success(`Successful update email`, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+        });
+
+        this.updateSchedulerForm.reset();
+      },
+      (err) => {
+        this.alertService.error(err.error, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+          parseError: true,
+        });
+      }
+    );
   }
 
   onChangePassword(form: NgForm) {

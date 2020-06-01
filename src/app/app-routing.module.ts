@@ -1,8 +1,9 @@
-import { NgModule } from "@angular/core";
+import { NgModule, ErrorHandler } from "@angular/core";
 import { Routes, RouterModule } from "@angular/router";
 
 import { AuthGuard } from "./auth/guards/auth.guard";
 import { AuthSchedulerGuard } from "./auth/guards/auth-scheduler.guard";
+import { GlobalErrorHandler } from './shared/services/global-error-handler.service';
 
 const routes: Routes = [
   {
@@ -29,6 +30,10 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers: [AuthGuard, AuthSchedulerGuard],
+  providers: [
+    AuthGuard,
+    AuthSchedulerGuard,
+    { provide: ErrorHandler, useClass: GlobalErrorHandler },
+  ],
 })
 export class AppRoutingModule {}

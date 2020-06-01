@@ -4,6 +4,7 @@ import { FormGroup, FormControl, Validators, NgForm } from "@angular/forms";
 
 import { UsersService } from "../users.service";
 import { AuthService } from "../../auth/auth.service";
+import { AlertService } from "../../components/alert/alert.service";
 import { EmployeeData } from "../users-data.model";
 import { Employee } from "../../shared/models/users/employee.model";
 import { ShiftProperties } from "../../shared/tools/custom-classes";
@@ -24,7 +25,8 @@ export class EmployeeComponent implements OnInit, OnDestroy {
 
   constructor(
     private usersService: UsersService,
-    private authService: AuthService
+    private authService: AuthService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -91,9 +93,23 @@ export class EmployeeComponent implements OnInit, OnDestroy {
       preferredDaysOff: [dayOff1, dayOff2],
     };
 
-    this.usersService
-      .updateUser(`employee`, employeeData)
-      .subscribe(() => this.updateEmployeeForm.reset());
+    this.usersService.updateUser(`employee`, employeeData).subscribe(
+      () => {
+        this.alertService.success(`Successful update info`, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+        });
+
+        this.updateEmployeeForm.reset();
+      },
+      (err) => {
+        this.alertService.error(err.error, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+          parseError: true,
+        });
+      }
+    );
   }
 
   onChangePassword(form: NgForm) {
