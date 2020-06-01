@@ -16,6 +16,13 @@
   Please login or register to get started
 </div>
 
+<div
+  *ngIf="isPopulating"
+  class="populating"
+>
+  Populating scheduled, please wait...
+</div>
+
 <div class="calendar">
 
   <div class="calendar__nav">

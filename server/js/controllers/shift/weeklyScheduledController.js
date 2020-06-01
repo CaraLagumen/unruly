@@ -30,7 +30,6 @@ const moment_1 = __importDefault(require("moment"));
 const weeklyScheduledModel_1 = __importDefault(require("../../models/shift/weeklyScheduledModel"));
 const weeklyShiftModel_1 = __importDefault(require("../../models/shift/weeklyShiftModel"));
 const scheduledModel_1 = __importDefault(require("../../models/shift/scheduledModel"));
-const shiftModel_1 = __importDefault(require("../../models/shift/shiftModel"));
 const factory = __importStar(require("../handlerFactory"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const appError_1 = __importDefault(require("../../utils/appError"));
@@ -56,11 +55,11 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
             //   WEEKLY SHIFT THEN INDIVIDUAL SHIFTS
             const weeklyShift = yield weeklyShiftModel_1.default.findById(el.weeklyShift);
             const shifts = [
-                yield shiftModel_1.default.findById(weeklyShift.shiftDay1),
-                yield shiftModel_1.default.findById(weeklyShift.shiftDay2),
-                yield shiftModel_1.default.findById(weeklyShift.shiftDay3),
-                yield shiftModel_1.default.findById(weeklyShift.shiftDay4),
-                yield shiftModel_1.default.findById(weeklyShift.shiftDay5),
+                weeklyShift.shiftDay1,
+                weeklyShift.shiftDay2,
+                weeklyShift.shiftDay3,
+                weeklyShift.shiftDay4,
+                weeklyShift.shiftDay5,
             ];
             //3. CREATE ARR WITH DATES TO LOOP INTO WHEN CREATING DOC
             const dates = [];
@@ -106,7 +105,7 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
         doc,
     });
 }));
-//CREATE INDIVIDUAL SCHEDULED FROM WEEKLY SCHEDULED ID (PARAM)
+//CREATE INDIVIDUAL SCHEDULED FROM WEEKLY SCHEDULED ID (PARAM) / POPULATE ONE FULL-TIME EMPLOYEE
 exports.populateToScheduled = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     //1. GRAB WHAT WE CAN FROM AVAILABLE
     const scheduler = req.scheduler.id;
@@ -114,11 +113,11 @@ exports.populateToScheduled = catchAsync_1.default((req, res, next) => __awaiter
     const weeklyScheduled = yield weeklyScheduledModel_1.default.findById(req.params.id);
     const weeklyShift = yield weeklyShiftModel_1.default.findById(weeklyScheduled.weeklyShift);
     const shifts = [
-        yield shiftModel_1.default.findById(weeklyShift.shiftDay1),
-        yield shiftModel_1.default.findById(weeklyShift.shiftDay2),
-        yield shiftModel_1.default.findById(weeklyShift.shiftDay3),
-        yield shiftModel_1.default.findById(weeklyShift.shiftDay4),
-        yield shiftModel_1.default.findById(weeklyShift.shiftDay5),
+        weeklyShift.shiftDay1,
+        weeklyShift.shiftDay2,
+        weeklyShift.shiftDay3,
+        weeklyShift.shiftDay4,
+        weeklyShift.shiftDay5,
     ];
     //3. CREATE ARR WITH DATES TO LOOP INTO WHEN CREATING DOC
     const dates = [];

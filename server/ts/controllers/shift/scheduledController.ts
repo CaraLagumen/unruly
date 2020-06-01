@@ -85,7 +85,7 @@ export const populateSteadyExtra = catchAsync(async (req, res, next) => {
   //----A. SET UP VARS FOR WEEKLY SHIFT REF
 
   //1. FIND FULL-TIME SCHEDULED BY FILTERING THOSE AFTER THE SCHEDULED SUNDAY
-  const comingSunday = moment().add(2, "w").isoWeekday(-1);
+  const comingSunday = moment().add(1, "w").startOf("w");
   const scheduledWeek = [...allTheScheduledEver].filter(
     (scheduled) => moment(scheduled.date) >= comingSunday
   );

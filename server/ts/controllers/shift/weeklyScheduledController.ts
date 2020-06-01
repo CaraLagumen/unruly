@@ -4,7 +4,6 @@ import WeeklyScheduled from "../../models/shift/weeklyScheduledModel";
 import WeeklyShift from "../../models/shift/weeklyShiftModel";
 import Scheduled from "../../models/shift/scheduledModel";
 import { IScheduledData } from "../../types/shift/scheduledInterface";
-import Shift from "../../models/shift/shiftModel";
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import AppError from "../../utils/appError";
@@ -34,11 +33,11 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
     const weeklyShift = await WeeklyShift.findById(el.weeklyShift);
 
     const shifts = [
-      await Shift.findById(weeklyShift!.shiftDay1),
-      await Shift.findById(weeklyShift!.shiftDay2),
-      await Shift.findById(weeklyShift!.shiftDay3),
-      await Shift.findById(weeklyShift!.shiftDay4),
-      await Shift.findById(weeklyShift!.shiftDay5),
+      weeklyShift!.shiftDay1,
+      weeklyShift!.shiftDay2,
+      weeklyShift!.shiftDay3,
+      weeklyShift!.shiftDay4,
+      weeklyShift!.shiftDay5,
     ];
 
     //3. CREATE ARR WITH DATES TO LOOP INTO WHEN CREATING DOC
@@ -90,7 +89,7 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
   });
 });
 
-//CREATE INDIVIDUAL SCHEDULED FROM WEEKLY SCHEDULED ID (PARAM)
+//CREATE INDIVIDUAL SCHEDULED FROM WEEKLY SCHEDULED ID (PARAM) / POPULATE ONE FULL-TIME EMPLOYEE
 export const populateToScheduled = catchAsync(async (req, res, next) => {
   //1. GRAB WHAT WE CAN FROM AVAILABLE
   const scheduler: string = req.scheduler.id;
@@ -100,11 +99,11 @@ export const populateToScheduled = catchAsync(async (req, res, next) => {
   const weeklyShift = await WeeklyShift.findById(weeklyScheduled!.weeklyShift);
 
   const shifts = [
-    await Shift.findById(weeklyShift!.shiftDay1),
-    await Shift.findById(weeklyShift!.shiftDay2),
-    await Shift.findById(weeklyShift!.shiftDay3),
-    await Shift.findById(weeklyShift!.shiftDay4),
-    await Shift.findById(weeklyShift!.shiftDay5),
+    weeklyShift!.shiftDay1,
+    weeklyShift!.shiftDay2,
+    weeklyShift!.shiftDay3,
+    weeklyShift!.shiftDay4,
+    weeklyShift!.shiftDay5,
   ];
 
   //3. CREATE ARR WITH DATES TO LOOP INTO WHEN CREATING DOC

@@ -97,9 +97,12 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
   }
 
   onClearForm(type: `shift` | `weeklyShift`) {
-    type === `shift`
-      ? this.createShiftForm.reset()
-      : this.createWeeklyShiftForm.reset();
+    if (type === `shift`) {
+      this.createShiftForm.reset();
+    } else {
+      this.selectedShiftDaysArr = [];
+      this.createWeeklyShiftForm.reset();
+    }
   }
 
   onSelectShift(shift: Shift) {
@@ -107,8 +110,8 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
       `shift${this.selectedShiftDayNumber}Control`
     ].setValue(shift.id);
 
+    //SELECTED UI
     this.selectedShiftDaysArr[this.selectedShiftDayNumber - 1] = shift.id;
-
     if (this.selectedShiftDayNumber < 5) {
       //MOVE TO NEXT SHIIFT NUMBER FOR SELECTION
       this.selectedShiftDayNumber++;

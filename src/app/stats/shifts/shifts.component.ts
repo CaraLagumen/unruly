@@ -4,7 +4,7 @@ import { map } from "rxjs/operators";
 
 import { ShiftService } from "../../shared/services/shift/shift.service";
 import { WeeklyShiftService } from "../../shared/services/shift/weekly-shift.service";
-import { CalendarService } from "src/app/calendar/calendar.service";
+import { CalendarService } from "../../calendar/calendar.service";
 import { Shift } from "../../shared/models/shift/shift.model";
 import { WeeklyShift } from "../../shared/models/shift/weekly-shift.model";
 import { ShiftProperties } from "../../shared/tools/custom-classes";

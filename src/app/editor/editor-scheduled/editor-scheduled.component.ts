@@ -113,9 +113,16 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
   }
 
   onClearForm(type: `scheduled` | `weeklyScheduled`) {
-    type === `scheduled`
-      ? this.createScheduledForm.reset()
-      : this.createWeeklyScheduledForm.reset();
+    if (type === `scheduled`) {
+      this.selectedShift = ``;
+      this.selectedEmployee = ``;
+      this.createScheduledForm.reset();
+    } else {
+      this.selectedWeeklyShift = ``;
+      this.selectedWeeklyScheduled = ``;
+      this.selectedEmployee = ``;
+      this.createWeeklyScheduledForm.reset();
+    }
   }
 
   onSelectShift(shift: Shift) {

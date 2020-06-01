@@ -68,7 +68,7 @@ exports.populateSteadyExtra = catchAsync_1.default((req, res, next) => __awaiter
     const scheduler = req.scheduler.id;
     //----A. SET UP VARS FOR WEEKLY SHIFT REF
     //1. FIND FULL-TIME SCHEDULED BY FILTERING THOSE AFTER THE SCHEDULED SUNDAY
-    const comingSunday = moment_1.default().add(2, "w").isoWeekday(-1);
+    const comingSunday = moment_1.default().add(1, "w").startOf("w");
     const scheduledWeek = [...allTheScheduledEver].filter((scheduled) => moment_1.default(scheduled.date) >= comingSunday);
     //2. FIND SHIFTS TO FILL BY FILTERING THE ALREADY SCHEDULED ONES FROM ALL SHIFTS
     const scheduledShifts = scheduledWeek.map((scheduled) => scheduled.shift.id);

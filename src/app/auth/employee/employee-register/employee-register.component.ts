@@ -4,10 +4,10 @@ import { NgForm } from "@angular/forms";
 import { map } from "rxjs/operators";
 
 import { AuthService } from "../../auth.service";
-import { EmployeeService } from "src/app/shared/services/users/employee.service";
+import { EmployeeService } from "../../../shared/services/users/employee.service";
 import { AuthData } from "../../auth.model";
-import { Employee } from "src/app/shared/models/users/employee.model";
-import { ShiftProperties } from "src/app/shared/tools/custom-classes";
+import { Employee } from "../../../shared/models/users/employee.model";
+import { ShiftProperties } from "../../../shared/tools/custom-classes";
 
 @Component({
   selector: "app-employee-register",
