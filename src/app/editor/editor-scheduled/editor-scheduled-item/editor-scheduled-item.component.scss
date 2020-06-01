@@ -50,6 +50,7 @@
       display: grid;
       grid-template-columns: 1fr repeat(3, 2fr) repeat(6, 1fr);
       align-items: center;
+      justify-items: center;
       gap: 0.6rem;
 
       padding: 0.2rem 0.6rem;
@@ -65,7 +66,8 @@
 
       span {
         width: 100%;
-        margin-bottom: 0.8rem;
+        margin-top: 0.4rem;
+        margin-bottom: 0.4rem;
 
         border-bottom: solid var(--color-lightblue) 0.1rem;
 
@@ -122,13 +124,15 @@
       display: grid;
       grid-template-columns: 1fr 2fr 1fr 2fr 1fr 1fr;
       align-items: center;
+      justify-items: center;
       gap: 0.6rem;
 
       padding: 0.2rem 0.6rem;
 
       span {
         width: 100%;
-        margin-bottom: 0.8rem;
+        margin-top: 0.4rem;
+        margin-bottom: 0.4rem;
 
         border-bottom: solid var(--color-lightblue) 0.1rem;
 
@@ -185,13 +189,15 @@
       display: grid;
       grid-template-columns: 1fr 1fr 2fr 2fr repeat(3, 1fr);
       align-items: center;
+      justify-items: center;
       gap: 0.6rem;
 
       padding: 0.2rem 0.6rem;
 
       span {
         width: 100%;
-        margin-bottom: 0.8rem;
+        margin-top: 0.4rem;
+        margin-bottom: 0.4rem;
 
         border-bottom: solid var(--color-lightblue) 0.1rem;
 
@@ -225,6 +231,7 @@
     &--keys {
       display: grid;
       grid-template-columns: 1fr 2fr repeat(4, 1fr) 3fr 2fr;
+      align-items: center;
       gap: 0.6rem;
 
       padding: 0.2rem 0.6rem;
@@ -245,6 +252,8 @@
     &--values {
       display: grid;
       grid-template-columns: 1fr 2fr repeat(4, 1fr) 3fr 2fr;
+      align-items: center;
+      justify-items: center;
       gap: 0.6rem;
 
       padding: 0.2rem 0.6rem;
@@ -261,7 +270,8 @@
 
       &-name {
         width: 100%;
-        margin-bottom: 0.8rem;
+        margin-top: 0.4rem;
+        margin-bottom: 0.4rem;
 
         background-color: var(--color-blue);
         border-bottom: solid var(--color-blue) 0.1rem;
@@ -276,7 +286,8 @@
         z-index: 1000;
 
         width: 100%;
-        margin-bottom: 0.8rem;
+        margin-top: 0.4rem;
+        margin-bottom: 0.4rem;
 
         border-bottom: solid var(--color-blue) 0.1rem;
 
@@ -285,5 +296,49 @@
         text-transform: uppercase;
       }
     }
+  }
+}
+
+.shift {
+  background-color: var(--color-lightblue) !important;
+
+  span,
+  div {
+    border: none;
+
+    color: white !important;
+  }
+}
+
+.weekly-shift {
+  background-color: var(--color-blue) !important;
+
+  span,
+  div {
+    border: none;
+
+    color: white !important;
+  }
+}
+
+.weekly-scheduled {
+  background-color: var(--color-darkblue) !important;
+
+  span,
+  div {
+    border: none;
+
+    color: white !important;
+  }
+}
+
+.employee {
+  background-color: var(--color-dark) !important;
+
+  span,
+  div {
+    border: none;
+
+    color: white !important;
   }
 }

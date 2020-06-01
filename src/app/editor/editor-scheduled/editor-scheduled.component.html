@@ -18,13 +18,14 @@
         <input
           formControlName="weeklyShiftControl"
           type="text"
+          id="weekly-shift"
         >
 
         <h4>Employee</h4>
         <input
-          (click)="onSelectFormForEmployee('weeklyScheduled')"
           formControlName="employeeControl"
           type="text"
+          id="employee"
         >
 
         <h4>Start date</h4>
@@ -40,6 +41,12 @@
         type="submit"
         class="editor-scheduled__weekly--form-submit btn-form"
       >Create weekly scheduled</button>
+
+      <button
+        (click)="onClearForm('weeklyScheduled')"
+        type="button"
+        class="editor-scheduled__weekly--form-clear btn-clear"
+      >Clear form</button>
 
     </form>
 
@@ -61,13 +68,14 @@
         <input
           formControlName="shiftControl"
           type="text"
+          id="shift"
         >
 
         <h4>Employee</h4>
         <input
-          (click)="onSelectFormForEmployee('scheduled')"
           formControlName="employeeControl"
           type="text"
+          id="employee"
         >
 
         <h4>Date</h4>
@@ -84,6 +92,12 @@
         class="editor-scheduled__individual--form-submit btn-form"
       >Create scheduled</button>
 
+      <button
+        (click)="onClearForm('scheduled')"
+        type="button"
+        class="editor-scheduled__individual--form-clear btn-clear"
+      >Clear form</button>
+
     </form>
 
   </div>
@@ -93,6 +107,10 @@
     [shifts$]="shifts$"
     [weeklyShifts$]="weeklyShifts$"
     [weeklyScheduled$]="weeklyScheduled$"
+    [selectedEmployee]="selectedEmployee"
+    [selectedShift]="selectedShift"
+    [selectedWeeklyShift]="selectedWeeklyShift"
+    [selectedWeeklyScheduled]="selectedWeeklyScheduled"
     [days]="days"
     (editorScheduledEmitter)="onEditorScheduledControl($event)"
   ></app-editor-scheduled-item>

@@ -41,8 +41,11 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
   weeklyScheduled$: Observable<WeeklyScheduled[]>;
   createScheduledForm: FormGroup;
   createWeeklyScheduledForm: FormGroup;
+  selectedEmployee: string;
+  selectedShift: string;
+  selectedWeeklyShift: string;
+  selectedWeeklyScheduled: string;
 
-  selectedFormForEmployee: `scheduled` | `weeklyScheduled` = `scheduled`;
   days = ShiftProperties.days;
 
   constructor(
@@ -109,14 +112,22 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
     }
   }
 
+  onClearForm(type: `scheduled` | `weeklyScheduled`) {
+    type === `scheduled`
+      ? this.createScheduledForm.reset()
+      : this.createWeeklyScheduledForm.reset();
+  }
+
   onSelectShift(shift: Shift) {
     this.createScheduledForm.controls["shiftControl"].setValue(shift.id);
+    this.selectedShift = shift.id;
   }
 
   onSelectWeeklyShift(weeklyShift: WeeklyShift) {
     this.createWeeklyScheduledForm.controls["weeklyShiftControl"].setValue(
       weeklyShift.id
     );
+    this.selectedWeeklyShift = weeklyShift.id;
   }
 
   onSelectWeeklyScheduled(weeklyScheduled: WeeklyScheduled) {
@@ -126,6 +137,7 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
     this.createWeeklyScheduledForm.controls["employeeControl"].setValue(
       weeklyScheduled.employee.id
     );
+    this.selectedWeeklyScheduled = weeklyScheduled.id;
   }
 
   onDeleteWeeklyScheduled(weeklyScheduled: WeeklyScheduled) {
@@ -135,22 +147,11 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
   }
 
   onSelectEmployee(employee: Employee) {
-    switch (this.selectedFormForEmployee) {
-      case `scheduled`:
-        this.createScheduledForm.controls["employeeControl"].setValue(
-          employee.id
-        );
-        break;
-      case `weeklyScheduled`:
-        this.createWeeklyScheduledForm.controls["employeeControl"].setValue(
-          employee.id
-        );
-        break;
-    }
-  }
-
-  onSelectFormForEmployee(form: `scheduled` | `weeklyScheduled`) {
-    this.selectedFormForEmployee = form;
+    this.createScheduledForm.controls["employeeControl"].setValue(employee.id);
+    this.createWeeklyScheduledForm.controls["employeeControl"].setValue(
+      employee.id
+    );
+    this.selectedEmployee = employee.id;
   }
 
   //SCHEDULED FORM----------------------------------------------------------

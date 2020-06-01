@@ -17,6 +17,10 @@ export class EditorScheduledItemComponent implements OnInit {
   @Input() shifts$: Shift[];
   @Input() weeklyShifts$: WeeklyShift[];
   @Input() weeklyScheduled$: WeeklyScheduled[];
+  @Input() selectedEmployee: string;
+  @Input() selectedShift: string;
+  @Input() selectedWeeklyShift: string;
+  @Input() selectedWeeklyScheduled: string;
   @Input() days: number[];
 
   @Output() editorScheduledEmitter = new EventEmitter<
@@ -35,6 +39,19 @@ export class EditorScheduledItemComponent implements OnInit {
 
   getFormattedLocation(location: string) {
     return this.calendarService.getFormattedLocation(location);
+  }
+
+  getSelectedClass(
+    type: `shift` | `weeklyShift` | `weeklyScheduled` | `employee`,
+    id: string
+  ) {
+    if (type === `shift` && id === this.selectedShift) return true;
+    if (type === `weeklyShift` && id === this.selectedWeeklyShift) return true;
+    if (type === `weeklyScheduled` && id === this.selectedWeeklyScheduled)
+      return true;
+    if (type === `employee` && id === this.selectedEmployee) return true;
+
+    return false;
   }
 
   onSelectShift(shift: Shift) {
