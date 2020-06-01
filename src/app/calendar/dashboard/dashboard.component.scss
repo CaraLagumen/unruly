@@ -189,6 +189,11 @@
   color: white;
 }
 
-#vacation {
+#vacation,
+#vacation-approved {
   color: var(--color-green);
+}
+
+#vacation-denied {
+  color: var(--color-red);
 }

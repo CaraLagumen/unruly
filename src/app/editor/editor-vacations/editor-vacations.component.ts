@@ -32,6 +32,7 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
   selectedVacation: Vacation;
   selectedVacationApproved: boolean;
   selectedVacationScheduler: Scheduler;
+  pendingVacations: number;
 
   date = moment();
   isLoaded = false;
@@ -55,6 +56,10 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
         this.vacations = vacations.filter(
           (vacation: Vacation) => moment(vacation.date) > moment()
         );
+
+        this.pendingVacations = this.vacations.filter(
+          (vacation: Vacation) => !vacation.scheduler
+        ).length;
 
         this.isLoaded = true;
         this.cd.markForCheck();
@@ -122,7 +127,6 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
           this.selectedVacationApproved = true;
           this.selectedVacationScheduler = this.scheduler;
           this.updateData();
-          this.cd.markForCheck();
         },
         (err) => {
           this.alertService.error(err.error, {
@@ -152,7 +156,6 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
           this.selectedVacationApproved = false;
           this.selectedVacationScheduler = this.scheduler;
           this.updateData();
-          this.cd.markForCheck();
         },
         (err) => {
           this.alertService.error(err.error, {
@@ -171,6 +174,12 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
         this.vacations = vacations.filter(
           (vacation: Vacation) => moment(vacation.date) > moment()
         );
+
+        this.pendingVacations = this.vacations.filter(
+          (vacation: Vacation) => !vacation.scheduler
+        ).length;
+
+        this.cd.markForCheck();
       });
   }
 

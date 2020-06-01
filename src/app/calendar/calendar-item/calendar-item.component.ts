@@ -80,13 +80,20 @@ export class CalendarItemComponent implements OnInit {
     return data[0];
   }
 
-  isMyVacationDay() {
+  isMyVacationDay(type: `vacation` | `approved` | `denied`) {
     const data = this.calendarService.isMyVacationDay(
       this.allMyVacations,
       this.day
     );
 
-    return data[0];
+    switch (type) {
+      case `vacation`:
+        return data[0];
+      case `approved`:
+        if (data[1]) return data[1].approved;
+      case `denied`:
+        if (data[1]) return !data[1].approved && data[1].scheduler;
+    }
   }
 
   onCalendarItemEmitter(shift: Shift) {

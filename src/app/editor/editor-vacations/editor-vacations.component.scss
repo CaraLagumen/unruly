@@ -71,6 +71,17 @@
     height: 4rem;
     padding-bottom: 0.5rem;
 
+    &--info {
+      padding: 0.4rem 0.8rem;
+      
+      background-color: var(--color-blue);
+
+      font-size: var(--font-xsmall);
+      font-weight: 600;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
     &--btn {
       &:hover {
         color: var(--color-yellow);

@@ -69,5 +69,13 @@
 }
 
 .vacation {
+  border: solid var(--color-green) 0.4rem;
+}
+
+.vacation-approved {
   background-color: var(--color-green);
+}
+
+.vacation-denied {
+  background-color: var(--color-red);
 }

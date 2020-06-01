@@ -49,6 +49,7 @@ export class WeekComponent implements OnInit, OnDestroy {
   calendarItemSubject = new Subject();
   employeeOptionsSubject = new Subject();
   isLoaded = false;
+  isPopulating = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -247,6 +248,12 @@ export class WeekComponent implements OnInit, OnDestroy {
   //----------------------FOR SCHEDULER USE
   //FROM dashboard TO calendar-service
   onSchedulerServiceControl(emittedData: [string, CalendarItem]) {
+    if (
+      emittedData[0] === `populateAllToScheduled` ||
+      emittedData[0] === `populateSteadyExtra`
+    )
+      this.isPopulating = true;
+
     this.calendarService.schedulerServiceControl(emittedData).subscribe(
       () => {
         this.alertService.success(`Successful ${emittedData[0]}`, {
@@ -260,6 +267,7 @@ export class WeekComponent implements OnInit, OnDestroy {
           case `populateSteadyExtra`:
           case `deleteLastScheduled`:
           case `deleteScheduled`:
+            this.isPopulating = false;
             return this.updateData(`scheduled`);
           case `deleteShift`:
             return this.updateData(`shift`);

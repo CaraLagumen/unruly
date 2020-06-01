@@ -9,6 +9,20 @@
   (formSubmitEmitter)="onFormSubmitEmitter($event)"
 ></app-dashboard>
 
+<div
+  *ngIf="!employeeIsAuth && !schedulerIsAuth"
+  class="placeholder"
+>
+  Please login or register to get started
+</div>
+
+<div
+  *ngIf="isPopulating"
+  class="populating"
+>
+  Populating scheduled, please wait...
+</div>
+
 <div class="day">
 
   <div class="day__nav">

@@ -28,7 +28,7 @@
           Denied by {{ selectedVacation?.scheduler.lastName }},
           {{ selectedVacation?.scheduler.firstName }}</span>
 
-        <span *ngIf="!selectedVacationApproved && !selectedVacationScheduler">Not altered</span>
+        <span *ngIf="!selectedVacationApproved && !selectedVacationScheduler">Pending approval</span>
       </div>
     </div>
 
@@ -55,10 +55,8 @@
 
   <div class="editor-vacations__nav">
 
-    <button
-      (click)="onCurrentMonth()"
-      class="editor-vacations__nav--btn btn-nav"
-    >Current month</button>
+    <span class="editor-vacations__nav--info">
+      Pending approval: {{ pendingVacations }}</span>
 
     <button
       (click)="onPreviousMonth()"
@@ -73,6 +71,11 @@
       (click)="onNextMonth()"
       class="editor-vacations__nav--btn"
     >►</button>
+
+    <button
+      (click)="onCurrentMonth()"
+      class="editor-vacations__nav--btn btn-nav"
+    >Current month</button>
 
   </div>
 

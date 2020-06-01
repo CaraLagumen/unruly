@@ -1,5 +1,7 @@
 <div
-  [ngClass]="{ 'vacation': isMyVacationDay() }"
+  [ngClass]="{ 'vacation': isMyVacationDay('vacation'),
+  'vacation-approved': isMyVacationDay('approved'),
+  'vacation-denied': isMyVacationDay('denied') }"
   class="day-item"
 >
 
