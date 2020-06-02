@@ -1,14 +1,12 @@
 .employee {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
   display: grid;
   align-content: center;
   justify-content: center;
   gap: 1rem;
 
+  width: fit-content;
+  margin: auto;
+  margin-top: 4rem;
   padding: 5rem 8rem;
 
   background-color: var(--color-blue);
@@ -46,8 +44,8 @@
       margin-bottom: 1rem;
 
       //BY WIDTHS - MAX (PRIORITY)
-      @media only screen and (max-width: 86em) {
-        //1366W
+      @media only screen and (max-width: 75em) {
+        //1200W
         display: grid;
         grid-template-columns: 1fr 1fr;
         justify-content: flex-end;
@@ -64,8 +62,8 @@
         white-space: nowrap;
 
         //BY WIDTHS - MAX (PRIORITY)
-        @media only screen and (max-width: 86em) {
-          //1366W
+        @media only screen and (max-width: 75em) {
+          //1200W
           grid-column: 1 / 2;
         }
       }
@@ -81,8 +79,8 @@
         text-transform: uppercase;
 
         //BY WIDTHS - MAX (PRIORITY)
-        @media only screen and (max-width: 86em) {
-          //1366W
+        @media only screen and (max-width: 75em) {
+          //1200W
           grid-column: 2 / 3;
           justify-self: flex-start;
         }
@@ -99,8 +97,8 @@
         font-size: var(--font-xsmall);
 
         //BY WIDTHS - MAX (PRIORITY)
-        @media only screen and (max-width: 86em) {
-          //1366W
+        @media only screen and (max-width: 75em) {
+          //1200W
           grid-column: 2 / 3;
           justify-self: flex-start;
         }
@@ -115,8 +113,8 @@
       white-space: nowrap;
 
       //BY WIDTHS - MAX (PRIORITY)
-      @media only screen and (max-width: 86em) {
-        //1366W
+      @media only screen and (max-width: 75em) {
+        //1200W
         justify-self: center;
       }
     }

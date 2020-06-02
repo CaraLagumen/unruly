@@ -6,6 +6,11 @@
 
   &__main {
     grid-row: 2 / 3;
+    align-self: center;
+    justify-self: center;
+
+    height: 100%;
+    width: 100%;
   }
 }
 

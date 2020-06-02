@@ -1,14 +1,12 @@
 .scheduler {
-  position: absolute;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-
   display: grid;
   align-content: center;
   justify-content: center;
   gap: 1rem;
 
+  width: fit-content;
+  margin: auto;
+  margin-top: 4rem;
   padding: 5rem 8rem;
 
   background-color: var(--color-darkblue);
@@ -32,8 +30,8 @@
     margin-top: 1rem;
 
     //BY WIDTHS - MAX (PRIORITY)
-    @media only screen and (max-width: 86em) {
-      //1366W
+    @media only screen and (max-width: 75em) {
+      //1200W
       justify-self: flex-end;
     }
 
@@ -46,8 +44,8 @@
       margin-bottom: 1rem;
 
       //BY WIDTHS - MAX (PRIORITY)
-      @media only screen and (max-width: 86em) {
-        //1366W
+      @media only screen and (max-width: 75em) {
+        //1200W
         display: grid;
         justify-content: flex-end;
         justify-items: flex-end;
