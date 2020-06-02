@@ -72,6 +72,13 @@
 
         color: var(--color-white);
         white-space: nowrap;
+
+        //BY WIDTHS - MAX (PRIORITY)
+        @media only screen and (max-width: 54em) {
+          //850W
+          font-size: 0.8rem;
+          white-space: normal;
+        }
       }
 
       &-name {

@@ -5,6 +5,7 @@
   &__main {
     display: grid;
     align-content: center;
+    align-items: center;
 
     height: 8rem;
 
@@ -38,14 +39,20 @@
         justify-content: center;
         gap: 0.1rem;
 
-        overflow-x: auto;
-
         span {
           border: solid var(--color-dark) 0.1rem;
           margin-left: 0.1rem;
           padding: 0.2rem 0.6rem;
 
           white-space: nowrap;
+
+          //BY WIDTHS - MAX (PRIORITY)
+          @media only screen and (max-width: 86em) {
+            //1366W
+            font-size: 0.9rem;
+            border: none;
+            padding: 0rem .4rem;
+          }
         }
       }
     }

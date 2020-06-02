@@ -1,6 +1,5 @@
 .editor-scheduled-item {
   display: grid;
-  grid-template-columns: 1fr 0.5fr 1fr;
   align-items: flex-start;
   gap: 2rem;
 
@@ -101,7 +100,7 @@
 
     &--keys {
       display: grid;
-      grid-template-columns: 1fr 2fr 1fr 2fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 2fr 1fr 2fr 1fr 1fr;
       align-items: center;
       gap: 0.6rem;
 
@@ -122,7 +121,7 @@
 
     &--values {
       display: grid;
-      grid-template-columns: 1fr 2fr 1fr 2fr 1fr 1fr;
+      grid-template-columns: 1fr 1fr 2fr 1fr 2fr 1fr 1fr;
       align-items: center;
       justify-items: center;
       gap: 0.6rem;
@@ -266,6 +265,13 @@
 
         color: var(--color-white);
         white-space: nowrap;
+
+        //BY WIDTHS - MAX (PRIORITY)
+        @media only screen and (max-width: 94em) {
+          //1500W
+          font-size: 0.8rem;
+          white-space: normal;
+        }
       }
 
       &-name {

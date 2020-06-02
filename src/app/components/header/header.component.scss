@@ -11,6 +11,14 @@
 
   color: var(--color-white);
 
+  //BY WIDTHS - MAX (PRIORITY)
+  @media only screen and (max-width: 86em) {
+    //1366W
+    gap: 1rem;
+    
+    padding: 1rem 1rem;
+  }
+
   &__logo {
     grid-column: 1 / 2;
     grid-row: 1 / 2;

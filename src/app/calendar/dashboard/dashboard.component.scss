@@ -3,17 +3,6 @@
 
   background-color: var(--color-gray);
 
-  .active {
-    transform: translateY(1rem);
-    border: none !important;
-
-    background-color: var(--color-green);
-
-    color: var(--color-white);
-    font-family: var(--font-logo);
-    text-transform: uppercase;
-  }
-
   &__populate {
     display: flex;
     align-items: center;
@@ -163,6 +152,17 @@
       border-right: solid var(--color-darkblue) 0.15rem;
     }
   }
+}
+
+.active {
+  transform: translateY(1rem);
+  border: none !important;
+
+  background-color: var(--color-green);
+
+  color: var(--color-white);
+  font-family: var(--font-logo);
+  text-transform: uppercase;
 }
 
 .placeholder {

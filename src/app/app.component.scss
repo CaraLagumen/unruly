@@ -1,6 +1,6 @@
 .app {
   display: grid;
-  align-content: space-between;
+  grid-template-rows: min-content;
 
   min-height: 100vh;
 
@@ -17,4 +17,8 @@ app-header {
 app-alert {
   position: fixed;
   z-index: 9999;
+}
+
+app-footer {
+  align-self: flex-end;
 }

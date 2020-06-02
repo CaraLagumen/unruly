@@ -1,5 +1,5 @@
 .editor-vacations-item {
-  display: grid;
+  display: inline-block;
 
   &__heading {
     grid-row: 1 / 2;
@@ -37,7 +37,7 @@
     color: var(--color-dark);
     text-align: center;
     text-transform: uppercase;
-    white-space: nowrap;
+    word-wrap: none;
 
     cursor: pointer;
 

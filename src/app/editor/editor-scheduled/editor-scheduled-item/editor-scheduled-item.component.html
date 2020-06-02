@@ -47,6 +47,7 @@
 
     <div class="editor-scheduled-item__individual--keys">
       <span>Select</span>
+      <span>Position</span>
       <span>Slot</span>
       <span>Location</span>
       <span>Day</span>
@@ -64,6 +65,7 @@
           (click)="onSelectShift(shift)"
           class="btn-select"
         >✔</button>
+        <span>{{ shift?.position }}</span>
         <span>{{ shift?.slot }}</span>
         <span>{{ getFormattedLocation(shift?.location) }}</span>
         <span>{{ daysInWords[shift?.day] }}</span>
@@ -123,8 +125,8 @@
       <span>Status</span>
       <span>Seniority</span>
       <span>Hire date</span>
-      <span>Preferred shift slots</span>
-      <span>Preferred days off</span>
+      <span>Pref shift slots</span>
+      <span>Pref days off</span>
     </div>
 
     <div class="scroll-container-small">
