@@ -37,9 +37,19 @@
     color: var(--color-dark);
     text-align: center;
     text-transform: uppercase;
-    word-wrap: none;
+    white-space: nowrap;
 
+    overflow-x: auto;
     cursor: pointer;
+
+    @media only screen and (max-width: 34em) {
+      //550W
+      width: 8rem;
+
+      span {
+        font-size: var(--font-xsmall);
+      }
+    }
 
     &:hover {
       background-color: var(--color-blue);

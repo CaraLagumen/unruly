@@ -39,6 +39,7 @@
     &--keys {
       display: grid;
       grid-template-columns: 2fr repeat(4, 1fr) 3fr 2fr;
+      align-items: center;
       gap: 0.6rem;
 
       padding: 0.2rem 0.6rem;
@@ -54,12 +55,21 @@
         font-weight: 700;
         text-align: center;
         text-transform: uppercase;
+        white-space: nowrap;
+
+        overflow-x: auto;
+
+        @media only screen and (max-width: 34em) {
+          //550W
+          font-size: var(--font-small) !important;
+        }
       }
     }
 
     &--values {
       display: grid;
       grid-template-columns: 2fr repeat(4, 1fr) 3fr 2fr;
+      align-items: center;
       gap: 0.6rem;
 
       padding: 0.2rem 0.6rem;
@@ -72,13 +82,6 @@
 
         color: var(--color-white);
         white-space: nowrap;
-
-        //BY WIDTHS - MAX (PRIORITY)
-        @media only screen and (max-width: 54em) {
-          //850W
-          font-size: 0.8rem;
-          white-space: normal;
-        }
       }
 
       &-name {
@@ -93,6 +96,14 @@
         font-weight: 600;
         text-align: center;
         text-transform: uppercase;
+        white-space: nowrap;
+
+        overflow-x: auto;
+
+        @media only screen and (max-width: 34em) {
+          //550W
+          font-size: var(--font-small);
+        }
 
         &:hover {
           .text {
@@ -129,6 +140,14 @@
         font-size: var(--font-xsmall);
         text-align: center;
         text-transform: uppercase;
+        white-space: nowrap;
+
+        overflow-x: auto;
+
+        @media only screen and (max-width: 34em) {
+          //550W
+          font-size: var(--font-small);
+        }
       }
     }
   }
@@ -168,6 +187,11 @@
         font-weight: 700;
         text-align: center;
         text-transform: uppercase;
+
+        @media only screen and (max-width: 34em) {
+          //550W
+          font-size: var(--font-small);
+        }
       }
     }
 
@@ -187,6 +211,11 @@
         font-size: var(--font-xsmall);
         text-align: center;
         text-transform: uppercase;
+
+        @media only screen and (max-width: 34em) {
+          //550W
+          font-size: var(--font-small);
+        }
       }
     }
   }

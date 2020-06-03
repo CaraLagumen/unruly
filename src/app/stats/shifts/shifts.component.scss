@@ -54,6 +54,14 @@
         font-weight: 700;
         text-align: center;
         text-transform: uppercase;
+        white-space: nowrap;
+
+        overflow-x: auto;
+
+        @media only screen and (max-width: 34em) {
+          //550W
+          font-size: var(--font-small) !important;
+        }
       }
     }
 
@@ -82,6 +90,14 @@
         font-size: var(--font-xsmall);
         text-align: center;
         text-transform: uppercase;
+        white-space: nowrap;
+
+        overflow-x: auto;
+
+        @media only screen and (max-width: 34em) {
+          //550W
+          font-size: var(--font-small) !important;
+        }
       }
     }
   }
@@ -111,6 +127,15 @@
       &__keys,
       &__values {
         grid-template-columns: repeat(6, 1fr) !important;
+
+        white-space: nowrap;
+
+        overflow-x: auto;
+
+        @media only screen and (max-width: 34em) {
+          //550W
+          font-size: var(--font-small) !important;
+        }
       }
     }
 
@@ -148,6 +173,14 @@
           font-weight: 700;
           text-align: center;
           text-transform: uppercase;
+          white-space: nowrap;
+
+          overflow-x: auto;
+
+          @media only screen and (max-width: 34em) {
+            //550W
+            font-size: var(--font-small) !important;
+          }
         }
       }
 
@@ -175,6 +208,14 @@
           font-size: var(--font-xsmall);
           text-align: center;
           text-transform: uppercase;
+          white-space: nowrap;
+
+          overflow-x: auto;
+
+          @media only screen and (max-width: 34em) {
+            //550W
+            font-size: var(--font-small) !important;
+          }
         }
       }
     }

@@ -32,6 +32,11 @@
 
       overflow: hidden;
 
+      @media only screen and (max-width: 42em) {
+        //650W
+        overflow-y: auto;
+      }
+
       &-1 {
         grid-row: 1 / 2;
         align-self: flex-end;
@@ -44,6 +49,10 @@
           //1200W
           font-size: 0.9rem !important;
         }
+        @media only screen and (max-width: 42em) {
+          //650W
+          font-size: var(--font-xsmall) !important;
+        }
       }
 
       &-2 {
@@ -54,6 +63,10 @@
         @media only screen and (max-width: 75em) {
           //1200W
           font-size: 0.9rem !important;
+        }
+        @media only screen and (max-width: 42em) {
+          //650W
+          font-size: var(--font-xsmall) !important;
         }
       }
     }

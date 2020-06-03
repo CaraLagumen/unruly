@@ -9,6 +9,11 @@
 
   overflow: hidden;
 
+  @media only screen and (max-width: 42em) {
+    //650W
+    padding: 2rem 0rem;
+  }
+
   &__nav {
     grid-row: 2 / 3;
 
@@ -19,6 +24,11 @@
 
     height: 4rem;
     padding-bottom: 0.5rem;
+
+    @media only screen and (max-width: 42em) {
+      //650W
+      gap: 2rem;
+    }
 
     &--title {
       color: var(--color-yellow);
@@ -52,6 +62,11 @@
     grid-template-rows: auto 1fr;
     gap: 0.6rem;
 
+    @media only screen and (max-width: 42em) {
+      //650W
+      gap: 0.2rem;
+    }
+
     &--employees {
       text-align: center;
       text-transform: uppercase;
@@ -71,6 +86,13 @@
         font-weight: 700;
         text-align: center;
         text-transform: uppercase;
+
+        @media only screen and (max-width: 42em) {
+          //650W
+          min-width: 8rem;
+
+          overflow-x: auto;
+        }
       }
 
       &-item {
@@ -83,8 +105,26 @@
         background-color: var(--color-gray);
 
         text-transform: uppercase;
+        white-space: nowrap;
 
-        overflow: hidden;
+        overflow-x: auto;
+
+        @media only screen and (max-width: 47em) {
+          //750W
+          width: 12rem;
+
+          text-align: left;
+        }
+
+        @media only screen and (max-width: 42em) {
+          //650W
+          min-width: 8rem;
+        }
+
+        @media only screen and (max-width: 42em) {
+          //650W
+          width: 6rem;
+        }
 
         &:hover {
           background-color: var(--color-yellow);

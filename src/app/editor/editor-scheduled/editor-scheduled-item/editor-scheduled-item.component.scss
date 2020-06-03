@@ -12,6 +12,11 @@
 
     background-color: var(--color-gray);
 
+    @media only screen and (max-width: 47em) {
+      //750W
+      grid-column: 1 / 4;
+    }
+
     &--heading {
       grid-column: 1 / -1;
       grid-row: 1 / 2;
@@ -42,6 +47,9 @@
         font-weight: 700;
         text-align: center;
         text-transform: uppercase;
+        white-space: nowrap;
+
+        overflow-x: auto;
       }
     }
 
@@ -73,6 +81,9 @@
         color: var(--color-dark);
         text-align: center;
         text-transform: uppercase;
+        white-space: nowrap;
+
+        overflow-x: auto;
       }
     }
   }
@@ -86,6 +97,12 @@
 
     background-color: var(--color-gray);
 
+    @media only screen and (max-width: 47em) {
+      //750W
+      grid-column: 1 / 4;
+      grid-row: 2 / 3;
+    }
+
     &--heading {
       grid-column: 1 / -1;
       grid-row: 1 / 2;
@@ -116,6 +133,9 @@
         font-weight: 700;
         text-align: center;
         text-transform: uppercase;
+        white-space: nowrap;
+
+        overflow-x: auto;
       }
     }
 
@@ -138,6 +158,9 @@
         color: var(--color-dark);
         text-align: center;
         text-transform: uppercase;
+        white-space: nowrap;
+
+        overflow-x: auto;
       }
     }
   }
@@ -151,6 +174,12 @@
 
     background-color: var(--color-gray);
 
+    @media only screen and (max-width: 47em) {
+      //750W
+      grid-column: 1 / 4;
+      grid-row: 3 / 4;
+    }
+
     &--heading {
       grid-column: 1 / -1;
       grid-row: 1 / 2;
@@ -181,6 +210,9 @@
         font-weight: 700;
         text-align: center;
         text-transform: uppercase;
+        white-space: nowrap;
+
+        overflow-x: auto;
       }
     }
 
@@ -203,6 +235,9 @@
         color: var(--color-dark);
         text-align: center;
         text-transform: uppercase;
+        white-space: nowrap;
+
+        overflow-x: auto;
       }
     }
   }
@@ -214,6 +249,12 @@
     display: grid;
 
     background-color: var(--color-gray);
+
+    @media only screen and (max-width: 47em) {
+      //750W
+      grid-column: 1 / 4;
+      grid-row: 4 / 5;
+    }
 
     &--heading {
       grid-column: 1 / -1;
@@ -245,6 +286,9 @@
         font-weight: 700;
         text-align: center;
         text-transform: uppercase;
+        white-space: nowrap;
+
+        overflow-x: auto;
       }
     }
 
@@ -265,13 +309,6 @@
 
         color: var(--color-white);
         white-space: nowrap;
-
-        //BY WIDTHS - MAX (PRIORITY)
-        @media only screen and (max-width: 94em) {
-          //1500W
-          font-size: 0.8rem;
-          white-space: normal;
-        }
       }
 
       &-name {
@@ -286,6 +323,9 @@
         font-weight: 600;
         text-align: center;
         text-transform: uppercase;
+        white-space: nowrap;
+
+        overflow-x: auto;
       }
 
       &-item {
@@ -300,6 +340,9 @@
         color: var(--color-dark);
         text-align: center;
         text-transform: uppercase;
+        white-space: nowrap;
+
+        overflow-x: auto;
       }
     }
   }

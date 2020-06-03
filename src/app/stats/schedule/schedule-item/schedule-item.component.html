@@ -15,8 +15,7 @@
     >
       <span class="schedule-item__main--details-1">
         {{ scheduled?.shift.location.toUpperCase() }}
-        {{ getFormattedHour(scheduled?.shift.shiftStart[0]) }} to
-        {{ getFormattedHour(scheduled?.shift.shiftEnd[0]) }}
+        {{ getFormattedHour(scheduled?.shift.shiftStart[0]) }}-{{ getFormattedHour(scheduled?.shift.shiftEnd[0]) }}
       </span>
 
       <span class="schedule-item__main--details-2">
