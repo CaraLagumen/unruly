@@ -11,6 +11,11 @@
 
     cursor: pointer;
 
+    @media only screen and (max-width: 34em) {
+      //550W
+      height: 8.5rem;
+    }
+
     &:hover {
       background-color: var(--color-blue);
 
@@ -20,6 +25,7 @@
     &--details {
       display: grid;
       grid-template-rows: 1fr 1fr;
+      align-items: center;
 
       height: 5.5rem;
 
@@ -27,9 +33,13 @@
 
       overflow: hidden;
 
+      @media only screen and (max-width: 34em) {
+        //550W
+        height: 8rem;
+      }
+
       &-shift {
         grid-row: 1 / 2;
-        align-self: flex-end;
 
         font-size: var(--font-xsmall);
         font-weight: 700;
@@ -37,7 +47,13 @@
 
       &-employee {
         grid-row: 2 / -1;
-        align-self: flex-start;
+
+        @media only screen and (max-width: 34em) {
+          //550W
+          font-size: var(--font-xsmall);
+
+          width: 7rem;
+        }
       }
     }
   }

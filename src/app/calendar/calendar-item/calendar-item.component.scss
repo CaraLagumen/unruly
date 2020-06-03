@@ -6,6 +6,13 @@
 
   overflow-y: auto;
 
+  @media only screen and (max-width: 34em) {
+    //550W
+    span {
+      font-size: var(--font-xsmall) !important;
+    }
+  }
+
   &__main {
     display: inline-block;
 

@@ -3,6 +3,11 @@
 
   background-color: var(--color-darkgray);
 
+  @media only screen and (max-width: 47em) {
+    //760W
+    margin-top: 6rem;
+  }
+
   &__nav {
     display: flex;
     align-items: center;
@@ -11,6 +16,11 @@
 
     height: 4rem;
     padding-bottom: 0.5rem;
+
+    @media only screen and (max-width: 26em) {
+      //425W
+      gap: 2rem;
+    }
 
     &--btn {
       &:hover {
@@ -59,6 +69,11 @@
       width: 100%;
 
       background-color: var(--color-gray);
+
+      @media only screen and (max-width: 34em) {
+        //550W
+        height: 20rem;
+      }
 
       &-heading {
         padding: 0rem 0.5rem;

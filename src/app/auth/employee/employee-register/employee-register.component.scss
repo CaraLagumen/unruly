@@ -5,6 +5,7 @@
 
   width: fit-content;
   margin: auto;
+  margin-top: 4rem;
   padding: 5rem 8rem;
 
   background-color: var(--color-blue);
@@ -26,6 +27,11 @@
     align-content: center;
     gap: 1rem;
 
+    @media only screen and (max-width: 75em) {
+      //1200W
+      justify-self: flex-end;
+    }
+
     &--name {
       grid-column: 1 / -1;
       grid-row: 1 / 2;
@@ -34,6 +40,13 @@
       align-items: center;
       justify-self: center;
       gap: 1rem;
+
+      @media only screen and (max-width: 75em) {
+        //1200W
+        display: grid;
+        justify-content: flex-end;
+        justify-items: flex-end;
+      }
     }
 
     &--auth {
@@ -44,6 +57,13 @@
       align-items: center;
       justify-self: center;
       gap: 1rem;
+
+      @media only screen and (max-width: 75em) {
+        //1200W
+        display: grid;
+        justify-content: flex-end;
+        justify-items: flex-end;
+      }
     }
 
     h4 {

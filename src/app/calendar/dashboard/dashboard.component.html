@@ -30,6 +30,17 @@
 
   </div>
 
+  <!--PLACEHOLDER------------------------------------------------------------>
+
+  <div
+    *ngIf="!schedulerOptionsMenu && !employeeOptionsMenu"
+    class="placeholder"
+  >
+    Click on a shift box for more options<br>
+    Click a date number for more detail on the day<br>
+    Click w for more detail on the week<br>
+  </div>
+
   <!--SCHEDULER OPTIONS MENU------------------------------------------------------------>
 
   <div
@@ -162,7 +173,7 @@
       </div>
 
       <div class="dashboard__update--form-item">
-        <span>Shift start and end</span>
+        <span>Start & end</span>
         <select formControlName="shiftStartControl">
           <option
             *ngFor="let shiftStart of shiftHours"
@@ -372,15 +383,15 @@
 
   </div>
 
-</div>
+  <!--PLACEHOLDER------------------------------------------------------------>
 
-<!--PLACEHOLDER------------------------------------------------------------>
+  <div
+    *ngIf="!schedulerOptionsMenu && !employeeOptionsMenu"
+    class="placeholder"
+  >
+    Click on a shift box for more options<br>
+    Click a date number for more detail on the day<br>
+    Click w for more detail on the week<br>
+  </div>
 
-<div
-  *ngIf="!schedulerOptionsMenu && !employeeOptionsMenu"
-  class="placeholder"
->
-  Click on a shift box for more options<br>
-  Click a date number for more detail on the day<br>
-  Click w for more detail on the week<br>
 </div>

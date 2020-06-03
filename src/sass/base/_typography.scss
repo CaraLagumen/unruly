@@ -88,6 +88,11 @@ h4 {
   color: var(--color-gray);
   font-size: var(--font-xsmall);
 
+  @media only screen and (max-width: 34em) {
+    //550W
+    font-size: var(--font-small);
+  }
+
   &:hover {
     background-color: var(--color-gray);
 
@@ -139,6 +144,7 @@ h4 {
 
   font-size: var(--font-xsmall);
   text-transform: uppercase;
+  white-space: nowrap;
 
   &:hover {
     background-color: var(--color-dark);
@@ -194,5 +200,21 @@ h4 {
     background-color: var(--color-gray);
 
     color: var(--color-lightblue);
+  }
+}
+
+h4,
+span,
+select {
+  @media only screen and (max-width: 34em) {
+    //550W
+    font-size: var(--font-small);
+  }
+}
+
+input {
+  @media only screen and (max-width: 34em) {
+    //550W
+    font-size: var(--font-small) !important;
   }
 }

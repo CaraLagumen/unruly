@@ -6,6 +6,11 @@
 
   background-color: var(--color-darkgray);
 
+  @media only screen and (max-width: 47em) {
+    //760W
+    margin-top: 6rem;
+  }
+
   &__nav {
     grid-row: 1 / 2;
 
