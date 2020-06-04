@@ -29,7 +29,6 @@
 
     margin-top: 1rem;
 
-    //BY WIDTHS - MAX (PRIORITY)
     @media only screen and (max-width: 86em) {
       //1366W
       justify-self: flex-end;
@@ -43,7 +42,6 @@
 
       margin-bottom: 1rem;
 
-      //BY WIDTHS - MAX (PRIORITY)
       @media only screen and (max-width: 75em) {
         //1200W
         display: grid;
@@ -61,7 +59,6 @@
         text-align: right;
         white-space: nowrap;
 
-        //BY WIDTHS - MAX (PRIORITY)
         @media only screen and (max-width: 75em) {
           //1200W
           grid-column: 1 / 2;
@@ -78,7 +75,6 @@
         font-weight: 700;
         text-transform: uppercase;
 
-        //BY WIDTHS - MAX (PRIORITY)
         @media only screen and (max-width: 75em) {
           //1200W
           grid-column: 2 / 3;
@@ -96,7 +92,6 @@
         color: var(--color-darkblue);
         font-size: var(--font-xsmall);
 
-        //BY WIDTHS - MAX (PRIORITY)
         @media only screen and (max-width: 75em) {
           //1200W
           grid-column: 2 / 3;
@@ -112,7 +107,6 @@
 
       white-space: nowrap;
 
-      //BY WIDTHS - MAX (PRIORITY)
       @media only screen and (max-width: 75em) {
         //1200W
         justify-self: center;

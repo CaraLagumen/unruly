@@ -35,6 +35,9 @@
 
     &--details {
       font-weight: 700;
+      white-space: nowrap;
+
+      overflow-x: auto;
     }
   }
 }

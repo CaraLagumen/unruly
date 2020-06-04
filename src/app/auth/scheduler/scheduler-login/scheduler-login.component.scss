@@ -27,6 +27,12 @@
     align-items: center;
     gap: 1rem;
 
+    @media only screen and (max-width: 34em) {
+      //550W
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: repeat(auto, 1fr);
+    }
+
     &--heading {
       grid-row: 1 / 2;
 
@@ -36,6 +42,12 @@
 
       color: var(--color-white);
       text-align: right;
+
+      @media only screen and (max-width: 34em) {
+        //550W
+        grid-column: auto;
+        grid-row: auto;
+      }
     }
 
     &--input {
@@ -48,18 +60,36 @@
 
       color: var(--color-darkblue);
       font-size: var(--font-xsmall);
+
+      @media only screen and (max-width: 34em) {
+        //550W
+        grid-column: auto;
+        grid-row: auto;
+      }
     }
 
     &--forgot {
       grid-column: 1 / 3;
       grid-row: 2 / 3;
       justify-self: flex-end;
+
+      @media only screen and (max-width: 34em) {
+        //550W
+        grid-column: auto;
+        grid-row: auto;
+      }
     }
 
     &--submit {
       grid-column: 3 / 5;
       grid-row: 2 / 3;
       justify-self: flex-end;
+
+      @media only screen and (max-width: 34em) {
+        //550W
+        grid-column: auto;
+        grid-row: auto;
+      }
     }
   }
 }

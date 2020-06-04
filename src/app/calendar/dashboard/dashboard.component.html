@@ -252,13 +252,24 @@
 
   <!--EMPLOYEE GUIDE------------------------------------------------------------>
 
-  <div class="dashboard__populate">
+  <div class="dashboard__guide">
     <h3 id="scheduled">■ scheduled</h3> &nbsp; &nbsp;
     <h3 id="my-scheduled">■ my scheduled</h3> &nbsp; &nbsp;
     <h3 id="preferred">_ preferred</h3> &nbsp; &nbsp;
     <h3 id="vacation">□ vacation request</h3> &nbsp; &nbsp;
     <h3 id="vacation-approved">■ approved</h3> &nbsp; &nbsp;
     <h3 id="vacation-denied">■ denied</h3>
+  </div>
+
+  <!--PLACEHOLDER------------------------------------------------------------>
+
+  <div
+    *ngIf="!schedulerOptionsMenu && !employeeOptionsMenu"
+    class="placeholder"
+  >
+    Click on a shift box for more options<br>
+    Click a date number for more detail on the day<br>
+    Click w for more detail on the week<br>
   </div>
 
   <!--EMPLOYEE OPTIONS MENU------------------------------------------------------------>
@@ -381,17 +392,6 @@
       >×</button>
     </form>
 
-  </div>
-
-  <!--PLACEHOLDER------------------------------------------------------------>
-
-  <div
-    *ngIf="!schedulerOptionsMenu && !employeeOptionsMenu"
-    class="placeholder"
-  >
-    Click on a shift box for more options<br>
-    Click a date number for more detail on the day<br>
-    Click w for more detail on the week<br>
   </div>
 
 </div>

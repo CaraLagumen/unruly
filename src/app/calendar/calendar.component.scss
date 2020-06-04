@@ -8,6 +8,15 @@
     margin-top: 6rem;
   }
 
+  @media only screen and (max-width: 26em) {
+    //425W
+    display: grid;
+    grid-template-columns: auto auto;
+    column-gap: 0.8rem;
+
+    padding: 0.5rem 0rem 2rem 0rem;
+  }
+
   &__nav {
     display: flex;
     align-items: center;
@@ -19,16 +28,51 @@
 
     @media only screen and (max-width: 26em) {
       //425W
-      gap: 2rem;
+      grid-column: 1 / -1;
+
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: 1fr 1fr;
+      justify-items: center;
+      gap: 0rem;
+
+      height: 8rem;
     }
 
     &--btn {
+      @media only screen and (max-width: 26em) {
+        //425W
+        &-backward {
+          grid-column: 1 / 2;
+        }
+
+        &-forward {
+          grid-column: 3 / 4;
+        }
+
+        &-m {
+          grid-column: 1 / 3;
+          grid-row: 2 / 3 !important;
+        }
+
+        &-w {
+          grid-column: 2 / 4;
+          grid-row: 2 / 3 !important;
+        }
+      }
+
       &:hover {
         color: var(--color-yellow);
       }
     }
 
     &--month {
+      @media only screen and (max-width: 26em) {
+        //425W
+        grid-column: 2 / 3;
+        grid-row: 1 / 2;
+      }
+
       width: 22rem;
 
       font-weight: 800;
@@ -43,6 +87,17 @@
 
     padding-bottom: 0.8rem;
 
+    @media only screen and (max-width: 26em) {
+      //425W
+      grid-column: 1 / 2;
+      grid-row: 2 / 3;
+
+      grid-template-columns: min-content;
+      grid-template-rows: repeat(7, 1fr);
+
+      padding-bottom: 0;
+    }
+
     &--days {
       grid-row: 1 / 2;
       z-index: 1000;
@@ -55,6 +110,17 @@
       font-size: var(--font-xsmall);
       font-weight: 700;
       text-align: center;
+
+      @media only screen and (max-width: 26em) {
+        //425W
+        grid-column: 1 / 2;
+        grid-row: auto;
+
+        width: auto;
+
+        writing-mode: vertical-lr;
+        text-orientation: upright;
+      }
     }
   }
 
@@ -64,14 +130,26 @@
     grid-template-rows: repeat(auto, 1fr);
     gap: 0.8rem;
 
+    @media only screen and (max-width: 26em) {
+      //425W
+      grid-column: 2 / -1;
+      grid-row: 2 / 3;
+
+      grid-template-columns: auto;
+      grid-template-rows: repeat(7, 1fr);
+      grid-auto-flow: column;
+
+      overflow-x: auto;
+    }
+
     &--days {
       height: 10rem;
       width: 100%;
 
       background-color: var(--color-gray);
 
-      @media only screen and (max-width: 34em) {
-        //550W
+      @media only screen and (max-width: 86em) {
+        //1366W
         height: 20rem;
       }
 

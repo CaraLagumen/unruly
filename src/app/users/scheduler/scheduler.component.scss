@@ -29,7 +29,6 @@
 
     margin-top: 1rem;
 
-    //BY WIDTHS - MAX (PRIORITY)
     @media only screen and (max-width: 75em) {
       //1200W
       justify-self: flex-end;
@@ -43,7 +42,6 @@
 
       margin-bottom: 1rem;
 
-      //BY WIDTHS - MAX (PRIORITY)
       @media only screen and (max-width: 75em) {
         //1200W
         display: grid;

@@ -29,12 +29,12 @@
 
     <button
       (click)="onCurrentMonth()"
-      class="calendar__nav--btn btn-nav"
+      class="calendar__nav--btn-m btn-nav"
     >Current month</button>
 
     <button
       (click)="onPreviousMonth()"
-      class="calendar__nav--btn"
+      class="calendar__nav--btn-backward"
     >◄</button>
 
     <h2 class="calendar__nav--month">
@@ -43,12 +43,12 @@
 
     <button
       (click)="onNextMonth()"
-      class="calendar__nav--btn"
+      class="calendar__nav--btn-forward"
     >►</button>
 
     <button
       [routerLink]="['/week', today.toISOString()]"
-      class="calendar__nav--btn btn-nav"
+      class="calendar__nav--btn-w btn-nav"
     >Current week</button>
 
   </div>

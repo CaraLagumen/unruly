@@ -44,7 +44,6 @@
         font-size: var(--font-xsmall);
         font-weight: 700;
 
-        //BY WIDTHS - MAX (PRIORITY)
         @media only screen and (max-width: 75em) {
           //1200W
           font-size: 0.9rem !important;
@@ -59,7 +58,6 @@
         grid-row: 2 / -1;
         align-self: flex-start;
 
-        //BY WIDTHS - MAX (PRIORITY)
         @media only screen and (max-width: 75em) {
           //1200W
           font-size: 0.9rem !important;

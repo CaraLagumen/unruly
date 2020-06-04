@@ -14,6 +14,14 @@
     }
   }
 
+  @media only screen and (max-width: 26em) {
+    //425W
+    display: grid;
+    grid-template-columns: 1.5fr 2fr;
+  }
+
+  //POPULATE (SCHEDULER 1ST LEVEL)----------------------------------------------------------
+
   &__populate {
     display: flex;
     align-items: center;
@@ -24,9 +32,10 @@
     background-color: var(--color-darkblue);
 
     @media only screen and (max-width: 47em) {
-      //760W
+      //750W
       display: grid;
       grid-template-columns: repeat(3, 1fr);
+      align-content: center;
       justify-items: center;
       gap: 0.5rem;
 
@@ -48,12 +57,61 @@
       }
     }
 
+    @media only screen and (max-width: 26em) {
+      //425W
+      height: 22rem;
+
+      &--heading {
+        grid-column: 1 / -1;
+      }
+
+      &--btns {
+        grid-column: 1 / -1;
+
+        display: flex;
+        flex-direction: column;
+        gap: 0.1rem;
+      }
+
+      #scheduled {
+        grid-column: 1 / -1;
+        grid-row: 3 / 4;
+      }
+    }
+
     &--heading {
       border-right: solid var(--color-white) 0.15rem;
       padding-right: 1.5rem;
       margin-right: 1.5rem;
     }
   }
+
+  //GUIDE (EMPLOYEE 1ST LEVEL)----------------------------------------------------------
+
+  &__guide {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.5rem;
+
+    background-color: var(--color-darkblue);
+
+    @media only screen and (max-width: 47em) {
+      //750W
+      display: grid;
+      grid-template-columns: repeat(6, auto);
+
+      h3 {
+        font-size: var(--font-xsmall) !important;
+        white-space: nowrap;
+
+        overflow-x: auto;
+      }
+    }
+  }
+
+  //OPTIONS (2ND LEVEL)----------------------------------------------------------
 
   &__options {
     display: grid;
@@ -66,6 +124,13 @@
 
     background-color: var(--color-blue);
 
+    @media only screen and (max-width: 26em) {
+      //425W
+      height: 22rem;
+      padding: 0.5rem 2rem;
+      padding-top: 1rem;
+    }
+
     &--details {
       grid-row: 1 / 2;
 
@@ -73,9 +138,10 @@
       grid-template-rows: 1fr 1fr;
       gap: 1rem;
 
-      .preferred span {
-        background-color: var(--color-white) !important;
-        color: var(--color-dark) !important;
+      @media only screen and (max-width: 26em) {
+        //425W
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 100%;
       }
 
       &-shift {
@@ -85,10 +151,25 @@
         align-items: center;
         justify-content: center;
 
+        overflow-x: auto;
+
+        @media only screen and (max-width: 26em) {
+          //425W
+          grid-column: 1 / 2;
+          grid-row: 1 / -1;
+
+          display: grid;
+          align-content: center;
+        }
+
         &-heading {
           border-right: solid var(--color-white) 0.15rem;
           padding-right: 0.5rem;
           margin-right: 0.5rem;
+
+          text-align: right;
+
+          overflow-x: auto;
         }
 
         &-values {
@@ -96,11 +177,25 @@
           font-size: var(--font-xsmall);
           text-transform: uppercase;
 
+          overflow-x: auto;
+
+          @media only screen and (max-width: 26em) {
+            //425W
+            display: grid;
+            grid-template-rows: repeat(6, 1fr);
+            justify-items: flex-start;
+            gap: 0.1rem;
+
+            padding-top: 0.1rem;
+          }
+
           span {
             background-color: var(--color-gray);
 
             margin-left: 0.1rem;
             padding: 0.4rem 0.8rem;
+
+            white-space: nowrap;
           }
         }
       }
@@ -114,10 +209,21 @@
 
         overflow-x: auto;
 
+        @media only screen and (max-width: 26em) {
+          //425W
+          grid-column: 2 / 3;
+          grid-row: 1 / -1;
+
+          display: grid;
+          align-content: center;
+        }
+
         &-heading {
           border-right: solid var(--color-white) 0.15rem;
           padding-right: 0.5rem;
           margin-right: 0.5rem;
+
+          text-align: right;
 
           overflow-x: auto;
         }
@@ -128,6 +234,16 @@
           text-transform: uppercase;
 
           overflow-x: auto;
+
+          @media only screen and (max-width: 26em) {
+            //425W
+            display: grid;
+            grid-template-rows: repeat(5, 1fr);
+            justify-items: flex-start;
+            gap: 0.1rem;
+
+            padding-top: 0.1rem;
+          }
 
           span {
             background-color: var(--color-yellow);
@@ -146,11 +262,20 @@
 
       white-space: nowrap;
 
+      @media only screen and (max-width: 26em) {
+        //425W
+        grid-row: 1 / -1;
+
+        display: none;
+      }
+
       &-item {
         white-space: nowrap;
       }
     }
   }
+
+  //FORMS (3RD LEVEL)----------------------------------------------------------
 
   &__update,
   &__create {
@@ -222,6 +347,8 @@
   }
 }
 
+//MISC----------------------------------------------------------
+
 .placeholder {
   margin-top: 4.5rem;
 
@@ -233,6 +360,13 @@
   @media only screen and (max-width: 47em) {
     //760W
     margin-top: 6rem;
+  }
+
+  @media only screen and (max-width: 26em) {
+    //425W
+    margin-top: 8rem;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -253,6 +387,11 @@
     //760W
     font-size: var(--font-xsmall);
   }
+}
+
+.preferred span {
+  background-color: var(--color-white) !important;
+  color: var(--color-dark) !important;
 }
 
 #scheduled {
