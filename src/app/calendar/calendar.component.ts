@@ -264,6 +264,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
           keepAfterRouteChange: true,
           parseError: true,
         });
+        console.log(err);
       }
     );
   }

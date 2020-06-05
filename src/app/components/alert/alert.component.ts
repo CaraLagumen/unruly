@@ -53,7 +53,6 @@ export class AlertComponent implements OnInit, OnDestroy {
           const indexStart = alert.message.indexOf(`Error:`);
           const indexEnd = alert.message.indexOf(`<br>`);
           alert.message = alert.message.substring(indexStart, indexEnd);
-          console.log(alert.message);
         }
       });
 
