@@ -29,12 +29,12 @@
 
     <button
       (click)="onCurrentWeek()"
-      class="week__nav--btn btn-nav"
+      class="week__nav--btn-w btn-nav"
     >Current week</button>
 
     <button
       (click)="onPreviousWeek()"
-      class="week__nav--btn"
+      class="week__nav--btn-backward"
     >◄</button>
 
     <h2
@@ -46,12 +46,12 @@
 
     <button
       (click)="onNextWeek()"
-      class="week__nav--btn"
+      class="week__nav--btn-forward"
     >►</button>
 
     <button
       [routerLink]="['/day', today.toISOString()]"
-      class="week__nav--btn btn-nav"
+      class="week__nav--btn-d btn-nav"
     >Current day</button>
 
   </div>

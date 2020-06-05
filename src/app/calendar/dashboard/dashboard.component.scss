@@ -109,6 +109,13 @@
         overflow-x: auto;
       }
     }
+
+    @media only screen and (max-width: 26em) {
+      //425W
+      grid-template-columns: repeat(4, auto);
+
+      height: 22rem;
+    }
   }
 
   //OPTIONS (2ND LEVEL)----------------------------------------------------------
@@ -168,6 +175,7 @@
           margin-right: 0.5rem;
 
           text-align: right;
+          white-space: nowrap;
 
           overflow-x: auto;
         }

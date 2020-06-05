@@ -48,9 +48,15 @@
           //1200W
           font-size: 0.9rem !important;
         }
+
         @media only screen and (max-width: 42em) {
           //650W
           font-size: var(--font-xsmall) !important;
+        }
+
+        @media only screen and (max-width: 26em) {
+          //425W
+          display: none;
         }
       }
 
@@ -62,9 +68,24 @@
           //1200W
           font-size: 0.9rem !important;
         }
+
         @media only screen and (max-width: 42em) {
           //650W
           font-size: var(--font-xsmall) !important;
+        }
+
+        @media only screen and (max-width: 26em) {
+          //425W
+          display: none;
+        }
+      }
+
+      &-mobile {
+        display: none;
+
+        @media only screen and (max-width: 26em) {
+          //425W
+          font-weight: 700;
         }
       }
     }

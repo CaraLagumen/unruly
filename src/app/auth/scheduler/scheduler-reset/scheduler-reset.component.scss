@@ -35,6 +35,12 @@
       align-items: center;
       justify-self: center;
       gap: 1rem;
+
+      @media only screen and (max-width: 34em) {
+        //550W
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+      }
     }
 
     h4 {
@@ -45,6 +51,14 @@
       color: var(--color-white);
       text-align: right;
       white-space: nowrap;
+
+      @media only screen and (max-width: 34em) {
+        //550W
+        grid-column: 1 / 2;
+        grid-row: auto;
+
+        white-space: normal;
+      }
     }
 
     input {
@@ -55,11 +69,24 @@
 
       color: var(--color-darkblue);
       font-size: var(--font-xsmall);
+
+      @media only screen and (max-width: 34em) {
+        //550W
+        grid-column: 2 / 3;
+        grid-row: auto;
+      }
     }
 
     &--submit {
       grid-row: 3 / 4;
       justify-self: flex-end;
+
+      @media only screen and (max-width: 34em) {
+        //550W
+        grid-column: 1 / -1;
+        grid-row: 3 / 4;
+        justify-self: flex-end;
+      }
     }
   }
 }

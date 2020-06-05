@@ -1,14 +1,14 @@
-<div class="scheduler-reset">
+<div class="employee-reset">
 
-  <h1 class="scheduler-reset__title">Reset password</h1>
+  <h1 class="employee-reset__title">Reset password</h1>
 
   <form
     (submit)="onReset(resetForm)"
     #resetForm="ngForm"
-    class="scheduler-reset__form"
+    class="employee-reset__form"
   >
 
-    <div class="scheduler-reset__form--auth">
+    <div class="employee-reset__form--auth">
       <h4>New password</h4>
       <input
         type="password"
@@ -32,7 +32,7 @@
 
     <button
       [disabled]="!resetForm.valid"
-      class="scheduler-reset__form--submit btn-auth"
+      class="employee-reset__form--submit btn-auth"
     >Reset password</button>
 
   </form>

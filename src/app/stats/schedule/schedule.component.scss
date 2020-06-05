@@ -30,8 +30,23 @@
       gap: 2rem;
     }
 
+    @media only screen and (max-width: 26em) {
+      //425W
+      display: grid;
+      grid-template-columns: repeat(3, 33.3vw);
+      grid-template-rows: 1fr 1fr;
+      gap: 0rem;
+
+      height: 8rem;
+    }
+
     &--title {
       color: var(--color-yellow);
+
+      @media only screen and (max-width: 26em) {
+        //425W
+        margin-left: 2rem;
+      }
     }
 
     &--month {
@@ -42,14 +57,35 @@
 
       cursor: pointer;
 
+      @media only screen and (max-width: 26em) {
+        //425W
+        justify-self: center;
+      }
+
       &:hover {
         color: var(--color-yellow);
       }
     }
 
     &--btn {
+      @media only screen and (max-width: 26em) {
+        //425W
+        justify-self: center;
+      }
+
       &:hover {
         color: var(--color-yellow);
+      }
+
+      &-w {
+        @media only screen and (max-width: 26em) {
+          //425W
+          grid-column: 2 / 4;
+          grid-row: 1 / 2;
+          justify-self: flex-end;
+
+          margin-right: 2rem;
+        }
       }
     }
   }
@@ -65,6 +101,11 @@
     @media only screen and (max-width: 42em) {
       //650W
       gap: 0.2rem;
+    }
+
+    @media only screen and (max-width: 26em) {
+      //425W
+      gap: 0.1rem;
     }
 
     &--employees {
@@ -172,6 +213,11 @@
       align-self: flex-start;
 
       width: 100%;
+
+      @media only screen and (max-width: 26em) {
+        //425W
+        width: 5.5rem;
+      }
 
       &-heading {
         width: 100%;

@@ -43,7 +43,19 @@ export class RosterComponent implements OnInit {
         color: "var(--color-blue)",
       };
 
-    if (this.employeeId === employeeId && type === `guide`)
+    if (this.employeeId === employeeId && type === `guide`) {
+      //MEDIA QUERY
+      if (window.innerWidth <= 425) {
+        return {
+          position: "absolute",
+          left: 0,
+          transform: "translateY(-2.5rem)",
+          height: "2.5rem",
+          width: "100%",
+          "background-color": "var(--color-white)",
+        };
+      }
+
       return {
         position: "absolute",
         left: 0,
@@ -52,5 +64,6 @@ export class RosterComponent implements OnInit {
         width: "100%",
         "background-color": "var(--color-white)",
       };
+    }
   }
 }

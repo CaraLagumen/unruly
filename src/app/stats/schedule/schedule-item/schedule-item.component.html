@@ -22,6 +22,9 @@
         {{ scheduled?.shift.slot }}
         {{ scheduled?.shift.position }}
       </span>
+
+      <span id="schedule-item__main--details-mobile">{{ getFormattedLocation(scheduled?.shift.location) }}
+        {{ getFormattedHour(scheduled?.shift.shiftStart[0]) }}</span>
     </div>
 
   </div>

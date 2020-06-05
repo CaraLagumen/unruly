@@ -21,6 +21,10 @@
   @media only screen and (max-width: 26em) {
     //425W
     grid-template-columns: repeat(4, auto);
+
+    h2 {
+      font-size: var(--font-small);
+    }
   }
 
   &__logo {

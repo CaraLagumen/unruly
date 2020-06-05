@@ -20,6 +20,11 @@
       height: 15rem;
     }
 
+    @media only screen and (max-width: 26em) {
+      //425W
+      height: 18rem;
+    }
+
     &:hover {
       background-color: var(--color-blue);
 
@@ -33,9 +38,16 @@
       text-align: center;
       text-transform: uppercase;
 
+      overflow-x: auto;
+
       @media only screen and (max-width: 34em) {
         //550W
         height: 14rem;
+      }
+
+      @media only screen and (max-width: 26em) {
+        //425W
+        height: 17rem;
       }
 
       &-shift {
@@ -93,7 +105,8 @@
 }
 
 .preferred {
-  border-bottom: solid var(--color-white) 0.2rem;
+  border-bottom: solid var(--color-white) 0.5rem;
+  box-shadow: 0 0 0 0.1rem var(--color-black);
 }
 
 .vacation {

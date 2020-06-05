@@ -1,34 +1,8 @@
 .editor-vacations-item {
-  display: inline-block;
-
-  &__heading {
-    grid-row: 1 / 2;
-
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 0.8rem;
-
-    padding-bottom: 0.8rem;
-
-    &--days {
-      grid-row: 1 / 2;
-
-      width: 100%;
-
-      background-color: var(--color-dark);
-
-      color: var(--color-gray);
-      font-size: var(--font-xsmall);
-      font-weight: 700;
-      text-align: center;
-    }
-  }
-
   &__vacation {
-    grid-row: 2 / 3;
-
     display: inline-block;
 
+    width: 100%;
     padding: 0.1rem;
     margin-bottom: 0.2rem;
 
@@ -39,13 +13,11 @@
     text-transform: uppercase;
     white-space: nowrap;
 
-    overflow-x: auto;
+    overflow-y: auto;
     cursor: pointer;
 
     @media only screen and (max-width: 34em) {
       //550W
-      width: 8rem;
-
       span {
         font-size: var(--font-xsmall);
       }
@@ -56,5 +28,18 @@
 
       color: var(--color-white);
     }
+  }
+
+  &__placeholder {
+    display: inline-block;
+
+    width: 100%;
+
+    color: var(--color-dark);
+    text-align: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    overflow-x: auto;
   }
 }

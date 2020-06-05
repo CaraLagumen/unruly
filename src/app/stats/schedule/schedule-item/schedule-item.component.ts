@@ -32,6 +32,10 @@ export class ScheduleItemComponent implements OnInit {
     return this.calendarService.getFormattedHour(hour);
   }
 
+  getFormattedLocation(location: string) {
+    return this.calendarService.getFormattedLocation(location);
+  }
+
   getRowStyle() {
     //CLARIFY NUMBER OF grid-row FROM NUMBER OF EMPLOYEES
     const rows = `repeat(${this.allEmployees.length}, 1fr)`;

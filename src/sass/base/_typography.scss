@@ -203,6 +203,22 @@ h4 {
   }
 }
 
+.approved {
+  padding: inherit;
+
+  background-color: var(--color-green) !important;
+
+  color: var(--color-white);
+}
+
+.denied {
+  padding: inherit;
+
+  background-color: var(--color-red) !important;
+
+  color: var(--color-white);
+}
+
 h4,
 span,
 select {

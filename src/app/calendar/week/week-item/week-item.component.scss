@@ -1,6 +1,16 @@
 .week-item {
   padding: 0.2rem 0.5rem;
 
+  @media only screen and (max-width: 26em) {
+    //425W
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.8rem;
+
+    overflow-x: auto;
+  }
+
   &__main {
     height: 6rem;
 
@@ -38,6 +48,11 @@
         height: 8rem;
       }
 
+      @media only screen and (max-width: 26em) {
+        //425W
+        overflow-y: auto;
+      }
+
       &-shift {
         grid-row: 1 / 2;
 
@@ -73,6 +88,7 @@
 
 .preferred {
   border-bottom: solid var(--color-white) 0.2rem;
+  box-shadow: 0 0 0 0.1rem var(--color-black);
 }
 
 .vacation {
