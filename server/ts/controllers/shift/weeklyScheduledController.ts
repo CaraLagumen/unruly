@@ -26,6 +26,7 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
   const allWeeklyScheduled = await WeeklyScheduled.find();
   const scheduler = req.scheduler.id;
   const allScheduled: IScheduledData[][] = [];
+  const weekAhead = 2; //WEEK TO SCHEDULE
 
   for await (let el of allWeeklyScheduled) {
     //2. GRAB RAW WEEKLY SCHEDULED FROM PARAM ID TO EXTRACT
@@ -46,7 +47,7 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
     shifts.forEach((el: any) => {
       //EXTRACT DAYS FROM SHIFT (MON, TUES, ETC...)
       const shiftDay = el.day;
-      const comingMonday = moment().add(2, "w").isoWeekday(1);
+      const comingMonday = moment().add(weekAhead, "w").isoWeekday(1);
       //FROM THAT MONDAY, ADD SHIFT DAY TO MATCH
       const comingShiftDay = comingMonday.isoWeekday(shiftDay).toDate();
       dates.push(comingShiftDay);
@@ -93,6 +94,7 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
 export const populateToScheduled = catchAsync(async (req, res, next) => {
   //1. GRAB WHAT WE CAN FROM AVAILABLE
   const scheduler: string = req.scheduler.id;
+  const weekAhead = 2; //WEEK TO SCHEDULE
 
   //2. GRAB RAW WEEKLY SCHEDULED FROM PARAM ID TO EXTRACT WEEKLY SHIFT THEN INDIVIDUAL SHIFTS
   const weeklyScheduled = await WeeklyScheduled.findById(req.params.id);
@@ -112,7 +114,7 @@ export const populateToScheduled = catchAsync(async (req, res, next) => {
   shifts.forEach((el: any) => {
     //EXTRACT DAYS FROM SHIFT (MON, TUES, ETC...)
     const shiftDay = el.day;
-    const comingMonday = moment().add(2, "w").isoWeekday(1);
+    const comingMonday = moment().add(weekAhead, "w").isoWeekday(1);
 
     //FROM THAT MONDAY, ADD SHIFT DAY TO MATCH
     const comingShiftDay = comingMonday.isoWeekday(shiftDay);

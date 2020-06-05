@@ -48,11 +48,11 @@ export class AlertComponent implements OnInit, OnDestroy {
           alert.message = lodash.startCase(alert.message);
         }
 
-        //8. PARSE ERROR IF AN OPTION (WORKS ONLY WITH appError IN SERVER utils)
+        //8. PARSE ERROR IF AN OPTION (WORKS ONLY WITH appError IN SERVER utils) //TO-DO: NEEDS PRODUCTION ADJUSTMENT
         if (alert.parseError) {
           const indexStart = alert.message.indexOf(`Error:`);
           const indexEnd = alert.message.indexOf(`<br>`);
-          alert.message = alert.message.substring(indexStart, indexEnd);
+          alert.message = alert.message.substring(indexStart + 6, indexEnd);
         }
       });
 

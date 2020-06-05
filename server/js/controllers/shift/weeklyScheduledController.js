@@ -48,6 +48,7 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
     const allWeeklyScheduled = yield weeklyScheduledModel_1.default.find();
     const scheduler = req.scheduler.id;
     const allScheduled = [];
+    const weekAhead = 2; //WEEK TO SCHEDULE
     try {
         for (var allWeeklyScheduled_1 = __asyncValues(allWeeklyScheduled), allWeeklyScheduled_1_1; allWeeklyScheduled_1_1 = yield allWeeklyScheduled_1.next(), !allWeeklyScheduled_1_1.done;) {
             let el = allWeeklyScheduled_1_1.value;
@@ -66,7 +67,7 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
             shifts.forEach((el) => {
                 //EXTRACT DAYS FROM SHIFT (MON, TUES, ETC...)
                 const shiftDay = el.day;
-                const comingMonday = moment_1.default().add(2, "w").isoWeekday(1);
+                const comingMonday = moment_1.default().add(weekAhead, "w").isoWeekday(1);
                 //FROM THAT MONDAY, ADD SHIFT DAY TO MATCH
                 const comingShiftDay = comingMonday.isoWeekday(shiftDay).toDate();
                 dates.push(comingShiftDay);
@@ -109,6 +110,7 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
 exports.populateToScheduled = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     //1. GRAB WHAT WE CAN FROM AVAILABLE
     const scheduler = req.scheduler.id;
+    const weekAhead = 2; //WEEK TO SCHEDULE
     //2. GRAB RAW WEEKLY SCHEDULED FROM PARAM ID TO EXTRACT WEEKLY SHIFT THEN INDIVIDUAL SHIFTS
     const weeklyScheduled = yield weeklyScheduledModel_1.default.findById(req.params.id);
     const weeklyShift = yield weeklyShiftModel_1.default.findById(weeklyScheduled.weeklyShift);
@@ -124,7 +126,7 @@ exports.populateToScheduled = catchAsync_1.default((req, res, next) => __awaiter
     shifts.forEach((el) => {
         //EXTRACT DAYS FROM SHIFT (MON, TUES, ETC...)
         const shiftDay = el.day;
-        const comingMonday = moment_1.default().add(2, "w").isoWeekday(1);
+        const comingMonday = moment_1.default().add(weekAhead, "w").isoWeekday(1);
         //FROM THAT MONDAY, ADD SHIFT DAY TO MATCH
         const comingShiftDay = comingMonday.isoWeekday(shiftDay);
         dates.push(comingShiftDay.toDate());

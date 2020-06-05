@@ -56,7 +56,7 @@ const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   message: `---Too many requests from this IP, try again in an hour.`,
 });
-app.use("/api", limiter);
+// app.use("/api", limiter);
 
 //DATA SECURITY
 app.use(mongoSanitize());

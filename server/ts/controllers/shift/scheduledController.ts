@@ -81,11 +81,12 @@ export const populateSteadyExtra = catchAsync(async (req, res, next) => {
   const blankShifts = await Shift.find();
   const allTheScheduledEver = await Scheduled.find();
   const scheduler: string = req.scheduler.id;
+  const weekAhead = 2; //WEEK TO SCHEDULE
 
   //----A. SET UP VARS FOR WEEKLY SHIFT REF
 
   //1. FIND FULL-TIME SCHEDULED BY FILTERING THOSE AFTER THE SCHEDULED SUNDAY
-  const comingSunday = moment().add(1, "w").startOf("w");
+  const comingSunday = moment().add(weekAhead, "w").startOf("w");
   const scheduledWeek = [...allTheScheduledEver].filter(
     (scheduled) => moment(scheduled.date) >= comingSunday
   );
@@ -142,7 +143,7 @@ export const populateSteadyExtra = catchAsync(async (req, res, next) => {
       if (employeeShiftsCounter[employeeIndex] < 5) {
         //   FIND OUT DATE FOR THE SHIFT AND PARSE IT
         const firstShiftOfTheDay = shiftsOfTheDay[0];
-        const comingMonday = moment().add(2, "w").isoWeekday(1);
+        const comingMonday = moment().add(weekAhead, "w").isoWeekday(1);
         const parsedDate = comingMonday
           .isoWeekday(firstShiftOfTheDay.day)
           .toDate();
