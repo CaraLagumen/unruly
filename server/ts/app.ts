@@ -41,7 +41,7 @@ app.use(helmet());
 
 //DEV LOGS
 console.log(`Server on ${process.env.NODE_ENV} mode.`);
-app.use(morgan(`dev`));
+if (process.env.NODE_ENV === `development`) app.use(morgan(`dev`));
 
 //BODY PARSER
 app.use(express.json({ limit: `10kb` }));

@@ -38,7 +38,8 @@ app.options("*", cors_1.default());
 app.use(helmet_1.default());
 //DEV LOGS
 console.log(`Server on ${process.env.NODE_ENV} mode.`);
-app.use(morgan_1.default(`dev`));
+if (process.env.NODE_ENV === `development`)
+    app.use(morgan_1.default(`dev`));
 //BODY PARSER
 app.use(express_1.default.json({ limit: `10kb` }));
 //URL PARSER

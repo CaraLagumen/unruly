@@ -33,7 +33,7 @@
     @media only screen and (max-width: 26em) {
       //425W
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, 33.3vw);
       grid-template-rows: 1fr 1fr;
       gap: 0rem;
 

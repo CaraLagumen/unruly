@@ -259,6 +259,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             keepAfterRouteChange: true,
             parseError: true,
           });
+          console.log(err);
         }
       );
     }
