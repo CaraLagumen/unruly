@@ -12,8 +12,8 @@ interface IShift extends Document {
     | "pool"
     | "breaker";
   day: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-  shiftStart: number; //ALLOW ANY FOR URL QUERIES
-  shiftEnd: number; //ALLOW ANY FOR URL QUERIES
+  shiftStart: any; //ALLOW ANY FOR URL QUERIES
+  shiftEnd: any; //ALLOW ANY FOR URL QUERIES
 }
 
 export default IShift;
