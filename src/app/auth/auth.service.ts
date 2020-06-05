@@ -312,7 +312,7 @@ export class AuthService {
             this.saveAuthData(token, this.userId, userType, expirationDate);
 
             this.alertService.success(
-              "You successfully changed your password. Your page will reload in 8 seconds",
+              "You successfully changed your password. Your page will reload in 8 seconds then please relog with your new password.",
               {
                 autoClose: true,
                 keepAfterRouteChange: true,

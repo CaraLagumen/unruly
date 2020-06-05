@@ -33,7 +33,7 @@
     @media only screen and (max-width: 26em) {
       //425W
       display: grid;
-      grid-template-columns: repeat(3, 33.3vw);
+      grid-template-columns: repeat(3, 1fr);
       grid-template-rows: 1fr 1fr;
       gap: 0rem;
 
@@ -103,11 +103,6 @@
       gap: 0.2rem;
     }
 
-    @media only screen and (max-width: 26em) {
-      //425W
-      gap: 0.1rem;
-    }
-
     &--employees {
       text-align: center;
       text-transform: uppercase;
@@ -162,11 +157,6 @@
           min-width: 8rem;
         }
 
-        @media only screen and (max-width: 42em) {
-          //650W
-          width: 6rem;
-        }
-
         &:hover {
           background-color: var(--color-yellow);
 
@@ -213,11 +203,6 @@
       align-self: flex-start;
 
       width: 100%;
-
-      @media only screen and (max-width: 26em) {
-        //425W
-        width: 5.5rem;
-      }
 
       &-heading {
         width: 100%;

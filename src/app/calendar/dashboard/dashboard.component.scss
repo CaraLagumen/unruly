@@ -101,6 +101,7 @@
       //750W
       display: grid;
       grid-template-columns: repeat(6, auto);
+      align-content: center;
 
       h3 {
         font-size: var(--font-xsmall) !important;
