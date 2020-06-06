@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subscription, Observable } from "rxjs";
-import { FormGroup, FormControl } from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 import * as moment from "moment";
 
 import { UsersService } from "../../users/users.service";
@@ -10,6 +10,7 @@ import { ShiftService } from "../../shared/services/shift/shift.service";
 import { ScheduledService } from "../../shared/services/shift/scheduled.service";
 import { WeeklyShiftService } from "../../shared/services/shift/weekly-shift.service";
 import { WeeklyScheduledService } from "../../shared/services/shift/weekly-scheduled.service";
+import { AlertService } from "src/app/components/alert/alert.service";
 import { Employee } from "../../shared/models/users/employee.model";
 import { Scheduler } from "../../shared/models/users/scheduler.model";
 import { Shift } from "../../shared/models/shift/shift.model";
@@ -55,7 +56,8 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
     private shiftService: ShiftService,
     private scheduledService: ScheduledService,
     private weeklyShiftService: WeeklyShiftService,
-    private weeklyScheduledService: WeeklyScheduledService
+    private weeklyScheduledService: WeeklyScheduledService,
+    private alertService: AlertService
   ) {}
 
   ngOnInit() {
@@ -165,9 +167,9 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
 
   initCreateScheduledForm() {
     this.createScheduledForm = new FormGroup({
-      shiftControl: new FormControl(null),
-      employeeControl: new FormControl(null),
-      dateControl: new FormControl(null),
+      shiftControl: new FormControl(null, Validators.required),
+      employeeControl: new FormControl(null, Validators.required),
+      dateControl: new FormControl(null, Validators.required),
     });
   }
 
@@ -184,10 +186,23 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
       date: parsedDate,
     };
 
-    this.scheduledService.createScheduled(scheduledData).subscribe(() => {
-      this.createScheduledForm.reset();
-      this.updateData(`scheduled`);
-    });
+    this.scheduledService.createScheduled(scheduledData).subscribe(
+      () => {
+        this.alertService.success(`Successful create scheduled`, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+        });
+
+        this.createScheduledForm.reset();
+        this.updateData(`scheduled`);
+      },
+      (err) => {
+        this.alertService.error(`Date for scheduled is in the past`, {
+          autoClose: true,
+          keepAfterRouteChange: true,
+        });
+      }
+    );
   }
 
   //WEEKLY SCHEDULED FORM----------------------------------------------------------
@@ -195,9 +210,9 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
   initCreateWeeklyScheduledForm() {
     //1. INITIALIZE SCHEDULED FORM
     this.createWeeklyScheduledForm = new FormGroup({
-      employeeControl: new FormControl(null),
-      weeklyShiftControl: new FormControl(null),
-      startDateControl: new FormControl(null),
+      employeeControl: new FormControl(null, Validators.required),
+      weeklyShiftControl: new FormControl(null, Validators.required),
+      startDateControl: new FormControl(null, Validators.required),
     });
   }
 
@@ -216,10 +231,26 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
 
     this.weeklyScheduledService
       .createWeeklyScheduled(weeklyScheduledData)
-      .subscribe(() => {
-        this.createWeeklyScheduledForm.reset();
-        this.updateData(`weeklyScheduled`);
-      });
+      .subscribe(
+        () => {
+          this.alertService.success(`Successful create weekly scheduled`, {
+            autoClose: true,
+            keepAfterRouteChange: true,
+          });
+
+          this.createWeeklyScheduledForm.reset();
+          this.updateData(`weeklyScheduled`);
+        },
+        (err) => {
+          this.alertService.error(
+            `Start date for weekly scheduled is in the past`,
+            {
+              autoClose: true,
+              keepAfterRouteChange: true,
+            }
+          );
+        }
+      );
   }
 
   ngOnDestroy() {

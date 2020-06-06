@@ -35,11 +35,11 @@ export class EmployeeComponent implements OnInit, OnDestroy {
       email: new FormControl(null, {
         validators: [Validators.email],
       }),
-      preferredShiftSlots1: new FormControl(null),
-      preferredShiftSlots2: new FormControl(null),
-      preferredShiftSlots3: new FormControl(null),
-      preferredDaysOff1: new FormControl(null),
-      preferredDaysOff2: new FormControl(null),
+      preferredShiftSlots1: new FormControl(null, Validators.required),
+      preferredShiftSlots2: new FormControl(null, Validators.required),
+      preferredShiftSlots3: new FormControl(null, Validators.required),
+      preferredDaysOff1: new FormControl(null, Validators.required),
+      preferredDaysOff2: new FormControl(null, Validators.required),
     });
 
     //2. EXPOSE EMPLOYEE DATA FOR DISPLAY AND PLUG IN
@@ -101,12 +101,12 @@ export class EmployeeComponent implements OnInit, OnDestroy {
         });
 
         this.updateEmployeeForm.reset();
+        this.ngOnInit();
       },
       (err) => {
-        this.alertService.error(err.error, {
+        this.alertService.error(`Unable to update with that info`, {
           autoClose: true,
           keepAfterRouteChange: true,
-          parseError: true,
         });
       }
     );

@@ -57,7 +57,6 @@ const sendErrorProd: ErrorRequestHandler = (err, req, res, next) => {
       return res.status(err.statusCode).json({
         status: err.status,
         message: err.message,
-        stack: err.stack,
       });
     }
 
@@ -74,7 +73,7 @@ const sendErrorProd: ErrorRequestHandler = (err, req, res, next) => {
   if (err.isOperational) {
     return res.status(err.statusCode).render(`error`, {
       title: `Something went wrong.`,
-      msg: err.message,
+      message: err.message,
     });
   }
 
@@ -82,7 +81,7 @@ const sendErrorProd: ErrorRequestHandler = (err, req, res, next) => {
   console.log(`>>>> Error:`, err);
   return res.status(err.statusCode).render(`error`, {
     title: `Something went wrong.`,
-    msg: `Please try again later.`,
+    message: `Please try again later.`,
   });
 };
 

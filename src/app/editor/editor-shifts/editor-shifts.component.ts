@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
 import { Subscription, Observable } from "rxjs";
-import { FormGroup, FormControl } from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 import { UsersService } from "../../users/users.service";
 import { ShiftService } from "../../shared/services/shift/shift.service";
@@ -171,10 +171,9 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
         this.updateData(`shift`);
       },
       (err) => {
-        this.alertService.error(err.error, {
+        this.alertService.error(`Something went wrong`, {
           autoClose: true,
           keepAfterRouteChange: true,
-          parseError: true,
         });
       }
     );
@@ -191,10 +190,9 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
         this.updateData(`weeklyShift`);
       },
       (err) => {
-        this.alertService.error(err.error, {
+        this.alertService.error(`Something went wrong`, {
           autoClose: true,
           keepAfterRouteChange: true,
-          parseError: true,
         });
       }
     );
@@ -209,12 +207,12 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
 
   initCreateShiftForm() {
     this.createShiftForm = new FormGroup({
-      positionControl: new FormControl(null),
-      slotControl: new FormControl(null),
-      locationControl: new FormControl(null),
-      dayControl: new FormControl(null),
-      shiftStartControl: new FormControl(null),
-      shiftEndControl: new FormControl(null),
+      positionControl: new FormControl(null, Validators.required),
+      slotControl: new FormControl(null, Validators.required),
+      locationControl: new FormControl(null, Validators.required),
+      dayControl: new FormControl(null, Validators.required),
+      shiftStartControl: new FormControl(null, Validators.required),
+      shiftEndControl: new FormControl(null, Validators.required),
     });
   }
 
@@ -241,10 +239,9 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
         this.updateData(`shift`);
       },
       (err) => {
-        this.alertService.error(err.error, {
+        this.alertService.error(`Something went wrong`, {
           autoClose: true,
           keepAfterRouteChange: true,
-          parseError: true,
         });
       }
     );
@@ -254,15 +251,15 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
 
   initCreateWeeklyShiftForm() {
     this.createWeeklyShiftForm = new FormGroup({
-      nameControl: new FormControl(null),
-      positionControl: new FormControl(null),
-      slotControl: new FormControl(null),
-      locationControl: new FormControl(null),
-      shift1Control: new FormControl(null),
-      shift2Control: new FormControl(null),
-      shift3Control: new FormControl(null),
-      shift4Control: new FormControl(null),
-      shift5Control: new FormControl(null),
+      nameControl: new FormControl(null, Validators.required),
+      positionControl: new FormControl(null, Validators.required),
+      slotControl: new FormControl(null, Validators.required),
+      locationControl: new FormControl(null, Validators.required),
+      shift1Control: new FormControl(null, Validators.required),
+      shift2Control: new FormControl(null, Validators.required),
+      shift3Control: new FormControl(null, Validators.required),
+      shift4Control: new FormControl(null, Validators.required),
+      shift5Control: new FormControl(null, Validators.required),
     });
   }
 
@@ -292,10 +289,9 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
         this.updateData(`weeklyShift`);
       },
       (err) => {
-        this.alertService.error(err.error, {
+        this.alertService.error(`Weekly shift has overlapping days`, {
           autoClose: true,
           keepAfterRouteChange: true,
-          parseError: true,
         });
       }
     );

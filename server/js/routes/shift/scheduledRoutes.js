@@ -21,7 +21,7 @@ router.post(`/populate`, schedulerAuthController.protect, scheduledController.po
 //CREATE ONE
 router.post(`/`, schedulerAuthController.protect, scheduledController.validateScheduled, scheduledController.createScheduled);
 //DELETE ONE
-router.delete(`/:id`, schedulerAuthController.protect, scheduledController.deleteScheduled);
+router.delete(`/:id`, schedulerAuthController.protect, scheduledController.validateDelete, scheduledController.deleteScheduled);
 //DELETE LAST SCHEDULED (CAN DELETE IN BULK)
 router.delete(`/`, schedulerAuthController.protect, scheduledController.deleteLastScheduled);
 //PUBLIC----------------------------------------------------------

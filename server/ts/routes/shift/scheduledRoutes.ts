@@ -29,6 +29,7 @@ router.post(
 router.delete(
   `/:id`,
   schedulerAuthController.protect,
+  scheduledController.validateDelete,
   scheduledController.deleteScheduled
 );
 

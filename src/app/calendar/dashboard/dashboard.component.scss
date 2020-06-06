@@ -336,7 +336,12 @@
         align-items: center;
 
         span {
+          grid-row: 1 / -1;
           justify-self: flex-end;
+        }
+
+        select {
+          grid-row: 1 / -1;
         }
       }
     }

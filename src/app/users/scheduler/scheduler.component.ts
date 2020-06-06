@@ -61,12 +61,12 @@ export class SchedulerComponent implements OnInit, OnDestroy {
         });
 
         this.updateSchedulerForm.reset();
+        this.ngOnInit();
       },
       (err) => {
-        this.alertService.error(err.error, {
+        this.alertService.error(`Unable to update with that email`, {
           autoClose: true,
           keepAfterRouteChange: true,
-          parseError: true,
         });
       }
     );

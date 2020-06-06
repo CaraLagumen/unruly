@@ -74,6 +74,21 @@ export const validateScheduled = catchAsync(async (req, res, next) => {
   next();
 });
 
+//DON'T DELETE IF DATE IN THE PAST
+export const validateDelete = catchAsync(async (req, res, next) => {
+  const scheduled = await Scheduled.findById(req.params.id);
+
+  if (moment(scheduled?.date) < moment()) {
+    return next(
+      new AppError(`Scheduled date is in the past. Cannot delete.`, 400)
+    );
+  }
+
+  console.log(scheduled);
+
+  next();
+});
+
 //MAIN----------------------------------------------------------
 
 //CREATE A BUNCH OF WEEKLY SHIFT REFS FOR ON-CALL EMPLOYEES

@@ -129,10 +129,9 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
           this.updateData();
         },
         (err) => {
-          this.alertService.error(err.error, {
+          this.alertService.error(`Vacation date is in the past`, {
             autoClose: true,
             keepAfterRouteChange: true,
-            parseError: true,
           });
         }
       );
@@ -158,10 +157,9 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
           this.updateData();
         },
         (err) => {
-          this.alertService.error(err.error, {
+          this.alertService.error(`Vacation date is in the past`, {
             autoClose: true,
             keepAfterRouteChange: true,
-            parseError: true,
           });
         }
       );

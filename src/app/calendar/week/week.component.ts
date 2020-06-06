@@ -230,10 +230,20 @@ export class WeekComponent implements OnInit, OnDestroy {
         }
       },
       (err) => {
-        this.alertService.error(err.error, {
+        let message;
+        switch (emittedData[0]) {
+          case `deletePreferred`:
+          case `deleteVacation`:
+            message = `Something went wrong`;
+            break;
+          case `requestVacation`:
+            message = `Requested vacation is in the past`;
+            break;
+        }
+
+        this.alertService.error(message, {
           autoClose: true,
           keepAfterRouteChange: true,
-          parseError: true,
         });
       }
     );
@@ -274,10 +284,28 @@ export class WeekComponent implements OnInit, OnDestroy {
         }
       },
       (err) => {
-        this.alertService.error(err.error, {
+        let message;
+        switch (emittedData[0]) {
+          case `populateAllToScheduled`:
+            message = `Full-time already populated`;
+            break;
+          case `populateSteadyExtra`:
+            message = `Steady extras already populated`;
+            break;
+          case `deleteLastScheduled`:
+            message = `Cannot delete last scheduled from the past`;
+            break;
+          case `deleteScheduled`:
+            message = `Cannot delete scheduled from the past`;
+            break;
+          case `deleteShift`:
+            message = `Something went wrong`;
+            break;
+        }
+
+        this.alertService.error(message, {
           autoClose: true,
           keepAfterRouteChange: true,
-          parseError: true,
         });
       }
     );

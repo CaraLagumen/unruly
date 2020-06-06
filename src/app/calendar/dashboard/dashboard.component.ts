@@ -7,7 +7,7 @@ import {
   OnDestroy,
 } from "@angular/core";
 import { Observable, Subscription } from "rxjs";
-import { FormGroup, FormControl } from "@angular/forms";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 import * as moment from "moment";
 
 import { EmployeeService } from "../../shared/services/users/employee.service";
@@ -26,6 +26,7 @@ import {
 import { ShiftProperties } from "../../shared/tools/custom-classes";
 import { ScheduledData } from "../../shared/models/shift/scheduled.model";
 import { PreferredData } from "../../shared/models/shift/preferred.model";
+import { HttpErrorResponse } from "@angular/common/http";
 
 //FROM dashboard TO [calendar-item | week-item | day-item]
 @Component({
@@ -204,7 +205,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   initAddPreferredForm() {
     //1. INITIALIZE PREFERRED FORM
     this.addPreferredForm = new FormGroup({
-      rankControl: new FormControl(null),
+      rankControl: new FormControl(null, Validators.required),
     });
 
     //2. EXPOSE PREFERRED DATA IF ANY FOR DISPLAY AND PLUG IN
@@ -235,11 +236,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
             this.onFormSubmitEmitter(`preferred`);
           },
-          (err) => {
-            this.alertService.error(err.error, {
+          (err: HttpErrorResponse) => {
+            this.alertService.error(`Preferred shift is a duplicate`, {
               autoClose: true,
               keepAfterRouteChange: true,
-              parseError: true,
             });
           }
         );
@@ -254,12 +254,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
           this.onFormSubmitEmitter(`preferred`);
         },
         (err) => {
-          this.alertService.error(err.error, {
+          this.alertService.error(`Preferred rank is a duplicate`, {
             autoClose: true,
             keepAfterRouteChange: true,
-            parseError: true,
           });
-          console.log(err);
         }
       );
     }
@@ -271,12 +269,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   initUpdateShiftForm() {
     //1. INITIALIZE SHIFT FORM
     this.updateShiftForm = new FormGroup({
-      positionControl: new FormControl(null),
-      slotControl: new FormControl(null),
-      locationControl: new FormControl(null),
-      dayControl: new FormControl(null),
-      shiftStartControl: new FormControl(null),
-      shiftEndControl: new FormControl(null),
+      positionControl: new FormControl(null, Validators.required),
+      slotControl: new FormControl(null, Validators.required),
+      locationControl: new FormControl(null, Validators.required),
+      dayControl: new FormControl(null, Validators.required),
+      shiftStartControl: new FormControl(null, Validators.required),
+      shiftEndControl: new FormControl(null, Validators.required),
     });
 
     //2. EXPOSE SHIFT DATA FOR DISPLAY AND PLUG IN
@@ -323,10 +321,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.onFormSubmitEmitter(`shift`);
       },
       (err) => {
-        this.alertService.error(err.error, {
+        this.alertService.error(`Something went wrong`, {
           autoClose: true,
           keepAfterRouteChange: true,
-          parseError: true,
         });
       }
     );
@@ -344,7 +341,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   initCreateScheduledForm() {
     //1. INITIALIZE SCHEDULED FORM
     this.createScheduledForm = new FormGroup({
-      employeeControl: new FormControl(null),
+      employeeControl: new FormControl(null, Validators.required),
     });
 
     //2. EXPOSE SCHEDULED DATA IF ANY FOR DISPLAY AND PLUG IN
@@ -376,10 +373,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.onFormSubmitEmitter(`scheduled`);
       },
       (err) => {
-        this.alertService.error(err.error, {
+        this.alertService.error(`Date for scheduled is in the past`, {
           autoClose: true,
           keepAfterRouteChange: true,
-          parseError: true,
         });
       }
     );

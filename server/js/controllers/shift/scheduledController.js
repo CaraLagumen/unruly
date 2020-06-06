@@ -60,6 +60,15 @@ exports.validateScheduled = catchAsync_1.default((req, res, next) => __awaiter(v
     //6. ALLOW WHEN ALL VALIDATED
     next();
 }));
+//DON'T DELETE IF DATE IN THE PAST
+exports.validateDelete = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const scheduled = yield scheduledModel_1.default.findById(req.params.id);
+    if (moment_1.default(scheduled === null || scheduled === void 0 ? void 0 : scheduled.date) < moment_1.default()) {
+        return next(new appError_1.default(`Scheduled date is in the past. Cannot delete.`, 400));
+    }
+    console.log(scheduled);
+    next();
+}));
 //MAIN----------------------------------------------------------
 //CREATE A BUNCH OF WEEKLY SHIFT REFS FOR ON-CALL EMPLOYEES
 exports.populateSteadyExtra = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
