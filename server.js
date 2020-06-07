@@ -1,6 +1,10 @@
 const app = require(`./server/js/app`);
 const mongoose = require(`mongoose`);
 const dotenv = require(`dotenv`);
+const moment = require(`moment-timezone`);
+
+//SETUP TIMEZONE
+moment.tz.setDefault(`UTC`);
 
 //SETUP PASSWORD FOR DB
 dotenv.config({ path: `./config.env` });
