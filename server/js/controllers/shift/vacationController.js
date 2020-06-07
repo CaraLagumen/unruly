@@ -20,18 +20,20 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const moment_1 = __importDefault(require("moment"));
+const moment_timezone_1 = __importDefault(require("moment-timezone"));
+moment_timezone_1.default.tz.setDefault(`UTC`);
 const employeeModel_1 = __importDefault(require("../../models/users/employeeModel"));
 const vacationModel_1 = __importDefault(require("../../models/shift/vacationModel"));
 const factory = __importStar(require("../handlerFactory"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const apiFeatures_1 = __importDefault(require("../../utils/apiFeatures"));
 const appError_1 = __importDefault(require("../../utils/appError"));
+const times_1 = require("../../utils/times");
 //----------------------FOR EMPLOYEE USE
 //ENSURE REQUESTED VACATION DATE IS AHEAD OF NOW
 exports.validateVacationDate = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const date = moment_1.default(req.body.date);
-    const comingWeek = moment_1.default().add(1, "w").endOf("w");
-    if (date < comingWeek) {
+    if (date < times_1.schedulingWeek) {
         return next(new appError_1.default(`Requested vacation date is this coming week or in the past. Please enter a date in the future.`, 400));
     }
     next();

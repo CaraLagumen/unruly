@@ -27,12 +27,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const moment_1 = __importDefault(require("moment"));
+const moment_timezone_1 = __importDefault(require("moment-timezone"));
+moment_timezone_1.default.tz.setDefault(`UTC`);
 const weeklyScheduledModel_1 = __importDefault(require("../../models/shift/weeklyScheduledModel"));
 const weeklyShiftModel_1 = __importDefault(require("../../models/shift/weeklyShiftModel"));
 const scheduledModel_1 = __importDefault(require("../../models/shift/scheduledModel"));
 const factory = __importStar(require("../handlerFactory"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const appError_1 = __importDefault(require("../../utils/appError"));
+const times_1 = require("../../utils/times");
 //----------------------FOR SCHEDULER USE
 //TOOLS----------------------------------------------------------
 //GET LOGGED IN SCHEDULER
@@ -42,10 +45,8 @@ exports.getScheduler = catchAsync_1.default((req, res, next) => __awaiter(void 0
 }));
 //ENSURE POPULATE IS ON A NEW WEEK
 exports.validatePopulate = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    //1. SET UP VARS & ALL RAW SCHEDULED
+    //1. GRAB ALL RAW SCHEDULED
     const scheduled = yield scheduledModel_1.default.find();
-    const weekAhead = 2; //WEEK TO SCHEDULE
-    const comingSunday = moment_1.default().add(weekAhead, "w").startOf("w");
     //2. CREATE AN ARR OF DATES FROM ALL SCHEDULED AND GRAB THE LATEST SCHEDULED
     const scheduledDates = scheduled.map((scheduled) => moment_1.default(scheduled.createdAt));
     const latestScheduledDate = moment_1.default.max(scheduledDates);
@@ -71,7 +72,7 @@ exports.validatePopulate = catchAsync_1.default((req, res, next) => __awaiter(vo
     if (weeklyShift) {
         const weeklyScheduledRef = yield weeklyScheduledModel_1.default.findOne({ weeklyShift });
         //4. THROW ERR IF THERE IS ONE & THE DATE IS IN THE COMING WEEK
-        if (weeklyScheduledRef && moment_1.default(lastScheduled === null || lastScheduled === void 0 ? void 0 : lastScheduled.date) > comingSunday) {
+        if (weeklyScheduledRef && moment_1.default(lastScheduled === null || lastScheduled === void 0 ? void 0 : lastScheduled.date) > times_1.comingWeek) {
             return next(new appError_1.default(`Found a weekly scheduled filled for the coming week. Cannot populate.`, 400));
         }
     }
@@ -86,7 +87,6 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
     const allWeeklyScheduled = yield weeklyScheduledModel_1.default.find();
     const scheduler = req.scheduler.id;
     const allScheduled = [];
-    const weekAhead = 2; //WEEK TO SCHEDULE
     try {
         for (var allWeeklyScheduled_1 = __asyncValues(allWeeklyScheduled), allWeeklyScheduled_1_1; allWeeklyScheduled_1_1 = yield allWeeklyScheduled_1.next(), !allWeeklyScheduled_1_1.done;) {
             let el = allWeeklyScheduled_1_1.value;
@@ -105,9 +105,11 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
             shifts.forEach((el) => {
                 //EXTRACT DAYS FROM SHIFT (MON, TUES, ETC...)
                 const shiftDay = el.day;
-                const comingMonday = moment_1.default().add(weekAhead, "w").isoWeekday(1);
                 //FROM THAT MONDAY, ADD SHIFT DAY TO MATCH
-                const comingShiftDay = comingMonday.isoWeekday(shiftDay).toDate();
+                const comingShiftDay = times_1.startSchedule
+                    .clone()
+                    .isoWeekday(shiftDay)
+                    .toDate();
                 dates.push(comingShiftDay);
             });
             //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOC
@@ -149,7 +151,6 @@ exports.populateToScheduled = catchAsync_1.default((req, res, next) => __awaiter
     var _d, _e;
     //1. GRAB WHAT WE CAN FROM AVAILABLE
     const scheduler = req.scheduler.id;
-    const weekAhead = 2; //WEEK TO SCHEDULE
     //2. GRAB RAW WEEKLY SCHEDULED FROM PARAM ID TO EXTRACT WEEKLY SHIFT THEN INDIVIDUAL SHIFTS
     const weeklyScheduled = yield weeklyScheduledModel_1.default.findById(req.params.id);
     const weeklyShift = yield weeklyShiftModel_1.default.findById(weeklyScheduled === null || weeklyScheduled === void 0 ? void 0 : weeklyScheduled.weeklyShift);
@@ -165,10 +166,9 @@ exports.populateToScheduled = catchAsync_1.default((req, res, next) => __awaiter
     shifts.forEach((el) => {
         //EXTRACT DAYS FROM SHIFT (MON, TUES, ETC...)
         const shiftDay = el.day;
-        const comingMonday = moment_1.default().add(weekAhead, "w").isoWeekday(1);
         //FROM THAT MONDAY, ADD SHIFT DAY TO MATCH
-        const comingShiftDay = comingMonday.isoWeekday(shiftDay);
-        dates.push(comingShiftDay.toDate());
+        const comingShiftDay = times_1.startSchedule.clone().isoWeekday(shiftDay).toDate();
+        dates.push(comingShiftDay);
     });
     //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOC
     const scheduled = [];

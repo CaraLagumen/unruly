@@ -61,11 +61,6 @@ export const register = catchAsync(async (req, res, next) => {
     email: req.body.email,
     password: req.body.password,
     passwordConfirm: req.body.passwordConfirm,
-    position: req.body.position,
-    status: req.body.status,
-    seniority: req.body.seniority,
-    hireDate: req.body.hireDate,
-    preferredShiftSlots: req.body.preferredShiftSlots,
   });
 
   //2. PREPARE URL FOR EMAIL THEN SEND EMAIL

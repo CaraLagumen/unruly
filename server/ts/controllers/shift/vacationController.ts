@@ -1,21 +1,23 @@
 import moment from "moment";
+import momentTimezone from "moment-timezone";
+momentTimezone.tz.setDefault(`UTC`);
 
 import Employee from "../../models/users/employeeModel";
 import Vacation from "../../models/shift/vacationModel";
-import IVacation from "../../types/shift/vacationInterface";
+import { IVacation, IVacationData } from "../../types/shift/vacationInterface";
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import APIFeatures from "../../utils/apiFeatures";
 import AppError from "../../utils/appError";
+import { schedulingWeek } from "../../utils/times";
 
 //----------------------FOR EMPLOYEE USE
 
 //ENSURE REQUESTED VACATION DATE IS AHEAD OF NOW
 export const validateVacationDate = catchAsync(async (req, res, next) => {
   const date = moment(req.body.date);
-  const comingWeek = moment().add(1, "w").endOf("w");
 
-  if (date < comingWeek) {
+  if (date < schedulingWeek) {
     return next(
       new AppError(
         `Requested vacation date is this coming week or in the past. Please enter a date in the future.`,
@@ -91,7 +93,7 @@ export const requestVacation = catchAsync(async (req, res, next) => {
   const employee: string = req.employee.id;
   const date: Date = req.body.date; //DATE MUST BE IN YYYY-MM-DD
 
-  const doc = await Vacation.create({ employee, date });
+  const doc = await Vacation.create<IVacationData>({ employee, date });
 
   res.status(201).json({
     status: `success`,

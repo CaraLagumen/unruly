@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-import IVacation from "../../types/shift/vacationInterface";
+import { IVacation } from "../../types/shift/vacationInterface";
 
 const vacationSchema: Schema = new mongoose.Schema(
   {

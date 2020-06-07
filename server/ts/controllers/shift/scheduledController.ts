@@ -1,7 +1,9 @@
 import moment from "moment";
+import momentTimezone from "moment-timezone";
+momentTimezone.tz.setDefault(`UTC`);
 
 import Employee from "../../models/users/employeeModel";
-import IEmployee from "ts/types/users/employeeInterface";
+import IEmployee from "../../types/users/employeeInterface";
 import Scheduled from "../../models/shift/scheduledModel";
 import {
   IScheduled,
@@ -10,11 +12,12 @@ import {
 import Shift from "../../models/shift/shiftModel";
 import IShift from "../../types/shift/shiftInterface";
 import Vacation from "../../models/shift/vacationModel";
-import IVacation from "ts/types/shift/vacationInterface";
+import { IVacation } from "ts/types/shift/vacationInterface";
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import APIFeatures from "../../utils/apiFeatures";
 import AppError from "../../utils/appError";
+import { schedulingWeek, comingWeek } from "../../utils/times";
 
 //----------------------FOR SCHEDULER USE
 
@@ -54,6 +57,7 @@ export const validateScheduled = catchAsync(async (req, res, next) => {
   const employeeVacations = await Vacation.find({
     employee: req.body.employee,
   });
+
   const matchingDate: IVacation | undefined = employeeVacations.find(
     (vacation) =>
       moment(vacation.date).format("LL") === moment(date).format("LL")
@@ -92,8 +96,9 @@ export const validateDelete = catchAsync(async (req, res, next) => {
 
 //ENSURE POPULATE IS ON A NEW WEEK
 export const validatePopulate = catchAsync(async (req, res, next) => {
-  //1. GRAB ALL RAW SCHEDULED
+  //1. GRAB ALL RAW SCHEDULED & ALLOW NEXT IF NONE
   const scheduled = await Scheduled.find();
+  if (scheduled.length === 0) return next();
 
   //2. CREATE AN ARR OF DATES FROM ALL SCHEDULED AND GRAB THE LATEST SCHEDULED
   const scheduledDates = scheduled.map((scheduled: IScheduled) =>
@@ -105,10 +110,7 @@ export const validatePopulate = catchAsync(async (req, res, next) => {
   });
 
   //3. ONLY CONTINUE VALIDATION IF LAST SCHEDULED IS IN THE COMING WEEK
-  const weekAhead = 2; //WEEK TO SCHEDULE
-  const comingSunday = moment().add(weekAhead, "w").startOf("w");
-
-  if (moment(lastScheduled[0].date) > comingSunday) {
+  if (moment(lastScheduled[0].date) > schedulingWeek) {
     //4. FIND IF ANY OF LAST SCHEDULED HAS A STEADY EXTRA EMPLOYEE
     const lastScheduledEmployees = lastScheduled.map(
       (scheduled: IScheduled) => scheduled.employee
@@ -138,14 +140,12 @@ export const populateSteadyExtra = catchAsync(async (req, res, next) => {
   const blankShifts = await Shift.find();
   const allTheScheduledEver = await Scheduled.find();
   const scheduler: string = req.scheduler.id;
-  const weekAhead = 2; //WEEK TO SCHEDULE
 
   //----A. SET UP VARS FOR WEEKLY SHIFT REF
 
-  //1. FIND FULL-TIME SCHEDULED BY FILTERING THOSE AFTER THE SCHEDULED SUNDAY
-  const comingSunday = moment().add(weekAhead, "w").startOf("w");
+  //1. FIND SCHEDULED BY FILTERING THOSE STARTING THE SCHEDULED WEEK
   const scheduledWeek = [...allTheScheduledEver].filter(
-    (scheduled) => moment(scheduled.date) >= comingSunday
+    (scheduled) => moment(scheduled.date) >= comingWeek
   );
 
   //2. FIND SHIFTS TO FILL BY FILTERING THE ALREADY SCHEDULED ONES FROM ALL SHIFTS
@@ -200,8 +200,8 @@ export const populateSteadyExtra = catchAsync(async (req, res, next) => {
       if (employeeShiftsCounter[employeeIndex] < 5) {
         //   FIND OUT DATE FOR THE SHIFT AND PARSE IT
         const firstShiftOfTheDay = shiftsOfTheDay[0];
-        const comingMonday = moment().add(weekAhead, "w").isoWeekday(1);
-        const parsedDate = comingMonday
+        const parsedDate = schedulingWeek
+          .clone()
           .isoWeekday(firstShiftOfTheDay.day)
           .toDate();
 
@@ -292,7 +292,12 @@ export const createScheduled = catchAsync(async (req, res, next) => {
   const scheduler: string = req.scheduler.id;
   const date: Date = req.body.date; //DATE MUST BE IN YYYY-MM-DD ORDER TO VALIDATE
 
-  const doc = await Scheduled.create({ shift, employee, scheduler, date });
+  const doc = await Scheduled.create<IScheduledData>({
+    shift,
+    employee,
+    scheduler,
+    date,
+  });
 
   res.status(201).json({
     status: `success`,
@@ -315,10 +320,10 @@ export const deleteLastScheduled = catchAsync(async (req, res, next) => {
   });
 
   //3. DON'T DELETE IF LATEST DATE IN THE PAST
-  if (moment(lastScheduled?.date) < moment().add(2, "w").startOf("w")) {
+  if (moment(lastScheduled?.date) < comingWeek) {
     return next(
       new AppError(
-        `Last scheduled is in the past or this coming week. Cannot delete.`,
+        `Last scheduled is in the past or is on this coming week. Cannot delete.`,
         400
       )
     );

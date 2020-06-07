@@ -1,7 +1,11 @@
 import moment from "moment";
+import momentTimezone from "moment-timezone";
+momentTimezone.tz.setDefault(`UTC`);
 
+import IEmployee from "../../types/users/employeeInterface";
 import WeeklyScheduled from "../../models/shift/weeklyScheduledModel";
 import WeeklyShift from "../../models/shift/weeklyShiftModel";
+import IWeeklyShift from "../../types/shift/weeklyShiftInterface";
 import Scheduled from "../../models/shift/scheduledModel";
 import {
   IScheduled,
@@ -10,8 +14,7 @@ import {
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import AppError from "../../utils/appError";
-import IWeeklyShift from "ts/types/shift/weeklyShiftInterface";
-import IEmployee from "ts/types/users/employeeInterface";
+import { schedulingWeek, comingWeek, startSchedule } from "../../utils/times";
 
 //----------------------FOR SCHEDULER USE
 
@@ -25,10 +28,8 @@ export const getScheduler = catchAsync(async (req, res, next) => {
 
 //ENSURE POPULATE IS ON A NEW WEEK
 export const validatePopulate = catchAsync(async (req, res, next) => {
-  //1. SET UP VARS & ALL RAW SCHEDULED
+  //1. GRAB ALL RAW SCHEDULED
   const scheduled = await Scheduled.find();
-  const weekAhead = 2; //WEEK TO SCHEDULE
-  const comingSunday = moment().add(weekAhead, "w").startOf("w");
 
   //2. CREATE AN ARR OF DATES FROM ALL SCHEDULED AND GRAB THE LATEST SCHEDULED
   const scheduledDates = scheduled.map((scheduled: IScheduled) =>
@@ -67,7 +68,7 @@ export const validatePopulate = catchAsync(async (req, res, next) => {
     const weeklyScheduledRef = await WeeklyScheduled.findOne({ weeklyShift });
 
     //4. THROW ERR IF THERE IS ONE & THE DATE IS IN THE COMING WEEK
-    if (weeklyScheduledRef && moment(lastScheduled?.date) > comingSunday) {
+    if (weeklyScheduledRef && moment(lastScheduled?.date) > comingWeek) {
       return next(
         new AppError(
           `Found a weekly scheduled filled for the coming week. Cannot populate.`,
@@ -88,7 +89,6 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
   const allWeeklyScheduled = await WeeklyScheduled.find();
   const scheduler = req.scheduler.id;
   const allScheduled: IScheduledData[][] = [];
-  const weekAhead = 2; //WEEK TO SCHEDULE
 
   for await (let el of allWeeklyScheduled) {
     //2. GRAB RAW WEEKLY SCHEDULED FROM PARAM ID TO EXTRACT
@@ -109,9 +109,11 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
     shifts.forEach((el: any) => {
       //EXTRACT DAYS FROM SHIFT (MON, TUES, ETC...)
       const shiftDay = el.day;
-      const comingMonday = moment().add(weekAhead, "w").isoWeekday(1);
       //FROM THAT MONDAY, ADD SHIFT DAY TO MATCH
-      const comingShiftDay = comingMonday.isoWeekday(shiftDay).toDate();
+      const comingShiftDay = startSchedule
+        .clone()
+        .isoWeekday(shiftDay)
+        .toDate();
       dates.push(comingShiftDay);
     });
 
@@ -156,7 +158,6 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
 export const populateToScheduled = catchAsync(async (req, res, next) => {
   //1. GRAB WHAT WE CAN FROM AVAILABLE
   const scheduler: string = req.scheduler.id;
-  const weekAhead = 2; //WEEK TO SCHEDULE
 
   //2. GRAB RAW WEEKLY SCHEDULED FROM PARAM ID TO EXTRACT WEEKLY SHIFT THEN INDIVIDUAL SHIFTS
   const weeklyScheduled = await WeeklyScheduled.findById(req.params.id);
@@ -176,12 +177,9 @@ export const populateToScheduled = catchAsync(async (req, res, next) => {
   shifts.forEach((el: any) => {
     //EXTRACT DAYS FROM SHIFT (MON, TUES, ETC...)
     const shiftDay = el.day;
-    const comingMonday = moment().add(weekAhead, "w").isoWeekday(1);
-
     //FROM THAT MONDAY, ADD SHIFT DAY TO MATCH
-    const comingShiftDay = comingMonday.isoWeekday(shiftDay);
-
-    dates.push(comingShiftDay.toDate());
+    const comingShiftDay = startSchedule.clone().isoWeekday(shiftDay).toDate();
+    dates.push(comingShiftDay);
   });
 
   //4. CREATE ARR WITH SCHEDULED TO REPRESENT INDIVIDUAL DOC
@@ -209,7 +207,7 @@ export const populateToScheduled = catchAsync(async (req, res, next) => {
   }
 
   //6. CREATE DOC FROM INDIVIDUAL SCHEDULED
-  const doc = await Scheduled.create(scheduled);
+  const doc = await Scheduled.create<IScheduledData[]>(scheduled);
 
   res.status(201).json({
     status: `success`,

@@ -1,6 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 
-import IPreferred from "../../types/shift/preferredInterface";
+import { IPreferred } from "../../types/shift/preferredInterface";
 
 //LIMITED 3 PER DAY OF THE WEEK FOR EACH EMPLOYEE
 const preferredSchema: Schema = new mongoose.Schema(

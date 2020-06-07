@@ -1,5 +1,6 @@
 import Shift from "../../models/shift/shiftModel";
 import Preferred from "../../models/shift/preferredModel";
+import { IPreferredData } from "../../types/shift/preferredInterface";
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import APIFeatures from "../../utils/apiFeatures";
@@ -65,7 +66,7 @@ export const saveMyPreferred = catchAsync(async (req, res, next) => {
   const employee = req.employee.id;
   const rank = req.body.rank;
 
-  const doc = await Preferred.create({ shift, employee, rank });
+  const doc = await Preferred.create<IPreferredData>({ shift, employee, rank });
 
   res.status(201).json({
     status: `success`,

@@ -59,11 +59,6 @@ exports.register = catchAsync_1.default((req, res, next) => __awaiter(void 0, vo
         email: req.body.email,
         password: req.body.password,
         passwordConfirm: req.body.passwordConfirm,
-        position: req.body.position,
-        status: req.body.status,
-        seniority: req.body.seniority,
-        hireDate: req.body.hireDate,
-        preferredShiftSlots: req.body.preferredShiftSlots,
     });
     //2. PREPARE URL FOR EMAIL THEN SEND EMAIL
     const url = `${req.protocol}://${req.get(`host`)}/`;

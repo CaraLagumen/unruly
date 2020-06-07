@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
+import * as momentTimezone from "moment-timezone";
 
 import { AuthService } from "./auth/auth.service";
 
@@ -9,7 +10,9 @@ import { AuthService } from "./auth/auth.service";
   styleUrls: ["./app.component.scss"],
 })
 export class AppComponent {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+    this.setDefaultTimezone();
+  }
 
   ngOnInit() {
     this.authService.autoLogin();
@@ -21,5 +24,9 @@ export class AppComponent {
       outlet.activatedRouteData &&
       outlet.activatedRouteData["animation"]
     );
+  }
+
+  setDefaultTimezone() {
+    momentTimezone.tz.setDefault("Etc/UTC");
   }
 }

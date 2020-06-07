@@ -9,7 +9,7 @@ interface IScheduler extends Document {
   passwordChangedAt?: any;
   passwordResetToken?: any;
   passwordResetExpires?: any;
-  active: boolean;
+  active?: boolean;
   
   correctPassword(password: string, passwordConfirm: string): Promise<boolean>;
   changedPasswordAfter(JWTTimestamp: number): Promise<boolean>;

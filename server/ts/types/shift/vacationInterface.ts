@@ -3,7 +3,7 @@ import { Document } from "mongoose";
 import IEmployee from "../users/employeeInterface";
 import IScheduler from "../users/schedulerInterface";
 
-interface IVacation extends Document {
+export interface IVacation extends Document {
   employee: IEmployee;
   scheduler?: IScheduler; //ADDED ONCE VAC APPROVED
   date: Date;
@@ -11,4 +11,10 @@ interface IVacation extends Document {
   createdAt: Date;
 }
 
-export default IVacation;
+export interface IVacationData {
+  employee: string;
+  scheduler?: string; //ADDED ONCE VAC APPROVED
+  date: Date;
+  approved?: Boolean;
+  createdAt?: Date;
+}
