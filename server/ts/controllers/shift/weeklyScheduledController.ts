@@ -3,18 +3,79 @@ import moment from "moment";
 import WeeklyScheduled from "../../models/shift/weeklyScheduledModel";
 import WeeklyShift from "../../models/shift/weeklyShiftModel";
 import Scheduled from "../../models/shift/scheduledModel";
-import { IScheduledData } from "../../types/shift/scheduledInterface";
+import {
+  IScheduled,
+  IScheduledData,
+} from "../../types/shift/scheduledInterface";
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import AppError from "../../utils/appError";
+import IWeeklyShift from "ts/types/shift/weeklyShiftInterface";
+import IEmployee from "ts/types/users/employeeInterface";
 
 //----------------------FOR SCHEDULER USE
 
 //TOOLS----------------------------------------------------------
 
 //GET LOGGED IN SCHEDULER
-export const getScheduler = catchAsync((req, res, next) => {
+export const getScheduler = catchAsync(async (req, res, next) => {
   req.body.scheduler = req.scheduler.id;
+  next();
+});
+
+//ENSURE POPULATE IS ON A NEW WEEK
+export const validatePopulate = catchAsync(async (req, res, next) => {
+  //1. SET UP VARS & ALL RAW SCHEDULED
+  const scheduled = await Scheduled.find();
+  const weekAhead = 2; //WEEK TO SCHEDULE
+  const comingSunday = moment().add(weekAhead, "w").startOf("w");
+
+  //2. CREATE AN ARR OF DATES FROM ALL SCHEDULED AND GRAB THE LATEST SCHEDULED
+  const scheduledDates = scheduled.map((scheduled: IScheduled) =>
+    moment(scheduled.createdAt)
+  );
+  const latestScheduledDate = moment.max(scheduledDates);
+  const lastScheduled = await Scheduled.findOne({
+    createdAt: latestScheduledDate.toDate(),
+  });
+
+  //4. FIND IF LAST SCHEDULED HAS A STEADY EXTRA EMPLOYEE
+  const lastScheduledEmployee = lastScheduled!.employee as IEmployee;
+
+  //5. THROW ERROR IF FOUND A STEADY EXTRA WORKING IN THE COMING WEEK
+  if (lastScheduledEmployee.status === `on-call`)
+    return next(
+      new AppError(
+        `Found a steady extra working for the coming week. Full-time should be populated first. Cannot populate.`,
+        400
+      )
+    );
+
+  //3. FIND IF LAST SCHEDULED IS IN A WEEKLY SCHEDULED
+  const weeklyShift = (await WeeklyShift.findOne({
+    $or: [
+      { shiftDay1: lastScheduled!.shift },
+      { shiftDay2: lastScheduled!.shift },
+      { shiftDay3: lastScheduled!.shift },
+      { shiftDay4: lastScheduled!.shift },
+      { shiftDay5: lastScheduled!.shift },
+    ],
+  })) as IWeeklyShift;
+
+  if (weeklyShift) {
+    const weeklyScheduledRef = await WeeklyScheduled.findOne({ weeklyShift });
+
+    //4. THROW ERR IF THERE IS ONE & THE DATE IS IN THE COMING WEEK
+    if (weeklyScheduledRef && moment(lastScheduled!.date) > comingSunday) {
+      return next(
+        new AppError(
+          `Found a weekly scheduled filled for the coming week. Cannot populate.`,
+          400
+        )
+      );
+    }
+  }
+
   next();
 });
 

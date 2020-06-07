@@ -29,6 +29,7 @@ export class EmployeeForgotComponent implements OnInit, OnDestroy {
 
     this.isLoaded = true;
     this.authService.forgotPassword(`employee`, form.value.email);
+    form.reset();
   }
 
   ngOnDestroy() {

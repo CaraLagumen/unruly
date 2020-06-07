@@ -1,4 +1,10 @@
 import Shift from "../../models/shift/shiftModel";
+import IShift from "../../types/shift/shiftInterface";
+import WeeklyShift from "../../models/shift/weeklyShiftModel";
+import IWeeklyShift from "../../types/shift/weeklyShiftInterface";
+import Scheduled from "../../models/shift/scheduledModel";
+import WeeklyScheduled from "../../models/shift/weeklyScheduledModel";
+import Preferred from "../../models/shift/preferredModel";
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 
@@ -18,6 +24,26 @@ export const getShiftsByHour = catchAsync(async (req, res, next) => {
     results: doc.length,
     doc,
   });
+});
+
+export const deleteShiftConnections = catchAsync(async (req, res, next) => {
+  const shift = (await Shift.findById(req.params.id)) as IShift;
+  const weeklyShift = (await WeeklyShift.findOne({
+    $or: [
+      { shiftDay1: shift },
+      { shiftDay2: shift },
+      { shiftDay3: shift },
+      { shiftDay4: shift },
+      { shiftDay5: shift },
+    ],
+  })) as IWeeklyShift;
+  await WeeklyScheduled.findOneAndDelete({ weeklyShift });
+  await Scheduled.deleteMany({ shift });
+  await Preferred.deleteMany({ shift });
+
+  if (weeklyShift) await WeeklyShift.findByIdAndDelete(weeklyShift.id);
+
+  next();
 });
 
 export const getRawAllShifts = factory.getRawAll(Shift);

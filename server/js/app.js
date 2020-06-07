@@ -52,7 +52,7 @@ const limiter = express_rate_limit_1.default({
     windowMs: 60 * 60 * 1000,
     message: `---Too many requests from this IP, try again in an hour.`,
 });
-// app.use("/api", limiter);
+app.use("/api", limiter);
 //DATA SECURITY
 app.use(express_mongo_sanitize_1.default());
 app.use(xss_clean_1.default());

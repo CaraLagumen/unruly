@@ -53,9 +53,12 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
     this.vacationSub = this.vacationService
       .getRawAllVacations()
       .subscribe((vacations: Vacation[]) => {
-        this.vacations = vacations.filter(
-          (vacation: Vacation) => moment(vacation.date) > moment()
-        );
+        this.vacations = vacations;
+
+        //GET ONLY FUTURE VACATIONS
+        // this.vacations = vacations.filter(
+        //   (vacation: Vacation) => moment(vacation.date) > moment()
+        // );
 
         this.pendingVacations = this.vacations.filter(
           (vacation: Vacation) => !vacation.scheduler
@@ -129,10 +132,13 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
           this.updateData();
         },
         (err) => {
-          this.alertService.error(`Vacation date is in the past`, {
-            autoClose: true,
-            keepAfterRouteChange: true,
-          });
+          this.alertService.error(
+            `Cannot approve if vacation date is in the past or this coming week`,
+            {
+              autoClose: true,
+              keepAfterRouteChange: true,
+            }
+          );
         }
       );
   }
@@ -157,10 +163,13 @@ export class EditorVacationsComponent implements OnInit, OnDestroy {
           this.updateData();
         },
         (err) => {
-          this.alertService.error(`Vacation date is in the past`, {
-            autoClose: true,
-            keepAfterRouteChange: true,
-          });
+          this.alertService.error(
+            `Cannot deny if vacation date is in the past or this coming week`,
+            {
+              autoClose: true,
+              keepAfterRouteChange: true,
+            }
+          );
         }
       );
   }

@@ -29,6 +29,7 @@ export class SchedulerForgotComponent implements OnInit, OnDestroy {
 
     this.isLoaded = true;
     this.authService.forgotPassword(`scheduler`, form.value.email);
+    form.reset();
   }
 
   ngOnDestroy() {

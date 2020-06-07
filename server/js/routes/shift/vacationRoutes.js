@@ -20,8 +20,8 @@ const router = express_1.default.Router();
 router
     .route(`/me`)
     .get(employeeAuthController.protect, vacationController.getAllMyVacations)
-    .post(employeeAuthController.protect, vacationController.validateVacation, vacationController.requestVacation);
-router.delete(`/me/:id`, employeeAuthController.protect, vacationController.deleteMyVacation);
+    .post(employeeAuthController.protect, vacationController.validateVacationDate, vacationController.validateRequestedVacation, vacationController.requestVacation);
+router.delete(`/me/:id`, employeeAuthController.protect, vacationController.validateVacationDate, vacationController.deleteMyVacation);
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 router.use(schedulerAuthController.protect);
 //GET RAW ALL
@@ -30,11 +30,11 @@ router.get(`/raw`, vacationController.getRawAllVacations);
 router
     .route(`/`)
     .get(vacationController.getAllVacations)
-    .post(vacationController.createVacation);
+    .post(vacationController.validateVacationDate, vacationController.createVacation);
 //GET ONE, UPDATE ONE, AND DELETE ONE
 router
     .route(`/:id`)
     .get(vacationController.getVacation)
-    .patch(vacationController.updateVacation)
-    .delete(vacationController.deleteVacation);
+    .patch(vacationController.validateVacationDate, vacationController.updateVacation)
+    .delete(vacationController.validateVacationDate, vacationController.deleteVacation);
 module.exports = router;

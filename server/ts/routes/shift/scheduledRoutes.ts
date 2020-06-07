@@ -14,6 +14,7 @@ const router = express.Router();
 router.post(
   `/populate`,
   schedulerAuthController.protect,
+  scheduledController.validatePopulate,
   scheduledController.populateSteadyExtra
 );
 

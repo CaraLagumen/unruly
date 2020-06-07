@@ -19,8 +19,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const weeklyShiftModel_1 = __importDefault(require("../../models/shift/weeklyShiftModel"));
 const shiftModel_1 = __importDefault(require("../../models/shift/shiftModel"));
+const weeklyShiftModel_1 = __importDefault(require("../../models/shift/weeklyShiftModel"));
+const weeklyScheduledModel_1 = __importDefault(require("../../models/shift/weeklyScheduledModel"));
 const factory = __importStar(require("../handlerFactory"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const appError_1 = __importDefault(require("../../utils/appError"));
@@ -34,11 +35,11 @@ exports.setupUpdatedWeeklyShift = catchAsync_1.default((req, res, next) => __awa
     //2. CREATE OBJ TO BE COMPATIBLE WITH ENTERED JSON
     //   ALL IDS GRABBED TO ACCOUNT FOR ANY SHIFT CHOSEN TO REPLACE
     let shiftsRef = {
-        shiftDay1: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay1.id,
-        shiftDay2: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay2.id,
-        shiftDay3: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay3.id,
-        shiftDay4: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay4.id,
-        shiftDay5: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay5.id,
+        shiftDay1: weeklyShift.shiftDay1.id,
+        shiftDay2: weeklyShift.shiftDay2.id,
+        shiftDay3: weeklyShift.shiftDay3.id,
+        shiftDay4: weeklyShift.shiftDay4.id,
+        shiftDay5: weeklyShift.shiftDay5.id,
     };
     //3. GRAB ENTERED SHIFTS FOR REPLACEMENT
     const shiftsToBeReplaced = req.body;
@@ -107,6 +108,11 @@ exports.validateWeeklyShift = catchAsync_1.default((req, res, next) => __awaiter
         }
     }
     //----C. ALLOW NEXT WHEN ALL VALIDATED
+    next();
+}));
+exports.deleteWeeklyShiftConnections = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const weeklyShift = (yield weeklyShiftModel_1.default.findById(req.params.id));
+    yield weeklyScheduledModel_1.default.findOneAndDelete({ weeklyShift });
     next();
 }));
 //STANDARD----------------------------------------------------------

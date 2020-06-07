@@ -22,7 +22,7 @@ router.post(`/`, schedulerAuthController.protect, weeklyShiftController.validate
 router
     .route(`/:id`)
     .patch(schedulerAuthController.protect, weeklyShiftController.setupUpdatedWeeklyShift, weeklyShiftController.validateWeeklyShift, weeklyShiftController.updateWeeklyShift)
-    .delete(schedulerAuthController.protect, weeklyShiftController.deleteWeeklyShift);
+    .delete(schedulerAuthController.protect, weeklyShiftController.deleteWeeklyShiftConnections, weeklyShiftController.deleteWeeklyShift);
 //PUBLIC----------------------------------------------------------
 //GETTERS
 router.get(`/`, weeklyShiftController.getAllWeeklyShifts);

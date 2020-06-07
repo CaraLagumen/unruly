@@ -19,8 +19,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const preferredModel_1 = __importDefault(require("../../models/shift/preferredModel"));
 const shiftModel_1 = __importDefault(require("../../models/shift/shiftModel"));
+const preferredModel_1 = __importDefault(require("../../models/shift/preferredModel"));
 const factory = __importStar(require("../handlerFactory"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const apiFeatures_1 = __importDefault(require("../../utils/apiFeatures"));

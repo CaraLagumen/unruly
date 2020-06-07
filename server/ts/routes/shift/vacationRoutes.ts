@@ -16,12 +16,14 @@ router
   .get(employeeAuthController.protect, vacationController.getAllMyVacations)
   .post(
     employeeAuthController.protect,
-    vacationController.validateVacation,
+    vacationController.validateVacationDate,
+    vacationController.validateRequestedVacation,
     vacationController.requestVacation
   );
 router.delete(
   `/me/:id`,
   employeeAuthController.protect,
+  vacationController.validateVacationDate,
   vacationController.deleteMyVacation
 );
 
@@ -35,13 +37,22 @@ router.get(`/raw`, vacationController.getRawAllVacations);
 router
   .route(`/`)
   .get(vacationController.getAllVacations)
-  .post(vacationController.createVacation);
+  .post(
+    vacationController.validateVacationDate,
+    vacationController.createVacation
+  );
 
 //GET ONE, UPDATE ONE, AND DELETE ONE
 router
   .route(`/:id`)
   .get(vacationController.getVacation)
-  .patch(vacationController.updateVacation)
-  .delete(vacationController.deleteVacation);
+  .patch(
+    vacationController.validateVacationDate,
+    vacationController.updateVacation
+  )
+  .delete(
+    vacationController.validateVacationDate,
+    vacationController.deleteVacation
+  );
 
 export = router;

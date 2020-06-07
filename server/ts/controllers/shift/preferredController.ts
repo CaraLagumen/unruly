@@ -1,5 +1,5 @@
-import Preferred from "../../models/shift/preferredModel";
 import Shift from "../../models/shift/shiftModel";
+import Preferred from "../../models/shift/preferredModel";
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import APIFeatures from "../../utils/apiFeatures";

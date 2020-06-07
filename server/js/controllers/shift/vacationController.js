@@ -27,15 +27,19 @@ const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 const apiFeatures_1 = __importDefault(require("../../utils/apiFeatures"));
 const appError_1 = __importDefault(require("../../utils/appError"));
 //----------------------FOR EMPLOYEE USE
-//TOOLS----------------------------------------------------------
-exports.validateVacation = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    //----A. ENSURE REQUESTED VACATION DATE IS AHEAD OF NOW
+//ENSURE REQUESTED VACATION DATE IS AHEAD OF NOW
+exports.validateVacationDate = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const date = moment_1.default(req.body.date);
-    if (date < moment_1.default()) {
-        return next(new appError_1.default(`Requested vacation date in the past. Please enter a date in the future.`, 400));
+    const comingWeek = moment_1.default().add(1, "w").endOf("w");
+    if (date < comingWeek) {
+        return next(new appError_1.default(`Requested vacation date is this coming week or in the past. Please enter a date in the future.`, 400));
     }
-    //----B. ENSURE EMPLOYEE VACATION DOES NOT EXCEED THEIR ALLOTTED VACATION
-    //       PER YEAR BASED ON HIRE DATE [YEARS WORKED - VACATION DAYS]
+    next();
+}));
+//TOOLS----------------------------------------------------------
+//ENSURE EMPLOYEE VACATION DOES NOT EXCEED THEIR ALLOTTED VACATION
+//PER YEAR BASED ON HIRE DATE [YEARS WORKED - VACATION DAYS]
+exports.validateRequestedVacation = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const employee = yield employeeModel_1.default.findById(req.employee.id);
     const myHireDate = moment_1.default(employee.hireDate);
     const myYearsWorked = moment_1.default().diff(myHireDate, "y");
@@ -72,7 +76,7 @@ exports.validateVacation = catchAsync_1.default((req, res, next) => __awaiter(vo
         myNumberOfVacationDays() === -1) {
         return next(new appError_1.default(`Number of vacation days ${myNumberOfVacationDays() + 1} exceeded. Unable to request vacation.`, 400));
     }
-    //----C. ALLOW NEXT WHEN ALL VALIDATED
+    //6. ALLOW NEXT WHEN ALL VALIDATED
     next();
 }));
 //MAIN----------------------------------------------------------

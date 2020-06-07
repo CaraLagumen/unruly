@@ -29,6 +29,7 @@ router
   )
   .delete(
     schedulerAuthController.protect,
+    weeklyShiftController.deleteWeeklyShiftConnections,
     weeklyShiftController.deleteWeeklyShift
   );
 

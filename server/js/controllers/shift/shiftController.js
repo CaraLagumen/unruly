@@ -20,6 +20,10 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const shiftModel_1 = __importDefault(require("../../models/shift/shiftModel"));
+const weeklyShiftModel_1 = __importDefault(require("../../models/shift/weeklyShiftModel"));
+const scheduledModel_1 = __importDefault(require("../../models/shift/scheduledModel"));
+const weeklyScheduledModel_1 = __importDefault(require("../../models/shift/weeklyScheduledModel"));
+const preferredModel_1 = __importDefault(require("../../models/shift/preferredModel"));
 const factory = __importStar(require("../handlerFactory"));
 const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
 //----------------------FOR SCHEDULER USE
@@ -36,6 +40,24 @@ exports.getShiftsByHour = catchAsync_1.default((req, res, next) => __awaiter(voi
         results: doc.length,
         doc,
     });
+}));
+exports.deleteShiftConnections = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const shift = (yield shiftModel_1.default.findById(req.params.id));
+    const weeklyShift = (yield weeklyShiftModel_1.default.findOne({
+        $or: [
+            { shiftDay1: shift },
+            { shiftDay2: shift },
+            { shiftDay3: shift },
+            { shiftDay4: shift },
+            { shiftDay5: shift },
+        ],
+    }));
+    yield weeklyScheduledModel_1.default.findOneAndDelete({ weeklyShift });
+    yield scheduledModel_1.default.deleteMany({ shift });
+    yield preferredModel_1.default.deleteMany({ shift });
+    if (weeklyShift)
+        yield weeklyShiftModel_1.default.findByIdAndDelete(weeklyShift.id);
+    next();
 }));
 exports.getRawAllShifts = factory.getRawAll(shiftModel_1.default);
 exports.getAllShifts = factory.getAll(shiftModel_1.default);

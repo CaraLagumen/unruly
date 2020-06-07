@@ -17,7 +17,7 @@ const router = express_1.default.Router();
 //PROTECTED----------------------------------------------------------
 //PROTECT ALL ROUTES FOR SCHEDULER FROM HERE
 //POPULATE STEADY EXTRA
-router.post(`/populate`, schedulerAuthController.protect, scheduledController.populateSteadyExtra);
+router.post(`/populate`, schedulerAuthController.protect, scheduledController.validatePopulate, scheduledController.populateSteadyExtra);
 //CREATE ONE
 router.post(`/`, schedulerAuthController.protect, scheduledController.validateScheduled, scheduledController.createScheduled);
 //DELETE ONE

@@ -17,7 +17,11 @@ router.post(`/`, schedulerAuthController.protect, shiftController.createShift);
 router
   .route(`/:id`)
   .patch(schedulerAuthController.protect, shiftController.updateShift)
-  .delete(schedulerAuthController.protect, shiftController.deleteShift);
+  .delete(
+    schedulerAuthController.protect,
+    shiftController.deleteShiftConnections,
+    shiftController.deleteShift
+  );
 
 //PUBLIC----------------------------------------------------------
 

@@ -369,10 +369,13 @@ export class AuthService {
         },
         (err) => {
           //3. ALERT AND ENSURE LISTENERS OFF IF ERR
-          this.alertService.error("That email does not exist in our server", {
-            autoClose: true,
-            keepAfterRouteChange: true,
-          });
+          this.alertService.error(
+            `That ${userType} email does not exist in our server`,
+            {
+              autoClose: true,
+              keepAfterRouteChange: true,
+            }
+          );
 
           if (userType === `employee`) {
             this.employeeAuthStatusListener.next(false);

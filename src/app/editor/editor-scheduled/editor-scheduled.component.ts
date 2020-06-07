@@ -197,7 +197,7 @@ export class EditorScheduledComponent implements OnInit, OnDestroy {
         this.updateData(`scheduled`);
       },
       (err) => {
-        this.alertService.error(`Date for scheduled is in the past`, {
+        this.alertService.error(`Either employee chosen is already scheduled or date for scheduled is in the past or this coming week`, {
           autoClose: true,
           keepAfterRouteChange: true,
         });

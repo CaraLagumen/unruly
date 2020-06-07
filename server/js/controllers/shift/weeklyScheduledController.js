@@ -36,10 +36,46 @@ const appError_1 = __importDefault(require("../../utils/appError"));
 //----------------------FOR SCHEDULER USE
 //TOOLS----------------------------------------------------------
 //GET LOGGED IN SCHEDULER
-exports.getScheduler = catchAsync_1.default((req, res, next) => {
+exports.getScheduler = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     req.body.scheduler = req.scheduler.id;
     next();
-});
+}));
+//ENSURE POPULATE IS ON A NEW WEEK
+exports.validatePopulate = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    //1. SET UP VARS & ALL RAW SCHEDULED
+    const scheduled = yield scheduledModel_1.default.find();
+    const weekAhead = 2; //WEEK TO SCHEDULE
+    const comingSunday = moment_1.default().add(weekAhead, "w").startOf("w");
+    //2. CREATE AN ARR OF DATES FROM ALL SCHEDULED AND GRAB THE LATEST SCHEDULED
+    const scheduledDates = scheduled.map((scheduled) => moment_1.default(scheduled.createdAt));
+    const latestScheduledDate = moment_1.default.max(scheduledDates);
+    const lastScheduled = yield scheduledModel_1.default.findOne({
+        createdAt: latestScheduledDate.toDate(),
+    });
+    //4. FIND IF LAST SCHEDULED HAS A STEADY EXTRA EMPLOYEE
+    const lastScheduledEmployee = lastScheduled.employee;
+    //5. THROW ERROR IF FOUND A STEADY EXTRA WORKING IN THE COMING WEEK
+    if (lastScheduledEmployee.status === `on-call`)
+        return next(new appError_1.default(`Found a steady extra working for the coming week. Full-time should be populated first. Cannot populate.`, 400));
+    //3. FIND IF LAST SCHEDULED IS IN A WEEKLY SCHEDULED
+    const weeklyShift = (yield weeklyShiftModel_1.default.findOne({
+        $or: [
+            { shiftDay1: lastScheduled.shift },
+            { shiftDay2: lastScheduled.shift },
+            { shiftDay3: lastScheduled.shift },
+            { shiftDay4: lastScheduled.shift },
+            { shiftDay5: lastScheduled.shift },
+        ],
+    }));
+    if (weeklyShift) {
+        const weeklyScheduledRef = yield weeklyScheduledModel_1.default.findOne({ weeklyShift });
+        //4. THROW ERR IF THERE IS ONE & THE DATE IS IN THE COMING WEEK
+        if (weeklyScheduledRef && moment_1.default(lastScheduled.date) > comingSunday) {
+            return next(new appError_1.default(`Found a weekly scheduled filled for the coming week. Cannot populate.`, 400));
+        }
+    }
+    next();
+}));
 //MAIN----------------------------------------------------------
 //CREATE ALL INDIVIDUAL SCHEDULED FROM WEEKLY SCHEDULED IDS
 exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {

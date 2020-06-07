@@ -14,6 +14,7 @@ const router = express.Router();
 router.post(
   `/populate`,
   schedulerAuthController.protect,
+  weeklyScheduledController.validatePopulate,
   weeklyScheduledController.populateAllToScheduled
 );
 
@@ -21,6 +22,7 @@ router.post(
 router.post(
   `/populate/:id`,
   schedulerAuthController.protect,
+  weeklyScheduledController.validatePopulate,
   weeklyScheduledController.populateToScheduled
 );
 

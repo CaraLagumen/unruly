@@ -321,7 +321,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.onFormSubmitEmitter(`shift`);
       },
       (err) => {
-        this.alertService.error(`Something went wrong`, {
+        this.alertService.error(`Cannot update shift, something went wrong`, {
           autoClose: true,
           keepAfterRouteChange: true,
         });
@@ -373,10 +373,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
         this.onFormSubmitEmitter(`scheduled`);
       },
       (err) => {
-        this.alertService.error(`Date for scheduled is in the past`, {
-          autoClose: true,
-          keepAfterRouteChange: true,
-        });
+        this.alertService.error(
+          `Either employee chosen is already scheduled or date for scheduled is in the past or this coming week`,
+          {
+            autoClose: true,
+            keepAfterRouteChange: true,
+          }
+        );
       }
     );
   }

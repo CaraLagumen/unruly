@@ -35,13 +35,12 @@ exports.validateScheduled = catchAsync_1.default((req, res, next) => __awaiter(v
     //1. GRAB RAW SHIFT FROM ENTERED SHIFT ID
     const shift = yield shiftModel_1.default.findById(req.body.shift);
     //2. SETUP VARS FOR DAYS COMPARISON
-    const today = moment_1.default();
     const day = shift.day;
     const date = req.body.date;
     const dateDay = moment_1.default(date, "YYYY-MM-DD").weekday();
-    //3. ERROR IF DATE IS IN THE PAST
-    if (moment_1.default(date) <= today) {
-        return next(new appError_1.default(`Scheduled date is in the past. Please enter a date in the future.`, 400));
+    //3. ERROR IF DATE IS IN THE PAST OR THIS COMING WEEK
+    if (moment_1.default(date) <= moment_1.default().add(2, "w").startOf("w")) {
+        return next(new appError_1.default(`Scheduled date is in the past or this coming week. Please enter a date in the future.`, 400));
     }
     //4. ERROR IF DAYS DON'T MATCH
     if (day !== dateDay) {
@@ -63,10 +62,32 @@ exports.validateScheduled = catchAsync_1.default((req, res, next) => __awaiter(v
 //DON'T DELETE IF DATE IN THE PAST
 exports.validateDelete = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const scheduled = yield scheduledModel_1.default.findById(req.params.id);
-    if (moment_1.default(scheduled === null || scheduled === void 0 ? void 0 : scheduled.date) < moment_1.default()) {
-        return next(new appError_1.default(`Scheduled date is in the past. Cannot delete.`, 400));
+    if (moment_1.default(scheduled.date) < moment_1.default().add(2, "w").startOf("w")) {
+        return next(new appError_1.default(`Scheduled date is in the past or this coming week. Cannot delete.`, 400));
     }
-    console.log(scheduled);
+    next();
+}));
+//ENSURE POPULATE IS ON A NEW WEEK
+exports.validatePopulate = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    //1. GRAB ALL RAW SCHEDULED
+    const scheduled = yield scheduledModel_1.default.find();
+    //2. CREATE AN ARR OF DATES FROM ALL SCHEDULED AND GRAB THE LATEST SCHEDULED
+    const scheduledDates = scheduled.map((scheduled) => moment_1.default(scheduled.createdAt));
+    const latestScheduledDate = moment_1.default.max(scheduledDates);
+    const lastScheduled = yield scheduledModel_1.default.find({
+        createdAt: latestScheduledDate.toDate(),
+    });
+    //3. ONLY CONTINUE VALIDATION IF LAST SCHEDULED IS IN THE COMING WEEK
+    const weekAhead = 2; //WEEK TO SCHEDULE
+    const comingSunday = moment_1.default().add(weekAhead, "w").startOf("w");
+    if (moment_1.default(lastScheduled[0].date) > comingSunday) {
+        //4. FIND IF ANY OF LAST SCHEDULED HAS A STEADY EXTRA EMPLOYEE
+        const lastScheduledEmployees = lastScheduled.map((scheduled) => scheduled.employee);
+        const steadyExtra = lastScheduledEmployees.find((employee) => employee.status === `on-call`);
+        //5. THROW ERROR IF FOUND A STEADY EXTRA WORKING IN THE COMING WEEK
+        if (steadyExtra)
+            return next(new appError_1.default(`Found a steady extra working for the coming week. Cannot populate.`, 400));
+    }
     next();
 }));
 //MAIN----------------------------------------------------------
@@ -215,8 +236,8 @@ exports.deleteLastScheduled = catchAsync_1.default((req, res, next) => __awaiter
         createdAt: latestScheduledDate.toDate(),
     });
     //3. DON'T DELETE IF LATEST DATE IN THE PAST
-    if (moment_1.default(lastScheduled === null || lastScheduled === void 0 ? void 0 : lastScheduled.date) < moment_1.default()) {
-        return next(new appError_1.default(`Last scheduled is in the past. Cannot delete.`, 400));
+    if (moment_1.default(lastScheduled.date) < moment_1.default().add(2, "w").startOf("w")) {
+        return next(new appError_1.default(`Last scheduled is in the past or this coming week. Cannot delete.`, 400));
     }
     //4. DELETE ALL SCHEDULED WITH THE SAME LATEST DATE
     const doc = yield scheduledModel_1.default.deleteMany({

@@ -145,9 +145,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
   updateData(type: `shift` | `scheduled` | `preferred` | `vacation`) {
     switch (type) {
       case `shift`:
-        return this.shiftService
-          .getRawAllShifts()
-          .subscribe((shifts: Shift[]) => (this.allShifts = shifts));
+        return this.resetData();
       case `scheduled`:
         return this.scheduledService
           .getRawAllScheduled()
@@ -167,6 +165,15 @@ export class CalendarComponent implements OnInit, OnDestroy {
             (vacations: Vacation[]) => (this.allMyVacations = vacations)
           );
     }
+  }
+
+  resetData() {
+    this.allShifts = [];
+    this.allScheduled = [];
+    this.allMyPreferred = [];
+    this.allMyVacations = [];
+    this.isLoaded = false;
+    this.ngOnInit();
   }
 
   //MAIN----------------------------------------------------------
@@ -262,11 +269,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
         let message;
         switch (emittedData[0]) {
           case `deletePreferred`:
-          case `deleteVacation`:
-            message = `Something went wrong`;
+            message = `Cannot delete preferred, something went wrong`;
             break;
+          case `deleteVacation`:
           case `requestVacation`:
-            message = `Requested vacation is in the past`;
+            message = `Either you have reached your maximum number of vacations or your requested vacation date is this coming week or in the past`;
             break;
         }
 
@@ -316,19 +323,21 @@ export class CalendarComponent implements OnInit, OnDestroy {
         let message;
         switch (emittedData[0]) {
           case `populateAllToScheduled`:
-            message = `Full-time already populated`;
+            this.isPopulating = false;
+            message = `Two weeks from now should be empty to populate full-time`;
             break;
           case `populateSteadyExtra`:
-            message = `Steady extras already populated`;
+            this.isPopulating = false;
+            message = `Two weeks from now should not have a steady extra scheduled yet to populate steady extras`;
             break;
           case `deleteLastScheduled`:
-            message = `Cannot delete last scheduled from the past`;
+            message = `Cannot delete last scheduled from the past or this coming week`;
             break;
           case `deleteScheduled`:
-            message = `Cannot delete scheduled from the past`;
+            message = `Cannot delete scheduled from the past or this coming week`;
             break;
           case `deleteShift`:
-            message = `Something went wrong`;
+            message = `Cannot delete shift, something went wrong`;
             break;
         }
 

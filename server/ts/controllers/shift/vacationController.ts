@@ -10,23 +10,28 @@ import AppError from "../../utils/appError";
 
 //----------------------FOR EMPLOYEE USE
 
-//TOOLS----------------------------------------------------------
-
-export const validateVacation = catchAsync(async (req, res, next) => {
-  //----A. ENSURE REQUESTED VACATION DATE IS AHEAD OF NOW
+//ENSURE REQUESTED VACATION DATE IS AHEAD OF NOW
+export const validateVacationDate = catchAsync(async (req, res, next) => {
   const date = moment(req.body.date);
+  const comingWeek = moment().add(1, "w").endOf("w");
 
-  if (date < moment()) {
+  if (date < comingWeek) {
     return next(
       new AppError(
-        `Requested vacation date in the past. Please enter a date in the future.`,
+        `Requested vacation date is this coming week or in the past. Please enter a date in the future.`,
         400
       )
     );
   }
 
-  //----B. ENSURE EMPLOYEE VACATION DOES NOT EXCEED THEIR ALLOTTED VACATION
-  //       PER YEAR BASED ON HIRE DATE [YEARS WORKED - VACATION DAYS]
+  next();
+});
+
+//TOOLS----------------------------------------------------------
+
+//ENSURE EMPLOYEE VACATION DOES NOT EXCEED THEIR ALLOTTED VACATION
+//PER YEAR BASED ON HIRE DATE [YEARS WORKED - VACATION DAYS]
+export const validateRequestedVacation = catchAsync(async (req, res, next) => {
   const employee = await Employee.findById(req.employee.id);
   const myHireDate = moment(employee!.hireDate);
   const myYearsWorked = moment().diff(myHireDate, "y");
@@ -75,7 +80,7 @@ export const validateVacation = catchAsync(async (req, res, next) => {
     );
   }
 
-  //----C. ALLOW NEXT WHEN ALL VALIDATED
+  //6. ALLOW NEXT WHEN ALL VALIDATED
   next();
 });
 
