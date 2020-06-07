@@ -12,7 +12,7 @@ import AppError from "../../utils/appError";
 //GRAB SHIFT ID FROM PREFERRED FOR VALIDATION ON UPDATE
 export const getBody = catchAsync(async (req, res, next) => {
   const preferred = await Preferred.findById(req.params.id);
-  req.body.shift = preferred!.shift.id;
+  req.body.shift = preferred?.shift.id;
 
   next();
 });
@@ -28,7 +28,7 @@ export const validatePreferred = catchAsync(async (req, res, next) => {
   //   MATCHING THE PREFERRED SHIFT DAYS TO THE ENTERED SHIFT DAY
   const allMyPreferred = await Preferred.find({ employee: req.employee.id });
   const allMyPreferredOfTheDay = allMyPreferred.filter(
-    (preferred) => preferred.shift.day === shift!.day
+    (preferred) => preferred.shift.day === shift?.day
   );
 
   //3. FILTER RANK BY MATCHING PREFERRED RANK TO THE ENTERED RANK

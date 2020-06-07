@@ -62,7 +62,7 @@ exports.validateScheduled = catchAsync_1.default((req, res, next) => __awaiter(v
 //DON'T DELETE IF DATE IN THE PAST
 exports.validateDelete = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const scheduled = yield scheduledModel_1.default.findById(req.params.id);
-    if (moment_1.default(scheduled.date) < moment_1.default().add(2, "w").startOf("w")) {
+    if (moment_1.default(scheduled === null || scheduled === void 0 ? void 0 : scheduled.date) < moment_1.default().add(2, "w").startOf("w")) {
         return next(new appError_1.default(`Scheduled date is in the past or this coming week. Cannot delete.`, 400));
     }
     next();
@@ -236,7 +236,7 @@ exports.deleteLastScheduled = catchAsync_1.default((req, res, next) => __awaiter
         createdAt: latestScheduledDate.toDate(),
     });
     //3. DON'T DELETE IF LATEST DATE IN THE PAST
-    if (moment_1.default(lastScheduled.date) < moment_1.default().add(2, "w").startOf("w")) {
+    if (moment_1.default(lastScheduled === null || lastScheduled === void 0 ? void 0 : lastScheduled.date) < moment_1.default().add(2, "w").startOf("w")) {
         return next(new appError_1.default(`Last scheduled is in the past or this coming week. Cannot delete.`, 400));
     }
     //4. DELETE ALL SCHEDULED WITH THE SAME LATEST DATE

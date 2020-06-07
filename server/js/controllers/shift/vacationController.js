@@ -41,7 +41,7 @@ exports.validateVacationDate = catchAsync_1.default((req, res, next) => __awaite
 //PER YEAR BASED ON HIRE DATE [YEARS WORKED - VACATION DAYS]
 exports.validateRequestedVacation = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const employee = yield employeeModel_1.default.findById(req.employee.id);
-    const myHireDate = moment_1.default(employee.hireDate);
+    const myHireDate = moment_1.default(employee === null || employee === void 0 ? void 0 : employee.hireDate);
     const myYearsWorked = moment_1.default().diff(myHireDate, "y");
     //1. FIND START OF YEAR TO COUNT VACATIONS FROM BASED ON HIRE DATE
     const yearNow = moment_1.default().year();

@@ -33,7 +33,7 @@ export const validateVacationDate = catchAsync(async (req, res, next) => {
 //PER YEAR BASED ON HIRE DATE [YEARS WORKED - VACATION DAYS]
 export const validateRequestedVacation = catchAsync(async (req, res, next) => {
   const employee = await Employee.findById(req.employee.id);
-  const myHireDate = moment(employee!.hireDate);
+  const myHireDate = moment(employee?.hireDate);
   const myYearsWorked = moment().diff(myHireDate, "y");
 
   //1. FIND START OF YEAR TO COUNT VACATIONS FROM BASED ON HIRE DATE

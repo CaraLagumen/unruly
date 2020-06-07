@@ -30,7 +30,7 @@ const appError_1 = __importDefault(require("../../utils/appError"));
 //GRAB SHIFT ID FROM PREFERRED FOR VALIDATION ON UPDATE
 exports.getBody = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const preferred = yield preferredModel_1.default.findById(req.params.id);
-    req.body.shift = preferred.shift.id;
+    req.body.shift = preferred === null || preferred === void 0 ? void 0 : preferred.shift.id;
     next();
 }));
 //EACH EMPLOYEE SHOULD ONLY HAVE 3 PREFERRED PER DAY
@@ -42,7 +42,7 @@ exports.validatePreferred = catchAsync_1.default((req, res, next) => __awaiter(v
     //2. FIND ALL PREFERRED BELONGING TO EMPLOYEE AND FILTER BY
     //   MATCHING THE PREFERRED SHIFT DAYS TO THE ENTERED SHIFT DAY
     const allMyPreferred = yield preferredModel_1.default.find({ employee: req.employee.id });
-    const allMyPreferredOfTheDay = allMyPreferred.filter((preferred) => preferred.shift.day === shift.day);
+    const allMyPreferredOfTheDay = allMyPreferred.filter((preferred) => preferred.shift.day === (shift === null || shift === void 0 ? void 0 : shift.day));
     //3. FILTER RANK BY MATCHING PREFERRED RANK TO THE ENTERED RANK
     const preferredRankMatch = allMyPreferredOfTheDay.filter((preferred) => preferred.rank === rank);
     //4. ERROR IF FOUND A MATCHED RANK

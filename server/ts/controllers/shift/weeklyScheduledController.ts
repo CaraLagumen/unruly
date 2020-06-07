@@ -40,25 +40,26 @@ export const validatePopulate = catchAsync(async (req, res, next) => {
   });
 
   //4. FIND IF LAST SCHEDULED HAS A STEADY EXTRA EMPLOYEE
-  const lastScheduledEmployee = lastScheduled!.employee as IEmployee;
+  const lastScheduledEmployee = lastScheduled?.employee as IEmployee;
 
   //5. THROW ERROR IF FOUND A STEADY EXTRA WORKING IN THE COMING WEEK
-  if (lastScheduledEmployee.status === `on-call`)
-    return next(
-      new AppError(
-        `Found a steady extra working for the coming week. Full-time should be populated first. Cannot populate.`,
-        400
-      )
-    );
+  if (lastScheduledEmployee)
+    if (lastScheduledEmployee.status === `on-call`)
+      return next(
+        new AppError(
+          `Found a steady extra working for the coming week. Full-time should be populated first. Cannot populate.`,
+          400
+        )
+      );
 
   //3. FIND IF LAST SCHEDULED IS IN A WEEKLY SCHEDULED
   const weeklyShift = (await WeeklyShift.findOne({
     $or: [
-      { shiftDay1: lastScheduled!.shift },
-      { shiftDay2: lastScheduled!.shift },
-      { shiftDay3: lastScheduled!.shift },
-      { shiftDay4: lastScheduled!.shift },
-      { shiftDay5: lastScheduled!.shift },
+      { shiftDay1: lastScheduled?.shift },
+      { shiftDay2: lastScheduled?.shift },
+      { shiftDay3: lastScheduled?.shift },
+      { shiftDay4: lastScheduled?.shift },
+      { shiftDay5: lastScheduled?.shift },
     ],
   })) as IWeeklyShift;
 
@@ -66,7 +67,7 @@ export const validatePopulate = catchAsync(async (req, res, next) => {
     const weeklyScheduledRef = await WeeklyScheduled.findOne({ weeklyShift });
 
     //4. THROW ERR IF THERE IS ONE & THE DATE IS IN THE COMING WEEK
-    if (weeklyScheduledRef && moment(lastScheduled!.date) > comingSunday) {
+    if (weeklyScheduledRef && moment(lastScheduled?.date) > comingSunday) {
       return next(
         new AppError(
           `Found a weekly scheduled filled for the coming week. Cannot populate.`,
@@ -95,11 +96,11 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
     const weeklyShift = await WeeklyShift.findById(el.weeklyShift);
 
     const shifts = [
-      weeklyShift!.shiftDay1,
-      weeklyShift!.shiftDay2,
-      weeklyShift!.shiftDay3,
-      weeklyShift!.shiftDay4,
-      weeklyShift!.shiftDay5,
+      weeklyShift?.shiftDay1,
+      weeklyShift?.shiftDay2,
+      weeklyShift?.shiftDay3,
+      weeklyShift?.shiftDay4,
+      weeklyShift?.shiftDay5,
     ];
 
     //3. CREATE ARR WITH DATES TO LOOP INTO WHEN CREATING DOC
@@ -120,7 +121,7 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
     for (let i = 0; i < shifts.length; i++) {
       //5. VALIDATE INDIVIDUAL SHIFTS BEFORE PUSH
       //   ENSURE SHIFT DAY AND SCHEDULED DATE DAY MATCHES
-      if (shifts[i]!.day !== dates[i].getDay()) {
+      if (shifts[i]?.day !== dates[i].getDay()) {
         return next(
           new AppError(
             `Weekly shift is flawed. A shift day and scheduled date day did not match.`,
@@ -131,8 +132,8 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
 
       scheduled.push({
         //ALL SCHEDULED MUST HAVE { shift, employee, scheduler, date }
-        shift: shifts[i]!.id as string,
-        employee: el!.employee.id as string,
+        shift: shifts[i]?.id as string,
+        employee: el?.employee.id as string,
         scheduler,
         date: dates[i],
       });
@@ -159,14 +160,14 @@ export const populateToScheduled = catchAsync(async (req, res, next) => {
 
   //2. GRAB RAW WEEKLY SCHEDULED FROM PARAM ID TO EXTRACT WEEKLY SHIFT THEN INDIVIDUAL SHIFTS
   const weeklyScheduled = await WeeklyScheduled.findById(req.params.id);
-  const weeklyShift = await WeeklyShift.findById(weeklyScheduled!.weeklyShift);
+  const weeklyShift = await WeeklyShift.findById(weeklyScheduled?.weeklyShift);
 
   const shifts = [
-    weeklyShift!.shiftDay1,
-    weeklyShift!.shiftDay2,
-    weeklyShift!.shiftDay3,
-    weeklyShift!.shiftDay4,
-    weeklyShift!.shiftDay5,
+    weeklyShift?.shiftDay1,
+    weeklyShift?.shiftDay2,
+    weeklyShift?.shiftDay3,
+    weeklyShift?.shiftDay4,
+    weeklyShift?.shiftDay5,
   ];
 
   //3. CREATE ARR WITH DATES TO LOOP INTO WHEN CREATING DOC
@@ -189,7 +190,7 @@ export const populateToScheduled = catchAsync(async (req, res, next) => {
   //5. VALIDATE INDIVIDUAL SHIFTS BEFORE PUSH
   //   ENSURE SHIFT DAY AND SCHEDULED DATE DAY MATCHES
   for (let i = 0; i < shifts.length; i++) {
-    if (shifts[i]!.day !== dates[i].getDay()) {
+    if (shifts[i]?.day !== dates[i].getDay()) {
       return next(
         new AppError(
           `Weekly shift is flawed. A shift day and scheduled date day did not match.`,
@@ -200,8 +201,8 @@ export const populateToScheduled = catchAsync(async (req, res, next) => {
 
     scheduled.push({
       //SCHEDULEDS MUST HAVE { shift, employee, scheduler, date }
-      shift: shifts[i]!.id as string,
-      employee: weeklyScheduled!.employee.id as string,
+      shift: shifts[i]?.id as string,
+      employee: weeklyScheduled?.employee.id as string,
       scheduler,
       date: dates[i],
     });

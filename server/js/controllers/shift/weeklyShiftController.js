@@ -35,11 +35,11 @@ exports.setupUpdatedWeeklyShift = catchAsync_1.default((req, res, next) => __awa
     //2. CREATE OBJ TO BE COMPATIBLE WITH ENTERED JSON
     //   ALL IDS GRABBED TO ACCOUNT FOR ANY SHIFT CHOSEN TO REPLACE
     let shiftsRef = {
-        shiftDay1: weeklyShift.shiftDay1.id,
-        shiftDay2: weeklyShift.shiftDay2.id,
-        shiftDay3: weeklyShift.shiftDay3.id,
-        shiftDay4: weeklyShift.shiftDay4.id,
-        shiftDay5: weeklyShift.shiftDay5.id,
+        shiftDay1: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay1.id,
+        shiftDay2: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay2.id,
+        shiftDay3: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay3.id,
+        shiftDay4: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay4.id,
+        shiftDay5: weeklyShift === null || weeklyShift === void 0 ? void 0 : weeklyShift.shiftDay5.id,
     };
     //3. GRAB ENTERED SHIFTS FOR REPLACEMENT
     const shiftsToBeReplaced = req.body;
