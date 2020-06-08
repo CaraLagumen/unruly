@@ -82,7 +82,7 @@ export const validateScheduled = catchAsync(async (req, res, next) => {
 export const validateDelete = catchAsync(async (req, res, next) => {
   const scheduled = await Scheduled.findById(req.params.id);
 
-  if (moment(scheduled?.date) < moment().add(2, "w").startOf("w")) {
+  if (moment(scheduled?.date) < schedulingWeek) {
     return next(
       new AppError(
         `Scheduled date is in the past or this coming week. Cannot delete.`,
@@ -320,7 +320,7 @@ export const deleteLastScheduled = catchAsync(async (req, res, next) => {
   });
 
   //3. DON'T DELETE IF LATEST DATE IN THE PAST
-  if (moment(lastScheduled?.date) < comingWeek) {
+  if (moment(lastScheduled?.date) < schedulingWeek) {
     return next(
       new AppError(
         `Last scheduled is in the past or is on this coming week. Cannot delete.`,
