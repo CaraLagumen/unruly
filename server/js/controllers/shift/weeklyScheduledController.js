@@ -71,7 +71,6 @@ exports.validatePopulate = catchAsync_1.default((req, res, next) => __awaiter(vo
     }));
     if (weeklyShift) {
         const weeklyScheduledRef = yield weeklyScheduledModel_1.default.findOne({ weeklyShift });
-        console.log(moment_1.default(lastScheduled === null || lastScheduled === void 0 ? void 0 : lastScheduled.date), times_1.comingWeek);
         //4. THROW ERR IF THERE IS ONE & THE DATE IS IN THE SCHEDULING WEEK
         if (weeklyScheduledRef && moment_1.default(lastScheduled === null || lastScheduled === void 0 ? void 0 : lastScheduled.date) > times_1.schedulingWeek) {
             return next(new appError_1.default(`Found a weekly scheduled filled for the scheduling week. Cannot populate.`, 400));

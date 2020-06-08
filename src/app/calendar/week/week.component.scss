@@ -193,27 +193,3 @@
   text-transform: uppercase;
   vertical-align: middle;
 }
-
-.populating {
-  position: fixed;
-  top: 4vh;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999;
-
-  display: grid;
-  align-items: center;
-  justify-items: center;
-
-  width: 30rem;
-  padding: 0.5rem 1.5rem;
-  margin-bottom: 0.5rem;
-
-  background-color: var(--color-yellow);
-
-  color: var(--color-dark);
-  font-size: var(--font-xsmall);
-  font-weight: 700;
-  text-align: center;
-  text-transform: uppercase;
-}

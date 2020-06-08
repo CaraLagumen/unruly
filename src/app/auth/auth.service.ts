@@ -338,7 +338,6 @@ export class AuthService {
             }, 8000);
           }
         },
-
         (err) => {
           // 7. ALERT AND ENSURE LISTENERS OFF IF ERR
           this.alertService.error(
