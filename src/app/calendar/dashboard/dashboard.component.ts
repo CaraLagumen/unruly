@@ -381,7 +381,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       },
       (err) => {
         this.alertService.error(
-          `Either employee chosen is already scheduled or date for scheduled is in the past or this coming week`,
+          `Either employee chosen is already scheduled/on vacation or date for scheduled is in the past or this coming week`,
           {
             autoClose: true,
             keepAfterRouteChange: true,

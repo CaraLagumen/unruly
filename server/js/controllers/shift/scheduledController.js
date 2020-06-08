@@ -42,7 +42,7 @@ exports.validateScheduled = catchAsync_1.default((req, res, next) => __awaiter(v
     const date = req.body.date;
     const dateDay = moment_1.default(date, "YYYY-MM-DD").weekday();
     //3. ERROR IF DATE IS IN THE PAST OR THIS COMING WEEK
-    if (moment_1.default(date) <= moment_1.default().add(2, "w").startOf("w")) {
+    if (moment_1.default(date) < times_1.schedulingWeek) {
         return next(new appError_1.default(`Scheduled date is in the past or this coming week. Please enter a date in the future.`, 400));
     }
     //4. ERROR IF DAYS DON'T MATCH
@@ -55,7 +55,7 @@ exports.validateScheduled = catchAsync_1.default((req, res, next) => __awaiter(v
     });
     const matchingDate = employeeVacations.find((vacation) => moment_1.default(vacation.date).format("LL") === moment_1.default(date).format("LL"));
     if (matchingDate) {
-        if (matchingDate.approved === true) {
+        if (matchingDate.approved) {
             return next(new appError_1.default(`Employee has an approved vacation day for this day. Please set another employee for this shift.`, 400));
         }
     }
@@ -101,7 +101,7 @@ exports.populateSteadyExtra = catchAsync_1.default((req, res, next) => __awaiter
     const scheduler = req.scheduler.id;
     //----A. SET UP VARS FOR WEEKLY SHIFT REF
     //1. FIND SCHEDULED BY FILTERING THOSE STARTING THE SCHEDULED WEEK
-    const scheduledWeek = [...allTheScheduledEver].filter((scheduled) => moment_1.default(scheduled.date) >= times_1.comingWeek);
+    const scheduledWeek = [...allTheScheduledEver].filter((scheduled) => moment_1.default(scheduled.date) >= times_1.schedulingWeek);
     //2. FIND SHIFTS TO FILL BY FILTERING THE ALREADY SCHEDULED ONES FROM ALL SHIFTS
     const scheduledShifts = scheduledWeek.map((scheduled) => scheduled.shift.id);
     const shiftsToFill = [...blankShifts].filter((shift) => !scheduledShifts.includes(shift.id));

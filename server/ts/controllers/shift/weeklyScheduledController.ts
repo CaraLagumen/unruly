@@ -14,7 +14,7 @@ import {
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import AppError from "../../utils/appError";
-import { comingWeek, startSchedule } from "../../utils/times";
+import { comingWeek, startSchedule, schedulingWeek } from "../../utils/times";
 
 //----------------------FOR SCHEDULER USE
 
@@ -43,12 +43,12 @@ export const validatePopulate = catchAsync(async (req, res, next) => {
   //4. FIND IF LAST SCHEDULED HAS A STEADY EXTRA EMPLOYEE
   const lastScheduledEmployee = lastScheduled?.employee as IEmployee;
 
-  //5. THROW ERROR IF FOUND A STEADY EXTRA WORKING IN THE COMING WEEK
+  //5. THROW ERROR IF FOUND A STEADY EXTRA WORKING IN THE SCHEDULING WEEK
   if (lastScheduledEmployee)
     if (lastScheduledEmployee.status === `on-call`)
       return next(
         new AppError(
-          `Found a steady extra working for the coming week. Full-time should be populated first. Cannot populate.`,
+          `Found a steady extra working for the scheduling week. Full-time should be populated first. Cannot populate.`,
           400
         )
       );
@@ -67,11 +67,11 @@ export const validatePopulate = catchAsync(async (req, res, next) => {
   if (weeklyShift) {
     const weeklyScheduledRef = await WeeklyScheduled.findOne({ weeklyShift });
 
-    //4. THROW ERR IF THERE IS ONE & THE DATE IS IN THE COMING WEEK
-    if (weeklyScheduledRef && moment(lastScheduled?.date) > comingWeek) {
+    //4. THROW ERR IF THERE IS ONE & THE DATE IS IN THE SCHEDULING WEEK
+    if (weeklyScheduledRef && moment(lastScheduled?.date) > schedulingWeek) {
       return next(
         new AppError(
-          `Found a weekly scheduled filled for the coming week. Cannot populate.`,
+          `Found a weekly scheduled filled for the scheduling week. Cannot populate.`,
           400
         )
       );

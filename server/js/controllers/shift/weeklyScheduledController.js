@@ -55,10 +55,10 @@ exports.validatePopulate = catchAsync_1.default((req, res, next) => __awaiter(vo
     });
     //4. FIND IF LAST SCHEDULED HAS A STEADY EXTRA EMPLOYEE
     const lastScheduledEmployee = lastScheduled === null || lastScheduled === void 0 ? void 0 : lastScheduled.employee;
-    //5. THROW ERROR IF FOUND A STEADY EXTRA WORKING IN THE COMING WEEK
+    //5. THROW ERROR IF FOUND A STEADY EXTRA WORKING IN THE SCHEDULING WEEK
     if (lastScheduledEmployee)
         if (lastScheduledEmployee.status === `on-call`)
-            return next(new appError_1.default(`Found a steady extra working for the coming week. Full-time should be populated first. Cannot populate.`, 400));
+            return next(new appError_1.default(`Found a steady extra working for the scheduling week. Full-time should be populated first. Cannot populate.`, 400));
     //3. FIND IF LAST SCHEDULED IS IN A WEEKLY SCHEDULED
     const weeklyShift = (yield weeklyShiftModel_1.default.findOne({
         $or: [
@@ -71,9 +71,10 @@ exports.validatePopulate = catchAsync_1.default((req, res, next) => __awaiter(vo
     }));
     if (weeklyShift) {
         const weeklyScheduledRef = yield weeklyScheduledModel_1.default.findOne({ weeklyShift });
-        //4. THROW ERR IF THERE IS ONE & THE DATE IS IN THE COMING WEEK
-        if (weeklyScheduledRef && moment_1.default(lastScheduled === null || lastScheduled === void 0 ? void 0 : lastScheduled.date) > times_1.comingWeek) {
-            return next(new appError_1.default(`Found a weekly scheduled filled for the coming week. Cannot populate.`, 400));
+        console.log(moment_1.default(lastScheduled === null || lastScheduled === void 0 ? void 0 : lastScheduled.date), times_1.comingWeek);
+        //4. THROW ERR IF THERE IS ONE & THE DATE IS IN THE SCHEDULING WEEK
+        if (weeklyScheduledRef && moment_1.default(lastScheduled === null || lastScheduled === void 0 ? void 0 : lastScheduled.date) > times_1.schedulingWeek) {
+            return next(new appError_1.default(`Found a weekly scheduled filled for the scheduling week. Cannot populate.`, 400));
         }
     }
     next();

@@ -17,7 +17,7 @@ import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import APIFeatures from "../../utils/apiFeatures";
 import AppError from "../../utils/appError";
-import { schedulingWeek, comingWeek, startSchedule } from "../../utils/times";
+import { schedulingWeek, startSchedule } from "../../utils/times";
 
 //----------------------FOR SCHEDULER USE
 
@@ -34,7 +34,7 @@ export const validateScheduled = catchAsync(async (req, res, next) => {
   const dateDay = moment(date, "YYYY-MM-DD").weekday();
 
   //3. ERROR IF DATE IS IN THE PAST OR THIS COMING WEEK
-  if (moment(date) <= moment().add(2, "w").startOf("w")) {
+  if (moment(date) < schedulingWeek) {
     return next(
       new AppError(
         `Scheduled date is in the past or this coming week. Please enter a date in the future.`,
@@ -64,7 +64,7 @@ export const validateScheduled = catchAsync(async (req, res, next) => {
   );
 
   if (matchingDate) {
-    if (matchingDate.approved === true) {
+    if (matchingDate.approved) {
       return next(
         new AppError(
           `Employee has an approved vacation day for this day. Please set another employee for this shift.`,
@@ -145,7 +145,7 @@ export const populateSteadyExtra = catchAsync(async (req, res, next) => {
 
   //1. FIND SCHEDULED BY FILTERING THOSE STARTING THE SCHEDULED WEEK
   const scheduledWeek = [...allTheScheduledEver].filter(
-    (scheduled) => moment(scheduled.date) >= comingWeek
+    (scheduled) => moment(scheduled.date) >= schedulingWeek
   );
 
   //2. FIND SHIFTS TO FILL BY FILTERING THE ALREADY SCHEDULED ONES FROM ALL SHIFTS

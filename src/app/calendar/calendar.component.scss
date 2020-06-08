@@ -61,22 +61,23 @@
         }
       }
 
-      &:hover {
+      &-backward:hover,
+      &-forward:hover {
         color: var(--color-yellow);
       }
     }
 
     &--month {
+      width: 22rem;
+
+      font-weight: 800;
+      text-align: center;
+
       @media only screen and (max-width: 26em) {
         //425W
         grid-column: 2 / 3;
         grid-row: 1 / 2;
       }
-
-      width: 22rem;
-
-      font-weight: 800;
-      text-align: center;
     }
   }
 

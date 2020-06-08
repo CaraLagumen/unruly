@@ -67,7 +67,8 @@
         }
       }
 
-      &:hover {
+      &-backward:hover,
+      &-forward:hover {
         color: var(--color-yellow);
       }
     }
