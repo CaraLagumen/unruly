@@ -18,6 +18,8 @@ const router = express_1.default.Router();
 //PROTECT ALL ROUTES FOR EMPLOYEE FROM HERE
 router.use(employeeAuthController.protect);
 //GET ALL
+//GETTERS
+router.get(`/raw`, preferredController.getRawAllPreferred);
 router.get(`/`, preferredController.getAllPreferred);
 //GET ALL AND SAVE ONE OF LOGGED IN EMPLOYEE
 router

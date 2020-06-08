@@ -13,6 +13,8 @@ const router = express.Router();
 router.use(employeeAuthController.protect);
 
 //GET ALL
+//GETTERS
+router.get(`/raw`, preferredController.getRawAllPreferred);
 router.get(`/`, preferredController.getAllPreferred);
 
 //GET ALL AND SAVE ONE OF LOGGED IN EMPLOYEE

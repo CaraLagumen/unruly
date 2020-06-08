@@ -336,6 +336,7 @@
         class="dashboard__options--btns-item btn-menu btn-green"
       >Add to preferred</button>
       <button
+        *ngIf="employeeOptions[0]"
         (click)="onEmployeeEmitter('deletePreferred')"
         class="dashboard__options--btns-item btn-menu btn-red"
       >Delete preferred</button>

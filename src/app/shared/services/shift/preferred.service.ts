@@ -17,9 +17,9 @@ export class PreferredService {
   //PROTECTED----------------------------------------------------------
 
   //PROTECT ALL ROUTES FOR EMPLOYEE FROM HERE
-  getAllPreferred(): Observable<Preferred[]> {
+  getRawAllPreferred(): Observable<Preferred[]> {
     return this.http
-      .get<Preferred[]>(`${ROOT_URL}`)
+      .get<Preferred[]>(`${ROOT_URL}/raw`)
       .pipe(map((preferred: any) => preferred.doc));
   }
 

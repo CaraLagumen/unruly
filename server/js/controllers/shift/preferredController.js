@@ -111,6 +111,7 @@ exports.getAllMyPreferred = catchAsync_1.default((req, res, next) => __awaiter(v
     });
 }));
 //STANDARD----------------------------------------------------------
+exports.getRawAllPreferred = factory.getRawAll(preferredModel_1.default);
 exports.getAllPreferred = factory.getAll(preferredModel_1.default);
 exports.getPreferred = factory.getOne(preferredModel_1.default);
 exports.deletePreferred = factory.deleteOne(preferredModel_1.default);

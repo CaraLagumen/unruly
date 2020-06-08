@@ -273,6 +273,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
             break;
           case `deleteVacation`:
             message = `The requested vacation date you want to delete is this coming week or in the past`
+            break;
           case `requestVacation`:
             message = `Either you have reached your maximum number of vacations or your requested vacation date is this coming week or in the past`;
             break;

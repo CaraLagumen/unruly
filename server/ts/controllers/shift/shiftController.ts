@@ -46,6 +46,8 @@ export const deleteShiftConnections = catchAsync(async (req, res, next) => {
   next();
 });
 
+//STANDARD----------------------------------------------------------
+
 export const getRawAllShifts = factory.getRawAll(Shift);
 export const getAllShifts = factory.getAll(Shift);
 export const getShift = factory.getOne(Shift);

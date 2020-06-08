@@ -59,6 +59,7 @@ exports.deleteShiftConnections = catchAsync_1.default((req, res, next) => __awai
         yield weeklyShiftModel_1.default.findByIdAndDelete(weeklyShift.id);
     next();
 }));
+//STANDARD----------------------------------------------------------
 exports.getRawAllShifts = factory.getRawAll(shiftModel_1.default);
 exports.getAllShifts = factory.getAll(shiftModel_1.default);
 exports.getShift = factory.getOne(shiftModel_1.default);

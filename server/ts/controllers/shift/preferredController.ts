@@ -130,6 +130,7 @@ export const getAllMyPreferred = catchAsync(async (req, res, next) => {
 
 //STANDARD----------------------------------------------------------
 
+export const getRawAllPreferred = factory.getRawAll(Preferred);
 export const getAllPreferred = factory.getAll(Preferred);
 export const getPreferred = factory.getOne(Preferred);
 export const deletePreferred = factory.deleteOne(Preferred);
