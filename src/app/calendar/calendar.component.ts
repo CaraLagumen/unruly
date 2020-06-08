@@ -272,6 +272,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
             message = `Cannot delete preferred, something went wrong`;
             break;
           case `deleteVacation`:
+            message = `The requested vacation date you want to delete is this coming week or in the past`
           case `requestVacation`:
             message = `Either you have reached your maximum number of vacations or your requested vacation date is this coming week or in the past`;
             break;

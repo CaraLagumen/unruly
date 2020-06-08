@@ -32,7 +32,13 @@ const times_1 = require("../../utils/times");
 //----------------------FOR EMPLOYEE USE
 //ENSURE REQUESTED VACATION DATE IS AHEAD OF NOW
 exports.validateVacationDate = catchAsync_1.default((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const date = moment_1.default(req.body.date);
+    let date = moment_1.default();
+    if (req.body.date)
+        date = moment_1.default(req.body.date);
+    if (req.params.id) {
+        const vacation = yield vacationModel_1.default.findById(req.params.id);
+        date = moment_1.default(vacation.date);
+    }
     if (date < times_1.schedulingWeek) {
         return next(new appError_1.default(`Requested vacation date is this coming week or in the past. Please enter a date in the future.`, 400));
     }

@@ -15,7 +15,12 @@ import { schedulingWeek } from "../../utils/times";
 
 //ENSURE REQUESTED VACATION DATE IS AHEAD OF NOW
 export const validateVacationDate = catchAsync(async (req, res, next) => {
-  const date = moment(req.body.date);
+  let date = moment();
+  if (req.body.date) date = moment(req.body.date);
+  if (req.params.id) {
+    const vacation = await Vacation.findById(req.params.id);
+    date = moment(vacation!.date);
+  }
 
   if (date < schedulingWeek) {
     return next(
