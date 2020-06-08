@@ -14,7 +14,7 @@ import {
 import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import AppError from "../../utils/appError";
-import { schedulingWeek, comingWeek, startSchedule } from "../../utils/times";
+import { comingWeek, startSchedule } from "../../utils/times";
 
 //----------------------FOR SCHEDULER USE
 
@@ -123,7 +123,7 @@ export const populateAllToScheduled = catchAsync(async (req, res, next) => {
     for (let i = 0; i < shifts.length; i++) {
       //5. VALIDATE INDIVIDUAL SHIFTS BEFORE PUSH
       //   ENSURE SHIFT DAY AND SCHEDULED DATE DAY MATCHES
-      if (shifts[i]?.day !== dates[i].getDay()) {
+      if (shifts[i]?.day !== dates[i].getUTCDay()) {
         return next(
           new AppError(
             `Weekly shift is flawed. A shift day and scheduled date day did not match.`,
@@ -188,7 +188,7 @@ export const populateToScheduled = catchAsync(async (req, res, next) => {
   //5. VALIDATE INDIVIDUAL SHIFTS BEFORE PUSH
   //   ENSURE SHIFT DAY AND SCHEDULED DATE DAY MATCHES
   for (let i = 0; i < shifts.length; i++) {
-    if (shifts[i]?.day !== dates[i].getDay()) {
+    if (shifts[i]?.day !== dates[i].getUTCDay()) {
       return next(
         new AppError(
           `Weekly shift is flawed. A shift day and scheduled date day did not match.`,

@@ -82,7 +82,7 @@ exports.validatePopulate = catchAsync_1.default((req, res, next) => __awaiter(vo
     const lastScheduled = yield scheduledModel_1.default.find({
         createdAt: latestScheduledDate.toDate(),
     });
-    //3. ONLY CONTINUE VALIDATION IF LAST SCHEDULED IS IN THE COMING WEEK
+    //3. ONLY CONTINUE VALIDATION IF LAST SCHEDULED IS IN THE SCHEDULING WEEK
     if (moment_1.default(lastScheduled[0].date) > times_1.schedulingWeek) {
         //4. FIND IF ANY OF LAST SCHEDULED HAS A STEADY EXTRA EMPLOYEE
         const lastScheduledEmployees = lastScheduled.map((scheduled) => scheduled.employee);
@@ -140,7 +140,7 @@ exports.populateSteadyExtra = catchAsync_1.default((req, res, next) => __awaiter
             if (employeeShiftsCounter[employeeIndex] < 5) {
                 //   FIND OUT DATE FOR THE SHIFT AND PARSE IT
                 const firstShiftOfTheDay = shiftsOfTheDay[0];
-                const parsedDate = times_1.schedulingWeek
+                const parsedDate = times_1.startSchedule
                     .clone()
                     .isoWeekday(firstShiftOfTheDay.day)
                     .toDate();

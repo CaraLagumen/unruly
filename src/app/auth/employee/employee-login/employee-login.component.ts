@@ -23,9 +23,7 @@ export class EmployeeLoginComponent implements OnInit, OnDestroy {
   }
 
   onLogin(form: NgForm) {
-    if (form.invalid) {
-      return;
-    }
+    if (form.invalid) return;
 
     this.isLoaded = true;
     this.authService.login(`employee`, form.value.email, form.value.password);

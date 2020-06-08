@@ -161,7 +161,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   //----------------------FOR SCHEDULER USE
 
-  onSchedulerEmitter(type: `deleteShift` | `deleteScheduled`) {
+  onSchedulerEmitter(
+    type:
+      | `populateAllToScheduled`
+      | `populateSteadyExtra`
+      | `deleteLastScheduled`
+      | `deleteShift`
+      | `deleteScheduled`
+  ) {
     const data = this.calendarItem;
 
     this.schedulerEmitter.emit([type, data]);

@@ -117,7 +117,7 @@ exports.populateAllToScheduled = catchAsync_1.default((req, res, next) => __awai
             for (let i = 0; i < shifts.length; i++) {
                 //5. VALIDATE INDIVIDUAL SHIFTS BEFORE PUSH
                 //   ENSURE SHIFT DAY AND SCHEDULED DATE DAY MATCHES
-                if (((_b = shifts[i]) === null || _b === void 0 ? void 0 : _b.day) !== dates[i].getDay()) {
+                if (((_b = shifts[i]) === null || _b === void 0 ? void 0 : _b.day) !== dates[i].getUTCDay()) {
                     return next(new appError_1.default(`Weekly shift is flawed. A shift day and scheduled date day did not match.`, 400));
                 }
                 scheduled.push({
@@ -175,7 +175,7 @@ exports.populateToScheduled = catchAsync_1.default((req, res, next) => __awaiter
     //5. VALIDATE INDIVIDUAL SHIFTS BEFORE PUSH
     //   ENSURE SHIFT DAY AND SCHEDULED DATE DAY MATCHES
     for (let i = 0; i < shifts.length; i++) {
-        if (((_d = shifts[i]) === null || _d === void 0 ? void 0 : _d.day) !== dates[i].getDay()) {
+        if (((_d = shifts[i]) === null || _d === void 0 ? void 0 : _d.day) !== dates[i].getUTCDay()) {
             return next(new appError_1.default(`Weekly shift is flawed. A shift day and scheduled date day did not match.`, 400));
         }
         scheduled.push({

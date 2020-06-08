@@ -15,7 +15,9 @@
         required
         ngModel
         name="firstName"
-        #nameInput="ngModel"
+        #firstNameInput="ngModel"
+        [ngClass]="{ 'valid': firstNameInput.valid && firstNameInput.dirty,
+        'invalid': firstNameInput.invalid && firstNameInput.dirty }"
       >
 
       <h4>Last name</h4>
@@ -23,7 +25,9 @@
         required
         ngModel
         name="lastName"
-        #nameInput="ngModel"
+        #lastNameInput="ngModel"
+        [ngClass]="{ 'valid': lastNameInput.valid && lastNameInput.dirty,
+        'invalid': lastNameInput.invalid && lastNameInput.dirty }"
       >
     </div>
 
@@ -31,30 +35,39 @@
       <h4>Email</h4>
       <input
         type="email"
+        email
         required
         ngModel
         name="email"
         #emailInput="ngModel"
+        [ngClass]="{ 'valid': emailInput.valid && emailInput.dirty,
+        'invalid': emailInput.invalid && emailInput.dirty }"
       >
 
       <h4>Password</h4>
       <input
         type="password"
+        password
         required
         minlength="8"
         ngModel
         name="password"
         #passwordInput="ngModel"
+        [ngClass]="{ 'valid': passwordInput.valid && passwordInput.dirty,
+        'invalid': passwordInput.invalid && passwordInput.dirty }"
       >
 
       <h4>Password confirm</h4>
       <input
         type="password"
+        password
         required
         minlength="8"
         ngModel
         name="passwordConfirm"
         #passwordConfirmInput="ngModel"
+        [ngClass]="{ 'valid': passwordConfirmInput.valid && passwordConfirmInput.dirty,
+        'invalid': passwordConfirmInput.invalid && passwordConfirmInput.dirty }"
       >
     </div>
 

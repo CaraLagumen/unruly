@@ -12,21 +12,27 @@
       <h4>New password</h4>
       <input
         type="password"
+        password
         required
         minlength="8"
         ngModel
         name="password"
         #passwordInput="ngModel"
+        [ngClass]="{ 'valid': passwordInput.valid && passwordInput.dirty,
+        'invalid': passwordInput.invalid && passwordInput.dirty }"
       >
 
       <h4>New password confirm</h4>
       <input
         type="password"
+        password
         required
         minlength="8"
         ngModel
         name="passwordConfirm"
         #passwordConfirmInput="ngModel"
+        [ngClass]="{ 'valid': passwordConfirmInput.valid && passwordConfirmInput.dirty,
+        'invalid': passwordConfirmInput.invalid && passwordConfirmInput.dirty }"
       >
     </div>
 

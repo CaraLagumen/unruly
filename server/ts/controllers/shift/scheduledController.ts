@@ -17,7 +17,7 @@ import * as factory from "../handlerFactory";
 import catchAsync from "../../utils/catchAsync";
 import APIFeatures from "../../utils/apiFeatures";
 import AppError from "../../utils/appError";
-import { schedulingWeek, comingWeek } from "../../utils/times";
+import { schedulingWeek, comingWeek, startSchedule } from "../../utils/times";
 
 //----------------------FOR SCHEDULER USE
 
@@ -109,7 +109,7 @@ export const validatePopulate = catchAsync(async (req, res, next) => {
     createdAt: latestScheduledDate.toDate(),
   });
 
-  //3. ONLY CONTINUE VALIDATION IF LAST SCHEDULED IS IN THE COMING WEEK
+  //3. ONLY CONTINUE VALIDATION IF LAST SCHEDULED IS IN THE SCHEDULING WEEK
   if (moment(lastScheduled[0].date) > schedulingWeek) {
     //4. FIND IF ANY OF LAST SCHEDULED HAS A STEADY EXTRA EMPLOYEE
     const lastScheduledEmployees = lastScheduled.map(
@@ -200,7 +200,7 @@ export const populateSteadyExtra = catchAsync(async (req, res, next) => {
       if (employeeShiftsCounter[employeeIndex] < 5) {
         //   FIND OUT DATE FOR THE SHIFT AND PARSE IT
         const firstShiftOfTheDay = shiftsOfTheDay[0];
-        const parsedDate = schedulingWeek
+        const parsedDate = startSchedule
           .clone()
           .isoWeekday(firstShiftOfTheDay.day)
           .toDate();

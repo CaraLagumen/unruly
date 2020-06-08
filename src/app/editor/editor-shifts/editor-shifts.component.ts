@@ -289,7 +289,7 @@ export class EditorShiftsComponent implements OnInit, OnDestroy {
         this.updateData(`weeklyShift`);
       },
       (err) => {
-        this.alertService.error(`Weekly shift has overlapping days`, {
+        this.alertService.error(`Either weekly shift has an invalid shift or overlapping days`, {
           autoClose: true,
           keepAfterRouteChange: true,
         });

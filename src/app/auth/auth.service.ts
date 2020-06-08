@@ -341,15 +341,24 @@ export class AuthService {
 
         (err) => {
           // 7. ALERT AND ENSURE LISTENERS OFF IF ERR
-          this.alertService.error("Your passwords don't match", {
-            autoClose: true,
-            keepAfterRouteChange: true,
-          });
+          this.alertService.error(
+            "Current password is wrong or new password confirmation doesn't match",
+            {
+              autoClose: true,
+              keepAfterRouteChange: true,
+            }
+          );
 
           if (userType === `employee`) {
-            this.employeeAuthStatusListener.next(false);
-          } else if (userType === `scheduler`) {
+            this.employeeIsAuth = true;
+            this.employeeAuthStatusListener.next(true);
+            this.schedulerIsAuth = false;
             this.schedulerAuthStatusListener.next(false);
+          } else if (userType === `scheduler`) {
+            this.schedulerIsAuth = true;
+            this.schedulerAuthStatusListener.next(true);
+            this.employeeIsAuth = false;
+            this.employeeAuthStatusListener.next(false);
           }
         }
       );
@@ -448,7 +457,7 @@ export class AuthService {
         },
         (err) => {
           // 8. ALERT AND ENSURE LISTENERS OFF IF ERR
-          this.alertService.error("Your passwords don't match", {
+          this.alertService.error("Confirm password doesn't match", {
             autoClose: true,
             keepAfterRouteChange: true,
           });

@@ -1,3 +1,9 @@
+*:disabled {
+  background-color: var(--color-darkgray) !important;
+
+  color: var(--color-gray) !important;
+}
+
 a {
   &,
   &:link,
@@ -216,7 +222,25 @@ h4 {
 
   background-color: var(--color-red) !important;
 
-  color: var(--color-white);
+  color: var(--color-white) !important;
+}
+
+input:focus {
+  background-color: var(--color-lightblue) !important;
+
+  color: var(--color-white) !important;
+}
+
+.valid {
+  background-color: var(--color-green) !important;
+
+  color: var(--color-white) !important;
+}
+
+.invalid {
+  background-color: var(--color-red) !important;
+
+  color: var(--color-white) !important;
 }
 
 h4,

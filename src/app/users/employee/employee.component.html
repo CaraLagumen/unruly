@@ -17,6 +17,8 @@
         type="email"
         formControlName="email"
         placeholder="{{ employee?.email }}"
+        [ngClass]="{ 'valid': updateEmployeeForm.controls['email'].valid && updateEmployeeForm.controls['email'].dirty,
+        'invalid': updateEmployeeForm.controls['email'].invalid && updateEmployeeForm.controls['email'].dirty }"
       >
     </div>
 
@@ -85,6 +87,8 @@
         ngModel
         name="passwordCurrent"
         #passwordCurrentInput="ngModel"
+        [ngClass]="{ 'valid': passwordCurrentInput.valid && passwordCurrentInput.dirty,
+      'invalid': passwordCurrentInput.invalid && passwordCurrentInput.dirty }"
       >
 
       <h4>New password</h4>
@@ -95,6 +99,8 @@
         ngModel
         name="password"
         #passwordInput="ngModel"
+        [ngClass]="{ 'valid': passwordInput.valid && passwordInput.dirty,
+      'invalid': passwordInput.invalid && passwordInput.dirty }"
       >
 
       <h4>New password confirm</h4>
@@ -105,6 +111,8 @@
         ngModel
         name="passwordConfirm"
         #passwordConfirmInput="ngModel"
+        [ngClass]="{ 'valid': passwordConfirmInput.valid && passwordConfirmInput.dirty,
+      'invalid': passwordConfirmInput.invalid && passwordConfirmInput.dirty }"
       >
     </div>
 

@@ -12,22 +12,28 @@
     <h4 class="employee-login__form--heading">Email</h4>
     <input
       type="email"
+      email
       required
       ngModel
       name="email"
       #emailInput="ngModel"
       class="employee-login__form--input"
+      [ngClass]="{ 'valid': emailInput.valid && emailInput.dirty,
+      'invalid': emailInput.invalid && emailInput.dirty }"
     >
 
     <h4 class="employee-login__form--heading">Password</h4>
     <input
       type="password"
+      password
       required
       minlength="8"
       ngModel
       name="password"
       #passwordInput="ngModel"
       class="employee-login__form--input"
+      [ngClass]="{ 'valid': passwordInput.valid && passwordInput.dirty,
+      'invalid': passwordInput.invalid && passwordInput.dirty }"
     >
 
     <a

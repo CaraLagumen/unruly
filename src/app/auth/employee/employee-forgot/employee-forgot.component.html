@@ -19,11 +19,14 @@
       <h4>Email</h4>
       <input
         type="email"
+        email
         required
         ngModel
         name="email"
         #emailInput="ngModel"
         class="employee-forgot__form--input"
+        [ngClass]="{ 'valid': emailInput.valid && emailInput.dirty,
+        'invalid': emailInput.invalid && emailInput.dirty }"
       >
     </div>
 
