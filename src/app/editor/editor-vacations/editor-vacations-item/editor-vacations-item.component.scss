@@ -1,4 +1,8 @@
 .editor-vacations-item {
+  height: 70%;
+
+  overflow-y: auto;
+
   &__vacation {
     display: inline-block;
 
@@ -15,7 +19,7 @@
     text-transform: uppercase;
     white-space: nowrap;
 
-    overflow-y: auto;
+    overflow-x: auto;
     cursor: pointer;
 
     @media only screen and (max-width: 34em) {
