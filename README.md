@@ -2,7 +2,12 @@
 
 Created with [TypeScript, Node.js, Angular, Express, & MongoDB]
 
-A comprehensive scheduling app for the unruly workforce
+A comprehensive scheduling app for the unruly workforce 
+
+## Postman
+
+If you would like to test the API, please click this link!
+https://documenter.getpostman.com/view/6660913/Szzj9dyu
 
 ## Development
 
